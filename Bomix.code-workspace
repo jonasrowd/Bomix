@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"totvsLanguageServer.welcomePage": false,
+		"advpl.environments": [
+			{
+				"environment": "MES",
+				"name": "MES",
+				"server": "192.168.254.61",
+				"port": "1268",
+				"serverVersion": "191205P",
+				"passwordCipher": "UllMSzNKNmcvblpvZ09uKzA0c0R6QXB5SjBJL0Vaa1d1ZnBuUE9UcjhuaDB0LzJHL3lPSEgwZDVGUnBSMzdPVElPNmZLY1ZUS1F0b05aVm01SmVrUlhHV21vc1RYYUpqUk9KSnNndXgwN0FySXdBWmhuOEtNT2I1TTBOK3ZVZU8=",
+				"includeList": "c:\\Users\\jonas.machado\\Documents\\jProj\\Fontes\\Advpl\\Includes\\",
+				"user": "DEV",
+				"smartClientPath": "c:\\Bomix\\PROTHEUS LOBO GUARA SMARTCLIENT 64",
+				"enable": true,
+				"ssl": false
+			}
+		],
+		"advpl.selectedEnvironment": "MES"
+	}
+}
