@@ -1,0 +1,55 @@
+/*
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ºPrograma  ³BXEST02   ºAutor  ³Elisangela Souza    º Data ³  15/10/2013 º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDesc.     ³Ponto de entrada para gravar informações do WMS na rotina   º±±
+±±º          ³Transferência mod. 2                                        º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³ Bomix                                                      º±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+*/
+
+User Function BXEST02()
+
+Local a_Area      := GetArea()
+Local _cProduto   := ""
+Local _cRet       := Space(TamSX3("D3_SERVIC")[1])
+Local c_SrvTran   := Getmv("BM_SRVTRAN")
+
+If FunName() == "MATA261"
+	_cProduto := aCols[n][AScan(aHeader,{ |x| Upper(AllTrim(x[1])) == "PROD.ORIG." .And. Alltrim(x[2]) == 'D3_COD' })]
+
+    If !Empty(_cProduto)
+		dbSelectArea("SB1")
+		SB1->( dbSetorder(1) )
+		If SB1->( dbSeek(xFilial("SB1")+_cProduto ))
+			If SB1->B1_LOCALIZ = "S"  // Produto tem controle de endereço
+				dbSelectArea("SB5")
+				SB5->( dbSetorder(1) )
+				If SB5->( dbSeek(xFilial("SB5")+_cProduto )) // Verifica se existe o produto na tabela de complemento
+					_cRet :=  SB5->B5_BXSRVTR
+					
+					If Empty(_cRet)
+						_cRet := c_SrvTran
+					Endif
+					
+					If AScan(aHeader,{ |x| Alltrim(x[2]) == 'D3_SERVIC' }) > 0
+						aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'D3_SERVIC' })] := _cRet
+					Endif
+				Else
+					If AScan(aHeader,{ |x| Alltrim(x[2]) == 'D3_SERVIC' }) > 0
+						aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'D3_SERVIC' })] := ""
+					Endif
+				Endif	
+			Else
+				If AScan(aHeader,{ |x| Alltrim(x[2]) == 'D3_SERVIC' }) > 0
+					aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'D3_SERVIC' })] := ""
+				Endif
+		    Endif
+		Endif
+	Endif
+Endif
+
+RestArea(a_Area)	
+
+Return( _cRet )

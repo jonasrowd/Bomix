@@ -1,0 +1,566 @@
+Group Bomix
+   Version=7.0
+   VSSDB=
+   HasProperties=1
+   Properties
+      BeforeApply=
+      AfterApply=
+      Icon=
+      ID=
+      Version=
+      PalmName=
+      OutPut=
+   End
+   ProjectsCount=10
+   Project Estoque
+      FoldersCount=4
+      Folder Fontes
+         VSSPath=Fontes
+         FilesCount=7
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigaest\ponto de entrada\MT150FIX.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigaest\ponto de entrada\MTA130C8.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigaest\formulario\Armaz.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigaest\Rotinas\SANDRO.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigaest\gatilho\ESTFG001.PRW
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigaest\gatilho\FPCPG001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigaest\gatilho\FPCPG002.prw
+             Type=T
+         End
+      End
+      Folder Definições
+         VSSPath=Definições
+         FilesCount=0
+      End
+      Folder Relatorio
+         VSSPath=Nova Pasta3
+         FilesCount=1
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigaest\relatorio\xmatr105.prx
+             Type=T
+         End
+      End
+      Folder ROTINAS
+         VSSPath=Nova Pasta4
+         FilesCount=12
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigaest\Rotinas\FESTA001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigaest\Rotinas\FESTA002.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigaest\Rotinas\FESTA003.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigaest\Rotinas\FESTA004.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigaest\Rotinas\FESTA005.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigaest\Rotinas\FESTC001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigaest\Rotinas\FESTV001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigaest\Rotinas\FFATC001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigaest\Rotinas\FFATV001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigaest\Rotinas\FFATV002.PRW
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigaest\Rotinas\FFATV003.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigaest\Rotinas\FPCPV001.prw
+             Type=T
+         End
+      End
+   End
+   Project Compatibilizadores
+      FoldersCount=1
+      Folder Fontes
+         VSSPath=Nova Pasta1
+         FilesCount=1
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\compatibilizadores\meusupds.prw
+             Type=T
+         End
+      End
+   End
+   Project Financeiro
+      FoldersCount=4
+      Folder CNAB ITAU
+         VSSPath=Nova Pasta1
+         FilesCount=8
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafin\CNAB ITAU\BLTITAU.PRW
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafin\CNAB ITAU\SISP001.PRW
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafin\CNAB ITAU\SISP002.PRW
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafin\CNAB ITAU\SISP003.PRW
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafin\CNAB ITAU\SISP004.PRW
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafin\CNAB ITAU\SISP005.PRW
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafin\CNAB ITAU\SISP006.PRW
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafin\CNAB ITAU\SISP007.PRW
+             Type=T
+         End
+      End
+      Folder CNAB BB - Receber
+         VSSPath=Nova Pasta2
+         FilesCount=4
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafin\CNAB BB\CNAB Brasil - Receber\BOLBBRASIL.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafin\CNAB BB\CNAB Brasil - Receber\CALCNNUM.PRW
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafin\CNAB BB\CNAB Brasil - Receber\CNABCBB1.PRW
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafin\CNAB BB\CNAB Brasil - Receber\CNABCBB2.PRW
+             Type=T
+         End
+      End
+      Folder Rotinas
+         VSSPath=Nova Pasta3
+         FilesCount=5
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafin\Rotinas\F200VAR.PRW
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafin\Rotinas\FA60QRY.PRW
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafin\Rotinas\FFINA001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafin\Rotinas\MFIN001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafin\Rotinas\PMTPARAM.prw
+             Type=T
+         End
+      End
+      Folder CNAB BB - Pagar
+         VSSPath=Nova Pasta4
+         FilesCount=5
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafin\CNAB BB\CNAB BB - A PAGAR - 22-05-2013\CNABBB01.PRW
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafin\CNAB BB\CNAB BB - A PAGAR - 22-05-2013\CNABBB02.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafin\CNAB BB\CNAB BB - A PAGAR - 22-05-2013\CNABBB03.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafin\CNAB BB\CNAB BB - A PAGAR - 22-05-2013\CNABBB04.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafin\CNAB BB\CNAB BB - A PAGAR - 22-05-2013\CNABBB05.PRW
+             Type=T
+         End
+      End
+   End
+   Project NFE
+      FoldersCount=1
+      Folder Fontes
+         VSSPath=Nova Pasta1
+         FilesCount=6
+         File \SISTEMAS\Totvs\Protheus11\my projects\nfe\danfeii.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\nfe\danfeiii.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\nfe\nfesefaz.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\nfe\danfeii.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\nfe\danfeiii.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\nfe\nfesefaz.prw
+             Type=T
+         End
+      End
+   End
+   Project Validação
+      FoldersCount=2
+      Folder Fontes
+         VSSPath=Nova Pasta1
+         FilesCount=42
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\ponto de entrada\A710PAR.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\Rotinas\FPCPV001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\Rotinas\FESTA001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\ponto de entrada\MT650OPPV.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\Rotinas\FFATC001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigafat\Pontos de entrada\MTA416PV.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\ponto de entrada\MA651FIL.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\Rotinas\FESTA002.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\gatilho\FPCPG002.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\Rotinas\FFATV001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigafat\Pontos de entrada\MT416FIM.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\Rotinas\FFATV002.PRW
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\Rotinas\FFATV003.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\ponto de entrada\MT140LOK.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\ponto de entrada\MT100LOK.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigacom\ponto de entrada\MT160GRPC.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigafat\Pontos de entrada\MTA410T.PRW
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\ponto de entrada\M650FILB.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\ponto de entrada\FPCPG001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigapcp\Ponto de Entrada\MA680INC.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigacom\ponto de entrada\GQREENTR.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigafat\Rotinas\ChamarCIT.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigacom\rotinas\FCOMM001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigafat\Gatilhos\FFATG001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigacom\gatilhos\FCOMM002.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\ponto de entrada\A261TOK.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\ponto de entrada\A260GRV.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\ponto de entrada\MT241TOK.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\ponto de entrada\MT240TOK.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\Rotinas\FESTA003.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\Rotinas\FESTA004.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\ponto de entrada\MT380INC.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\ponto de entrada\MT381VLD.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigafat\Pontos de entrada\M410LIOK.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigafat\Pontos de entrada\A415LIOK.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\ponto de entrada\EMP650.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigafat\Pontos de entrada\M415GRV.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigafat\Pontos de entrada\MT410INC.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigafat\Pontos de entrada\MT410ALT.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\Rotinas\FESTV001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\Rotinas\FESTA005.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigafat\Rotinas\FFATV004.prw
+             Type=T
+         End
+      End
+      Folder Relatorios
+         VSSPath=Nova Pasta2
+         FilesCount=15
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigafat\Relatórios\FFATR001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigacom\relatorio\FCOMR001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigafat\Relatórios\FFATR002.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\relatorio\FESTR001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigafat\Relatórios\FFATR003.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigafin\Relatórios\FFINR001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\relatorio\FESTM001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\relatorio\FESTR002.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigapcp\Relatórios\FPCPM001.PRW
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigaest\relatorio\FESTR003.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigafat\Relatórios\FFATR004.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigafin\Relatórios\FFINR002.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigafat\Relatórios\FMATR600.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigafat\Relatórios\FMATR550.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects\sigafat\Relatórios\FMATR700.prw
+             Type=T
+         End
+      End
+   End
+   Project Faturamento
+      FoldersCount=4
+      Folder Rotinas
+         VSSPath=Nova Pasta1
+         FilesCount=4
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafat\Rotinas\ChamarCIT.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafat\Rotinas\TABSZ6.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafat\Rotinas\FFATV004.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafat\Rotinas\TABSZ7.prw
+             Type=T
+         End
+      End
+      Folder Relatorios
+         VSSPath=Nova Pasta2
+         FilesCount=4
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafat\Relatórios\FFATR001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafat\Relatórios\FFATR002.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafat\Relatórios\FFATR003.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafat\Relatórios\FFATR004.prw
+             Type=T
+         End
+      End
+      Folder Pontos de Entrada
+         VSSPath=Nova Pasta3
+         FilesCount=3
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafat\Pontos de entrada\MA030BRW.PRW
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafat\Pontos de entrada\MT410BRW.PRW
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafat\Pontos de entrada\MT415BRW.PRW
+             Type=T
+         End
+      End
+      Folder Gatilhos
+         VSSPath=Nova Pasta4
+         FilesCount=2
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafat\Gatilhos\CondPag.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigafat\Gatilhos\FFATG001.prw
+             Type=T
+         End
+      End
+   End
+   Project Compras
+      FoldersCount=3
+      Folder Rotinas
+         VSSPath=Nova Pasta1
+         FilesCount=3
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigacom\rotinas\COM_RT02.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigacom\rotinas\COM_RT03.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigacom\gatilhos\TESTM001.prw
+             Type=T
+         End
+      End
+      Folder Ponto de Entrada
+         VSSPath=Nova Pasta2
+         FilesCount=4
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigacom\ponto de entrada\GQREENTR.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigacom\ponto de entrada\MT130WF.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigacom\ponto de entrada\MT150ROT.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigacom\ponto de entrada\MT160GRPC.prw
+             Type=T
+         End
+      End
+      Folder Relatorios
+         VSSPath=Nova Pasta3
+         FilesCount=3
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigacom\relatorio\BXREL0001.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigacom\relatorio\COM_RL04.PRW
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigacom\relatorio\FCOMR001.prw
+             Type=T
+         End
+      End
+   End
+   Project Contabilidade
+      FoldersCount=1
+      Folder Rotinas
+         VSSPath=Nova Pasta1
+         FilesCount=8
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\SIGACTB\Rotinas\ExportCTH.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\SIGACTB\Rotinas\M020ALT - alteração fornecedor.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\SIGACTB\Rotinas\M020INC - inclusão fornecedor.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\SIGACTB\Rotinas\M030ALT - alteração cliente.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\SIGACTB\Rotinas\M030EXC - exclusão cliente.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\SIGACTB\Rotinas\M030INC - inclusão cliente.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\SIGACTB\Rotinas\A020EOK - exclusão fornecedor.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\SIGACTB\Rotinas\CTBZLAN.PRW
+             Type=T
+         End
+      End
+   End
+   Project WMS
+      FoldersCount=2
+      Folder Ponto de Entrada
+         VSSPath=Nova Pasta1
+         FilesCount=3
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigawms\A680WMSO.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigawms\MT103IPC.prw
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigawms\MTA416PV.PRW
+             Type=T
+         End
+      End
+      Folder Gatilho
+         VSSPath=Nova Pasta2
+         FilesCount=2
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigawms\BXEST01.PRW
+             Type=T
+         End
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigawms\BXFAT01.PRW
+             Type=T
+         End
+      End
+   End
+   Project Ativo
+      FoldersCount=1
+      Folder Rotinas
+         VSSPath=Nova Pasta1
+         FilesCount=1
+         File \SISTEMAS\Totvs\Protheus11\my projects - Sopro\sigaAtivo\LEMATI001.PRW
+             Type=T
+         End
+      End
+   End
+End

@@ -1,0 +1,881 @@
+private void CLIENT_PROTHEUS_ExecuteCode(object sender, System.EventArgs args)
+
+{
+
+ 
+
+}
+
+ 
+
+  /// <remarks/>
+
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3056.0")]
+
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+
+    [System.Web.Services.WebServiceBindingAttribute(Name="WS_FSCONTASPGARSOAP", Namespace="http://192.168.254.94:8081/")]
+
+    public partial class WS_FSCONTASPGAR : System.Web.Services.Protocols.SoapHttpClientProtocol {
+
+       
+
+        private System.Threading.SendOrPostCallback MTDINCLUSAOCPOperationCompleted;
+
+       
+
+        private bool useDefaultCredentialsSetExplicitly;
+
+       
+
+        /// <remarks/>
+
+        public WS_FSCONTASPGAR() {
+
+            this.Url = "http://192.168.254.94:8081/ws/WS_FSCONTASPGAR.apw";
+
+            if ((this.IsLocalFileSystemWebService(this.Url) == true)) {
+
+                this.UseDefaultCredentials = true;
+
+                this.useDefaultCredentialsSetExplicitly = false;
+
+            }
+
+            else {
+
+                this.useDefaultCredentialsSetExplicitly = true;
+
+            }
+
+        }
+
+       
+
+        public new string Url {
+
+            get {
+
+                return base.Url;
+
+            }
+
+            set {
+
+                if ((((this.IsLocalFileSystemWebService(base.Url) == true)
+
+                            && (this.useDefaultCredentialsSetExplicitly == false))
+
+                            && (this.IsLocalFileSystemWebService(value) == false))) {
+
+                    base.UseDefaultCredentials = false;
+
+                }
+
+                base.Url = value;
+
+            }
+
+        }
+
+       
+
+        public new bool UseDefaultCredentials {
+
+            get {
+
+                return base.UseDefaultCredentials;
+
+            }
+
+            set {
+
+                base.UseDefaultCredentials = value;
+
+                this.useDefaultCredentialsSetExplicitly = true;
+
+            }
+
+        }
+
+       
+
+        /// <remarks/>
+
+       public event MTDINCLUSAOCPCompletedEventHandler MTDINCLUSAOCPCompleted;
+
+       
+
+        /// <remarks/>
+
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://192.168.254.94:8081/MTDINCLUSAOCP", RequestNamespace="http://192.168.254.94:8081/", ResponseElementName="MTDINCLUSAOCPRESPONSE", ResponseNamespace="http://192.168.254.94:8081/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+
+        [return: System.Xml.Serialization.XmlElementAttribute("MTDINCLUSAOCPRESULT")]
+
+        public STRRETORNMETODOS MTDINCLUSAOCP([System.Xml.Serialization.XmlElementAttribute(DataType="integer")] string N_OPC, STREMPRESFIL O_EMPFIL, STRPARAMTITULOS O_PARAMTIT, [System.Xml.Serialization.XmlElementAttribute(DataType="integer")] string C_NUMRET, string C_PRERET) {
+
+            object[] results = this.Invoke("MTDINCLUSAOCP", new object[] {
+
+                        N_OPC,
+
+                        O_EMPFIL,
+
+                        O_PARAMTIT,
+
+                        C_NUMRET,
+
+                        C_PRERET});
+
+            return ((STRRETORNMETODOS)(results[0]));
+
+        }
+
+       
+
+        /// <remarks/>
+
+        public void MTDINCLUSAOCPAsync(string N_OPC, STREMPRESFIL O_EMPFIL, STRPARAMTITULOS O_PARAMTIT, string C_NUMRET, string C_PRERET) {
+
+            this.MTDINCLUSAOCPAsync(N_OPC, O_EMPFIL, O_PARAMTIT, C_NUMRET, C_PRERET, null);
+
+        }
+
+       
+
+        /// <remarks/>
+
+        public void MTDINCLUSAOCPAsync(string N_OPC, STREMPRESFIL O_EMPFIL, STRPARAMTITULOS O_PARAMTIT, string C_NUMRET, string C_PRERET, object userState) {
+
+            if ((this.MTDINCLUSAOCPOperationCompleted == null)) {
+
+                this.MTDINCLUSAOCPOperationCompleted = new System.Threading.SendOrPostCallback(this.OnMTDINCLUSAOCPOperationCompleted);
+
+            }
+
+            this.InvokeAsync("MTDINCLUSAOCP", new object[] {
+
+                        N_OPC,
+
+                        O_EMPFIL,
+
+                       O_PARAMTIT,
+
+                        C_NUMRET,
+
+                        C_PRERET}, this.MTDINCLUSAOCPOperationCompleted, userState);
+
+        }
+
+       
+
+        private void OnMTDINCLUSAOCPOperationCompleted(object arg) {
+
+            if ((this.MTDINCLUSAOCPCompleted != null)) {
+
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+
+                this.MTDINCLUSAOCPCompleted(this, new MTDINCLUSAOCPCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+
+            }
+
+        }
+
+       
+
+        /// <remarks/>
+
+        public new void CancelAsync(object userState) {
+
+            base.CancelAsync(userState);
+
+        }
+
+       
+
+        private bool IsLocalFileSystemWebService(string url) {
+
+            if (((url == null)
+
+                        || (url == string.Empty))) {
+
+                return false;
+
+            }
+
+            System.Uri wsUri = new System.Uri(url);
+
+            if (((wsUri.Port >= 1024)
+
+                        && (string.Compare(wsUri.Host, "localHost", System.StringComparison.OrdinalIgnoreCase) == 0))) {
+
+                return true;
+
+            }
+
+            return false;
+
+        }
+
+    }
+
+   
+
+    /// <remarks/>
+
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+
+    [System.SerializableAttribute()]
+
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://192.168.254.94:8081/")]
+
+    public partial class STREMPRESFIL {
+
+       
+
+        private string c_EMPRESAField;
+
+       
+
+        private string c_FILIALField;
+
+       
+
+        /// <remarks/>
+
+        public string C_EMPRESA {
+
+            get {
+
+                return this.c_EMPRESAField;
+
+            }
+
+            set {
+
+                this.c_EMPRESAField = value;
+
+            }
+
+        }
+
+       
+
+        /// <remarks/>
+
+        public string C_FILIAL {
+
+            get {
+
+                return this.c_FILIALField;
+
+            }
+
+            set {
+
+                this.c_FILIALField = value;
+
+            }
+
+        }
+
+    }
+
+   
+
+    /// <remarks/>
+
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+
+    [System.SerializableAttribute()]
+
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://192.168.254.94:8081/")]
+
+    public partial class STRRETORNMETODOS {
+
+       
+
+        private string c_MENSAGEMField;
+
+       
+
+        private bool l_STATUSField;
+
+       
+
+        /// <remarks/>
+
+        public string C_MENSAGEM {
+
+            get {
+
+                return this.c_MENSAGEMField;
+
+            }
+
+            set {
+
+                this.c_MENSAGEMField = value;
+
+            }
+
+        }
+
+       
+
+        /// <remarks/>
+
+        public bool L_STATUS {
+
+            get {
+
+                return this.l_STATUSField;
+
+            }
+
+            set {
+
+                this.l_STATUSField = value;
+
+            }
+
+        }
+
+    }
+
+   
+
+    /// <remarks/>
+
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+
+    [System.SerializableAttribute()]
+
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://192.168.254.94:8081/")]
+
+    public partial class STRCCUSTOTIT {
+
+       
+
+        private string c_CCUSTOField;
+
+       
+
+        private string n_PERCField;
+
+       
+
+        private string n_VLRCCUSTOField;
+
+       
+
+        /// <remarks/>
+
+        public string C_CCUSTO {
+
+            get {
+
+                return this.c_CCUSTOField;
+
+            }
+
+            set {
+
+                this.c_CCUSTOField = value;
+
+            }
+
+        }
+
+       
+
+        /// <remarks/>
+
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer")]
+
+        public string N_PERC {
+
+            get {
+
+                return this.n_PERCField;
+
+            }
+
+            set {
+
+                this.n_PERCField = value;
+
+            }
+
+        }
+
+       
+
+        /// <remarks/>
+
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer")]
+
+        public string N_VLRCCUSTO {
+
+            get {
+
+                return this.n_VLRCCUSTOField;
+
+            }
+
+            set {
+
+                this.n_VLRCCUSTOField = value;
+
+            }
+
+        }
+
+    }
+
+   
+
+    /// <remarks/>
+
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+
+    [System.SerializableAttribute()]
+
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://192.168.254.94:8081/")]
+
+    public partial class STRNATUREZTIT {
+
+       
+
+        private STRCCUSTOTIT[] c_CCUSTORATEIOField;
+
+       
+
+        private string c_NATRATEIOField;
+
+       
+
+        private string n_PERCRATEIOField;
+
+       
+
+        private string n_VLRRATEIOField;
+
+       
+
+        /// <remarks/>
+
+        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
+
+        public STRCCUSTOTIT[] C_CCUSTORATEIO {
+
+            get {
+
+                return this.c_CCUSTORATEIOField;
+
+            }
+
+            set {
+
+                this.c_CCUSTORATEIOField = value;
+
+            }
+
+        }
+
+       
+
+        /// <remarks/>
+
+        public string C_NATRATEIO {
+
+            get {
+
+                return this.c_NATRATEIOField;
+
+            }
+
+            set {
+
+                this.c_NATRATEIOField = value;
+
+            }
+
+        }
+
+       
+
+        /// <remarks/>
+
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer")]
+
+        public string N_PERCRATEIO {
+
+            get {
+
+                return this.n_PERCRATEIOField;
+
+            }
+
+            set {
+
+                this.n_PERCRATEIOField = value;
+
+            }
+
+        }
+
+       
+
+        /// <remarks/>
+
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer")]
+
+        public string N_VLRRATEIO {
+
+            get {
+
+                return this.n_VLRRATEIOField;
+
+            }
+
+            set {
+
+                this.n_VLRRATEIOField = value;
+
+            }
+
+        }
+
+    }
+
+   
+
+    /// <remarks/>
+
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+
+    [System.SerializableAttribute()]
+
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://192.168.254.94:8081/")]
+
+    public partial class STRPARAMTITULOS {
+
+       
+
+        private string c_CCDField;
+
+       
+
+        private string c_FORNECEDORField;
+
+       
+
+        private string c_HISTField;
+
+       
+
+        private string c_LOJAField;
+
+       
+
+        private STRNATUREZTIT[] c_NATRATEIOField;
+
+       
+
+        private string c_NATUREZAField;
+
+       
+
+        private string c_TIPOField;
+
+       
+
+        private string d_EMISSAOField;
+
+       
+
+        private string d_VENCTOField;
+
+       
+
+        private string n_VALORField;
+
+       
+
+        /// <remarks/>
+
+        public string C_CCD {
+
+            get {
+
+                return this.c_CCDField;
+
+            }
+
+            set {
+
+                this.c_CCDField = value;
+
+            }
+
+        }
+
+       
+
+        /// <remarks/>
+
+        public string C_FORNECEDOR {
+
+            get {
+
+                return this.c_FORNECEDORField;
+
+            }
+
+            set {
+
+                this.c_FORNECEDORField = value;
+
+            }
+
+        }
+
+       
+
+        /// <remarks/>
+
+        public string C_HIST {
+
+            get {
+
+                return this.c_HISTField;
+
+            }
+
+            set {
+
+                this.c_HISTField = value;
+
+            }
+
+        }
+
+       
+
+        /// <remarks/>
+
+        public string C_LOJA {
+
+            get {
+
+                return this.c_LOJAField;
+
+            }
+
+            set {
+
+                this.c_LOJAField = value;
+
+            }
+
+        }
+
+       
+
+        /// <remarks/>
+
+        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
+
+        public STRNATUREZTIT[] C_NATRATEIO {
+
+            get {
+
+                return this.c_NATRATEIOField;
+
+            }
+
+            set {
+
+                this.c_NATRATEIOField = value;
+
+            }
+
+        }
+
+       
+
+        /// <remarks/>
+
+        public string C_NATUREZA {
+
+            get {
+
+                return this.c_NATUREZAField;
+
+            }
+
+            set {
+
+                this.c_NATUREZAField = value;
+
+            }
+
+        }
+
+       
+
+        /// <remarks/>
+
+        public string C_TIPO {
+
+            get {
+
+                return this.c_TIPOField;
+
+            }
+
+            set {
+
+                this.c_TIPOField = value;
+
+            }
+
+        }
+
+       
+
+        /// <remarks/>
+
+        public string D_EMISSAO {
+
+            get {
+
+                return this.d_EMISSAOField;
+
+            }
+
+            set {
+
+                this.d_EMISSAOField = value;
+
+            }
+
+        }
+
+       
+
+        /// <remarks/>
+
+        public string D_VENCTO {
+
+            get {
+
+                return this.d_VENCTOField;
+
+            }
+
+            set {
+
+                this.d_VENCTOField = value;
+
+            }
+
+        }
+
+       
+
+        /// <remarks/>
+
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer")]
+
+        public string N_VALOR {
+
+            get {
+
+                return this.n_VALORField;
+
+            }
+
+            set {
+
+                this.n_VALORField = value;
+
+            }
+
+        }
+
+    }
+
+   
+
+    /// <remarks/>
+
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3056.0")]
+
+    public delegate void MTDINCLUSAOCPCompletedEventHandler(object sender, MTDINCLUSAOCPCompletedEventArgs e);
+
+   
+
+    /// <remarks/>
+
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3056.0")]
+
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+
+    public partial class MTDINCLUSAOCPCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+
+       
+
+        private object[] results;
+
+       
+
+        internal MTDINCLUSAOCPCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
+
+                base(exception, cancelled, userState) {
+
+            this.results = results;
+
+        }
+
+       
+
+        /// <remarks/>
+
+        public STRRETORNMETODOS Result {
+
+            get {
+
+                this.RaiseExceptionIfNecessary();
+
+                return ((STRRETORNMETODOS)(this.results[0]));
+
+            }
+
+        }
+
+    }

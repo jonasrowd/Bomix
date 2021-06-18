@@ -1,0 +1,8 @@
+User Function MT010VLD
+	Local l_Ret := .T.
+
+	If !Empty(SB1->B1_FSARTE)
+		ShowHelpDlg(SM0->M0_NOME, {"Produtos personalizados não podem ser copiados"}, 5, {"Utilize esta operação somente com produtos sem personalização"},5)
+		l_Ret := .F.
+	Endif
+Return l_Ret

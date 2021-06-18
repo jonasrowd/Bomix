@@ -1,0 +1,907 @@
+#line 1 "D:\SISTEMAS\TOTVS\PROTHE~1\INCLUDE\PROTHEUS.CH"
+#line 1 "D:\SISTEMAS\TOTVS\PROTHE~1\INCLUDE\Dialog.ch"
+#line 28 "PROTHEUS.CH"
+#line 1 "D:\SISTEMAS\TOTVS\PROTHE~1\INCLUDE\Font.ch"
+#line 29 "PROTHEUS.CH"
+#line 1 "D:\SISTEMAS\TOTVS\PROTHE~1\INCLUDE\PTMenu.ch"
+#line 31 "PROTHEUS.CH"
+#line 1 "D:\SISTEMAS\TOTVS\PROTHE~1\INCLUDE\Print.ch"
+#line 33 "PROTHEUS.CH"
+#line 1 "D:\SISTEMAS\TOTVS\PROTHE~1\INCLUDE\Colors.ch"
+#line 35 "PROTHEUS.CH"
+#line 1 "D:\SISTEMAS\TOTVS\PROTHE~1\INCLUDE\Folder.ch"
+#line 37 "PROTHEUS.CH"
+#line 1 "D:\SISTEMAS\TOTVS\PROTHE~1\INCLUDE\msobject.ch"
+#line 38 "PROTHEUS.CH"
+#line 1 "D:\SISTEMAS\TOTVS\PROTHE~1\INCLUDE\VKey.ch"
+#line 42 "PROTHEUS.CH"
+#line 1 "D:\SISTEMAS\TOTVS\PROTHE~1\INCLUDE\WinApi.ch"
+#line 44 "PROTHEUS.CH"
+#line 1 "D:\SISTEMAS\TOTVS\PROTHE~1\INCLUDE\FWCommand.ch"
+#line 47 "PROTHEUS.CH"
+#line 1 "D:\SISTEMAS\TOTVS\PROTHE~1\INCLUDE\FWCSS.CH"
+#line 50 "PROTHEUS.CH"
+#line 3 "d:\sistemas\totvs\PROTHE~1\MYPROJ~1\sigawms\fontes\b5compen.prw"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Function U_B5COMPEN(cEmpAmb,cFilAmb)
+
+Local   aSay      := {}
+Local   aButton   := {}
+Local   aMarcadas := {}
+Local   cTitulo   := "ATUALIZAÇÃO DE DICIONÁRIOS E TABELAS"
+Local   cDesc1    := "Esta rotina tem como função fazer  a atualização  dos dicionários do Sistema ( SX?/SIX )"
+Local   cDesc2    := "Este processo deve ser executado em modo EXCLUSIVO, ou seja não podem haver outros"
+Local   cDesc3    := "usuários  ou  jobs utilizando  o sistema.  É EXTREMAMENTE recomendavél  que  se  faça um"
+Local   cDesc4    := "BACKUP  dos DICIONÁRIOS  e da  BASE DE DADOS antes desta atualização, para que caso "
+Local   cDesc5    := "ocorram eventuais falhas, esse backup possa ser restaurado."
+Local   cDesc6    := ""
+Local   cDesc7    := ""
+Local   lOk       := .F. 
+Local   lAuto     := ( cEmpAmb <> NIL .or.  cFilAmb <> NIL )
+
+Private oMainWnd  := NIL
+Private oProcess  := NIL
+
+
+    TCInternal( 5, "*OFF" )
+
+
+__cInterNet := NIL
+__lPYME     := .F. 
+
+Set( 11,"ON" )
+
+
+aAdd( aSay, cDesc1 )
+aAdd( aSay, cDesc2 )
+aAdd( aSay, cDesc3 )
+aAdd( aSay, cDesc4 )
+aAdd( aSay, cDesc5 )
+
+
+
+
+aAdd(  aButton, {  1, .T. , { || lOk := .T. , FechaBatch() } } )
+aAdd(  aButton, {  2, .T. , { || lOk := .F. , FechaBatch() } } )
+
+If lAuto
+	lOk := .T. 
+Else
+	FormBatch(  cTitulo,  aSay,  aButton )
+EndIf
+
+If lOk
+	If lAuto
+		aMarcadas :={{ cEmpAmb, cFilAmb, "" }}
+	Else
+		aMarcadas := EscEmpresa()
+	EndIf
+
+	If !Empty( aMarcadas )
+		If lAuto .OR.  Iif(FindFunction("APMsgNoYes"), APMsgNoYes("Confirma a atualização dos dicionários ?", cTitulo), (cMsgNoYes:="MsgNoYes", &cMsgNoYes.("Confirma a atualização dos dicionários ?", cTitulo)))
+			oProcess := MsNewProcess():New( { | lEnd | lOk := FSTProc( @lEnd, aMarcadas, lAuto ) }, "Atualizando", "Aguarde, atualizando ...", .F.  )
+			oProcess:Activate()
+
+			If lAuto
+				If lOk
+					Iif(FindFunction("APMsgStop"), APMsgStop("Atualização Realizada.", "B5COMPEN"), MsgStop("Atualização Realizada.", "B5COMPEN"))
+				Else
+					Iif(FindFunction("APMsgStop"), APMsgStop("Atualização não Realizada.", "B5COMPEN"), MsgStop("Atualização não Realizada.", "B5COMPEN"))
+				EndIf
+				dbCloseAll()
+			Else
+				If lOk
+					Final( "Atualização Concluída." )
+				Else
+					Final( "Atualização não Realizada." )
+				EndIf
+			EndIf
+
+		Else
+			Iif(FindFunction("APMsgStop"), APMsgStop("Atualização não Realizada.", "B5COMPEN"), MsgStop("Atualização não Realizada.", "B5COMPEN"))
+
+		EndIf
+
+	Else
+		Iif(FindFunction("APMsgStop"), APMsgStop("Atualização não Realizada.", "B5COMPEN"), MsgStop("Atualização não Realizada.", "B5COMPEN"))
+
+	EndIf
+
+EndIf
+
+Return NIL
+
+
+
+
+
+
+
+
+
+
+
+
+Static Function FSTProc( lEnd, aMarcadas, lAuto )
+Local   aInfo     := {}
+Local   aRecnoSM0 := {}
+Local   cAux      := ""
+Local   cFile     := ""
+Local   cFileLog  := ""
+Local   cMask     := "Arquivos Texto" + "(*.TXT)|*.txt|"
+Local   cTCBuild  := "TCGetBuild"
+Local   cTexto    := ""
+Local   cTopBuild := ""
+Local   lOpen     := .F. 
+Local   lRet      := .T. 
+Local   nI        := 0
+Local   nPos      := 0
+Local   nRecno    := 0
+Local   nX        := 0
+Local   oDlg      := NIL
+Local   oFont     := NIL
+Local   oMemo     := NIL
+
+Private aArqUpd   := {}
+
+If ( lOpen := MyOpenSm0( .T. ) )
+
+	dbSelectArea( "SM0" )
+	dbGoTop()
+
+	While !SM0->( EOF() )
+
+
+		If aScan( aRecnoSM0, { |x| x[2] == SM0->M0_CODIGO } ) == 0 .AND.  aScan( aMarcadas, { |x| x[1] == SM0->M0_CODIGO } ) > 0
+			aAdd( aRecnoSM0, { Recno(), SM0->M0_CODIGO } )
+		EndIf
+		SM0->( dbSkip() )
+	End
+
+	SM0->( dbCloseArea() )
+
+	If lOpen
+
+		For nI := 1 To Len( aRecnoSM0 )
+
+			If !( lOpen := MyOpenSm0( .F. ) )
+				Iif(FindFunction("APMsgStop"), APMsgStop("Atualização da empresa "+aRecnoSM0[nI][2]+" não efetuada.",), MsgStop("Atualização da empresa "+aRecnoSM0[nI][2]+" não efetuada.",))
+				Exit
+			EndIf
+
+			SM0->( dbGoTo( aRecnoSM0[nI][1] ) )
+
+			RpcSetType( 3 )
+			RpcSetEnv( SM0->M0_CODIGO, SM0->M0_CODFIL )
+
+			lMsFinalAuto := .F. 
+			lMsHelpAuto  := .F. 
+
+			AutoGrLog( Replicate( "-", 128 ) )
+			AutoGrLog( Replicate( " ", 128 ) )
+			AutoGrLog( "LOG DA ATUALIZAÇÃO DOS DICIONÁRIOS" )
+			AutoGrLog( Replicate( " ", 128 ) )
+			AutoGrLog( Replicate( "-", 128 ) )
+			AutoGrLog( " " )
+			AutoGrLog( " Dados Ambiente" )
+			AutoGrLog( " --------------------" )
+			AutoGrLog( " Empresa / Filial...: " + cEmpAnt + "/" + cFilAnt )
+			AutoGrLog( " Nome Empresa.......: " + Capital( AllTrim( GetAdvFVal( "SM0", "M0_NOMECOM", cEmpAnt + cFilAnt, 1, "" ) ) ) )
+			AutoGrLog( " Nome Filial........: " + Capital( AllTrim( GetAdvFVal( "SM0", "M0_FILIAL" , cEmpAnt + cFilAnt, 1, "" ) ) ) )
+			AutoGrLog( " DataBase...........: " + DtoC( dDataBase ) )
+			AutoGrLog( " Data / Hora Ínicio.: " + DtoC( Date() )  + " / " + Time() )
+			AutoGrLog( " Environment........: " + GetEnvServer()  )
+			AutoGrLog( " StartPath..........: " + GetSrvProfString( "StartPath", "" ) )
+			AutoGrLog( " RootPath...........: " + GetSrvProfString( "RootPath" , "" ) )
+			AutoGrLog( " Versão.............: " + GetVersao( .T. ) )
+			AutoGrLog( " Usuário TOTVS .....: " + __cUserId + " " +  cUserName )
+			AutoGrLog( " Computer Name......: " + GetComputerName() )
+
+			aInfo   := GetUserInfo()
+			If ( nPos    := aScan( aInfo,{ |x,y| x[3] == ThreadId() } ) ) > 0
+				AutoGrLog( " " )
+				AutoGrLog( " Dados Thread" )
+				AutoGrLog( " --------------------" )
+				AutoGrLog( " Usuário da Rede....: " + aInfo[nPos][1] )
+				AutoGrLog( " Estação............: " + aInfo[nPos][2] )
+				AutoGrLog( " Programa Inicial...: " + aInfo[nPos][5] )
+				AutoGrLog( " Environment........: " + aInfo[nPos][6] )
+				AutoGrLog( " Conexão............: " + AllTrim( StrTran( StrTran( aInfo[nPos][7], Chr( 13 ), "" ), Chr( 10 ), "" ) ) )
+			EndIf
+			AutoGrLog( Replicate( "-", 128 ) )
+			AutoGrLog( " " )
+
+			If !lAuto
+				AutoGrLog( Replicate( "-", 128 ) )
+				AutoGrLog( "Empresa : " + SM0->M0_CODIGO + "/" + SM0->M0_NOME + Chr(13)+Chr(10) )
+			EndIf
+
+			oProcess:SetRegua1( 8 )
+
+
+
+
+			FSAtuSX3()
+
+			oProcess:IncRegua1( "Dicionário de dados" + " - " + SM0->M0_CODIGO + " " + SM0->M0_NOME + " ..." )
+			oProcess:IncRegua2( "Atualizando campos/índices" )
+
+
+			__SetX31Mode( .F.  )
+
+			If FindFunction(cTCBuild)
+				cTopBuild := &cTCBuild.()
+			EndIf
+
+			For nX := 1 To Len( aArqUpd )
+
+				If cTopBuild >= "20090811" .AND.  TcInternal( 89 ) == "CLOB_SUPPORTED"
+
+					If ( ( aArqUpd[nX] >= "NQ " .AND.  aArqUpd[nX] <= "NZZ" ) .OR.  ( aArqUpd[nX] >= "O0 " .AND.  aArqUpd[nX] <= "NZZ" ) ) .AND.  !aArqUpd[nX] $ "NQD,NQF,NQP,NQT"
+						TcInternal( 25, "CLOB" )
+					EndIf
+				EndIf
+
+				If Select( aArqUpd[nX] ) > 0
+					dbSelectArea( aArqUpd[nX] )
+					dbCloseArea()
+				EndIf
+
+				X31UpdTable( aArqUpd[nX] )
+
+				If __GetX31Error()
+					Alert( __GetX31Trace() )
+					Iif(FindFunction("APMsgStop"), APMsgStop("Ocorreu um erro desconhecido durante a atualização da tabela : "+aArqUpd[nX]+". Verifique a integridade do dicionário e da tabela.", "ATENÇÃO"), MsgStop("Ocorreu um erro desconhecido durante a atualização da tabela : "+aArqUpd[nX]+". Verifique a integridade do dicionário e da tabela.", "ATENÇÃO"))
+					AutoGrLog( "Ocorreu um erro desconhecido durante a atualização da estrutura da tabela : " + aArqUpd[nX] )
+				EndIf
+
+				If cTopBuild >= "20090811" .AND.  TcInternal( 89 ) == "CLOB_SUPPORTED"
+					TcInternal( 25, "OFF" )
+				EndIf
+
+			next
+
+			AutoGrLog( Replicate( "-", 128 ) )
+			AutoGrLog( " Data / Hora Final.: " + DtoC( Date() ) + " / " + Time() )
+			AutoGrLog( Replicate( "-", 128 ) )
+
+			RpcClearEnv()
+
+		next
+
+		If !lAuto
+
+			cTexto := LeLog()
+
+			oFont := TFont():New( "Mono AS", 5, 12,.F.,,,,,,,,,,,, )
+
+			oDlg = MsDialog():New( 3, 0, 340, 417, "Atualização concluida.",,,.F.,,,,,,.T.,, ,.F. )
+
+			 oMemo := TMultiGet():New( 5, 5, { | u | If( PCount() == 0, cTexto, cTexto := u ) },oDlg, 200, 145,,.F.,,,,.T.,,.F.,,.F.,.F.,.F.,,,.F.,, )
+			oMemo:bRClicked := { || AllwaysTrue() }
+			oMemo:oFont     := oFont
+
+			 Pixel := SButton():New( 153, 175,1,{||  oDlg:End()}, oDlg,.T.,,)
+
+			 Pixel := SButton():New( 153, 145,13,{||  (cFile:=cGetFile(cMask,""),If(cFile=="", .T. ,MemoWrite(cFile,cTexto)))}, oDlg,.T.,,)
+
+			oDlg:Activate( oDlg:bLClicked, oDlg:bMoved, oDlg:bPainted,.T.,,,, oDlg:bRClicked, )
+
+		EndIf
+
+	EndIf
+
+Else
+
+	lRet := .F. 
+
+EndIf
+
+Return lRet
+
+
+
+
+
+
+
+
+
+
+
+
+Static Function FSAtuSX3()
+Local aEstrut   := {}
+Local aSX3      := {}
+Local cAlias    := ""
+Local cAliasAtu := ""
+Local cSeqAtu   := ""
+Local cX3Campo  := ""
+Local cX3Dado   := ""
+Local nI        := 0
+Local nJ        := 0
+Local nPosArq   := 0
+Local nPosCpo   := 0
+Local nPosOrd   := 0
+Local nPosSXG   := 0
+Local nPosTam   := 0
+Local nPosVld   := 0
+Local nSeqAtu   := 0
+Local nTamSeek  := Len( SX3->X3_CAMPO )
+Local nX := 0
+Local cOrdem := "01"
+
+AutoGrLog( "Ínicio da Atualização" + " SX3" + Chr(13)+Chr(10) )
+
+
+
+
+
+
+
+aEstrut := { { "X3_ARQUIVO", 0 }, { "X3_ORDEM"  , 0 }, { "X3_CAMPO"  , 0 }, { "X3_TIPO"   , 0 }, { "X3_TAMANHO", 0 }, { "X3_DECIMAL", 0 }, { "X3_TITULO" , 0 }, { "X3_TITSPA" , 0 }, { "X3_TITENG" , 0 }, { "X3_DESCRIC", 0 }, { "X3_DESCSPA", 0 }, { "X3_DESCENG", 0 }, { "X3_PICTURE", 0 }, { "X3_VALID"  , 0 }, { "X3_USADO"  , 0 }, { "X3_RELACAO", 0 }, { "X3_F3"     , 0 }, { "X3_NIVEL"  , 0 }, { "X3_RESERV" , 0 }, { "X3_CHECK"  , 0 }, { "X3_TRIGGER", 0 }, { "X3_PROPRI" , 0 }, { "X3_BROWSE" , 0 }, { "X3_VISUAL" , 0 }, { "X3_CONTEXT", 0 }, { "X3_OBRIGAT", 0 }, { "X3_VLDUSER", 0 }, { "X3_CBOX"   , 0 }, { "X3_CBOXSPA", 0 }, { "X3_CBOXENG", 0 }, { "X3_PICTVAR", 0 }, { "X3_WHEN"   , 0 }, { "X3_INIBRW" , 0 }, { "X3_GRPSXG" , 0 }, { "X3_FOLDER" , 0 }, { "X3_CONDSQL", 0 }, { "X3_CHKSQL" , 0 }, { "X3_IDXSRV" , 0 }, { "X3_ORTOGRA", 0 }, { "X3_TELA"   , 0 }, { "X3_POSLGT" , 0 }, { "X3_IDXFLD" , 0 }, { "X3_AGRUP"  , 0 }, { "X3_MODAL"  , 0 }, { "X3_PYME"   , 0 } }
+
+aEval( aEstrut, { |x| x[2] := SX3->( FieldPos( x[1] ) ) } )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SX3->(DbSetOrder(1))
+SX3->(MsSeek("SB5ZZ", .T. ))
+SX3->(DbSkip(-1))
+If	SX3->(!Eof()) .And.  SX3->X3_ARQUIVO=="SB5"
+	cOrdem := Soma1(SX3->X3_ORDEM)
+EndIf
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+aAdd( aSX3, { { "SB5"																	, .T.  },	{ cOrdem																	, .T.  },	{ "B5_COMPEND"															, .T.  },	{ "C"																	, .T.  },	{ 1																		, .T.  },	{ 0																		, .T.  },	{ "Comp. Ender."														, .T.  },	{ "Comp. Direc."														, .T.  },	{ "Share Addrss"														, .T.  },	{ "Compartilha Endereco?"												, .T.  },	{ "Comparte Direccion"													, .T.  },	{ "Share Address?"														, .T.  },	{ "@!"																	, .T.  },	{ 'Pertence("12")'														, .T.  },	{ Chr(128) + Chr(128) + Chr(128) + Chr(128) + Chr(128) + Chr(128) + Chr(128) + Chr(128) + Chr(128) + Chr(128) + Chr(128) + Chr(128) + Chr(128) + Chr(128) + Chr(160)					, .T.  },	{ ""																	, .T.  },	{ ""																	, .T.  },	{ 1																		, .T.  },	{ Chr(132) + Chr(128)													, .T.  },	{ ""																	, .T.  },	{ ""																	, .T.  },	{ ""																	, .T.  },	{ "N"																	, .T.  },	{ "A"																	, .T.  },	{ "R"																	, .T.  },	{ ""																	, .F.  },	{ ""																	, .F.  },	{ "1=Permite;2=Nao Permite"												, .T.  },	{ "1=Permite;2=No Permite"												, .T.  },	{ "1=Allows it;2=Does not allow it"										, .T.  },	{ ""																	, .T.  },	{ ""																	, .F.  },	{ ""																	, .T.  },	{ ""																	, .T.  },	{ "4"																	, .T.  },	{ ""																	, .T.  },	{ ""																	, .T.  },	{ "N"																	, .T.  },	{ ""																	, .T.  },	{ ""																	, .T.  },	{ "1"																	, .T.  },	{ "N"																	, .T.  },	{ ""																	, .T.  },	{ "N"																	, .T.  },	{ "S"																	, .T.  }} )
+
+
+
+
+
+nPosArq := aScan( aEstrut, { |x| AllTrim( x[1] ) == "X3_ARQUIVO" } )
+nPosOrd := aScan( aEstrut, { |x| AllTrim( x[1] ) == "X3_ORDEM"   } )
+nPosCpo := aScan( aEstrut, { |x| AllTrim( x[1] ) == "X3_CAMPO"   } )
+nPosTam := aScan( aEstrut, { |x| AllTrim( x[1] ) == "X3_TAMANHO" } )
+nPosSXG := aScan( aEstrut, { |x| AllTrim( x[1] ) == "X3_GRPSXG"  } )
+nPosVld := aScan( aEstrut, { |x| AllTrim( x[1] ) == "X3_VALID"   } )
+
+aSort( aSX3,,, { |x,y| x[nPosArq][1]+x[nPosOrd][1]+x[nPosCpo][1] < y[nPosArq][1]+y[nPosOrd][1]+y[nPosCpo][1] } )
+
+oProcess:SetRegua2( Len( aSX3 ) )
+
+dbSelectArea( "SX3" )
+dbSetOrder( 2 )
+cAliasAtu := ""
+
+For nI := 1 To Len( aSX3 )
+
+
+
+
+	If !Empty( aSX3[nI][nPosSXG][1] )
+		SXG->( dbSetOrder( 1 ) )
+		If SXG->( MSSeek( aSX3[nI][nPosSXG][1] ) )
+			If aSX3[nI][nPosTam][1] <> SXG->XG_SIZE
+				aSX3[nI][nPosTam][1] := SXG->XG_SIZE
+
+
+				AutoGrLog( "O tamanho do campo " + aSX3[nI][nPosCpo][1] + " NÃO atualizado e foi mantido em [" + AllTrim( Str( SXG->XG_SIZE ) ) + "]" + Chr(13)+Chr(10) + " por pertencer ao grupo de campos [" + SXG->XG_GRUPO + "]" + Chr(13)+Chr(10) )
+			EndIf
+		EndIf
+	EndIf
+
+	SX3->( dbSetOrder( 2 ) )
+
+	If !( aSX3[nI][nPosArq][1] $ cAlias )
+		cAlias += aSX3[nI][nPosArq][1] + "/"
+		aAdd( aArqUpd, aSX3[nI][nPosArq][1] )
+	EndIf
+
+	If !SX3->( dbSeek( PadR( aSX3[nI][nPosCpo][1], nTamSeek ) ) )
+
+
+
+
+		If ( aSX3[nI][nPosArq][1] <> cAliasAtu )
+			cSeqAtu   := "00"
+			cAliasAtu := aSX3[nI][nPosArq][1]
+
+			dbSetOrder( 1 )
+			SX3->( dbSeek( cAliasAtu + "ZZ", .T.  ) )
+			dbSkip( -1 )
+
+			If ( SX3->X3_ARQUIVO == cAliasAtu )
+				cSeqAtu := SX3->X3_ORDEM
+			EndIf
+
+			nSeqAtu := Val( RetAsc( cSeqAtu, 3, .F.  ) )
+		EndIf
+
+		nSeqAtu++
+		cSeqAtu := RetAsc( Str( nSeqAtu ), 2, .T.  )
+
+		RecLock( "SX3", .T.  )
+		For nJ := 1 To Len( aSX3[nI] )
+			If     nJ == nPosOrd
+				SX3->( FieldPut( FieldPos( aEstrut[nJ][1] ), cSeqAtu ) )
+
+			ElseIf aEstrut[nJ][2] > 0
+				SX3->( FieldPut( FieldPos( aEstrut[nJ][1] ), aSX3[nI][nJ][1] ) )
+
+			EndIf
+		next
+
+		dbCommit()
+		MsUnLock()
+
+		AutoGrLog( "Criado campo " + aSX3[nI][nPosCpo][1] )
+
+	Else
+
+
+
+
+		If !Empty( SX3->X3_GRPSXG ) .AND.  SX3->X3_GRPSXG <> aSX3[nI][nPosSXG][1]
+			SXG->( dbSetOrder( 1 ) )
+			If SXG->( MSSeek( SX3->X3_GRPSXG ) )
+				If aSX3[nI][nPosTam][1] <> SXG->XG_SIZE
+					aSX3[nI][nPosTam][1] := SXG->XG_SIZE
+
+
+					AutoGrLog( "O tamanho do campo " + aSX3[nI][nPosCpo][1] + " NÃO atualizado e foi mantido em [" + AllTrim( Str( SXG->XG_SIZE ) ) + "]"+ Chr(13)+Chr(10) + "   por pertencer ao grupo de campos [" + SX3->X3_GRPSXG + "]" + Chr(13)+Chr(10) )
+				EndIf
+			EndIf
+		EndIf
+
+
+
+
+		For nJ := 1 To Len( aSX3[nI] )
+
+			If aSX3[nI][nJ][2]
+				cX3Campo := AllTrim( aEstrut[nJ][1] )
+				cX3Dado  := SX3->( FieldGet( aEstrut[nJ][2] ) )
+
+
+
+
+				If  aEstrut[nJ][2] > 0 .AND.  PadR( StrTran( AllToChar( cX3Dado ), " ", "" ), 250 ) <> PadR( StrTran( AllToChar( aSX3[nI][nJ][1] ), " ", "" ), 250 ) .AND.  !cX3Campo  == "X3_ORDEM"
+
+
+
+					AutoGrLog( "Alterado campo " + aSX3[nI][nPosCpo][1] + Chr(13)+Chr(10) + "   " + PadR( cX3Campo, 10 ) + " de [" + AllToChar( cX3Dado ) + "]" + Chr(13)+Chr(10) + "            para [" + AllToChar( aSX3[nI][nJ][1] )           + "]" + Chr(13)+Chr(10) )
+
+					RecLock( "SX3", .F.  )
+					FieldPut( FieldPos( aEstrut[nJ][1] ), aSX3[nI][nJ][1] )
+					MsUnLock()
+				EndIf
+			EndIf
+		Next
+
+	EndIf
+
+	oProcess:IncRegua2( "Atualizando Campos de Tabelas (SX3)..." )
+
+next
+
+AutoGrLog( Chr(13)+Chr(10) + "Final da Atualização" + " SX3" + Chr(13)+Chr(10) + Replicate( "-", 128 ) + Chr(13)+Chr(10) )
+
+Return NIL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Static Function EscEmpresa()
+
+
+
+
+
+
+
+
+
+
+
+
+
+Local   aRet      := {}
+Local   aSalvAmb  := GetArea()
+Local   aSalvSM0  := {}
+Local   aVetor    := {}
+Local   cMascEmp  := "??"
+Local   cVar      := ""
+Local   lChk      := .F. 
+Local   lOk       := .F. 
+Local   lTeveMarc := .F. 
+Local   oNo       := LoadBitmap( GetResources(), "LBNO" )
+Local   oOk       := LoadBitmap( GetResources(), "LBOK" )
+Local   oDlg, oChkMar, oLbx, oMascEmp, oSay
+Local   oButDMar, oButInv, oButMarc, oButOk, oButCanc
+
+Local   aMarcadas := {}
+
+
+If !MyOpenSm0( .F. )
+	Return aRet
+EndIf
+
+
+dbSelectArea( "SM0" )
+aSalvSM0 := SM0->( GetArea() )
+dbSetOrder( 1 )
+dbGoTop()
+
+While !SM0->( EOF() )
+
+	If aScan( aVetor, {|x| x[2] == SM0->M0_CODIGO} ) == 0
+		aAdd(  aVetor, { aScan( aMarcadas, {|x| x[1] == SM0->M0_CODIGO .and.  x[2] == SM0->M0_CODFIL} ) > 0, SM0->M0_CODIGO, SM0->M0_CODFIL, SM0->M0_NOME, SM0->M0_FILIAL } )
+	EndIf
+
+	dbSkip()
+End
+
+RestArea( aSalvSM0 )
+
+oDlg = MsDialog():New( 0, 0, 280, 395, "",,,.F.,,,,,,.T.,, ,.F. )
+
+oDlg:cToolTip := "Tela para Múltiplas Seleções de Empresas/Filiais"
+
+oDlg:cTitle   := "Selecione a(s) Empresa(s) para Atualização"
+
+ oLbx := Var := cVar := TWBrowse():New( 10, 10, 178, 095,,{ " ", " ", "Empresa"},, oDlg, ,,,,,,,,,,,.F.,,.T.,,.F.,,, )
+oLbx:SetArray(  aVetor )
+
+
+oLbx:bLine := {|| {IIf( aVetor[oLbx:nAt, 1], oOk, oNo ), aVetor[oLbx:nAt, 2], aVetor[oLbx:nAt, 4]}}
+oLbx:BlDblClick := { || aVetor[oLbx:nAt, 1] := !aVetor[oLbx:nAt, 1], VerTodos( aVetor, @lChk, oChkMar ), oChkMar:Refresh(), oLbx:Refresh()}
+oLbx:cToolTip   :=  oDlg:cTitle
+oLbx:lHScroll   := .F. 
+
+
+ oChkMar := TCheckBox():New( 112, 10, "Todos",{ | u | If( PCount() == 0, lChk, lChk := u ) }, oDlg, 40, 007,,{|| MarcaTodos(lChk,@aVetor,oLbx)},,,,,.F.,.T., "Marca / Desmarca"+Chr(13)+Chr(10)+"Todos",.F., )
+
+
+ oSay := TSay():New( 113, 51,{||  "Empresa"},oDlg,,,.F.,.F.,.F.,.T.,,, 40, 08,.F.,.F.,.F.,.F.,.F.,.F. )
+
+ oMascEmp := TGet():New( 112, 80, { | u | If( PCount() == 0, cMascEmp, cMascEmp := u ) },oDlg, 05, 05, "@!",{||  (cMascEmp:=StrTran(cMascEmp," ","?"),oMascEmp:Refresh(), .T. )},,,,.F.,,.T., "Máscara Empresa ( ?? )",.F.,,.F.,.F.,,.F.,.F. ,,"cMascEmp",,,, )
+oSay:cToolTip := oMascEmp:cToolTip
+
+
+ oButInv := TButton():New( 128, 10, "&Inverter", oDlg,{||  (InvSelecao(@aVetor,oLbx,@lChk,oChkMar),VerTodos(aVetor,@lChk,oChkMar))}, 32, 12,,,.F.,.T.,.F., "Inverter Seleção",.F.,,,.F. )
+oButInv:SetCss( "QPushButton { color: #024670; "+ "    border-image: url(rpo:fwstd_btn_nml.png) 3 3 3 3 stretch; "+ "    border-top-width: 3px; "+ "    border-left-width: 3px; "+ "    border-right-width: 3px; "+ "    border-bottom-width: 3px }"+ "QPushButton:pressed {	color: #FFFFFF; "+ "    border-image: url(rpo:fwstd_btn_prd.png) 3 3 3 3 stretch; "+ "    border-top-width: 3px; "+ "    border-left-width: 3px; "+ "    border-right-width: 3px; "+ "    border-bottom-width: 3px }" )
+
+ oButMarc := TButton():New( 128, 50, "&Marcar", oDlg,{||  (MarcaMas(oLbx,aVetor,cMascEmp, .T. ),VerTodos(aVetor,@lChk,oChkMar))}, 32, 12,,,.F.,.T.,.F., "Marcar usando"+Chr(13)+Chr(10)+"máscara ( ?? )",.F.,,,.F. )
+oButMarc:SetCss( "QPushButton { color: #024670; "+ "    border-image: url(rpo:fwstd_btn_nml.png) 3 3 3 3 stretch; "+ "    border-top-width: 3px; "+ "    border-left-width: 3px; "+ "    border-right-width: 3px; "+ "    border-bottom-width: 3px }"+ "QPushButton:pressed {	color: #FFFFFF; "+ "    border-image: url(rpo:fwstd_btn_prd.png) 3 3 3 3 stretch; "+ "    border-top-width: 3px; "+ "    border-left-width: 3px; "+ "    border-right-width: 3px; "+ "    border-bottom-width: 3px }" )
+
+ oButDMar := TButton():New( 128, 80, "&Desmarcar", oDlg,{||  (MarcaMas(oLbx,aVetor,cMascEmp, .F. ),VerTodos(aVetor,@lChk,oChkMar))}, 32, 12,,,.F.,.T.,.F., "Desmarcar usando"+Chr(13)+Chr(10)+"máscara ( ?? )",.F.,,,.F. )
+oButDMar:SetCss( "QPushButton { color: #024670; "+ "    border-image: url(rpo:fwstd_btn_nml.png) 3 3 3 3 stretch; "+ "    border-top-width: 3px; "+ "    border-left-width: 3px; "+ "    border-right-width: 3px; "+ "    border-bottom-width: 3px }"+ "QPushButton:pressed {	color: #FFFFFF; "+ "    border-image: url(rpo:fwstd_btn_prd.png) 3 3 3 3 stretch; "+ "    border-top-width: 3px; "+ "    border-left-width: 3px; "+ "    border-right-width: 3px; "+ "    border-bottom-width: 3px }" )
+
+ oButOk := TButton():New( 112, 157, "Processar", oDlg,{||  (RetSelecao(@aRet,aVetor),oDlg:End())}, 32, 12,,,.F.,.T.,.F., "Confirma a seleção e efetua"+Chr(13)+Chr(10)+"o processamento",.F.,,,.F. )
+oButOk:SetCss( "QPushButton { color: #024670; "+ "    border-image: url(rpo:fwstd_btn_nml.png) 3 3 3 3 stretch; "+ "    border-top-width: 3px; "+ "    border-left-width: 3px; "+ "    border-right-width: 3px; "+ "    border-bottom-width: 3px }"+ "QPushButton:pressed {	color: #FFFFFF; "+ "    border-image: url(rpo:fwstd_btn_prd.png) 3 3 3 3 stretch; "+ "    border-top-width: 3px; "+ "    border-left-width: 3px; "+ "    border-right-width: 3px; "+ "    border-bottom-width: 3px }" )
+
+ oButCanc := TButton():New( 128, 157, "Cancelar", oDlg,{||  (IIf(lTeveMarc,aRet:=aMarcadas, .T. ),oDlg:End())}, 32, 12,,,.F.,.T.,.F., "Cancela o processamento"+Chr(13)+Chr(10)+"e abandona a aplicação",.F.,,,.F. )
+oButCanc:SetCss( "QPushButton { color: #024670; "+ "    border-image: url(rpo:fwstd_btn_nml.png) 3 3 3 3 stretch; "+ "    border-top-width: 3px; "+ "    border-left-width: 3px; "+ "    border-right-width: 3px; "+ "    border-bottom-width: 3px }"+ "QPushButton:pressed {	color: #FFFFFF; "+ "    border-image: url(rpo:fwstd_btn_prd.png) 3 3 3 3 stretch; "+ "    border-top-width: 3px; "+ "    border-left-width: 3px; "+ "    border-right-width: 3px; "+ "    border-bottom-width: 3px }" )
+
+oDlg:Activate( oDlg:bLClicked, oDlg:bMoved, oDlg:bPainted,.T.,,,, oDlg:bRClicked, )
+
+RestArea( aSalvAmb )
+dbSelectArea( "SM0" )
+dbCloseArea()
+
+Return  aRet
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Static Function MarcaTodos( lMarca, aVetor, oLbx )
+Local  nI := 0
+
+For nI := 1 To Len( aVetor )
+	aVetor[nI][1] := lMarca
+next
+
+oLbx:Refresh()
+
+Return NIL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Static Function InvSelecao( aVetor, oLbx )
+Local  nI := 0
+
+For nI := 1 To Len( aVetor )
+	aVetor[nI][1] := !aVetor[nI][1]
+next
+
+oLbx:Refresh()
+
+Return NIL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Static Function RetSelecao( aRet, aVetor )
+Local  nI    := 0
+
+aRet := {}
+For nI := 1 To Len( aVetor )
+	If aVetor[nI][1]
+		aAdd( aRet, { aVetor[nI][2] , aVetor[nI][3], aVetor[nI][2] +  aVetor[nI][3] } )
+	EndIf
+next
+
+Return NIL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Static Function MarcaMas( oLbx, aVetor, cMascEmp, lMarDes )
+Local cPos1 := SubStr( cMascEmp, 1, 1 )
+Local cPos2 := SubStr( cMascEmp, 2, 1 )
+Local nPos  := oLbx:nAt
+Local nZ    := 0
+
+For nZ := 1 To Len( aVetor )
+	If cPos1 == "?" .or.  SubStr( aVetor[nZ][2], 1, 1 ) == cPos1
+		If cPos2 == "?" .or.  SubStr( aVetor[nZ][2], 2, 1 ) == cPos2
+			aVetor[nZ][1] := lMarDes
+		EndIf
+	EndIf
+Next
+
+oLbx:nAt := nPos
+oLbx:Refresh()
+
+Return NIL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Static Function VerTodos( aVetor, lChk, oChkMar )
+Local lTTrue := .T. 
+Local nI     := 0
+
+For nI := 1 To Len( aVetor )
+	lTTrue := IIf( !aVetor[nI][1], .F. , lTTrue )
+next
+
+lChk := IIf( lTTrue, .T. , .F.  )
+oChkMar:Refresh()
+
+Return NIL
+
+
+
+
+
+
+
+
+
+
+
+
+Static Function MyOpenSM0(lShared)
+
+Local lOpen := .F. 
+Local nLoop := 0
+
+For nLoop := 1 To 20
+	dbUseArea( .T. , , "SIGAMAT.EMP", "SM0", lShared, .F.  )
+
+	If !Empty( Select( "SM0" ) )
+		lOpen := .T. 
+		dbSetIndex( "SIGAMAT.IND" )
+		Exit
+	EndIf
+
+	Sleep( 500 )
+
+next
+
+If !lOpen
+
+	Iif(FindFunction("APMsgStop"), APMsgStop("Não foi possível a abertura da tabela "+IIf(lShared,"de empresas (SM0).","de empresas (SM0) de forma exclusiva."), "ATENÇÃO"), MsgStop("Não foi possível a abertura da tabela "+IIf(lShared,"de empresas (SM0).","de empresas (SM0) de forma exclusiva."), "ATENÇÃO"))
+EndIf
+
+Return lOpen
+
+
+
+
+
+
+
+
+
+
+
+
+Static Function LeLog()
+Local cRet  := ""
+Local cFile := NomeAutoLog()
+Local cAux  := ""
+
+FT_FUSE( cFile )
+FT_FGOTOP()
+
+While !FT_FEOF()
+
+	cAux := FT_FREADLN()
+
+	If Len( cRet ) + Len( cAux ) < 1048000
+		cRet += cAux + Chr(13)+Chr(10)
+	Else
+		cRet += Chr(13)+Chr(10)
+		cRet += Replicate( "=" , 128 ) + Chr(13)+Chr(10)
+		cRet += "Tamanho de exibição maxima do LOG alcançado." + Chr(13)+Chr(10)
+		cRet += "LOG Completo no arquivo " + cFile + Chr(13)+Chr(10)
+		cRet += Replicate( "=" , 128 ) + Chr(13)+Chr(10)
+		Exit
+	EndIf
+
+	FT_FSKIP()
+End
+
+FT_FUSE()
+
+Return cRet

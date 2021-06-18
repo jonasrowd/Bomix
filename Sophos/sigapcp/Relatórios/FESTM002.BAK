@@ -1,0 +1,226 @@
+#INCLUDE "TOTVS.CH"
+#INCLUDE "RWMAKE.CH"
+#INCLUDE "FONT.CH"
+#INCLUDE "COLORS.CH"
+#INCLUDE "STDWIN.CH"
+#INCLUDE "TOPCONN.CH"
+
+/*
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  |FESTM002  ºAutor  ³ 				     º Data ³             º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDesc.     ³															  º±±
+±±º          ³															  º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³ SIGAPCP                                                    º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±º                     A L T E R A C O E S                               º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºData      ºProgramador       ºAlteracoes                               º±±
+±±º			 º					º										  º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+*/
+
+User Function FESTM002()
+
+	Local oReport
+	
+	Processa({ || xPrintRel(),OemToAnsi('Gerando o relatório.')}, OemToAnsi('Aguarde...'))
+Return
+
+/*/
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  ³xPrintRel ºAutor  ³Microsiga           º Data ³             º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDesc.     ³ Impressão de Etiquetas de acordo com os parâmetros         º±±
+±±º          ³ informado pelo usuário.                                    º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+/*/
+
+Static Function xPrintRel()  
+
+	Local nX 		:= 0
+	Local nQtdPag 	:= 0
+ 	Local c_NumOp	:= SH6->H6_OP
+ 	Local c_DescPro	:= ""
+ 	Local c_Lote    := ""
+ 	Local n_QtdPE	:= SC2->C2_FSQTDPE   
+    Local c_Seq		:= "01"
+    
+	Private oPrint
+	Private cAlias 	    := getNextAlias() //cria um alias temporário
+	Private oFont6		:= TFont():New('Arial',,6,,.F.,,,,.F.,.F.)
+	Private oFont6n		:= TFont():New('Arial',,6,,.T.,,,,.F.,.F.)
+	Private oFont8		:= TFont():New('Arial',,8,,.F.,,,,.F.,.F.)
+	Private oFont8n		:= TFont():New('Arial',,8,,.T.,,,,.F.,.F.)
+	Private oFont10		:= TFont():New('Arial',,10,,.F.,,,,.F.,.F.)
+	Private oFont10n	:= TFont():New('Arial',,10,,.t.,,,,.F.,.F.)
+	Private nLin		:= 0 
+
+/*    
+    dbSelectArea("SZ3")
+    dbSetOrder(1)
+    dbSeek(SC2->C2_FILIAL+SC2->(C2_NUM + C2_ITEM + C2_SEQUEN))
+    While (!EoF()) .AND. SZ3->Z3_FILIAL == SC2->C2_FILIAL .AND.SZ3->Z3_NUMOP == SC2->(C2_NUM + C2_ITEM + C2_SEQUEN)
+    	//Se possui apontamento
+		If SZ3->Z3_APONT .AND. Val(c_Seq) < Val(SZ3->Z3_SEQ)   					    				
+		    c_Seq := SZ3->Z3_SEQ
+	    EndIf
+	    SZ3->(DbSkip())
+    EndDo        
+*/
+
+ 	If MsgBox("Deseja efetuar a impressão das etiquetas e geração do número do lote?",SM0->M0_NOME,"YESNO")
+		dbSelectArea("SB1")
+		dbGoTop()
+		dbSetOrder(1)
+		dbSeek(xFilial("SB1")+SC2->C2_PRODUTO)
+
+		c_DescPro := SB1->B1_DESC
+
+		If SB1->B1_RASTRO == 'L'				//Verifica se o produto possui rastreabilidade
+			c_Qry := f_Qry()                    //Chama a função para selecionar o lote de maior sequencial da OP
+
+			TCQUERY c_Qry NEW ALIAS QRY
+			dbSelectArea("QRY")
+			dbGoTop()
+			If QRY->(!Eof()) .And. !Empty(QRY->H6_LOTECTL)                    //Se existir o maior lote, altera o valor da variável c_Seq
+				c_Seq := StrZero(Val(SubStr(QRY->H6_LOTECTL,9,2)) + 1, 2, 0)
+			Endif
+
+			c_Lote := c_NumOp + c_Seq	//O lote retornado será o número da OP mais o sequencial
+
+			dbCloseArea("QRY")
+		Endif
+
+		oPrint := TMSPrinter():New(OemToAnsi('Etiquetas de Ordens de Produção'))
+		oPrint:SetPortrait()  
+
+		nQtdPag := mv_par01
+
+		For nX := 1 to nQtdPag
+			oPrint:StartPage()  
+
+ 			oPrint:Box( 020,045,325,585 )           
+
+			oPrint:Box( 020,605,325,1145 )	 			 
+
+			nLin  := 0030
+			oPrint:Say(nLin,0050,MemoLine(c_DescPro,29,1),oFont10n,,,,0)
+			oPrint:Say(nLin,0610,MemoLine(c_DescPro,29,1),oFont10n,,,,0)		
+
+			nLin += 0030
+
+ 			oPrint:Say(nLin,0050,MemoLine(c_DescPro,30,2),oFont10n,,,,0)
+			oPrint:Say(nLin,0610,MemoLine(c_DescPro,30,2),oFont10n,,,,0)
+
+ 			nLin += 0070
+									 			        			
+ 			oPrint:Say(nLin,0050,"Contém " + cValToChar(n_QtdPE) + " Und.",oFont8,,,,0)
+ 			oPrint:Say(nLin,0610,"Contém " + cValToChar(n_QtdPE) + " Und.",oFont8,,,,0)
+
+ 			oPrint:Say(nLin,0280,"Lote: " +c_Lote,oFont8,,,,0)
+ 			oPrint:Say(nLin,0840,"Lote: " +c_Lote,oFont8,,,,0)
+
+ 			nLin += 0070
+
+ 			oPrint:Say(nLin,0050,"Data Fabricação: "+dtoc(dDataBase),oFont8,,,,0)
+			oPrint:Say(nLin,0610,"Data Fabricação: "+dtoc(dDataBase),oFont8,,,,0)
+
+			nLin += 0070
+
+			oPrint:Say(nLin,0050,"BOMIX Indústria de Embalagens Ltda.",oFont8,,,,0)
+			oPrint:Say(nLin,0610,"BOMIX Indústria de Embalagens Ltda.",oFont8,,,,0) 			
+
+			oPrint:EndPage()
+		Next nX
+
+//		oPrint:Preview()
+ 		oPrint:Print({1},nQtdPag)
+		oPrint:end()
+	EndIf
+Return
+
+/*
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  |f_ChkUsr  ºAutor  ³ 				     º Data ³             º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDesc.     ³	Função para verificar se o usuário possui permissão de    º±±
+±±º          ³	a rotina de etiquetas.									  º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³ SIGAEST/SIGAPCP                                            º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±º                     A L T E R A C O E S                               º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºData      ºProgramador       ºAlteracoes                               º±±
+±±º			 º					º										  º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+*/
+
+Static Function f_ChkUsr
+	Local c_CodGrps := ''						//Códigos dos grupos cadastrados no parametro FS_CODGRP
+	Local a_CodGrps := {}						//Array com os códigos dos grupos cadastrados no parametro FS_CODGRP
+	Local a_GrpUsr  := UsrRetGrp(__CUSERID)     //Array contendo os códigos dos grupos que o usuário pertence
+	Local l_Ret     := .F.
+	
+	If GETMV("FS_CODGRP", .T., )
+		c_CodGrps := AllTrim(GETMV("FS_CODGRP"))
+	Else
+		ShowHelpDlg(SM0->M0_NOME, {"O parâmetro FS_CODGRP não está cadastrado na SX6."},5,;
+	  	{"Contacte o administrador do sistema e solicite a criação deste parâmetro."},5)
+	  	Return()
+	Endif
+
+	If Empty(c_CodGrps)
+		l_Ret := .F.
+	Else
+		a_CodGrps := StrTokArr(c_CodGrps, ";")
+	  	For i := 1 To Len(a_CodGrps)
+	  		For k:= 1 To Len(a_GrpUsr)
+		   		If a_CodGrps[i] == a_GrpUsr[k]
+		    		l_Ret := .T.
+		    		Exit
+		   		Endif
+			Next k
+			
+			If l_Ret
+				Exit
+			Endif
+	  	Next i
+	Endif
+
+	If !l_Ret
+		ShowHelpDlg(SM0->M0_NOME, {"Você não possui permissão de acesso a esta rotina."},5,;
+	  	{"Contacte o administrador do sistema e solicite acesso a esta rotina."},5)
+	Endif
+Return l_Ret
+
+/*/
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  ³f_Qry     ºAutor  ³Microsiga           º Data ³             º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDesc.     ³ Query para selecionar o maior lote apontado da ordem de    º±±
+±±º          ³ produção atual.			                                  º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+/*/
+
+Static Function f_Qry
+	c_Qry := " SELECT MAX(H6_LOTECTL) H6_LOTECTL FROM " + RETSQLNAME("SH6") + " WHERE H6_LOTECTL LIKE '" + SC2->C2_NUM + SC2->C2_ITEM + "%' AND " + CHR(13)
+	c_Qry += " H6_FILIAL = '" + XFILIAL("SH6") + "' AND D_E_L_E_T_ <> '*' " + CHR(13)
+Return c_Qry

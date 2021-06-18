@@ -1,0 +1,30 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "totvs_language_debug",
+			"request": "launch",
+			"name": "Depuração do idioma TOTVS",
+			"program": "${command:AskForProgramName}",
+			"cwb": "${workspaceFolder}",
+			"smartclientBin": "C:\\Bomix\\PROTHEUS LOBO GUARA SMARTCLIENT 64\\smartclient.exe",
+			"isMultiSession": true,
+			"enableTableSync": true
+		}
+	],
+	"lastPrograms": [
+		{
+			"label": "SIGAADC",
+			"description": "<nil>"
+		},
+		{
+			"label": "SIGAADV",
+			"description": "<nil>"
+		},
+		{
+			"label": "SIGAFAT",
+			"description": "<nil>"
+		}
+	],
+	"lastProgramExecuted": "SIGAFAT"
+}

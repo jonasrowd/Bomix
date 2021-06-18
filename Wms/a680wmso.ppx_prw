@@ -1,0 +1,95 @@
+
+
+
+
+
+
+
+
+
+
+
+Function U_A680WMSO()
+
+Local _cProduto   := PARAMIXB[1]
+Local _cOp        := PARAMIXB[2]
+Local _cIdMov     := PARAMIXB[3]
+Local _aRet       := {}
+Local _cArm       := GetMv("BM_STAGE")
+Local _nPosAt     := 0
+Local _nPosAt1    := 0
+Local _nPosAt2    := 0
+Local _cString    := ""
+Local _cEnder     := ""
+Local _cEstFis    := ""
+Local c_LocalCD   := Getmv("BM_LOCALCD")
+Local l_ExistArm  := .F. 
+
+
+
+DbSelectArea("SB5")
+SB5->( DbSetOrder(1) )
+If SB5->( DbSeek(xFilial("SB5")+_cProduto ))
+
+	_cServ := SB5->B5_BXSRVPR
+
+
+
+
+
+
+
+
+		If SH6->H6_LOCAL $ c_LocalCD
+			_cServ := SB5->B5_FSSVECD
+		Endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		a_BmStage := StrTokArr(_cArm, "/")
+
+		If Len(a_BmStage) == 2
+			a_Armazem  := StrTokArr(a_BmStage[1], ";")
+			a_Endereco := StrTokArr(a_BmStage[2], ";")
+		Endif
+
+		For i:=1 To Len(a_Armazem)
+
+			If a_Armazem[i] == SH6->H6_LOCAL
+				If Type("a_Endereco[i]") <> "U"
+					_cEnder    := a_Endereco[i]
+					l_ExistArm := .T. 
+				Endif
+
+				Exit
+			Endif
+		Next
+
+		If l_ExistArm
+			DbSelectArea("SBE")
+			SBE->( DbSetOrder(1) )
+
+			If SBE->( DbSeek(xFilial("SBE") + SH6->H6_LOCAL + _cEnder ))
+				_cEstFis := SBE->BE_ESTFIS
+
+				AAdd( _aRet, PadR(_cServ  ,TamSX3("DB_SERVIC" )[1]) )
+				AAdd( _aRet, PadR(_cEnder ,TamSX3("DB_LOCALIZ")[1]) )
+				AAdd( _aRet, PadR(_cEstFis,TamSX3("DB_ESTFIS" )[1]) )
+			Endif
+		Endif
+
+Endif
+
+Return( _aRet )

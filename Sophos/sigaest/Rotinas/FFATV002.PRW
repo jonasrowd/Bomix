@@ -1,0 +1,65 @@
+#INCLUDE 'TOPCONN.CH'
+
+/*
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  ³ FFATV002   ºAutor  ³ Christian Rocha    º      ³           º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDesc.     ³ Validação para edição do campo Sit. Arte no item do PV.    º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³ SIGAFAT - Faturamento									  º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºData      ºProgramador       ºAlteracoes                               º±±
+±±º          º                  º                                         º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+*/
+
+/* VERSÃO EM PRODUÇÃO ANTES DA ALTERAÇÃO DA ROTINA DE ARTE
+User Function FFATV002
+	Local c_Produto := aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'C6_PRODUTO' })]
+	Local l_Ret 	:= .T.
+
+	dbSelectArea("SB1")
+	dbGoTop()
+	dbSetOrder(1)
+	dbSeek(xFilial("SB1")+c_Produto)
+	If !Empty(SB1->B1_FSARTE) 				//Verifica se o produto possui arte
+		If SB1->B1_FSARTE <> '99999'	    //Verifica se a arte do produto é diferente de 99999
+			dbSelectArea("SZ2")
+			dbGoTop()
+			dbSetOrder(1)
+			dbSeek(xFilial("SZ2")+SB1->B1_FSARTE)
+			If SZ2->Z2_BLOQ == '1'          //Verifica se a arte do produto está bloqueada
+				l_Ret := .F.                //Desabilita a edição do campo de situação da arte
+			Endif
+		Endif
+	Endif
+
+Return(l_Ret)
+*/
+
+User Function FFATV002
+	Local c_Produto := aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'C6_PRODUTO' })]
+	Local a_Area    := GetArea()
+	Local l_Ret 	:= .T.
+
+	dbSelectArea("SB1")
+	dbGoTop()
+	dbSetOrder(1)
+	dbSeek(xFilial("SB1")+c_Produto)
+	If !Empty(SB1->B1_FSARTE) 				//Verifica se o produto possui arte
+		dbSelectArea("SZ2")
+		dbGoTop()
+		dbSetOrder(1)
+		dbSeek(xFilial("SZ2")+SB1->B1_FSARTE)
+		If SZ2->Z2_BLOQ == '1' .Or. SZ2->Z2_BLOQ == '2'         //Verifica se a arte do produto está bloqueada
+			l_Ret := .F.                						//Desabilita a edição do campo de situação da arte
+		Endif
+	Endif
+	
+	RestArea(a_Area)
+
+Return(l_Ret)

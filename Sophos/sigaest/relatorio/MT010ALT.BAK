@@ -1,0 +1,45 @@
+User Function MT010ALT() 
+
+	Local l_Ret:= .T.
+
+	//Local _cTipo:= 
+	
+	IF (ALTERA)
+
+	IF (ALLTRIM(SB1->B1_TIPO) $ 'EM|PA|PI')
+	
+	  
+	
+	  MsgAlert("Esse Produto nao pode sofrer alteração favor verificar com o administrador do sistema")
+	
+	  l_Ret:= .F.
+	
+	ENDIF
+	
+	ENDIF
+
+
+Return(l_Ret )
+
+User Function A010TOK 
+
+	Local l_Ret:= .T.
+
+	//Local _cTipo:= 
+	
+	IF (ALTERA)
+
+	IF (ALLTRIM(SB1->B1_TIPO) $ 'EM|PA|PI')
+	
+	  
+	
+	  MsgAlert("Esse Produto nao pode sofrer alteração favor verificar com o administrador do sistema")
+	
+	  l_Ret:= .F.
+	
+	ENDIF
+	
+	ENDIF
+
+
+Return(l_Ret )

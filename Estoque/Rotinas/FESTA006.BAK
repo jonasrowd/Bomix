@@ -1,0 +1,335 @@
+#INCLUDE "PROTHEUS.CH"
+#INCLUDE "TBICONN.CH"
+#INCLUDE "rwmake.ch"
+#INCLUDE 'TOTVS.CH'
+#INCLUDE 'FONT.CH'
+#INCLUDE 'COLORS.CH'
+
+/*
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  ³FESTA006  ºAutor  ³                    º Data ³Julho/2011   º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDesc.     ³Programa responsavel por importacao de arquivo texto.       º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³ SIGACOM                                                    º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±º                     A L T E R A C O E S                               º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºData      ºProgramador       ºAlteracoes                               º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+*/
+
+User Function FESTA006()
+	Local c_Texto  := "Esta rotina tem a finalidade de importar dados para tabela SB7 - Inventário, a partir do arquivo csv selecionado  pelo usuário."
+	Local c_Erro   := "É necessário selecionar o arquivo csv para efetuar essa operação."
+
+	Private c_File := Space(500)	//Arquivo
+	Private c_Perg := "FESTA006"
+	
+	SetPrvt("oDlg1","oSay1","oSay2","oGet1","oBtn1","oBtn2","oBtn3","oGrp1")
+
+	/*ÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ±±
+	±± Definicao do Dialog e todos os seus componentes.                        ±±
+	Ù±±ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ*/
+	oDlg1      := MSDialog():New( 090,230,198,670,SM0->M0_NOME,,,.F.,,,,,,.T.,,,.T. )
+	
+	oSay1      := TSay():New( 006,004,{||"Arquivo:"},oDlg1,,,.F.,.F.,.F.,.T.,CLR_BLACK,CLR_WHITE,040,008)
+	oGet1      := TGet():New( 004,025,{|u| if( Pcount( )>0, c_File := u, u := c_File) },oDlg1,151,010,'',,CLR_BLACK,CLR_WHITE,,,,.T.,"",,,.F.,.F.,,.T.,.F.,"","",,)
+
+	oBtn1      := TButton():New( 004,180,"&Procurar...",oDlg1,{||c_File:=cGetFile( 'Arquivos Texto |*.csv|' , '', 1, '', .T., nOR( GETF_LOCALHARD, GETF_LOCALFLOPPY, GETF_NETWORKDRIVE),.T., .T. ) },037,12,,,,.T.,,"",,,,.F. )
+	oBtn2      := TButton():New( 021,180,"&Importar",oDlg1,{|| iif(Empty(c_File), ShowHelpDlg("Validação de Arquivo",{c_Erro},5,{"Selecione um arquivo csv válido."},5), f_MontaRegua())},037,12,,,,.T.,,"",,,,.F. )
+	oBtn3      := TButton():New( 038,180,"&Sair",oDlg1,{|| oDlg1:End()},037,12,,,,.T.,,"",,,,.F. )
+
+	oGrp1      := TGroup():New( 018,004,050,176,"Descrição",oDlg1,CLR_BLACK,CLR_WHITE,.T.,.F. )
+	oSay2      := TSay():New( 026,016,{||c_Texto},oGrp1,,,.F.,.F.,.F.,.T.,CLR_BLACK,CLR_WHITE,160,036)
+	
+	oDlg1:Activate(,,,.T.)
+Return()
+
+/*
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºFunção    ³ f_MontaRegua ºAutor  ³                     º Data ³		  º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDesc.     ³ Efetua a montagem da régua de processamento				  º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+*/
+
+Static Function f_MontaRegua()
+	Processa({|| f_Importa()}, "Aguarde...", "Analisando os dados do arquivo...",.F.)
+Return
+
+/*
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  ³f_ImportaDadosºAutor  ³                º Data ³ Julho/2011  º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDesc.     ³Funcao resposnavel pela leitura do arquivo texto e gravacao º±±
+±±º          ³dos dados                                                   º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³ SIGACOM                                                    º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±º                     A L T E R A C O E S                               º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºData      ºProgramador       ºAlteracoes                               º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+*/
+
+Static Function f_Importa()
+	Private n_Pos      := 1      //Numero da linha do arquivo
+	Private n_QtdInc   := 0    //Conta quantas linhas foram importadas
+	Private n_QtdUpd   := 0    //Conta quantas linhas foram atualizadas
+	Private n_QtdErr   := 0    //Conta quantas linhas não foram importadas	
+	Private c_Buffer   := ""   //Buffer do arquivo
+	Private a_Buffer   := {}   //Array com o Buffer do arquivo
+	Private c_Linha    := ""
+	Private c_Filial   := xFilial("SB7") // Filial do Inventário
+	Private c_Produto  := "" // Produto
+	Private c_Desc     := "" // Descrição do Produto
+	Private c_Doc      := "" // Documento
+	Private c_Local    := "" // Armazém
+	Private c_Lote     := "" // Lote
+	Private c_Endereco := "" // Endereço
+	Private c_Obs      := ""
+	Private d_Data     := DDATABASE
+
+	Private l_CriaTb := .F. //Controla a criacao da tabela temporaria
+	Private c_Bord   := ""   //Borda da tabela temporária
+	Private a_Bord   := {}   //Array da tabela temporária
+	Private a_Campos := {}   //Campos da tabela temporária
+	Private oFont    := TFont():New( "Verdana",0,-11,,.F.,0,,400,.F.,.F.,,,,,, )
+
+	IF AVISO(SM0->M0_NOMECOM,"Esta rotina irá importar os dados do arquivo texto para a tabela SB7 - Inventário. Deseja realmente continuar?",{"Sim","Não"},2,"Atenção") == 1
+		CriaPerg(c_Perg)
+
+		If !(Pergunte(c_Perg, .T.))
+			Return
+		Else
+			If Empty(MV_PAR01)
+				ShowHelpDlg(SM0->M0_NOME, {"O Documento está em branco."},5,;
+	                           			  {"Informe o número do Documento para efetuar a importação."},5)
+				Return
+			Endif
+		EndIf
+		
+		c_Doc := MV_PAR01
+
+		IF !l_CriaTb
+			Aadd(a_Bord,{"TB_POS"  	  ,"N",6,0})
+			Aadd(a_Bord,{"TB_FILIAL"  ,"C",TamSX3("CT1_FILIAL")[1],0})
+			Aadd(a_Bord,{"TB_PRODUTO" ,"C",TamSX3("B1_COD")[1],0})
+			Aadd(a_Bord,{"TB_DESC"    ,"C",TamSX3("B1_DESC")[1],0})
+			Aadd(a_Bord,{"TB_LOCAL"   ,"C",TamSX3("B2_LOCAL")[1],0})
+			Aadd(a_Bord,{"TB_LOTECTL" ,"C",TamSX3("B8_LOTECTL")[1],0})
+			Aadd(a_Bord,{"TB_LOCALIZ" ,"C",TamSX3("BF_LOCALIZ")[1],0})
+			Aadd(a_Bord,{"TB_QUANT"   ,"N",17,5})
+			Aadd(a_Bord,{"TB_OBS"     ,"C",100,0})
+
+			c_Bord := CriaTrab(a_Bord,.t.)
+			Use &c_Bord Shared Alias TRC New
+			Index On TB_POS To &c_Bord
+
+			SET INDEX TO &c_Bord
+
+			l_CriaTb:= .T.	 
+		ENDIF	
+
+		IF FT_FUSE(ALLTRIM(c_File)) == -1
+	  		ShowHelpDlg("Validação de Arquivo",;
+	  		{"O arquivo "+ALLTRIM(c_File)+" não foi encontrado."},5,;
+		  	{"Verifique se o caminho está correto ou se o arquivo ainda se encontra no local indicado."},5)
+			Return()
+		Endif
+	 
+		ProcRegua(FT_FLastRec())
+
+		WHILE !FT_FEOF()
+			c_Buffer := FT_FREADLN()
+			a_Invent := StrTokArr(c_Buffer, ";")
+
+			c_Produto  := Padr(a_Invent[1], TamSX3("B1_COD")[1])
+			c_Local    := a_Invent[2]
+			n_Quant    := Val(StrTran(a_Invent[3], ",", "."))
+			c_Lote     := IIF(Len(a_Invent) >= 4, a_Invent[4], "")
+			c_Endereco := IIF(Len(a_Invent) == 5, Padr(a_Invent[5], TamSX3("B7_LOCALIZ")[1]), "")
+			c_Obs     := ""
+
+			dbSelectArea("SB1")
+			dbSetOrder(1)
+			If dbSeek(xFilial("SB1") + c_Produto)
+				dbSelectArea("NNR")
+				dbSetOrder(1)
+				If dbSeek(xFilial("NNR") + c_Local)
+					If f_Mata270()
+						c_Obs += "Inventário importado pela rotina."
+				    	n_QtdInc++
+					Else
+					    c_Obs := "Erro de inclusão do Inventário."
+				   		n_QtdErr++
+					Endif
+				Else
+				    c_Obs := "Código do Armazém inválido."
+			   		n_QtdErr++			
+				Endif
+			Else
+			    c_Obs := "Código do Produto inválido."
+		   		n_QtdErr++			
+			Endif
+
+			RECLOCK("TRC",.T.)
+			TRC->TB_POS     := n_Pos //LINHA DO ARQUIVO
+			TRC->TB_FILIAL  := c_Filial
+			TRC->TB_PRODUTO	:= c_Produto
+			TRC->TB_DESC    := c_Desc
+			TRC->TB_LOCAL   := c_Local
+			TRC->TB_LOTECTL := c_Lote
+			TRC->TB_LOCALIZ := c_Endereco
+			TRC->TB_QUANT   := n_Quant
+			TRC->TB_OBS     := c_Obs
+			MSUNLOCK()			
+
+			FT_FSKIP()
+			n_Pos++
+			IncProc()
+		ENDDO
+
+		FT_FUSE()
+		AVISO(SM0->M0_NOME,"O programa processou todo o arquivo com " + ALLTRIM(STR(n_QtdInc+n_QtdUpd+n_QtdErr)) + " registros. Foram importados " + ALLTRIM(STR(n_QtdInc)) + " registros, " + ALLTRIM(STR(n_QtdUpd)) + " registros foram atualizados e " + ALLTRIM(STR(n_QtdErr)) + " registros não foram importados.",{"OK"},2,"Aviso")
+
+		//SE HOUVE PRODUTOS ATUALIZADOS, MOSTRA NA TELA.
+		DBSELECTAREA("TRC")
+		TRC->(DBGOTOP())
+
+	 	Aadd(a_Campos,{"TB_POS"     ,,'Linha'      	,'@!'})
+		Aadd(a_Campos,{"TB_FILIAL"  ,,'Filial'     	,'@!'})
+		Aadd(a_Campos,{"TB_PRODUTO" ,,'Produto'  	,'@!'})
+		Aadd(a_Campos,{"TB_DESC"    ,,'Descrição'  	,'@!'})
+		Aadd(a_Campos,{"TB_LOCAL"   ,,'Armazem'  	,'@!'})
+		Aadd(a_Campos,{"TB_LOTECTL" ,,'Lote'   		,'@!'})
+		Aadd(a_Campos,{"TB_LOCALIZ" ,,'Endereço'  	,'@!'})
+		Aadd(a_Campos,{"TB_QUANT"   ,,'Quantidade' 	,'@E 99,999,999,999.99999'})
+		Aadd(a_Campos,{"TB_OBS"     ,,'Observação' 	,'@!'})
+
+		o_Dlg:= MSDialog():New( 091,232,637,1240,"Log de Importações/Atualizações",,,.F.,,,,,,.T.,,,.T. )
+		o_Say := TSay():New( 004,004,{||"Total de Registros: "+ ALLTRIM(STR(n_QtdInc+n_QtdUpd+n_QtdErr))},o_Dlg,,oFont,.F.,.F.,.F.,.T.,CLR_BLACK,CLR_WHITE,180,008)
+		o_Brw:= MsSelect():New( "TRC","","",a_Campos,.F.,"",{015,000,240,507},,, o_Dlg )
+		o_Btn:= TButton():New( 253,10,"Exp p/ Texto" ,o_Dlg,{|| Processa( {|| f_ExpLog()} ) },041,012,,,,.T.,,"",,,,.F. )
+		o_Btn:= TButton():New( 253,60,"Sair"   ,o_Dlg,{|| o_Dlg:End() },041,012,,,,.T.,,"",,,,.F. )
+
+		o_Dlg:Activate(,,,.T.)
+
+		DBSELECTAREA("TRC")
+		TRC->(DBCLOSEAREA())
+	ENDIF
+Return() 
+
+/*/
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  ³ f_ExpLog º Autor ³                  º Data ³    Julho/2011 º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDescricao ³ Exporta o log de importação para um arquivo texto          º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³ SIGACOM                                                    º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±º                     A L T E R A C O E S                               º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºData      ºProgramador       ºAlteracoes                               º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+/*/
+
+Static Function f_ExpLog()
+	Local c_Destino := FCREATE("C:\TEMP\LOG_IMPORTAÇÃO_INVENTÁRIO_" + AllTrim(c_Doc) + ".TXT")
+	Local c_Linha := ""
+
+	// TESTA A CRIAÇÃO DO ARQUIVO DE DESTINO
+	IF c_Destino == -1
+		MsgStop('Erro ao criar arquivo destino. Erro: '+str(ferror(),4),'Erro')
+	 	RETURN
+	ENDIF
+
+	DBSELECTAREA("TRC")
+	TRC->(DBGOTOP())
+	
+	Count To n_Reg
+	ProcRegua(n_Reg)
+
+	TRC->(DBGOTOP())
+	WHILE !(TRC->(EOF()))
+		c_Linha:= STRZERO(TRC->TB_POS,6)+"   "+TRC->TB_FILIAL+"   "+TRC->TB_PRODUTO+"   "+TRC->TB_DESC+"   "+TRC->TB_LOCAL+"   "+TRC->TB_LOTECTL+"   "+TRC->TB_LOCALIZ+"   "+Transform(TRC->TB_QUANT, "@E 999,999.99")+"   "+TRC->TB_OBS + CHR(13)+CHR(10)
+
+		IF FWRITE(c_Destino,c_Linha,LEN(c_Linha)) != LEN(c_Linha)
+			IF !MSGALERT("Ocorreu um erro na gravação do arquivo destino. Continuar?","Atenção")
+				FCLOSE(c_Destino)
+				DBSELECTAREA("TRC")
+				DBGOTOP()
+	   	   		Return
+			ENDIF
+	 	ENDIF
+	 	
+	 	IncProc()
+	 	TRC->(DBSKIP())
+	ENDDO 
+
+	AVISO(SM0->M0_NOMECOM,"Arquivo exportado para C:\TEMP\LOG_IMPORTAÇÃO_INVENTÁRIO_" + AllTrim(c_Doc) + ".TXT",{"Ok"},2,"Atenção")
+	FCLOSE(c_Destino)
+	DBSELECTAREA("TRC")
+	DBGOTOP()
+Return
+
+
+
+ 
+Static Function f_Mata270
+Local aVetor        := {}
+Local lRet          := .T.
+Private lMsErroAuto := .F.
+
+aVetor :=   {;
+            {"B7_FILIAL", 	xFilial("SB7"),	Nil},;
+            {"B7_COD",		c_Produto,		Nil},;
+            {"B7_DOC",		c_Doc,	Nil},;
+            {"B7_LOTECTL",	c_Lote,			Nil},;            
+            {"B7_QUANT",	n_Quant,		Nil},;
+            {"B7_LOCAL",	c_Local,		Nil},;
+            {"B7_DATA",		d_Data,			Nil} }
+            
+If !Empty(c_Endereco)
+	AADD(aVetor, {"B7_LOCALIZ",	Padr(c_Endereco, TamSX3("B7_LOCALIZ")[1]),		Nil})
+Endif
+
+MSExecAuto({|x,y,z| mata270(x,y,z)}, aVetor, .T., 3)
+
+If lMsErroAuto
+    MostraErro()
+    lRet := .F.
+EndIf
+
+Return lRet
+
+
+
+Static Function CriaPerg(c_Perg)
+	a_MV_PAR01 := {}
+	
+	//PutSx1(cGrupo,cOrdem,c_Pergunt,cPerSpa,cPerEng,cVar,cTipo ,nTamanho,nDecimal,nPresel,cGSC,cValid,cF3, cGrpSxg,cPyme,cVar01,cDef01,cDefSpa1,cDefEng1,cCnt01, cDef02,cDefSpa2,cDefEng2,cDef03,cDefSpa3,cDefEng3, cDef04,cDefSpa4,cDefEng4, cDef05,cDefSpa5,cDefEng5, aHelpPor,aHelpEng,aHelpSpa,cHelp)
+	PutSx1(c_Perg,"01","Documento ?"   ,"","","mv_ch1","C",09,0,0,"G","","","","","mv_par01","","","","","","","","","","","","","","","","")
+Return
+
+
+USER FUNCTION TESTETI
+DBSELECTAREA("SX5")
+DBSETORDER(1)
+DBSEEK(XFILIAL("SX5") + "22" + "01")
+ALERT(SX5->X5_DESCRI)
+RETURN

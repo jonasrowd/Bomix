@@ -1,0 +1,32 @@
+*/
+±±º          ³ alterar campos específicos do Cadastro de Produtos		  º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³ SIGACOM - Compras										  º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºData      ºProgramador       ºAlteracoes                               º±±
+±±º          º                  º                                         º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+VALIDAR ACESSO A ROTINA DE ELIMINACAO DE RESIDUO
+*/             
+
+User Function MTA500PROC
+	Local a_Area  := GetArea()
+	Local l_Ret   := .F.
+	Local c_Users := Getmv("BM_ALTPROD")
+
+	If INCLUI
+		l_Ret := .T.
+	Else
+		If __CUSERID $ c_Users
+			l_Ret := .T.
+		Else
+	  		ShowHelpDlg(SM0->M0_NOME,;
+		  		{"O seu usuário não possui permissão executar essa rotina."},5,;
+			  	{"Contacte o administrador do sistema."},5)
+		Endif
+	Endif
+
+	RestArea(a_Area)
+Return l_Ret

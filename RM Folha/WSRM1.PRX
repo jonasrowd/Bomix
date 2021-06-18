@@ -1,0 +1,271 @@
+private void INTEGRACAO_ExecuteCode(object sender, System.EventArgs args)
+
+{
+
+ 
+
+    string testeAux = "";
+
+   
+
+    for(int qtdLancamentos = 0 ; qtdLancamentos < this.DataSet.Tables["FLAN"].Rows.Count; qtdLancamentos++)
+
+    {   
+
+        DataSet dsFLAN = new DataSet();
+
+        dsFLAN.Tables.Add(new DataTable("LANCAMENTO"));
+
+       
+
+        DBS.QueryFill(dsFLAN, "FLANCOMPL", string.Format("select ISNULL( TITPROTHEUS, '') as TITPROTHEUS" +
+
+                                                                        " from FLANCOMPL" +
+
+                                                                        " where CODCOLIGADA = '{0}'" +
+
+                                                                        " and IDLAN = '{1}'", this.DataSet.Tables["FLAN"].Rows[qtdLancamentos]["CODCOLIGADA"].ToString(), this.DataSet.Tables["FLAN"].Rows[qtdLancamentos]["IDLAN"].ToString()), null);
+
+       
+
+        if (String.IsNullOrEmpty( dsFLAN.Tables["FLANCOMPL"].Rows[0]["TITPROTHEUS"].ToString( ) ) )
+
+        {
+
+           
+
+            string IdLan = this.DataSet.Tables["FLAN"].Rows[qtdLancamentos]["IDLAN"].ToString();
+
+            string Coligada = this.DataSet.Tables["FLAN"].Rows[qtdLancamentos]["CODCOLIGADA"].ToString();
+
+            string sql = string.Format("SELECT "+
+
+                                    " FL.CODCOLIGADA,"+
+
+                                    " (SELECT CODEXTERNO FROM GCOLIGADA WHERE CODCOLIGADA = FL.CODCOLIGADA) EMPRESA,"+
+
+                                    " FL.CODFILIAL,"+
+
+                                    " (SELECT IDINTEGRACAO FROM GFILIAL WHERE CODCOLIGADA = FL.CODCOLIGADA AND CODFILIAL  = FL.CODFILIAL) FILIAL,"+
+
+                                    " FL.IDLAN NUMERODOCUMENTO,"+
+
+                                    " FL.CODCCUSTO,"+
+
+                                    " FL.CODTDO,"+
+
+                                    " FL.HISTORICO,"+
+
+                                    " CONVERT(VARCHAR(MAX), FL.DATAVENCIMENTO, 103) as DATAVENCIMENTO," +
+
+                                    " CONVERT(VARCHAR(MAX), FL.DATAEMISSAO, 103) as DATAEMISSAO," +
+
+                                    " FL.CODCFO,"+
+
+                                    " cast(fl.VALORORIGINAL as numeric(20, 2)) as VALORORIGINAL," +
+
+                                    " FLR.CODNATFINANCEIRA"+
+
+                                    " FROM FLAN FL WITH (NOLOCK)"+
+
+                                    " INNER JOIN FLANRATCCU FLR WITH (NOLOCK) ON "+
+
+                                    " FLR.CODCOLIGADA = FL.CODCOLIGADA AND"+
+
+                                    " FLR.IDLAN = FL.IDLAN"+
+
+                                    " WHERE FL.IDLAN = {0} AND FL.CODCOLIGADA = {1}", IdLan, Coligada);
+
+                                   
+
+            DBS.QueryFill(dsFLAN, "LANCAMENTO", sql, null);
+
+ 
+
+            int numeroLinhas = dsFLAN.Tables["LANCAMENTO"].Rows.Count;
+
+            string n_opcao = "3";
+
+           
+
+            if (numeroLinhas > 0)
+
+            {
+
+ 
+
+                string sqlRateio = string.Format("SELECT "+
+
+                                        "SUM(CAST(VALOR as numeric(20, 2))) as VALOR" +
+
+                                        ",cast(SUM(PERCENTUAL) AS numeric(20, 2)) AS PERCENTUAL" +
+
+                                        ", FR.CODNATFINANCEIRA" +
+
+                                        " FROM FLANRATCCU fr" +
+
+                                         " where fr.IDLAN = '{0}'" +
+
+                                         " and fr.CODCOLIGADA = '{1}'"+
+
+                                         " group by FR.CODNATFINANCEIRA", IdLan, Coligada);
+
+ 
+
+                 DBS.QueryFill(dsFLAN, "RATEIO", sqlRateio, null);
+
+                STRNATUREZTIT[] lista_naturezas = new STRNATUREZTIT[dsFLAN.Tables["RATEIO"].Rows.Count];
+
+ 
+
+                string natureza = dsFLAN.Tables["RATEIO"].Rows[0]["CODNATFINANCEIRA"].ToString();
+
+ 
+
+                for (int i = 0; i < lista_naturezas.Length; i++)
+
+                {
+
+                    STRNATUREZTIT rateio = new STRNATUREZTIT();
+
+                   
+
+                    string sqlCcuso = string.Format("SELECT"+
+
+                                        " REPLACE(fr.CODCCUSTO,'.','') AS CODCCUSTO," +
+
+                                        " sum(cast(fr.VALOR as numeric(20,2))) as VALOR,"+
+
+                                        " cast(sum(fr.PERCENTUAL) as numeric(30, 2)) as PERCENTUAL" +
+
+                                        "  FROM FLANRATCCU fr" +
+
+                                        " where fr.IDLAN = '{0}'"+
+
+                                        " and fr.CODCOLIGADA = '{1}'"+
+
+                                        " and fr.CODNATFINANCEIRA = '{2}'"+
+
+                                        " group by fr.CODCCUSTO", IdLan, Coligada, dsFLAN.Tables["RATEIO"].Rows[i]["CODNATFINANCEIRA"].ToString());
+
+                     DBS.QueryFill(dsFLAN, "CCUSTO", sqlCcuso, null);
+
+ 
+
+                    STRCCUSTOTIT[] lista_centro_custos = new STRCCUSTOTIT[dsFLAN.Tables["CCUSTO"].Rows.Count];
+
+ 
+
+                    for (int j = 0; j < dsFLAN.Tables["CCUSTO"].Rows.Count; j++)
+
+                    {
+
+                        STRCCUSTOTIT ccusto = new STRCCUSTOTIT();
+
+                        ccusto.C_CCUSTO     = dsFLAN.Tables["CCUSTO"].Rows[j]["CODCCUSTO"].ToString();
+
+                        ccusto.N_VLRCCUSTO  = dsFLAN.Tables["CCUSTO"].Rows[j]["VALOR"].ToString().Replace(",", ".");
+
+                        ccusto.N_PERC       = dsFLAN.Tables["CCUSTO"].Rows[j]["PERCENTUAL"].ToString().Replace(",", ".");
+
+ 
+
+                        lista_centro_custos[j] = ccusto;
+
+                    }
+
+                      
+
+                       
+
+                    rateio.C_CCUSTORATEIO = lista_centro_custos;
+
+                    rateio.C_NATRATEIO  = dsFLAN.Tables["RATEIO"].Rows[i]["CODNATFINANCEIRA"].ToString();
+
+                    rateio.N_PERCRATEIO = dsFLAN.Tables["RATEIO"].Rows[i]["PERCENTUAL"].ToString().Replace(",", ".");
+
+                    rateio.N_VLRRATEIO  = dsFLAN.Tables["RATEIO"].Rows[i]["VALOR"].ToString().Replace(",", ".");
+
+                    lista_naturezas[i]  = rateio;
+
+ 
+
+                    dsFLAN.Tables["CCUSTO"].Reset();
+
+                }
+
+ 
+
+                 STREMPRESFIL empresa_filial = new STREMPRESFIL() { C_EMPRESA = dsFLAN.Tables["LANCAMENTO"].Rows[0]["EMPRESA"].ToString(),
+
+                                                                    C_FILIAL = dsFLAN.Tables["LANCAMENTO"].Rows[0]["FILIAL"].ToString() };
+
+                                                             
+
+                 STRPARAMTITULOS titulo = new STRPARAMTITULOS() { C_CCD = dsFLAN.Tables["LANCAMENTO"].Rows[0]["CODCCUSTO"].ToString(),
+
+                                                             C_FORNECEDOR = dsFLAN.Tables["LANCAMENTO"].Rows[0]["CODCFO"].ToString(),
+
+                                                             C_LOJA = Convert.ToString(this.DBS.QueryValue(null, String.Format("SELECT TOP 1 LOJA FROM FCFOCOMPL  WHERE CODCFO = '{0}' AND CODCOLIGADA = '{1}'", dsFLAN.Tables["LANCAMENTO"].Rows[0]["CODCFO"].ToString(), this.DataSet.Tables["FLAN"].Rows[qtdLancamentos]["CODCOLIGADA"].ToString()), null)),
+
+                                                             C_HIST = dsFLAN.Tables["LANCAMENTO"].Rows[0]["HISTORICO"].ToString() ,
+
+                                                             C_NATUREZA = dsFLAN.Tables["LANCAMENTO"].Rows[0]["CODNATFINANCEIRA"].ToString(),
+
+                                                             C_TIPO    = dsFLAN.Tables["LANCAMENTO"].Rows[0]["CODTDO"].ToString(),
+
+                                                             D_EMISSAO = dsFLAN.Tables["LANCAMENTO"].Rows[0]["DATAEMISSAO"].ToString(),
+
+                                                             D_VENCTO  = dsFLAN.Tables["LANCAMENTO"].Rows[0]["DATAVENCIMENTO"].ToString(),
+
+                                                             N_VALOR   = dsFLAN.Tables["LANCAMENTO"].Rows[0]["VALORORIGINAL"].ToString().Replace(",", "."),
+
+                                                             C_NATRATEIO = lista_naturezas
+
+                };
+
+               
+
+                WS_FSCONTASPGAR servico = new WS_FSCONTASPGAR();
+
+                STRRETORNMETODOS resultado = new STRRETORNMETODOS();
+
+               
+
+                resultado = servico.MTDINCLUSAOCP(n_opcao, empresa_filial, titulo, dsFLAN.Tables["LANCAMENTO"].Rows[0]["NUMERODOCUMENTO"].ToString(), dsFLAN.Tables["LANCAMENTO"].Rows[0]["CODTDO"].ToString());
+
+               
+
+                if (!resultado.L_STATUS)
+
+                {
+
+                    throw new System.Net.WebException("ERRO NA INTEGRAÇÃO => " + resultado.C_MENSAGEM);
+
+                }else
+
+                {
+
+                    string updateFLANCOMPL = string.Format("update FLANCOMPL" +
+
+                                                 " SET TITPROTHEUS = '{0}'," +
+
+                                                 " RECMODIFIEDBY = 'mestre'," +
+
+                                                 " RECMODIFIEDON = GETDATE()" +
+
+                                                 " WHERE IDLAN = '{1}'" +
+
+                                                 " AND CODCOLIGADA = '{2}'", dsFLAN.Tables["LANCAMENTO"].Rows[0]["CODTDO"].ToString() +"/"+ dsFLAN.Tables["LANCAMENTO"].Rows[0]["NUMERODOCUMENTO"].ToString().PadLeft(9, '0'), this.DataSet.Tables["FLAN"].Rows[qtdLancamentos]["IDLAN"].ToString(), this.DataSet.Tables["FLAN"].Rows[qtdLancamentos]["CODCOLIGADA"].ToString());
+
+                    DBS.QueryExec(updateFLANCOMPL);                  
+
+                }
+
+            }
+
+        }       
+
+    }
+
+}

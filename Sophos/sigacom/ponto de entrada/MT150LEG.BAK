@@ -1,0 +1,29 @@
+
+/*
+ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
+ฑฑบPrograma  ณMT150LEG  บAutor  ณTIAGO PITA   	       บ Data ณAGOSTO/2011บฑฑ
+ฑฑฬออออออออออุออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
+ฑฑบDesc.     ณPonto de Entrada para inclusใo de observa็ใo no momento da  บฑฑ
+ฑฑบ          ณexclusao de um item da cota็ใo                              บฑฑ
+ฑฑฬออออออออออุออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
+ฑฑบUso       ณ SIGACOM                                                    บฑฑ
+ฑฑฬออออออออออฯออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
+ฑฑบ                     A T U A L I Z A C O E S                           บฑฑ
+ฑฑฬออออออออออหอออออออออออออออออออหออออออออออออออออออออออออออออออออออออออออนฑฑ
+ฑฑบDATA      บANALISTA           บALTERACOES                              บฑฑ
+ฑฑบ          บ                   บ                                        บฑฑ
+ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
+*/
+
+User Function MT150LEG
+
+Local nNum := PARAMIXB[1]
+Local aRet := {}
+
+If nNum == 1
+	aAdd(aRet,{ 'ALLTRIM(C8_TBMOT) <>""' , 'BR_PRETO' })
+ElseIf nNum == 2
+	aAdd(aRet,{'BR_PRETO' , 'Cancelado' })
+EndIf
+
+Return aRet

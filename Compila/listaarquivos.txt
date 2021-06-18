@@ -1,0 +1,867 @@
+ O volume na unidade X Ç Novo volume
+ O N£mero de SÇrie do Volume Ç 1611-2642
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects
+
+25/07/2018  15:41                 5 teste.PRW
+               1 arquivo(s)              5 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\nfe
+
+26/09/2018  16:45           204.097 danfeii.prw
+26/09/2018  16:45           174.847 danfeiii.prw
+07/01/2019  17:04           439.597 nfesefaz.prw
+               3 arquivo(s)        818.541 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\nfe\18-09-06_FIS_RDMAKE_NFE_P12.1.17
+
+04/07/2018  16:23           204.093 danfeii.prw
+04/07/2018  16:23           174.849 danfeiii.prw
+06/09/2018  18:15           434.421 nfesefaz.prw
+               3 arquivo(s)        813.363 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\samples\source\administrativos
+
+15/01/2007  16:23            38.519 bltbrad.prw
+27/04/2004  14:18            41.422 BLTCD001.prw
+27/04/2004  14:18            38.782 BLTCDBAR.PRW
+17/11/2005  13:56            29.392 BOLITAU.prw
+17/11/2005  13:56            29.344 BOLSANT.prw
+03/08/2006  09:20             5.028 CT270Auto.prw
+26/10/2005  12:29             2.259 deffi2.prw
+23/06/2005  17:13             3.620 fa100trf.prw
+16/01/2009  15:37             4.354 FR600EXE.PRW
+31/03/2008  11:41            84.549 REGERARPCC.PRW
+18/02/2009  17:24            10.108 TITPAIIR.PRW
+23/10/2009  16:46             6.670 UPDPASEMMOV.PRW
+              12 arquivo(s)        294.047 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\samples\source\automacao comercial
+
+02/06/2004  14:30            27.485 BOLETO.PRW
+27/04/2004  14:18             4.245 L010CCSCM.PRW
+09/01/2009  11:32             5.498 lj030ecf.prw
+27/04/2004  14:18             2.332 lj220pag.prw
+27/01/2005  13:31            12.856 LJ800RLT.PRW
+12/02/2005  15:20             1.854 ljcmc7tc.prw
+27/04/2004  14:18             2.488 LJIMPCUP.prw
+27/04/2004  14:18             3.641 LJMSGCUP.PRW
+29/07/2009  17:00            18.214 LJTC505.PRW
+27/04/2004  14:18            20.722 LJTCLAYO.PRW
+20/06/2005  15:24            13.784 p1p2txt.prw
+19/10/2005  14:39            16.075 SCRFIS.PRW
+28/09/2004  17:30             7.893 SCRFISCC.PRW
+20/12/2006  13:56            29.478 SCRFSARG.PRW
+15/07/2009  14:09             3.698 ScrPed.prw
+              15 arquivo(s)        170.263 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\samples\source\call center
+
+14/10/2005  11:51             9.006 TMKETIQ.PRW
+10/12/2007  14:46             6.100 TMKGRVAC.PRW
+27/04/2004  14:18             5.113 TMKMAIL.PRW
+14/10/2005  11:51             5.270 TMKMALA.PRW
+19/08/2008  17:34            12.098 TMKR021.PRW
+27/04/2004  14:18             1.268 TMKSUSP.PRW
+27/04/2004  14:18             1.261 TMKVA1.PRW
+               7 arquivo(s)         40.116 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\samples\source\comercio exterior
+
+30/06/2009  11:50            41.413 Ecocr20a_RDM.prw
+30/06/2009  11:50            19.111 Ecocr20b_RDM.prw
+27/01/2005  10:42            40.035 Ecocr20c_RDM.prw
+30/06/2009  11:50            98.982 ecoiv20a_RDM.prw
+27/01/2005  10:49            13.540 Eco_ctb_RDM.prw
+05/03/2008  14:38            39.429 EECAF155_RDM.PRW
+10/10/2007  11:48            52.767 EECFATCP_RDM.PRW
+27/01/2005  11:00             4.938 EECFATNF_RDM.PRW
+27/01/2005  11:00             8.050 EECPEM01_RDM.PRW
+30/06/2009  14:09             7.543 EECPEM02_RDM.PRW
+30/06/2009  14:09             6.330 EECPEM03_RDM.PRW
+27/01/2005  11:01            11.992 EECPEM04_RDM.PRW
+27/01/2005  11:01             4.958 EECPEM05_RDM.PRW
+27/01/2005  11:01             8.143 EECPEM06_RDM.PRW
+27/01/2005  11:01             7.384 EECPEM07_RDM.PRW
+28/01/2005  11:40             8.644 EECPEM08_RDM.PRW
+20/06/2008  14:55            33.016 EECPEM09_RDM.PRW
+11/04/2008  11:52            11.642 EECPEM10_RDM.PRW
+22/09/2009  11:50            37.503 EECPEM11_RDM.PRW
+23/09/2008  09:50            23.770 EECPEM12_RDM.PRW
+27/01/2005  11:04             3.562 EECPEM13_RDM.PRW
+27/01/2005  11:04            11.183 EECPEM14_RDM.PRW
+27/01/2005  11:04             6.805 EECPEM15_RDM.PRW
+01/02/2006  17:15            15.784 EECPEM16_RDM.PRW
+27/01/2005  11:04            13.034 EECPEM17_RDM.PRW
+27/01/2005  11:03            13.251 EECPEM18_RDM.PRW
+27/01/2005  11:03            10.019 EECPEM19_RDM.PRW
+20/06/2005  11:45             5.865 EECPEM20_RDM.PRW
+30/06/2009  14:09            11.636 EECPEM21_RDM.PRW
+27/01/2005  11:03             9.713 EECPEM22_RDM.PRW
+27/04/2004  14:18            16.622 EECPEM23_RDM.PRW
+27/01/2005  11:07             4.394 EECPEM24_RDM.PRW
+27/01/2005  11:06             7.950 EECPEM25_RDM.PRW
+21/08/2009  16:17            32.020 EECPEM26_RDM.PRW
+27/01/2005  11:06             5.273 EECPEM27_RDM.PRW
+14/06/2006  14:13            23.142 EECPEM28_RDM.PRW
+27/01/2005  11:06             8.375 EECPEM29_RDM.PRW
+27/01/2005  11:06             5.131 EECPEM30_RDM.PRW
+27/01/2005  11:06             4.687 EECPEM31_RDM.PRW
+21/11/2007  12:36            13.424 EECPEM32_RDM.PRW
+24/08/2005  15:42             6.176 EECPEM33_RDM.PRW
+14/03/2007  13:34             9.558 EECPEM45_RDM.PRW
+27/01/2005  11:12            24.529 EECPEM46_RDM.PRW
+29/03/2006  09:45            17.564 EECPEM47_RDM.PRW
+15/09/2005  16:59            39.308 eecpem49_rdm.prw
+30/06/2009  14:10            42.256 eecpem50_rdm.prw
+21/01/2010  14:26            29.874 eecpem51_rdm.prw
+30/06/2009  14:10            43.191 eecpem52_rdm.prw
+10/09/2007  11:51            18.556 eecpem54_rdm.prw
+27/01/2005  11:11            27.162 eecpem55_rdm.prw
+27/01/2005  11:11            33.102 eecpem56_rdm.prw
+29/11/2007  11:11            21.082 eecpem57_rdm.prw
+27/04/2005  13:27            17.573 eecpem58_rdm.prw
+20/06/2005  11:46             4.024 eecpem59_rdm.prw
+20/06/2005  11:46             4.931 eecpem60_rdm.prw
+24/08/2005  15:45             6.714 eecpem61_rdm.prw
+03/11/2009  17:49             5.302 eecpem70_rdm.prw
+03/11/2009  17:48             6.435 EECPEM71_RDM.PRW
+03/11/2009  17:49             4.273 eecpem72_rdm.prw
+03/11/2009  17:49             5.326 eecpem73_rdm.prw
+03/11/2009  17:48             5.965 EECPEM74_rdm.PRW
+03/11/2009  17:48             5.775 EECPEM75_rdm.PRW
+31/03/2008  11:24            21.463 eecpem76_rdm.prw
+04/02/2010  16:00            74.265 eecpem77_rdm.prw
+03/11/2009  15:32             4.002 eecpem80_rdm.prw
+05/02/2010  09:30             4.077 EECPEM81_RDM.PRW
+05/02/2010  09:30             3.977 EECPEM82_RDM.PRW
+27/01/2005  11:09            20.734 EECPFN00_RDM.PRW
+30/10/2007  12:34             3.589 EECPFN01_RDM.PRW
+27/01/2005  11:08             4.297 EECPPE01_RDM.PRW
+22/11/2005  17:59             9.443 EECPPE02_RDM.PRW
+13/04/2005  10:59            35.993 EECPPE03_RDM.PRW
+08/03/2007  15:16            28.687 EECPPE05_RDM.PRW
+20/10/2006  19:10            16.480 EECPRL01_RDM.PRW
+14/01/2009  15:01            18.102 EECPRL02_RDM.PRW
+27/01/2005  11:17            10.871 EECPRL03_RDM.PRW
+27/01/2005  11:17             9.237 EECPRL04_RDM.PRW
+27/01/2005  11:17            11.198 EECPRL05_RDM.PRW
+20/10/2006  19:10            14.858 EECPRL06_RDM.PRW
+25/06/2007  17:05            10.086 EECPRL07_RDM.PRW
+20/01/2009  17:13            16.667 EECPRL08_RDM.PRW
+20/10/2006  19:10            15.178 EECPRL09_RDM.PRW
+22/11/2005  18:00            11.865 EECPRL10_RDM.PRW
+30/04/2008  11:50            28.192 EECPRL12_RDM.PRW
+07/08/2009  15:21            15.130 EECPRL13_RDM.PRW
+20/10/2006  19:11            15.526 EECPRL14_RDM.PRW
+30/06/2009  14:09            59.019 EECPRL15_RDM.PRW
+20/10/2006  19:11            28.935 EECPRL16_RDM.PRW
+06/10/2009  11:21            35.766 EECPRL17_RDM.PRW
+05/11/2008  17:00            54.429 EECPRL20_RDM.prw
+30/06/2009  14:09            35.455 EECPRL21_RDM.prw
+11/07/2006  13:28            14.737 eecprl22_rdm.prw
+10/01/2005  15:37            23.093 EECPRL23_RDM.PRW
+20/10/2006  19:11            31.924 EECPRL24_RDM.prw
+27/09/2007  12:16            25.993 EECPRL25_RDM.prw
+27/01/2005  11:22               648 EFFPPF00_RDM.PRW
+27/04/2004  14:18             1.374 EFFppf01_RDM.PRW
+27/01/2005  11:24               346 EFFrjuro_RDM.PRW
+03/11/2009  14:46            25.866 EICADICAO_RDM.PRW
+30/06/2009  14:51            29.066 EICCC150_RDM.PRW
+30/06/2009  15:02            27.005 Eicdi160_RDM.prw
+27/04/2007  15:29            31.026 Eicdi410_RDM.prw
+27/01/2005  11:29            12.124 Eicdi450_RDM.prw
+09/06/2008  14:45            53.659 EICDI520_rdm.PRW
+27/01/2005  11:31               805 Eicdisjd_RDM.prw
+07/01/2009  17:15            28.844 Eicgi210_RDM.prw
+27/01/2005  11:31             2.431 Eicgi21a_RDM.prw
+12/08/2005  16:43             6.429 EICGI333_RDM.PRW
+02/08/2004  06:55             9.476 Eiclote_RDM.prw
+27/01/2005  11:39               749 EICPLC00.PRW
+29/01/2010  15:45            45.120 Eicpo150_RDM.prw
+30/06/2009  15:04            13.210 Eicpo551_RDM.prw
+30/06/2009  15:04            50.875 Eicpo552_RDM.prw
+09/01/2009  17:08            47.253 Eicpo557_RDM.prw
+23/10/2008  15:07            25.013 Eicpo558_RDM.prw
+09/10/2007  17:53            39.180 Eicpo562_RDM.prw
+27/01/2005  11:44             8.053 eictr410_RDM.prw
+18/10/2005  14:42               314 ICPADB1_RDM.PRW
+27/03/2006  11:57            50.619 icpaddi0_RDM.prw
+13/02/2008  17:09            10.722 ICPADFI1_RDM.prw
+18/08/2005  15:17             4.226 qbgatucambio_rdm.prw
+29/07/2008  11:41             7.571 qbgatuempresa_rdm.prw
+17/03/2006  16:28             4.695 qbgordprocs_rdm.PRW
+             123 arquivo(s)      2.329.703 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\samples\source\gestao de transportes
+
+22/03/2006  14:17            45.522 RTMSE01.PRW
+26/08/2009  14:16            31.090 RTMSR01.PRW
+27/06/2009  13:04            14.878 RTMSR02.PRW
+23/05/2006  15:00            22.017 RTMSR03.PRW
+10/02/2009  15:07            36.260 RTMSR04.PRW
+22/03/2006  14:17            40.170 RTMSR05.PRW
+22/08/2006  18:42            26.286 rtmsr06.prw
+22/03/2006  14:17            20.998 RTMSR07.PRW
+20/01/2009  16:44            20.800 RTMSR08.PRW
+25/05/2006  16:35            22.111 RTMSR09.PRW
+22/03/2006  14:17            10.577 RTMSR10.PRW
+25/05/2006  16:36            11.734 RTMSR11.PRW
+30/05/2006  09:05            19.847 RTMSR12.PRW
+08/07/2009  18:01            11.881 RTMSR13.PRW
+04/03/2009  13:56            64.418 rtmsr14.prw
+05/07/2007  12:31            14.788 RTMSR15.prw
+09/02/2007  09:10            13.123 RTMSR16.PRW
+30/06/2009  11:08            21.899 RTMSR17.PRW
+30/06/2009  11:23            26.219 RTMSR18.PRW
+27/03/2009  14:01            16.360 RTMSR19.PRW
+10/02/2009  15:10            23.896 RTMSR20.PRW
+10/02/2009  15:11             9.694 RTMSR21.PRW
+10/02/2009  15:11            13.494 RTMSR22.PRW
+23/07/2009  16:48            30.286 RTMSR23.PRW
+23/07/2009  16:48            18.049 RTMSR24.PRW
+              25 arquivo(s)        586.397 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\samples\source\quality
+
+27/04/2004  14:19             1.990 qdom700.prw
+27/04/2004  14:19             8.274 qdom710.prw
+27/04/2004  14:19             7.468 qdom720.prw
+27/04/2004  14:19             3.282 qie010tp.prw
+27/04/2004  14:19             4.015 qie010vp.prw
+27/04/2004  14:19            37.097 qiea231.prw
+04/03/2005  10:17            16.738 qiem021.prw
+27/04/2004  14:19             3.179 qier111.prw
+               8 arquivo(s)         82.043 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\samples\source\recursos humanos\avaliacao e pesquisa desempenho
+
+05/04/2007  11:42             4.285 APD80DEL.PRW
+05/04/2007  11:42             3.283 APDCONV01.PRW
+05/04/2007  11:42             6.152 APDFIMAVA.prw
+05/04/2007  11:42               237 gch001.prw
+05/04/2007  11:42            11.222 HCMGP.PRW
+05/04/2007  11:42             1.087 PwSA30Vld.prw
+05/04/2007  11:42               517 TRMGRV01.PRW
+05/04/2007  11:42               509 WS010PADR.prw
+05/04/2007  11:42               545 WSAPUSR014.PRW
+05/04/2007  11:42               652 wshistsal.prw
+05/04/2007  11:42             5.401 wsusuario.prw
+              11 arquivo(s)         33.890 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\samples\source\recursos humanos\cargos e salarios
+
+05/04/2007  11:41            12.655 COLETA.prw
+05/04/2007  11:42            45.584 csa010.prw
+05/04/2007  11:42            28.389 raumsal.prw
+12/11/2007  20:31            33.619 RESULT.PRW
+               4 arquivo(s)        120.247 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\samples\source\recursos humanos\folha
+
+05/04/2007  11:42            33.487 ExpCigna.PRW
+18/09/2008  17:16            10.401 FERARG.PRW
+10/11/2009  07:26             2.449 GPCONSIG.PRW
+05/04/2007  11:42             6.206 gpecr01.prw
+02/03/2010  17:33            80.607 GPEWORD.PRW
+05/04/2007  11:42            14.287 ImpCigna.PRW
+25/08/2009  19:11            28.571 raumsal.prw
+25/08/2009  19:07            42.837 RGPER01.PRW
+25/08/2009  19:07            28.975 rgper02.prw
+25/08/2009  19:07            20.364 RGPER03.PRW
+25/08/2009  19:07            17.398 RGPER04.PRW
+25/08/2009  19:07            27.080 RGPER05.PRW
+25/08/2009  19:07            33.873 rgper06.prw
+25/08/2009  19:07            29.377 rgper08.prw
+25/08/2009  19:07            23.571 rgper09.prw
+25/08/2009  19:07            18.768 RGPER10.prw
+25/08/2009  19:07            14.374 RGPER11.prw
+05/04/2007  11:42            27.054 Rgper12.prw
+25/08/2009  19:07            33.335 rgper13.prw
+05/04/2007  11:42            24.972 SIJPFUNC.PRW
+05/04/2007  11:42             1.090 TMSEDIOTP.PRW
+              21 arquivo(s)        519.076 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\samples\source\recursos humanos\ponto eletronico
+
+05/04/2007  11:42            28.578 ETQVIST.PRW
+               1 arquivo(s)         28.578 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\samples\source\recursos humanos\recrutamento e selecao
+
+02/04/2009  15:05            48.292 Imprcan.prw
+05/04/2007  11:42             4.166 rs150ml.prw
+05/04/2007  11:42            43.022 rsr004.prw
+05/04/2007  11:42               516 WSUSERFIELD.PRW
+               4 arquivo(s)         95.996 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\samples\source\recursos humanos\treinamento
+
+13/08/2009  11:47             9.094 CERT.PRW
+13/08/2009  11:47             9.556 CONVIT.PRW
+26/04/2007  18:52             3.863 TOIXFormulas.PRW
+08/10/2009  16:00            48.335 TRM010.PRW
+03/08/2009  17:23            67.448 TRM020.PRW
+03/08/2009  17:23            75.613 TRM030.PRW
+03/08/2009  17:23            57.970 TRM040.PRW
+06/11/2009  16:29            46.655 TRM060.PRW
+09/04/2009  08:28            21.384 trm070.prw
+26/11/2009  11:49            66.118 trm080.prw
+              10 arquivo(s)        406.036 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\samples\source\software de terceiros\mil
+
+18/10/2013  10:19            14.956 impord.prw
+05/09/2006  13:54             1.486 MT010INC.PRW
+01/09/2006  08:42            19.947 nepecser.prw
+01/09/2006  08:42            23.087 nfpecser.prw
+01/09/2006  08:46            37.408 ORCAMTO.PRW
+01/09/2006  08:42            19.881 ordbusca.prw
+01/09/2006  08:42             8.155 ordbuscb.prw
+01/09/2006  08:42            19.283 prefecto.prw
+05/09/2006  13:57             5.237 VA010DPGR.PRW
+               9 arquivo(s)        149.440 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\samples\source\sped nf-e
+
+14/01/2010  15:37            81.717 danfeii.prw
+11/03/2010  08:28           119.480 nfesefaz.prw
+               2 arquivo(s)        201.197 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\samples\source\treport
+
+31/10/2006  14:15             1.222 report1.prw
+31/10/2006  14:15             3.141 report2.prw
+31/10/2006  14:15             2.723 report3.prw
+               3 arquivo(s)          7.086 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigaatf\rotinas
+
+23/10/2015  10:22            22.989 FATFA001.prw
+14/01/2014  15:27             1.527 LEMATI001.PRW
+               2 arquivo(s)         24.516 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigacom\gatilhos
+
+06/09/2017  10:50                92 PEGATAB.PRW
+12/12/2014  11:39             1.587 TESTM001.prw
+20/11/2017  10:47             1.573 VALIDTAB.PRW
+11/09/2017  16:28             1.396 VALITAB2.PRW
+               4 arquivo(s)          4.648 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigacom\implantacao
+
+07/01/2016  14:02             2.552 MT120FIL.prw
+               1 arquivo(s)          2.552 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigacom\ponto de entrada
+
+19/10/2016  16:40               202 COMXFUN.PRW
+17/01/2013  12:30             2.167 GQREENTR.prw
+23/10/2015  11:21             1.206 M030PALT.prw
+16/11/2015  11:45             2.624 MA080MNU.PRW
+23/07/2018  16:25             1.729 MAT910OK.PRW
+05/01/2017  09:09               375 MC050CNT.prw
+22/04/2015  10:04             1.941 MT010ALT.prw
+23/10/2015  11:27             3.147 MT010INC.prw
+23/07/2018  16:46               307 MT103PN.PRW
+07/01/2016  09:52             2.881 MT120BRW.prw
+07/01/2016  09:58             2.390 MT120COR.prw
+26/02/2016  15:53             1.584 MT120GOK.prw
+07/01/2016  09:59             1.094 MT120LEG.prw
+02/01/2019  17:08             2.005 MT120LOK.prw
+18/10/2013  14:36             1.161 MT160GRPC.prw
+23/10/2015  11:34             2.813 MTA010E.prw
+10/08/2018  16:25             1.160 MTA500PROC.prw
+              17 arquivo(s)         28.786 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigacom\relatorio
+
+18/10/2013  14:58             5.938 BXREL0001.prw
+18/10/2013  15:17            12.964 COM_RL04.PRW
+18/10/2013  15:03            51.994 FCOMR001 - Copy.prw
+10/10/2018  07:10            58.680 FCOMR001.prw
+16/06/2017  16:05            58.477 FCOMR001W.PRW
+04/05/2015  16:41           125.793 FMATR110.prw
+30/04/2015  08:28           100.632 FMATR120.prw
+16/06/2017  11:38            36.217 PEDGRAF.PRW
+30/09/2014  13:22            36.203 PEDGRF.prw
+               9 arquivo(s)        486.898 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigacom\rotinas
+
+07/01/2016  10:00             6.515 C7LStatus.prw
+18/10/2013  15:29             2.691 COM_RT02.prw
+21/01/2013  09:32             1.289 FCOMM001.prw
+13/04/2015  11:47             1.810 FCOMM002.prw
+23/10/2015  09:30             1.400 FCOMM003.prw
+07/03/2017  14:16             1.612 FCOMV001.prw
+08/09/2017  16:45               153 MOTIVOS.PRW
+               7 arquivo(s)         15.470 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigactb\Pontos de Entrada
+
+06/01/2014  11:11             1.343 A020EOK - exclus∆o fornecedor.prw
+28/08/2015  10:26             2.535 M020ALT - alteraá∆o fornecedor.prw
+28/08/2015  10:25             2.521 M020INC - inclus∆o fornecedor.prw
+28/08/2015  10:29             2.529 M030ALT - alteraá∆o cliente.prw
+06/01/2014  11:13             1.279 M030EXC - exclus∆o cliente.prw
+28/08/2015  10:27             2.607 M030INC - inclus∆o cliente.prw
+               6 arquivo(s)         12.814 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigactb\Rotinas
+
+05/01/2016  17:32            14.430 CTBZLAN.PRW
+26/01/2015  16:18             3.428 ExportCTH.prw
+01/06/2015  16:35             2.335 FCTBA001.prw
+24/07/2017  09:13             1.295 VALIDCT.PRW
+               4 arquivo(s)         21.488 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigaest\Agix
+
+26/01/2018  09:19               628 MA103But.prw
+               1 arquivo(s)            628 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigaest\coletor de dados
+
+19/08/2015  10:54             9.865 FCMATATE.prw
+19/08/2015  11:05             6.084 FCONFTE.prw
+07/02/2017  14:51             9.996 FESTA014.prw
+02/11/2015  14:37            27.243 FESTA015.prw
+21/02/2018  13:42            16.652 MyMata261.prw
+06/03/2018  10:28            15.340 MyMataP4.prw
+14/03/2018  00:16            16.032 MyMataPR.PRW
+14/03/2018  00:16            16.255 MyMataPX.prw
+14/03/2018  00:16            16.255 MyMataPY.prw
+08/10/2015  14:03            13.348 MyMataTE.prw
+08/10/2015  14:14            13.315 MyMataTR.prw
+16/10/2018  09:24            13.351 NFE2_V0.prw
+16/10/2018  09:23            13.351 NFE2_V1.prw
+16/10/2018  09:23            13.351 NFE2_V2.prw
+16/10/2018  09:24            13.351 NFE2_V3.prw
+16/10/2018  09:25            13.351 NFE2_V4.prw
+16/10/2018  09:25            13.351 NFE2_V5.prw
+16/10/2018  09:26            13.351 NFE2_V6.prw
+16/10/2018  09:26            13.351 NFE2_V7.prw
+16/10/2018  09:27            13.351 NFE2_V8.prw
+16/10/2018  09:31            13.351 NFE2_V9.prw
+06/09/2018  10:10            13.315 NFMataTC.prw
+16/10/2018  09:20            13.351 NFV0_LO.prw
+16/10/2018  09:18            13.351 NFV1_LO.prw
+16/10/2018  09:19            13.351 NFV2_LO.prw
+16/10/2018  09:19            13.351 NFV3_LO.prw
+16/10/2018  09:19            13.351 NFV4_LO.prw
+16/10/2018  09:20            13.351 NFV5_LO.prw
+15/10/2018  14:22            13.351 NFV6_LO.prw
+16/10/2018  09:21            13.351 NFV7_LO.prw
+16/10/2018  09:21            13.351 NFV8_LO.prw
+16/10/2018  09:22            13.351 NFV9_LO.prw
+19/10/2018  10:34            13.355 TR_LO.prw
+              33 arquivo(s)        454.075 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigaest\gatilho
+
+26/01/2018  09:16             2.433 FESTG001.prw
+24/08/2018  10:26             1.269 FESTG002.prw
+               2 arquivo(s)          3.702 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigaest\ponto de entrada
+
+09/04/2015  12:43             3.843 A260GRV.prw
+28/09/2015  08:34             4.257 A261TOK.prw
+18/06/2018  09:48             4.787 A650SALDO.prw
+12/12/2014  11:56             1.566 A710PAR.prw
+29/10/2016  11:33             6.992 EMP650.prw
+26/02/2016  15:50             1.400 M050TOK.prw
+23/10/2015  10:45               137 M650FILB.prw
+23/10/2015  10:35             1.701 MA260EXC.prw
+17/12/2012  14:01             1.567 MA651FIL.prw
+23/10/2015  10:33             1.187 MT010VLD.prw
+18/10/2018  15:26             2.255 MT100LOK.prw
+27/12/2012  07:25             1.855 MT140LOK.prw
+18/10/2013  16:05             1.358 MT150FIX.prw
+28/03/2013  10:36             2.008 MT240TOK.prw
+10/04/2013  09:38             2.175 MT241TOK.prw
+28/03/2013  17:17             1.721 MT380INC.prw
+10/04/2013  09:38             1.965 MT381VLD.prw
+07/12/2018  14:59            10.256 MT650OPPV.prw
+07/08/2015  13:57               127 MTA010NC.prw
+24/01/2019  13:59             3.349 MTA105LIN.PRW
+18/10/2013  16:04             1.383 MTA130C8.prw
+20/04/2015  09:35             2.039 MTA650E.prw
+14/01/2015  09:20             1.836 MTA650I.prw
+              23 arquivo(s)         59.764 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigaest\relatorio
+
+13/03/2018  17:15             9.994 BMATR410.PRW
+04/01/2013  08:21            21.918 EST_010.prw
+30/10/2015  15:24            13.453 FACDR001.prw
+20/10/2015  09:39            12.300 FACDR002.prw
+29/01/2013  15:41            10.928 FESTM001.prw
+03/01/2013  09:20            41.331 FESTR001.prw
+19/01/2015  13:35            19.561 FESTR002.prw
+21/01/2013  10:12            26.412 FESTR003.prw
+13/03/2018  17:14            16.790 FESTR004.prw
+27/01/2015  17:18            20.125 FMATR410.PRW
+15/01/2014  14:16            53.691 ROMAN.prw
+19/10/2018  17:26            12.111 TFATR002.prw
+              12 arquivo(s)        258.614 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigaest\Rotinas
+
+22/11/2016  08:53             4.895 ACSALDO.PRW
+30/11/2015  09:55           204.770 ANALISE.PRW
+05/09/2017  16:28                86 Armaz.prw
+12/04/2017  16:46             1.351 ATUAMEDIO.PRW
+26/02/2016  15:50             1.894 BXCDSZL.prw
+26/02/2016  15:50             1.888 BXCDSZO.PRW
+26/02/2016  15:50             2.562 BXCFOPDEV.prw
+26/02/2016  15:50             1.666 BXGTMED.prw
+21/08/2018  09:45             2.996 BXGTZO.prw
+26/02/2016  15:50             4.478 BXMT020.prw
+20/04/2017  09:33            28.567 BXRTDP-versao antes de alteraá∆o de christian.prw
+05/03/2018  14:53            29.997 BXRTDP.prw
+03/11/2017  15:03            29.011 BXRTDP_OLD.prw
+26/02/2016  15:50             1.461 BXVLGRUPO.prw
+26/02/2016  15:50             2.313 BXZOFO.PRW
+26/02/2016  15:50             2.310 BXZOTM.PRW
+26/02/2016  15:50             2.304 BXZOTP.PRW
+18/12/2012  16:44            11.791 FESTA001.prw
+02/12/2015  13:03            21.445 FESTA002.prw
+28/03/2013  10:16             1.571 FESTA003.prw
+28/03/2013  10:17             1.584 FESTA004.prw
+19/01/2015  14:36            14.627 FESTA005.prw
+30/07/2015  14:19            15.253 FESTA006.prw
+26/02/2015  12:15            16.943 FESTA007.prw
+19/03/2015  08:48            17.339 FESTA008.prw
+27/05/2015  09:36            37.952 FESTA009.prw
+17/12/2012  08:42             2.175 FESTC001.prw
+19/03/2015  09:31               381 FESTM002.prw
+02/10/2014  15:37             2.507 FESTV001.prw
+25/10/2016  09:18               136 MOVEST.PRW
+03/01/2017  15:11               518 MOVINT.PRW
+11/11/2016  17:05             4.898 MT700MD.PRW
+15/03/2017  17:16             7.134 MT700MD2.PRW
+23/03/2017  14:01             6.008 MT700MD3.PRW
+31/08/2017  16:45             1.325 PEGATAB.PRW
+02/02/2017  15:03           210.514 SANDRO.prw
+              36 arquivo(s)        696.650 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigafat\Gatilhos
+
+23/01/2013  16:55               470 CondPag.prw
+05/01/2018  13:30             2.088 FFATG001.prw
+03/07/2018  13:50             2.088 FFATG002.prw
+               3 arquivo(s)          4.646 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigafat\Pontos de entrada
+
+10/05/2017  08:53             1.889 A415LIOK.prw
+10/05/2017  08:54             2.695 M410LIOK.prw
+10/05/2017  08:54             2.419 M410PVNF.prw
+09/05/2017  18:26             2.953 M415GRV.prw
+10/05/2017  08:53             2.690 MA030BRW.PRW
+10/05/2017  08:55             2.834 MT410ALT.prw
+09/05/2017  16:59             2.766 MT410BRW.PRW
+10/05/2017  08:55             2.891 MT410INC.prw
+10/05/2017  08:52             2.693 MT415BRW.PRW
+28/06/2013  10:35             3.222 MT416FIM.prw
+19/06/2013  15:06             3.613 MTA410T.PRW
+09/05/2017  18:27             2.202 MTA416PV.prw
+09/05/2017  17:54             1.671 SF2460I.prw
+              13 arquivo(s)         34.538 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigafat\Relat¢rios
+
+14/05/2018  13:54            20.073 FFATR001.prw
+02/04/2015  12:00            31.461 FFATR002.prw
+17/07/2017  10:16            45.186 FFATR003.prw
+02/04/2015  12:01            44.219 FFATR004.prw
+13/04/2015  14:01            44.867 FFATR006.prw
+19/08/2015  11:28            14.592 FFATR007.prw
+14/05/2015  14:56           194.045 FMATR550.prw
+05/01/2018  09:39            59.085 FMATR600.prw
+09/03/2015  11:20            50.632 FMATR610.prw
+19/05/2015  10:44            98.272 FMATR700.prw
+              10 arquivo(s)        602.432 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigafat\Rotinas
+
+10/05/2017  08:49             1.397 FFATC001.prw
+10/05/2017  08:50               583 FFATM002.PRW
+16/04/2018  16:45             5.419 FFATV001.prw
+10/05/2017  08:47             2.885 FFATV002.PRW
+10/05/2017  08:48             2.890 FFATV003.prw
+10/05/2017  08:46             2.746 FFATV004.prw
+08/11/2017  09:43               583 FFATVALT.prw
+09/05/2017  18:03             2.331 TABSZ6.prw
+23/01/2013  17:37             2.811 TABSZ7.prw
+               9 arquivo(s)         21.645 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigafin\CBAB ITAUPAG
+
+04/12/2012  20:54               803 BBPAG01A.prw
+04/12/2012  20:54             1.127 BBPAG01B.prw
+04/12/2012  20:54             1.207 BBPAG02A.prw
+04/12/2012  20:54               768 BBPAG02B.prw
+04/12/2012  20:54             1.084 BBPAG03A.prw
+04/12/2012  20:54               674 BBPAG03B.prw
+04/12/2012  20:54             1.072 CODBAR.PRW
+               7 arquivo(s)          6.735 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigafin\CNAB BB\CNAB BB - A PAGAR - 22-05-2013
+
+02/07/2008  19:13             1.863 CNABBB01.PRW
+21/10/2011  10:36             1.658 CNABBB02.prw
+21/10/2011  10:35             1.308 CNABBB03.prw
+05/02/2013  15:19               943 CNABBB04.prw
+12/06/2008  15:33             1.214 CNABBB05.PRW
+               5 arquivo(s)          6.986 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigafin\CNAB BB\CNAB Brasil - Pagar
+
+06/12/2009  15:48               805 BBPAG01A.prw
+23/12/2009  08:57             1.131 BBPAG01B.prw
+23/12/2009  09:02             1.212 BBPAG02A.prw
+18/12/2009  09:18               771 BBPAG02B.prw
+04/12/2009  17:11               759 BBPAG03A.prw
+06/12/2009  14:18               675 BBPAG03B.prw
+14/11/2009  13:06             1.072 CODBAR.PRW
+               7 arquivo(s)          6.425 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigafin\CNAB BB\CNAB Brasil - Receber
+
+02/01/2013  13:39            45.943 BLTCDBB.PRW
+22/09/2014  08:49            42.914 BOLBBRASIL - Backup 21012015.prw
+18/09/2015  11:54            44.470 BOLBBRASIL.prw
+19/09/2014  17:55            42.602 BOLBBRASIL_VELHO.prw
+29/11/2012  10:58               978 CALCNNUM.PRW
+29/11/2012  10:58               497 CNABCBB1.PRW
+29/11/2012  10:58               548 CNABCBB2.PRW
+               7 arquivo(s)        177.952 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigafin\CNAB ITAU
+
+04/01/2013  09:33            71.436 bltcd001.prw
+21/12/2018  11:25            45.744 BLTITAU.PRW
+05/02/2013  16:51            47.663 BLTITAU_porTiagoCarvalho.PRW
+04/01/2013  09:46            41.039 BOLETO_ITAU.PRW
+05/08/2009  15:40             2.143 codbar.PRW
+10/09/2008  16:09             1.504 SISP001.PRW
+29/01/2003  12:14             1.182 SISP002.PRW
+17/09/2015  13:57             1.100 SISP003.PRW
+10/09/2008  16:59               972 SISP004.PRW
+21/09/2015  17:37             1.095 SISP005.PRW
+21/09/2015  17:36             1.107 SISP006.PRW
+21/09/2015  17:38             1.106 SISP007.PRW
+              12 arquivo(s)        216.091 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigafin\Pontos de Entrada
+
+27/09/2017  11:18             1.527 F080MTBX.prw
+21/07/2015  17:09             2.725 F200VAR.prw
+10/12/2015  08:22             1.075 FA060QRY.prw
+26/02/2016  15:52             1.505 FA070MDB.prw
+               4 arquivo(s)          6.832 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigafin\Relat¢rios
+
+29/03/2018  12:01            19.078 FFINR001.prw
+21/02/2013  10:49            17.257 FFINR001_20130222.prw
+12/11/2018  09:11            27.456 FFINR002.prw
+06/09/2013  16:58            20.288 FFINR002Old.prw
+03/11/2015  09:59            16.242 FFINR003.prw
+09/11/2018  10:03            21.179 FFINR009.PRW
+28/09/2018  14:31            20.337 FFINR01A.prw
+11/03/2015  10:00            94.184 FFINR650.prw
+               8 arquivo(s)        236.021 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigafin\Rotinas
+
+26/02/2016  15:52               878 BXFINCFO.PRW
+18/10/2013  16:24             1.637 FFINA001.prw
+13/09/2018  11:27            14.854 FFINA002.prw
+18/10/2013  16:24             1.249 MFIN001.prw
+18/10/2013  16:23             4.158 PMTPARAM.prw
+               5 arquivo(s)         22.776 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigagpe\Obsoleto
+
+07/01/2015  14:14             6.142 FGPER002.prw
+07/01/2015  16:05             5.019 FGPER003.prw
+17/12/2014  15:57             3.797 FGPER004.prw
+17/12/2014  15:57             5.197 FGPER005.prw
+17/12/2014  15:57             6.389 FGPER007.prw
+07/01/2015  16:59             5.899 FGPER008.prw
+17/12/2014  16:24             4.981 FGPER009.prw
+17/12/2014  15:56             4.741 FGPER010.PRW
+17/12/2014  16:27             4.376 FGPER011.PRW
+17/12/2014  16:21             4.985 FGPER012.PRW
+23/12/2014  10:56             4.822 FGPER013.PRW
+17/12/2014  15:59             5.114 FGPER015.prw
+17/12/2014  15:59             4.536 FGPER016.prw
+17/12/2014  15:59             3.641 FGPER017.PRW
+17/12/2014  17:12             3.967 FGPER018.prw
+19/12/2014  11:21             6.145 FGPER019.prw
+              16 arquivo(s)         79.751 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigagpe\Obsoleto\Novos
+
+01/06/2015  10:08             5.884 FGPER001.prw
+01/06/2015  10:45            10.855 FGPER002.prw
+01/06/2015  10:05             5.166 FGPER003.prw
+01/06/2015  10:57             4.011 FGPER004.prw
+01/06/2015  10:10             5.245 FGPER005.prw
+01/06/2015  11:07             2.933 FGPER006.PRW
+01/06/2015  15:22             6.045 FGPER007.prw
+01/06/2015  10:31             5.951 FGPER008.prw
+01/06/2015  10:11             4.240 FGPER009.prw
+01/06/2015  13:29             7.273 FGPER010.PRW
+01/06/2015  10:50             2.531 FGPER011.PRW
+01/06/2015  10:40             4.700 FGPER012.PRW
+01/06/2015  16:42             5.506 FGPER013.PRW
+01/06/2015  09:42             7.675 FGPER014.prw
+01/06/2015  11:06             5.323 FGPER015.prw
+01/06/2015  11:27             3.301 FGPER016.prw
+01/06/2015  13:30             3.458 FGPER017.PRW
+01/06/2015  15:33            15.082 FGPER018.prw
+29/05/2015  10:50             4.474 FGPER019.prw
+              19 arquivo(s)        109.653 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigagpe\Relatorios
+
+05/01/2018  09:39            98.560 BXPONR10.PRW
+26/01/2018  16:55            54.589 FGPEM001.prw
+23/10/2015  08:41             2.225 FGPEM020.prw
+09/01/2018  15:15             5.976 FGPER001.prw
+09/01/2018  15:15            15.179 FGPER002.prw
+26/05/2017  14:06            15.224 FGPER002J.PRW
+09/01/2018  15:16             4.744 FGPER003.prw
+28/07/2016  17:12             5.252 FGPER004.prw
+09/01/2018  15:31             5.295 FGPER005.prw
+09/01/2018  15:19             2.969 FGPER006.PRW
+09/01/2018  15:19             6.095 FGPER007.prw
+09/01/2018  15:19             6.096 FGPER008.prw
+09/01/2018  15:19             3.772 FGPER009.prw
+09/01/2018  15:19             7.493 FGPER010.PRW
+09/01/2018  15:19             2.894 FGPER011.PRW
+09/01/2018  15:19             5.568 FGPER012.PRW
+22/05/2017  10:59             5.560 FGPER012A.PRW
+09/01/2018  15:19             5.195 FGPER013.PRW
+09/01/2018  15:17             7.460 FGPER014.prw
+09/01/2018  15:19             5.201 FGPER015.prw
+09/01/2018  15:19             2.595 FGPER016.prw
+09/01/2018  15:19             3.579 FGPER017.PRW
+09/01/2018  15:19            15.095 FGPER018.prw
+09/01/2018  15:19            23.529 FGPER022.prw
+09/01/2018  15:19            17.372 FGPER023.prw
+09/01/2018  15:19            21.867 FGPER024.PRW
+26/01/2018  17:06            49.624 FGPER025.prw
+31/05/2017  09:26            14.915 FGPER02J.PRW
+09/01/2018  15:19            17.738 FGPER02M.PRW
+09/01/2018  15:19            14.869 FGPER2A.PRW
+09/01/2018  15:19            14.868 FGPER2B.PRW
+09/01/2018  15:19             4.764 FGPER2i.PRW
+09/01/2018  15:19            15.482 FGPER2J.PRW
+09/01/2018  15:19             5.810 FPON001.prw
+31/08/2016  16:04            98.532 PONTOBX.PRW
+16/01/2018  08:28            55.890 RGPER01.PRW
+25/02/2016  17:21            54.393 RGPER02.PRW
+              37 arquivo(s)        696.269 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigagpe\Rotinas
+
+13/10/2017  17:02             2.145 BXAFASTAMENTO.prw
+05/02/2018  16:16            54.607 FGPEM001.prw
+04/12/2017  15:33             1.494 FGPEM002.prw
+02/04/2018  09:54           103.134 FGPEM003.prw
+15/02/2018  07:44             1.851 FGPEM004.prw
+15/02/2018  07:44             1.852 FGPEM005.prw
+05/02/2018  16:17            49.638 FGPER025.prw
+05/09/2018  10:19             2.665 MOVFER.PRW
+26/09/2016  17:35             2.918 MOVFOL.PRW
+25/10/2016  09:06               137 MOVFOL2.prw
+30/09/2016  09:03             3.163 MOVFOL2A.PRW
+16/09/2016  07:49             3.946 MOVFOLold.PRW
+30/09/2016  11:02             2.667 MOVFOLP.PRW
+              13 arquivo(s)        230.217 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigapcp\Gatilhos
+
+16/03/2015  11:47             6.836 FPCPG001.prw
+30/11/2016  14:05             1.392 FPCPG002.prw
+30/11/2016  14:05             1.351 FPCPG003.PRW
+30/06/2017  11:51             1.553 FPCPG004.PRW
+30/06/2017  13:45             1.594 FPCPG01A.PRW
+30/06/2017  13:42             1.591 FPCPG02A.PRW
+29/06/2017  10:44             1.591 FPCPG03A.PRW
+23/08/2017  10:12             1.196 PEGAPROD.PRW
+27/04/2018  08:39               512 VALHORA.PRW
+               9 arquivo(s)         17.616 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigapcp\Ponto de Entrada
+
+06/03/2018  10:30             1.992 MT680EST.prw
+04/09/2017  16:24             5.418 MT680VAL.prw
+18/06/2018  09:23             5.955 MT681AIN.prw
+05/02/2018  09:41             6.791 MT685TOK.prw
+24/10/2016  07:43             1.612 MT690GSH8.prw
+24/02/2016  15:10             8.394 MTDGPERD.prw
+               6 arquivo(s)         30.162 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigapcp\Relat¢rios
+
+06/11/2015  14:18            16.174 FMATR235.prw
+24/07/2015  17:12           100.247 FMATR240.prw
+16/06/2015  14:16            56.192 FMATR300.prw
+10/07/2015  11:22            74.097 FMATR820.prw
+14/09/2015  11:18            39.513 FMATR825.prw
+25/03/2013  10:38             4.719 FPCPM001.PRW
+22/08/2015  11:46            16.915 TFATR001.prw
+               7 arquivo(s)        307.857 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigapcp\Rotinas
+
+11/05/2015  10:24             1.275 FMATA681.prw
+29/07/2015  13:10            18.936 FPCPA001.prw
+17/06/2015  15:04            13.459 FPCPA002.prw
+23/03/2016  10:20            12.987 FPCPA003.prw
+07/03/2016  15:18            38.554 FPCPA004.prw
+23/10/2015  09:59             1.447 FPCPM002.prw
+23/10/2015  09:54             2.188 FPCPM003.prw
+18/10/2013  16:25             1.126 FPCPV001.prw
+26/02/2016  15:51            10.060 JOBBX001.prw
+26/02/2016  15:55             9.335 JOBBX001R.prw
+24/03/2016  09:27            19.460 JOBBX002.prw
+01/06/2016  16:07            14.186 MyMataP1.prw
+              12 arquivo(s)        143.013 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigawms
+
+17/03/2015  17:39             3.076 A680WMSO.prw
+19/12/2014  10:57             3.178 BXEST02.prw
+25/11/2014  16:33             1.556 FWMSSZT.prw
+12/12/2014  17:26             1.889 MT103IPC.prw
+12/12/2014  17:25             2.017 MTA416PV.PRW
+25/11/2014  15:52             1.512 SZT.prw
+               6 arquivo(s)         13.228 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\sigawms\Fontes
+
+27/10/2014  13:49            27.417 b5compen.prw
+               1 arquivo(s)         27.417 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\Util
+
+06/09/2019  09:51             1.327 zUltNum.prw
+               1 arquivo(s)          1.327 bytes
+
+ Pasta de X:\Sistemas\TOTVS\Protheus12\my projects\ws
+
+28/06/2019  12:58             6.325 WS_FSCONTASPAGAR.PRW
+               1 arquivo(s)          6.325 bytes
+
+     Total de Arquivos na Lista:
+             637 arquivo(s)     11.772.543 bytes
+               0 pasta(s)   142.042.210.304 bytes dispon°veis

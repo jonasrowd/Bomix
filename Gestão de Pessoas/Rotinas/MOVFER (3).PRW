@@ -1,0 +1,74 @@
+                                
+User Function MOVFER
+	/*컴컴컴컴컴컴컨컴컴컴컴좔컴컴컨컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴袂�
+	굇 Declara豫o de Variaveis Private dos Objetos                             굇
+	袂굼컴컴컴컴컴컴컴좔컴컴컴컨컴컴컴좔컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�*/
+	Private var_mat   := " "
+	Private var_cc    := " "   
+		                            
+	          
+       dbSelectArea("SRD")
+       SET ORDER TO 1      
+       dbGoTop() 
+       do while !eof()     
+       
+              
+                    
+             IF SRD->RD_PD = '706'    
+                var_mat    := SRD->RD_MAT
+                var_filial := SRD->RD_FILIAL    
+                var_data   := SRD->RD_DATPGT
+                var_sal    := SRD->RD_VALOR 
+                PROV = 0.00
+                UMTER = 0.00   
+                MINSS = 0.00
+                MFGTS = 0.00
+                SAL   = SRD->RD_VALOR
+                PROV  = (SAL/12)
+                UMTER = (PROV/3)
+                MINSS = ((PROV+UMTER) * 0.2859)
+                MFGTS = ((PROV+UMTER) * 0.08)
+             
+                DbSelectArea("SRA")
+                set delete on  
+                SET ORDER TO 1      
+                dbGoTop()    
+                dbSeek(var_filial+var_mat)
+                var_cc  = SRA->RA_CC           
+                var_sit = SRA->RA_CATFUNC
+                var_tipo = SRA->RA_CATFUNC
+                
+                
+               //  IF var_sit = "M"                         
+               // IF var_filial = "010101" .AND. var_sit = "M"
+               
+              //  IF var_tipo = "P" .OR. var_tipo = "M" 
+                                        
+                   dbSelectArea("ZW3")   
+                   
+                   
+                   RecLock("ZW3", .T.)
+                   ZW3->ZW3_FILIAL = var_filial
+                   ZW3->ZW3_MAT    = VAR_MAT
+                   ZW3->ZW3_CC     = var_cc
+                   ZW3->ZW3_PROV   = PROV
+                   ZW3->ZW3_UMTER  = UMTER 
+                   ZW3->ZW3_INSS   = MINSS 
+                   ZW3->ZW3_FGTS   = MFGTS
+                   ZW3->ZW3_DATA   = var_data 
+                   ZW3->ZW3_SALATU = var_sal
+                   MsUnlock()   
+              //  endif   
+                   
+                   
+               ENDIF        
+          
+             dbSelectArea("SRD")                                                                   
+             
+             DBSkip()
+               
+        enddo    
+    
+    Alert("Atualiza豫o efetuada com sucesso.")
+    
+                                   

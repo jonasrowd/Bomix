@@ -1,0 +1,65 @@
+/*/
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  ³A415LIOK     º Autor ³ AP6 IDE            º Data ³  28/09/12º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDescricao ³ Validação do Item do Orçamento                             º±±
+±±º          ³ Este ponto de entrada é executado na mudança de linha do   º±±
+±±º          ³ orçamento de venda. Ele pode ser utilizado para validação. º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³ AP6 IDE                                                    º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+/*/
+
+User Function A415LIOK   
+
+
+
+	Local c_Alias   := Alias()
+	Local c_Ord     := IndexOrd()
+	Local n_Reg     := Recno()
+	Local c_Local   := TMP1->CK_LOCAL
+	Local l_Ret 	:= .T.
+
+//testa filial atual
+
+private cfil :="      "
+cFil := FWCodFil()
+if cFil = "030101"
+   return
+endif
+
+////////
+
+
+
+
+
+   	If TMP1->CK_FLAG == .F.
+		dbSelectArea("SZ7")
+		dbSetOrder(1)
+		If dbSeek(xFilial("SZ7") + __CUSERID + c_Local)
+			If Z7_TPMOV == 'S' .Or. Z7_TPMOV == 'A'
+				l_Ret := .T.
+			Else
+				l_Ret := .F.
+			Endif
+		Else
+			l_Ret := .F.
+		Endif
+	Endif
+
+	If !l_Ret
+		ShowHelpDlg(SM0->M0_NOME,;
+		{"O seu usuário não possui permissão para efetuar saídas no armazém " + c_Local + "."},5,;
+		{"Contacte o administrador do sistema."},5)
+	Endif
+
+	dbSelectArea(c_Alias)
+	dbSetOrder(c_Ord)  
+	dbGoTo(n_Reg)
+
+Return l_Ret

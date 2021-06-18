@@ -1,0 +1,643 @@
+#INCLUDE "RWMAKE.CH"
+#INCLUDE "PROTHEUS.CH"
+#INCLUDE "TOPCONN.CH"
+#INCLUDE "COLORS.CH"
+#include "msobject.ch"
+#include "tbiconn.ch"   
+
+#INCLUDE "TOTVS.CH"
+#INCLUDE "MSOLE.CH"
+#INCLUDE 'SHELL.CH'
+#INCLUDE 'FONT.CH'
+#INCLUDE 'COLORS.CH'
+
+
+/*
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
+ฑฑษออออออออออัออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
+ฑฑบFun็ใo    ณ FGPER024	  บAutor ณ01-REGIS&CIA	     บ Data ณ  22/03/2016 บฑฑ
+ฑฑฬออออออออออุออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
+ฑฑบDesc.     ณ Relat๓rio de Marca็ใo									  บฑฑ
+ฑฑฬออออออออออุออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
+ฑฑบUso       ณ SIGAGPE		  	                                          บฑฑ
+ฑฑฬออออออออออฯออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
+ฑฑบ                     A L T E R A C O E S                               บฑฑ
+ฑฑฬออออออออออหออออออออออออออออออหอออออออออออออออออออออออออออออออออออออออออนฑฑ
+ฑฑบData      บProgramador       บAlteracoes                               บฑฑ
+ฑฑศออออออออออสออออออออออออออออออสอออออออออออออออออออออออออออออออออออออออออผฑฑ
+ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
+฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿
+*/                           
+
+
+User Function FGPER024()
+
+Local c_Perg	:= "PER024"
+Local c_Dados   := ""    
+Public c_Texto   := OemtoAnsi("Marca็๕es")
+    
+Private o_Telas	:= clsTelasGen():New()
+Private l_Opcao	:= o_Telas:mtdParOkCan(c_Texto,"Esta rotina tem a finaldade de", "imprimir as "+c_Texto, "Desenvolvido pela TI da Bomix","PER024")
+
+If l_Opcao
+	 
+	f_ValidPerg(c_Perg)
+	If !Pergunte(c_Perg,.T.)
+		Return()
+	Endif 
+    
+	c_Texto += "("+DTOC(MV_PAR07)+" at้ "+DTOC(MV_PAR08)+")"
+	f_RelatPadrao()
+	
+Else
+	
+	Return()
+	
+EndIf
+
+Return
+
+/*
+ฑฑษออออออออออัออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
+ฑฑบImprimi													   ฑฑ
+ฑฑฬออออออออออุออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
+*/
+Static Function f_RelatPadrao()
+
+Private oArial30  	:=	TFont():New("Arial",,20,,.F.,,,,,.F.,.F.)
+Private o11N   		:=	TFont():New("",,11,,.T.,,,,,.F.,.F.)
+Private o9N			:=	TFont():New("",,9,,.T.,,,,,.F.,.F.)
+Private o7N			:=	TFont():New("",,7,,.T.,,,,,.F.,.F.)
+Private o8N			:=	TFont():New("",,8,,.T.,,,,,.F.,.F.)
+Private o10N		:=	TFont():New("",,10,,.T.,,,,,.F.,.F.)
+Private oPrinter  	:=	tAvPrinter():New(c_Texto)
+oPrinter:Setup()
+oPrinter:SetPortrait()
+oPrinter:StartPage()
+printPage()
+oPrinter:Preview()
+
+Return
+
+/*
+ฑฑษออออออออออัออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
+ฑฑบImprimir os HEADER													   ฑฑ
+ฑฑฬออออออออออุออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
+*/
+Static function f_header (c_Emp,c_CNPJ) 
+Local _aBmp     := {}
+
+aAdd (_aBmp,"\system\lgrl"+cEmpAnt+".bmp")
+
+oPrinter:SayBitmap(045, 0100, _aBmp[1], 250, 120)
+
+oPrinter:Box(0177,0098,0288,2321)
+oPrinter:Box(0177,0098,0288,2321)
+
+//Cabe็alho
+oPrinter:Say(070,2052,'Emissใo:'   + DTOC(dDataBase),o11N,,0)
+oPrinter:Say(0175,0742,c_Texto ,oArial30,,0)
+oPrinter:Box(0288,0098,0340,1505)
+oPrinter:Box(0288,1505,0340,2321)
+oPrinter:Say(0293,0128,"Empresa :" +      c_Emp,o11N,,0)
+oPrinter:Say(0300,1530,"CNPJ:"     +      TRANSFORM(c_CNPJ,"@R 99.999.999/9999-99"),o9N,,0)
+
+//box Matrํcula
+oPrinter:Box(0362,0102,0428,0292)
+//box Nome
+oPrinter:Box(0362,0292,0428,1050)
+//box Situa็ใo Folha
+oPrinter:Box(0362,1050,0428,1300)
+//box Departamento
+oPrinter:Box(0362,1300,0428,1665)
+
+//box datas
+oPrinter:Box(0362,1665,0428,1790)
+
+//box marca็๕es
+oPrinter:Box(0362,1790,0428,1900)
+oPrinter:Box(0362,1900,0428,2010)
+oPrinter:Box(0362,2010,0428,2120)
+oPrinter:Box(0362,2120,0428,2230)
+oPrinter:Box(0362,2230,0428,2340)
+
+oPrinter:Say(0380,0109,"MATRอCULA",o8N,,0)
+oPrinter:Say(0380,0300,"NOME",o8N,,0)
+oPrinter:Say(0380,1055,"FUNวรO",o8N,,0)
+oPrinter:Say(0380,1305,"DEPARTAMENTO",o8N,,0)
+
+oPrinter:Say(0380,1670,"DATA",o8N,,0)
+oPrinter:Say(0380,1795,"1ช E",o8N,,0)
+oPrinter:Say(0380,1905,"1ช S",o8N,,0)
+oPrinter:Say(0380,2015,"2ช E",o8N,,0)
+oPrinter:Say(0380,2125,"2ช S",o8N,,0)
+oPrinter:Say(0380,2235,"Inter.",o8N,,0)
+
+Return
+
+/*
+ฑฑษออออออออออัออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
+ฑฑบImprimir os Grid														   ฑฑ
+ฑฑฬออออออออออุออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
+*/
+Static function f_grid(n_line)
+
+local  n_altura := n_line + 60
+//  n_line := + 10
+//box matricula
+oPrinter:Box(n_line + 10 ,0102,n_altura,0292)
+//box nome
+oPrinter:Box(n_line + 10 ,0292,n_altura,1050)
+//box data de admissใo
+oPrinter:Box(n_line + 10 ,1050,n_altura,1300)
+//box Departamento
+oPrinter:Box(n_line + 10 ,1300,n_altura,1665)
+
+
+//box data
+oPrinter:Box(n_line + 10,1665,n_altura,1790)
+
+//BOX MARCA็๕ES
+oPrinter:Box(n_line + 10,1790,n_altura,1900)
+oPrinter:Box(n_line + 10,1900,n_altura,2010)
+oPrinter:Box(n_line + 10,2010,n_altura,2120)
+oPrinter:Box(n_line + 10,2120,n_altura,2230)
+//BOX INTERVALO
+oPrinter:Box(n_line + 10,2230,n_altura,2340)
+
+return
+
+
+/*
+ฑฑษออออออออออัออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
+ฑฑบImprimir os Dados											   ฑฑ
+ฑฑฬออออออออออุออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
+*/
+Static Function printPage()
+
+Local    n_pag 			:=	0
+Local    n_Count     	:=	0 
+Local    n_Func     	:=	0
+Local 	 n_Dias			:=  0
+
+Private  c_Matricula  	:=	''
+Private  c_Nome			:=	''
+Private  c_Funcao		:=	''
+Private  c_Departamento	:=	''
+Private  c_Turno		:=	''
+
+Private  d_Data			:=	''
+Private  c_Dia          :=  ''
+Private  c_1E			:=	''
+Private  c_1S			:=	''
+Private  c_2E			:=	'' 
+Private  c_2S  			:=  ''
+Private  c_Inter  		:=  ''
+
+Private  c_P_1E			:=	''
+Private  c_P_1S			:=	''
+Private  c_P_2E			:=	'' 
+Private  c_P_2S  		:=  ''
+Private  c_P_Inter 		:=  ''
+
+
+Private  nI				:=	0
+Public 	 n_Row			:= 0370  
+  
+
+c_Emp 	:= SM0->M0_NOMECOM
+c_CNPJ  := SM0->M0_CGC
+
+c_Dados := ""
+
+//imprime cabe็alho
+f_header (c_Emp,c_CNPJ)
+
+f_SelFunci()
+
+DbSelectArea("QRY")
+DbGoTop()  
+
+d_Temp := MV_PAR05
+
+While QRY->( !Eof() ) 
+
+	d_Temp := MV_PAR07
+	
+	While MV_PAR08 >= d_Temp 
+		
+		c_Matricula		:= QRY->MATRICULA
+		c_Nome		    := QRY->NOME      
+		c_Funcao		:= QRY->FUNCAO
+		c_Departamento	:= QRY->DEPARTAMENTO    
+		c_Turno         := QRY->TURNO    
+		d_Data			:= DTOC(d_Temp)
+		c_Dia			:= STRZERO(DOW(d_Temp),1)
+		
+	
+		
+/*		ALTERADO WELLINGTON 16/07/2016
+
+        Do Case                                                   
+			case ("1E")$trim(mv_par10)
+				c_1E			:=	f_SelMarcacao(d_Temp,c_Matricula,'1E')
+			case ("1S")$trim(mv_par10)				
+				c_1S			:=	f_SelMarcacao(d_Temp,c_Matricula,'1S')
+			case ("2E")$trim(mv_par10)		
+				c_2E			:=	f_SelMarcacao(d_Temp,c_Matricula,'2E')
+			case ("2S")$trim(mv_par10)		
+				c_2S  			:=  f_SelMarcacao(d_Temp,c_Matricula,'2S')	
+			case ("1E1S2E2S")==trim(mv_par10) 
+				c_1E			:=	f_SelMarcacao(d_Temp,c_Matricula,'1E')
+				c_1S			:=	f_SelMarcacao(d_Temp,c_Matricula,'1S')							   	
+				c_2E			:=	f_SelMarcacao(d_Temp,c_Matricula,'2E')
+				c_2S  			:=  f_SelMarcacao(d_Temp,c_Matricula,'2S')		
+			   	c_Inter  		:=  f_SelMarcacao(d_Temp,c_Matricula,'IN')
+		   	OtherWise
+				c_1E			:=	f_SelMarcacao(d_Temp,c_Matricula,'1E')
+				c_1S			:=	f_SelMarcacao(d_Temp,c_Matricula,'1S')							   	
+				c_2E			:=	f_SelMarcacao(d_Temp,c_Matricula,'2E')
+				c_2S  			:=  f_SelMarcacao(d_Temp,c_Matricula,'2S')					
+			   	c_Inter  		:=  f_SelMarcacao(d_Temp,c_Matricula,'IN')				
+		EndCase
+                      
+  
+  	*/
+		              
+		FLAG = 0
+		if trim(mv_par10)==("1E") 
+		   	c_1E			:=	f_SelMarcacao(d_Temp,c_Matricula,'1E')
+		    FLAG = 1 
+		endif
+		      
+		if trim(mv_par10)==("1S") 
+		   	c_1S			:=	f_SelMarcacao(d_Temp,c_Matricula,'1S')
+		   	FLAG = 1
+		endif   
+		
+		if trim(mv_par10)==("2E") 
+		   	c_2E			:=	f_SelMarcacao(d_Temp,c_Matricula,'2E')
+		   	FLAG = 1
+		endif
+		
+		if trim(mv_par10) == ("2S") 
+		   	c_2S			:=	f_SelMarcacao(d_Temp,c_Matricula,'2S')
+		   	FLAG = 1
+		endif
+		                               
+		IF flag = 0
+		
+		   IF trim(mv_par10)==("1E1S2E2S")
+		    			
+				c_1E			:=	f_SelMarcacao(d_Temp,c_Matricula,'1E')
+				c_1S			:=	f_SelMarcacao(d_Temp,c_Matricula,'1S')							   	
+				c_2E			:=	f_SelMarcacao(d_Temp,c_Matricula,'2E')
+				c_2S  			:=  f_SelMarcacao(d_Temp,c_Matricula,'2S')		
+			   	c_Inter  		:=  f_SelMarcacao(d_Temp,c_Matricula,'IN')
+		
+		   EndIF
+		   
+		ENDIF
+		
+				
+		c_P_1E			:=	Transform(POSICIONE("SPJ",1,xFilial("SPJ")+c_Turno+"01"+c_Dia,"PJ_ENTRA1") ,"@E 99.99")	
+		c_P_1S			:=	Transform(POSICIONE("SPJ",1,xFilial("SPJ")+c_Turno+"01"+c_Dia,"PJ_SAIDA1") ,"@E 99.99")	
+		c_P_2E			:=	Transform(POSICIONE("SPJ",1,xFilial("SPJ")+c_Turno+"01"+c_Dia,"PJ_ENTRA2") ,"@E 99.99")	
+		c_P_2S  		:=  Transform(POSICIONE("SPJ",1,xFilial("SPJ")+c_Turno+"01"+c_Dia,"PJ_SAIDA2") ,"@E 99.99")	
+		c_P_Inter 		:=  Transform(POSICIONE("SPJ",1,xFilial("SPJ")+c_Turno+"01"+c_Dia,"PJ_HRSINT1"),"@E 99.99")	
+        
+		c_1E := Transform(c_1E,"@E 99.99")
+		c_1S := Transform(c_1S,"@E 99.99")
+		c_2E := Transform(c_2E,"@E 99.99")
+		c_2S := Transform(c_2S,"@E 99.99")
+		c_Inter := Transform(c_Inter,"@E 99.99")		
+						 
+		n_Row := n_Row + 50
+		
+		f_grid(n_Row)//imprime a grid dos itens   
+								
+		oPrinter:Say(n_Row + 16,0109,Transform(c_Matricula,"@! 999999"),o9N,,0)
+		oPrinter:Say(n_Row + 16,0301,SUBSTR(c_Nome,1,40),o9N,,0)
+		oPrinter:Say(n_Row + 16,1055,SUBSTR(c_Funcao,1,15),o9N,,0)
+		oPrinter:Say(n_Row + 16,1310,SUBSTR(c_Departamento,1,21),o9N,,0)
+		oPrinter:Say(n_Row + 16,1670,d_Data,o9N,,0)
+		oPrinter:Say(n_Row + 16,1795,c_1E,o9N,,0)
+		oPrinter:Say(n_Row + 16,1905,c_1S,o9N,,0)
+		oPrinter:Say(n_Row + 16,2015,c_2E,o9N,,0)		
+		oPrinter:Say(n_Row + 16,2125,c_2S,o9N,,0)
+		oPrinter:Say(n_Row + 16,2235,c_Inter,o9N,,0)	
+			
+		c_Dados += c_Matricula+";"+;
+					SUBSTR(c_Nome,1,40)+";"+;
+					SUBSTR(c_Funcao,1,40)+";"+;
+					SUBSTR(c_Departamento,1,40)+";"+;
+					d_Data+";"+;
+					c_1E+";"+;
+					c_P_1E+";"+;					
+					c_1S+";"+;
+					c_P_1S+";"+;					
+					c_2E+";"+;
+					c_P_2E+";"+;					
+					c_2S+";"+;										
+					c_P_2S+";"+;
+					c_Inter+";"+;
+					c_P_Inter+";"+CHR(13)+CHR(10)					
+		
+		n_Count  ++ 
+		n_Func   ++ 
+		
+		if (n_Count >= 52)
+			//imprime cabe็alho
+			f_header (c_Emp,c_CNPJ)
+			f_grid(0420)//imprime a grid dos itens   
+			n_Row := 0370
+			n_pag ++
+			oPrinter:Say(3317,0084,"Total:"+ cValToChar(n_Func)	,o10N,,0)//roda p้
+			oPrinter:Say(3317,1884,'Pแg.:' + cValToChar(n_pag),o10N,,0)
+			n_Count:= 0
+			n_Func := 0
+			oPrinter:EndPage()
+		endIf 
+		
+		d_Temp:=d_Temp+1
+		
+	Enddo 		
+					        
+	QRY->( DbSkip() )
+	
+Enddo    
+
+
+If (n_Count < 51) .and. n_pag == 0
+	oPrinter:Say(3317,0084,"Total:"+ cValToChar(n_Func)	,o10N,,0)//roda p้
+	oPrinter:Say(3317,1884,'Pแg.:' + cValToChar(n_pag++),o10N,,0)
+EndIf 
+
+If (n_Count < 51) .and. n_pag >= 1 
+	f_header (c_Emp,c_CNPJ)
+	f_grid(0420)//imprime a grid dos itens   
+	oPrinter:Say(3317,0084,"Total:"+ cValToChar(n_Func)	,o10N,,0)//roda p้
+	oPrinter:Say(3317,1884,'Pแg.:' + cValToChar(n_pag+1),o10N,,0)   
+EndIf 
+
+DbCloseArea("QRY")
+
+If !Empty(c_Dados) .and. mv_par09 == 2
+	If MSGYESNO("Deseja exportar esses dados para um arquivo CSV ?")
+	   	f_ExpCSV (c_Dados)
+	Endif           
+Endif
+
+return
+/*
+ฑฑษออออออออออัออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
+ฑฑบSelecionar dados para exibi็ใo										   ฑฑ
+ฑฑฬออออออออออุออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
+*/
+Static Function f_SelMarcacao(p_Data,p_Mat,p_TipoMarcacao)
+
+Local cQuery := ""
+Local _cSRA := retsqlname("SRA")
+Local _cSP8 := retsqlname("SP8")
+Local _cSQB := retsqlname("SQB")
+Local _cSRJ := retsqlname("SRJ")
+Local c_Ret := "  "
+
+
+If p_TipoMarcacao != "IN"
+	cQuery += " SELECT  "
+	cQuery += " P8_HORA  AS HORA "
+	cQuery += " FROM  "
+	cQuery += " "+_cSP8+" AS SP8 "
+	cQuery += " WHERE P8_FILIAL ='"+xFilial("SP8")+"' " 
+	cQuery += " AND P8_TPMARCA IN ('"+p_TipoMarcacao+"','') "
+	cQuery += " AND SP8.D_E_L_E_T_ <> '*' "
+	cQuery += " AND P8_DATA BETWEEN '"+dtos(p_Data)+"' AND '"+dtos(p_Data)+"' "
+	cQuery += " AND P8_MAT = '"+p_Mat+"' "
+Else
+	cQuery += " SELECT RA_MAT AS MATRICULA,RA_NOME AS NOME,  "
+	cQuery += " ISNULL((SELECT RTRIM(QB.QB_DESCRIC) FROM  "+_cSQB+" QB WHERE QB.QB_FILIAL ='"+xFilial("SQB")+"' AND QB.D_E_L_E_T_<> '*'  AND QB.QB_DEPTO = SRA.RA_DEPTO),' ') AS DEPARTAMENTO ,  "
+	cQuery += " ISNULL((SELECT RTRIM(RJ_DESC) FROM "+_cSRJ+"   RJ WHERE RJ_FILIAL ='"+xFilial("SRJ")+"' AND RJ.D_E_L_E_T_<> '*'  AND RJ.RJ_FUNCAO = SRA.RA_CODFUNC),' ') AS FUNCAO ,"
+	cQuery += " RA_TNOTRAB AS TURNO, "
+	cQuery += " 	((SELECT  "
+	cQuery += " 	P8_HORA "
+	cQuery += " 	FROM  "
+	cQuery += " 	"+_cSP8+" AS SP8 "
+	cQuery += " 	WHERE P8_FILIAL ='"+xFilial("SP8")+"'  "
+	cQuery += " 	AND P8_TPMARCA IN ('2E') "
+	cQuery += " 	AND SP8.D_E_L_E_T_ <> '*' "
+	cQuery += " 	AND P8_DATA BETWEEN '"+dtos(p_Data)+"' AND '"+dtos(p_Data)+"' "
+	cQuery += " 	AND P8_MAT = RA_MAT) - "
+	cQuery += " 	(SELECT "
+	cQuery += " 	TOP 1 P8_HORA "
+	cQuery += " 	FROM  "
+	cQuery += " 	"+_cSP8+"  SP8 "
+	cQuery += " 	WHERE P8_FILIAL ='"+xFilial("SP8")+"'  "
+	cQuery += " 	AND P8_TPMARCA IN ('1S') "
+	cQuery += " 	AND SP8.D_E_L_E_T_ <> '*' "
+	cQuery += " 	AND P8_DATA BETWEEN '"+dtos(p_Data)+"' AND '"+dtos(p_Data)+"' "
+	cQuery += " 	AND P8_MAT = RA_MAT)) AS HORA "
+	cQuery += " FROM  "
+	cQuery += " "+_cSRA+" SRA "
+	cQuery += " WHERE  "
+	cQuery += " RA_FILIAL ='"+xFilial("SRA")+"' "
+	cQuery += " AND RA_MAT  = '"+p_Mat+"' "
+	cQuery += " AND D_E_L_E_T_ <> '*' "    
+Endif	
+
+
+If Select("QRY2") <> 0
+	DBSelectArea("QRY2")
+	DBCLOSEAREA("QRY2")
+Endif 
+
+TCQUERY cQuery NEW ALIAS "QRY2" 
+
+IF !QRY2->(EOF())
+    c_Ret := QRY2->HORA
+EndIf          
+
+DbCloseArea("QRY2")
+
+
+Return c_Ret
+
+
+/*
+ฑฑษออออออออออัออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
+ฑฑบSelecionar Funcionแrios para exibi็ใo				     			   ฑฑ
+ฑฑฬออออออออออุออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
+*/
+Static Function f_SelFunci()
+Local cQuery := ""
+Local _cSRA := retsqlname("SRA")
+
+cQuery += " SELECT  "
+cQuery += " RA_MAT     AS MATRICULA, "
+cQuery += " RA_NOME    AS NOME,   "
+cQuery += " RA_FSDDPTO AS DEPARTAMENTO ,  "
+cQuery += " RA_FSDESFU AS FUNCAO , "
+cQuery += " RA_FSDCC   AS CENTRO_CUSTO , "
+cQuery += " RA_TNOTRAB AS TURNO  "
+cQuery += " FROM "+_cSRA+" "
+cQuery += " WHERE "
+cQuery += " D_E_L_E_T_ <> '*' "
+cQuery += " AND RA_FILIAL = '"+xFilial("SRA")+"'  "
+cQuery += " AND RA_MAT	   BETWEEN '"+MV_PAR01+"' AND '"+MV_PAR02+"' "
+If mv_par11 == 2
+	cQuery += " AND RA_DEPTO    in ('000000024','"+MV_PAR03+"','"+MV_PAR04+"') "
+Else
+	cQuery += " AND RA_DEPTO   BETWEEN '"+MV_PAR03+"' AND '"+MV_PAR04+"' "	
+EndIf
+cQuery += " AND RA_CODFUNC BETWEEN '"+MV_PAR05+"' AND '"+MV_PAR06+"' "
+cQuery += " AND RA_SITFOLH <> 'D' " 
+cQuery += " AND RA_REGRA   <> '  ' "
+cQuery += " AND RA_REGRA   <> '99' "
+cQuery += " AND RA_SEQTURN <> '  ' "
+cQuery += " ORDER BY RA_NOME"
+
+
+If Select("QRY") <> 0
+	DBSelectArea("QRY")
+	DBCLOSEAREA("QRY")
+Endif 
+
+TCQUERY cQuery NEW ALIAS "QRY" 
+
+
+Return
+        
+
+/*/
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
+ฑฑษออออออออออัออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
+ฑฑบPrograma  ณ f_ExpCSV บ Autor ณ TBA001 -XXX      บ Data ณ    Julho/2011 บฑฑ
+ฑฑฬออออออออออุออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
+ฑฑบDescricao ณ Exporta o log de importa็ใo para um arquivo texto          บฑฑ
+ฑฑฬออออออออออุออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
+ฑฑบUso       ณ SIGAEST                                                    บฑฑ
+ฑฑฬออออออออออฯออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
+ฑฑบ                     A L T E R A C O E S                               บฑฑ
+ฑฑฬออออออออออหออออออออออออออออออหอออออออออออออออออออออออออออออออออออออออออนฑฑ
+ฑฑบData      บProgramador       บAlteracoes                               บฑฑ
+ฑฑศออออออออออสออออออออออออออออออสอออออออออออออออออออออออออออออออออออออออออผฑฑ
+ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
+฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿
+/*/
+
+Static Function f_ExpCSV(c_Dados)
+	Local c_Dir     := cGetFile( '*.*' , '', 1, 'C:\', .F., nOR( GETF_LOCALHARD, GETF_RETDIRECTORY, GETF_LOCALHARD, GETF_NETWORKDRIVE), .F., .T. )
+	Local c_File    := "MARCACOES"+"_" + DTOS(DDATABASE) + "_" + SUBSTR(STRTRAN(TIME(),":"),1,6) + ".CSV"
+	Local c_Linha   := ""
+
+	If !Empty(c_Dir)
+		c_Destino := FCREATE(c_Dir + c_File)
+
+		// TESTA A CRIAวรO DO ARQUIVO DE DESTINO
+		IF c_Destino == -1
+			MsgStop('Erro ao criar arquivo destino. Erro: '+str(ferror(),4),'Erro')
+		 	RETURN
+		ENDIF  
+		
+				
+		c_Titulo  := ";"+c_Texto+";;;;;;;;;;;;;" +CHR(13)+CHR(10)
+
+		IF FWRITE(c_Destino,c_Titulo,LEN(c_Titulo)) != LEN(c_Titulo)
+			IF !MSGALERT("Ocorreu um erro na grava็ใo do arquivo destino. Continuar?","Aten็ใo")
+				FCLOSE(c_Destino)
+	   	   		Return
+			ENDIF
+	 	ENDIF
+		
+		c_Titulo  := ";Emissใo:"+DTOC(dDataBase)+";;;;;;;;;;;;;;" +CHR(13)+CHR(10)
+
+		IF FWRITE(c_Destino,c_Titulo,LEN(c_Titulo)) != LEN(c_Titulo)
+			IF !MSGALERT("Ocorreu um erro na grava็ใo do arquivo destino. Continuar?","Aten็ใo")
+				FCLOSE(c_Destino)
+	   	   		Return
+			ENDIF
+	 	ENDIF
+
+		
+		c_Header  := "MATRอCULA;NOME;FUNวรO;DEPARTAMENTO;DATA;1ช-ENTRADA;1ช-ENTRADA(P);1ช-SAอDA;1ช-SAอDA(P);2ช-ENTRADA;2ช-ENTRADA(P);1ช-SAอDA;1ช-SAอDA(P);INTERVALO;INTERVALO(P)"
+	
+		c_Linha:= c_Header+CHR(13)+CHR(10)
+	
+		IF FWRITE(c_Destino,c_Linha,LEN(c_Linha)) != LEN(c_Linha)
+			IF !MSGALERT("Ocorreu um erro na grava็ใo do arquivo destino. Continuar?","Aten็ใo")
+				FCLOSE(c_Destino)
+	   	   		Return
+			ENDIF
+	 	ENDIF
+	
+		c_Linha:= c_Dados
+
+		IF FWRITE(c_Destino,c_Dados,LEN(c_Dados)) != LEN(c_Dados)
+			IF !MSGALERT("Ocorreu um erro na grava็ใo do arquivo destino. Continuar?","Aten็ใo")
+				FCLOSE(c_Destino)
+	   	   		Return
+			ENDIF
+	 	ENDIF
+	
+		AVISO(SM0->M0_NOMECOM,"Arquivo exportado para " + c_Dir + c_File,{"Ok"},2,"Aten็ใo")
+		FCLOSE(c_Destino)
+	Endif
+Return 
+
+
+Return c_Ret   
+
+Static Function f_ValidPerg(p_Perg)
+//funciando com o parte de ser quarta-feira
+//ฺฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฟ
+//ณ Variaveis utilizadas para parmetros                        ณ
+//ณ mv_par01            // Cliente de                           ณ
+//ณ mv_par02            // Cliente ate                          ณ
+//ณ mv_par03            // Loja de                              ณ
+//ณ mv_par04            // Loja at้                             ณ
+//ณ mv_par05            // Data de Faturamento                  ณ
+//ณ mv_par06            // Data de Faturamento                  ณ
+//ณ mv_par07            // Produto de                           ณ
+//ณ mv_par08            // Produto ate                          ณ
+//ณ mv_par09            // Junta Periodo                        ณ
+//ภฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤ/
+
+//-->> Compatibiliza o SX1 com novas perguntas
+cAlias:=Alias()
+dbSelectArea("SX1")
+dbSetOrder(1)
+cPerg := p_Perg
+cPerg := PADR( cPerg, Len(SX1->X1_GRUPO) )
+aRegs:={}
+
+//-->> Novo grupo de perguntas
+aAdd(aRegs,{cPerg,"01","Matricula de       ?","","","MV_CH1","C",6,0,0, "G","","MV_PAR01","","","","","","","","","","","","","","","","","","","","","","","","","SRA"})
+aAdd(aRegs,{cPerg,"02","Matricula ate      ?","","","MV_CH2","C",6,0,0, "G","","MV_PAR02","","","","","","","","","","","","","","","","","","","","","","","","","SRA"})
+aAdd(aRegs,{cPerg,"03","Departamento de    ?","","","MV_CH3","C",9,0,0, "G","","MV_PAR03","","","","","","","","","","","","","","","","","","","","","","","","","SQB"})
+aAdd(aRegs,{cPerg,"04","Departamento at้   ?","","","MV_CH4","C",9,0,0, "G","","MV_PAR04","","","","","","","","","","","","","","","","","","","","","","","","","SQB"})
+aAdd(aRegs,{cPerg,"05","Fun็ใo de          ?","","","MV_CH5","C",9,0,0, "G","","MV_PAR05","","","","","","","","","","","","","","","","","","","","","","","","","SRJ"})
+aAdd(aRegs,{cPerg,"06","Fun็ใo at้  	   ?","","","MV_CH6","C",9,0,0, "G","","MV_PAR06","","","","","","","","","","","","","","","","","","","","","","","","","SRJ"})
+aAdd(aRegs,{cPerg,"07","Dt. Apura็ใo de    ?","","","MV_CH7","D",8,0,0, "G","","MV_PAR07","","","","","","","","","","","","","","","","","","","","","","","","",""})
+aAdd(aRegs,{cPerg,"08","Dt. Apura็ใo ate   ?","","","MV_CH8","D",8,0,0, "G","","MV_PAR08","","","","","","","","","","","","","","","","","","","","","","","","",""})
+aAdd(aRegs,{cPerg,"09","Exporta CSV.       ?","","","MV_CH9","C",1,0,1, "C","","MV_PAR09","Nใo","","","","","Sim","","","","","","","","","","","","","","","","","","",""})
+aAdd(aRegs,{cPerg,"10","Tipo de Marca็ใo   ?","","","MV_CHA","C",8,0,1, "C","","MV_PAR10","","","","","","","","","","","","","","","","","","","","","","","","",""})
+aAdd(aRegs,{cPerg,"11","Menor Aprendiz     ?","","","MV_CHB","C",1,0,1, "C","","MV_PAR11","Nใo","","","","","Sim","","","","","","","","","","","","","","","","","","",""})
+
+
+For i:=1 to Len(aRegs)
+	If !dbSeek(cPerg+aRegs[i,2])
+		RecLock("SX1",.T.)
+		For j:=1 to FCount()
+			If j <= Len(aRegs[i])
+				FieldPut(j,aRegs[i,j])
+			Endif
+		Next
+		MsUnlock()
+	Endif
+Next
+
+DBSELECTAREA( cAlias)
+
+RETURN  

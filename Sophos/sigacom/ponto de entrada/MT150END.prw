@@ -1,0 +1,37 @@
+#INCLUDE "RWMAKE.CH"
+#INCLUDE "TOPCONN.CH"  
+#INCLUDE "PRTOPDEF.CH"
+
+/*
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ºPrograma  ³MT150OK  ºAutor  ³TIAGO PITA   	       º Data ³AGOSTO/2011º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDesc.     ³Ponto de Entrada para inclusão de observação no momento da  º±±
+±±º          ³exclusao de um item da cotação                              º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³ SIGACOM                                                    º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±º                     A T U A L I Z A C O E S                           º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDATA      ºANALISTA           ºALTERACOES                              º±±
+±±º          º                   º                                        º±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+*/
+
+//User Function MT150END()
+
+//Local nOpcx := Paramixb[1]
+//Local lRet  := .T.
+
+/*If nOpcx=3
+	For i:=1 to Len(aCols)
+		If aCols[i][Len(aHeader)+1] == .F. .AND. !Empty(aCols[i][1])
+			If aCols[i][AScan(aHeader,{ |x| Alltrim(x[2]) == "C8_PRECO"})]>0
+				_qry := " UPDATE SC8010 SET C8_TBMOT =  '', C8_TBDATA='' WHERE C8_NUM = '" + SC8->C8_NUM+ "' AND D_E_L_E_T_ <> '*' AND C8_PRODUTO='"+SC8->C8_PRODUTO+"' "
+				TCSQLExec(_qry)
+			Endif
+		Endif
+	Next
+Endif */
+
+//Return lRet

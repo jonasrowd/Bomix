@@ -1,0 +1,134 @@
+/*
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++Programa  MT130WF   Autor  Anilson Lima    Data   JULHO/2011            ++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++          Este ponto de entrada tem o objetivo de permitir a customiza  ++
+++          cao de workflow baseado nas informacoes de cotacoes que       ++
+++          estao sendo geradas pela rotina em execução.                  ++
+++          Executado após atualização de arquivos na geracao de cotacoes ++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+*/
+
+USER FUNCTION MT130WF()
+U_COM_RT03()
+/*
+Local a_AreaSC8		:= SC8->(GETAREA())
+Local a_AreASA2		:= SA2->(GETAREA())
+Local a_AreASB1		:= SB1->(GETAREA())
+Local c_Filial		:= SC8->C8_FILIAL
+Local c_NumCot		:= SC8->C8_NUM
+Local c_User		:= RetCodUsr()
+Local c_NomComp		:= ""
+Local c_TelComp		:= ""
+Local c_Email		:= ""
+Local c_Fornece		:= ""
+Local c_Corpo		:= ""
+Local c_Para		:= ""
+Local c_Assunto		:= "Cotacao EGBA: "+c_NumCot
+Local l_ExibeTela	:= .F.
+Local n_Item		:= 1
+
+BEGINSQL ALIAS "COTAPRECO"
+	SELECT C8_FILIAL, C8_PRODUTO, B1_DESC, C8_FORNECE, C8_LOJA, A2_EMAIL, A2_CONTATO, C8_UM, SUM(C8_QUANT) AS QTD_COTAR
+	FROM %TABLE:SC8% C8
+	INNER JOIN %TABLE:SA2% A2 ON (C8_FORNECE = A2_COD AND C8_LOJA = A2_LOJA AND A2.%NOTDEL%)
+	INNER JOIN %TABLE:SB1% B1 ON (C8_PRODUTO = B1_COD AND B1.%NOTDEL%)
+	WHERE C8.%NOTDEL%
+	AND C8_NUM = %EXP:c_NumCot%
+	AND C8_FILIAL = %EXP:c_Filial%
+	GROUP BY C8_FILIAL, C8_PRODUTO, B1_DESC, C8_FORNECE, C8_LOJA, A2_EMAIL, A2_CONTATO, C8_UM
+	ORDER BY C8_FORNECE, C8_LOJA
+ENDSQL
+
+DBSELECTAREA("COTAPRECO")
+COTAPRECO->(DBGOTOP())
+WHILE COTAPRECO->(!EOF())
+
+	c_Fornece 	:= (COTAPRECO->C8_FORNECE+COTAPRECO->C8_LOJA)
+	c_Para		:= COTAPRECO->A2_EMAIL
+	
+	c_Corpo := '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'
+	c_Corpo += '<html xmlns="http://www.w3.org/1999/xhtml" >'
+	c_Corpo += '	<head>'
+	c_Corpo += '		<title>EGBA</title>'
+	c_Corpo += '	</head>'
+	c_Corpo += '	<body>'
+	c_Corpo += '    	<table cellpadding = "0" cellspacing = "0" border = "0" width = "1500">'
+	c_Corpo += '        	<tr>'
+	c_Corpo += '            	<td width = "100%"><font face = "Arial" size = "2">Caro '+ALLTRIM(COTAPRECO->A2_CONTATO)+',</font>'
+	c_Corpo += '            	<p><font face="arial" size="2">Favor cotar os itens abaixo:</font></p>'
+	c_Corpo += '            	</td>'
+	c_Corpo += '  	      	</tr>'
+	c_Corpo += '   	 	</table>'
+	c_Corpo += '    	<table cellpadding = "0" cellspacing = "0" border = "1" width = "1500">'
+	c_Corpo += '        	<tr>'
+	c_Corpo += '            	<td width = "05%"><font face = "Arial" size = "2">ITEM</font></td>'
+	c_Corpo += '            	<td width = "10%"><font face = "Arial" size = "2">PRODUTO</font></td>'
+	c_Corpo += '            	<td width = "30%"><font face = "Arial" size = "2">DESCRIÇÃO</font></td>'
+	c_Corpo += '            	<td width = "05%"><font face = "Arial" size = "2">UM</font></td>'
+	c_Corpo += '            	<td width = "10%"><font face = "Arial" size = "2">QUANTIDADE</font></td>'
+	c_Corpo += '            	<td width = "15%"><font face = "Arial" size = "2">PRECO</font></td>'
+	c_Corpo += '            	<td width = "15%"><font face = "Arial" size = "2">TOTAL</font></td>'
+	c_Corpo += '            	<td width = "05%"><font face = "Arial" size = "2">PRAZO</font></td>'
+	c_Corpo += '        	</tr>'
+	
+	n_Item := 1
+	WHILE COTAPRECO->(!EOF()) .AND. COTAPRECO->C8_FORNECE+COTAPRECO->C8_LOJA == c_Fornece
+		c_Corpo += '		<tr>'
+		c_Corpo += '        	<td width = "05%"><font face = "Arial" size = "2">'+STRZERO(n_Item,4)+'</font></td>'
+		c_Corpo += '        	<td width = "10%"><font face = "Arial" size = "2">'+COTAPRECO->C8_PRODUTO+'</font></td>'
+		c_Corpo += '        	<td width = "30%"><font face = "Arial" size = "2">'+COTAPRECO->B1_DESC+'</font></td>'
+		c_Corpo += '        	<td width = "05%"><font face = "Arial" size = "2">'+COTAPRECO->C8_UM+'</font></td>'
+		c_Corpo += '        	<td width = "10%"><font face = "Arial" size = "2">'+TRANSFORM(COTAPRECO->QTD_COTAR,"@E 999,999.99")+'</font></td>'
+		c_Corpo += '        	<td width = "15%"><font face = "Arial" size = "2">  </font></td>'
+		c_Corpo += '    		<td width = "10%"><font face = "Arial" size = "2">  </font></td>'
+		c_Corpo += '        	<td width = "05%"><font face = "Arial" size = "2">  </font></td>'
+		c_Corpo += '		</tr>'
+		n_Item++
+		
+		COTAPRECO->(DBSKIP())
+	ENDDO
+	
+	DBSELECTAREA("SY1")
+	DBSETORDER(3)
+	IF DBSEEK(XFILIAL("SY1")+c_User,.T.)
+		c_TelComp	:= SY1->Y1_TEL
+		c_NomComp	:= SY1->Y1_NOME
+        c_Email     := SY1->Y1_EMAIL
+	ENDIF
+	
+	c_Corpo += '    	<br>'
+	c_Corpo += '    	</table>'
+	c_Corpo += '    	<table cellpadding = "0" cellspacing = "0" border = "0" width = "1500">'
+	c_Corpo += '        	<tr>'
+	c_Corpo += '            	<td width = "100%"><font face = "Arial" size = "2">Informe a condição de pagamento: ___________________</font></td>'
+	c_Corpo += '  	      	</tr>'
+	c_Corpo += '   	 	</table>'
+	c_Corpo += '    	<br>'
+	
+	c_Corpo += '    	</table>'
+	c_Corpo += '    	<table cellpadding = "0" cellspacing = "0" border = "0" width = "1500">'
+	c_Corpo += '        	<tr>'
+	c_Corpo += '            	<td width = "100%"><font face = "Arial" size = "2">Em caso de dúvidas entrar em contato com nosso setor de compras.</font>'
+	c_Corpo += '            	<p><font face="arial" size="2">Comprador: '+c_NomComp+'</font></p>'
+	c_Corpo += '            	<p><font face="arial" size="2">Telefone: '+c_TelComp+'</font></p>'
+	c_Corpo += '            	<p><font face="arial" size="2">e-mail: '+c_Email+'</font></p>'
+	c_Corpo += '            	<p><font face="arial" size="2">E-mail enviado automaticamente, favor não responder este e-mail</font></p>'
+	c_Corpo += '            	</td>'
+	c_Corpo += '  	      	</tr>'
+	c_Corpo += '   	 	</table>'
+	c_Corpo += '	</body>'
+	c_Corpo += '</html>'
+	
+	IF !EMPTY(c_Para)
+		U_COM_RT02(c_Para,c_Corpo,c_Assunto,l_ExibeTela)
+	ENDIF
+ENDDO
+
+COTAPRECO->(DBCLOSEAREA())
+
+RESTAREA(a_AreaSC8)
+RESTAREA(a_AreASA2)
+RESTAREA(a_AreASB1)
+*/
+Return()

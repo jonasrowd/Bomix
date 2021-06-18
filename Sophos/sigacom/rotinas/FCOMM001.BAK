@@ -1,0 +1,10 @@
+User Function FCOMM001
+	Local c_Lote := ''
+	Local c_Seq  := ""
+
+	_cAlias := Alias()
+	_nReg   := Recno()
+	
+	U_FCOMR001(_cALias, _nReg, 1)
+
+Return

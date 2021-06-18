@@ -1,0 +1,92 @@
+#INCLUDE "RWMAKE.CH"
+#INCLUDE "COLORS.CH"
+#INCLUDE "FONT.CH"
+#INCLUDE "TOPCONN.CH"
+#INCLUDE "PROTHEUS.CH"
+
+User Function FGPER017()
+
+Local c_Perg		:= "FGPER017"
+
+Private o_Telas	:= clsTelasGen():New()
+Private l_Opcao	:= o_Telas:mtdParOkCan("Termo de Autorizacao de Desconto","Esta rotina tem a finaldade de imprimir definicao o termo de compromisso.", "Desenvolvido pela Totvs Bahia", "","FGPER017")
+
+If l_Opcao
+
+	If !Pergunte()
+		f_ValidPerg(c_Perg)
+	EndIf
+	f_GeraRelatorio()
+
+Else
+
+	Return()
+
+EndIf
+
+Return
+
+Static Function f_GeraRelatorio()
+
+Private o14N			:=	TFont():New("",,14,,.T.,,,,,.F.,.F.)
+Private oArial10N	:=	TFont():New("Arial",,12,,.F.,,,,,.F.,.F.)
+Private oArialó32N	:=	TFont():New("Arial Narrow",,32,,.T.,,,,,.F.,.F.)
+Private oPrinter  	:=	tAvPrinter():New("FGPER017")
+
+//Private oArial10N	    :=	TFont():New("Arial",,10,,.T.,,,,,.F.,.F.)
+
+  oPrinter:Setup()
+  oPrinter:SetPortrait()
+  oPrinter:StartPage()
+  printPage()
+  oPrinter:Preview()
+
+Return
+
+Static Function printPage()
+
+  Local c_Data   := STRZERO(Day(dDataBase), 2) + " de " + MesExtenso(dDataBase) + " de " + STRZERO(Year(dDataBase), 4)
+  Local c_Cidade := Alltrim(SM0->M0_CIDCOB)
+  DbSelectArea("SRA")
+  DbSetOrder(1)
+  IF DbSeek(xFilial("SRA")+mv_par01).AND. SRA->RA_SITFOLH = " "
+
+		oPrinter:Say(0122,0476,"TERMO DE COMPROMISSO/AUTORIZACAO DE DESCONTO",o14N,,0)
+		oPrinter:Say(0353,0200,"Comprometo-me a atualizar as informações anualmente ou sempre que ocorrem alterações, e a utilizar os",oArial10N,,0)
+		oPrinter:Say(0411,0200,"vale transporte que me forem concedidos exclusivamente no percurso residência/trabalho/residência.",oArial10N,,0)
+		oPrinter:Say(0470,0200,"Estou ciente de que, na hipótese de infringir tal compromisso, a empresa poderá dispensar-me por justa",oArial10N,,0)
+		oPrinter:Say(0518,0200,"causa, nos termos do artigo parágrafo nr. 03, do Decreto nr. 95.247/87.",oArial10N,,0)
+		oPrinter:Say(0577,0200,"Autorizo a empresa a descontar mensalmente de meus vencimentos até olimite de 6%(seis por cento) do ",oArial10N,,0)
+		oPrinter:Say(0615,0200,"salário o valor destinado a cobrir o fornecimento dos vale transporte por mim utilizados.",oArial10N,,0)
+
+		oPrinter:Say(0746,1250, c_Cidade +", " + c_Data ,oArial10N,,0)
+		oPrinter:Say(1080,0220, ALLTRIM(SRA->RA_NOME) ,oArial10N,,0)
+  		oPrinter:Say(1080,1150, ALLTRIM(SM0->M0_NOMECOM),oArial10N,,0)
+  		oPrinter:Say(1360,0220,"Responsavel Legal (Quando Menor)",oArial10N,,0)
+  		oPrinter:Say(1120,0220,"Registro: " + SRA->RA_MAT,oArial10N,,0)
+ 		oPrinter:Say(0953,1140,"_________________" ,oArialó32N,,0)
+  		oPrinter:Say(1240,0200,"_________________" ,oArialó32N,,0)
+		oPrinter:Say(0953,0200,"_________________" ,oArialó32N,,0)
+
+
+
+  Else
+
+     Aviso("Atenção" ,"Funcionário não encontrado!",{"Ok"},2,"Atenção")
+
+	 Return()
+
+  Endif
+
+Return
+
+Static Function f_ValidPerg(c_Perg)
+
+ Local a_PAR01        := {}
+
+ Aadd(a_PAR01, "Informe a matricula")
+
+//PutSx1(cGrupo,cOrdem,cPergunt,   PerSpa,cPerEng,cVar,cTipo ,nTamanho,nDecimal,nPresel,cGSC,cValid,cF3, cGrpSxg,cPyme,cVar01,cDef01,cDefSpa1,cDefEng1,cCnt01, cDef02,cDefSpa2,cDefEng2,cDef03,cDefSpa3,cDefEng3, cDef04,cDefSpa4,cDefEng4, cDef05,cDefSpa5,cDefEng5, aHelpPor,aHelpEng,aHelpSpa,cHelp)
+PutSx1(c_Perg,"01","Matricula Colaborador?   ","","","mv_ch1","C",06,0,0,"G","","SRA","","","mv_PAR01","","","","","","","","","","","","","","","","",a_PAR01)
+
+Return()
