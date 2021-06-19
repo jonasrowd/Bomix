@@ -1,5 +1,6 @@
 #include "protheus.ch"
-#include "rwmake.ch"          
+#include "rwmake.ch"
+#include "rptdef.ch"       
            
                       
 
@@ -37,6 +38,7 @@ aReturn  := {"Zebrado", 1,"Administracao", 2, 2, 1, "",1 }
 nLastKey := 0
 
 cNf	:= cNota
+
 
 dbSelectArea("SE1")
 
@@ -196,7 +198,8 @@ Local nVlrAbat	  := 0
 
 Private cStartPath       := GetSrvProfString("Startpath","")
 
-oPrint:= TMSPrinter():New( "Boleto Laser" )
+// oPrint:= TMSPrinter():New( "Boleto Laser" )
+oPrint := FWMsPrinter():New(FwTimeStamp(1) + ".rel", IMP_PDF, .T.)
 oPrint:SetPortrait() // ou SetLandscape()
 oPrint:Setup()   // Inicia uma nova página
 
