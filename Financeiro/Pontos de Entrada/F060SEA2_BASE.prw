@@ -263,7 +263,7 @@ DBGOTOP()
 
  cPath	:= "\BOLITAU"//Caminho onde vai ser gerado o boleto grafico abaixo do System
  cNameArq:=cPath+'\'+_cNomeArq
- fEnvMail(cMaiForn,cNameArq,aCB_RN_NN[1],cNumTit)
+ //fEnvMail(cMaiForn,cNameArq,aCB_RN_NN[1],cNumTit)
  FERASE("C:\TEMP\"+_cNomeArq)
 
    

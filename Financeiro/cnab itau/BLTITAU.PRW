@@ -362,7 +362,7 @@ Do While SE1->(!EOF())
 
 		DbSelectArea("SE1")
 		RecLock("SE1",.F.)
-		SE1->E1_NUMBCO 	:=	cNroDoc   // Nosso número (Ver fórmula para calculo) 
+		SE1->E1_NUMBCO 	:=	cNroDoc   		// Nosso número (Ver fórmula para calculo) 
 		SE1->E1_PORTADO :=	aDadosBanco[1]
 		SE1->E1_AGEDEP  :=	aDadosBanco[3]
 		SE1->E1_CONTA   :=	aDadosBanco[4]
@@ -405,14 +405,15 @@ Do While SE1->(!EOF())
 		E1_PREFIXO                          ,;  // [7] Prefixo da NF
 		E1_TIPO	                           	}   // [8] Tipo do Titulo
 		
-		oPrint := FWMsPrinter():New( + ".rel", IMP_PDF, .T., NIL, .T.)
+		oPrint := FWMsPrinter():New(cNumTit + ".rel", IMP_PDF, .T., NIL, .T.)
 		oPrint:SetPortrait() // ou SetLandFwTimeStamp(1)scape()
+		oPrint:SetParm( "-RFS")
 		oPrint:cPathPDF := "C:\SPOOL\"
 		// oPrint:Setup()   // Inicia uma nova página
 		
 
 		Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolText,aCB_RN_NN,dvNN)
-		nX := nX + 1
+		nX := nX++
 	EndIf
 
 	dbSelectArea("SE1")
@@ -509,12 +510,12 @@ oPrint:Say  (nRow1+0300,1080,StrZero(Day(aDadosTit[4]),2) +"/"+ StrZero(Month(aD
 oPrint:Say  (nRow1+0250,1510,"Valor do Documento",oFont8)
 oPrint:Say  (nRow1+0300,1550,AllTrim(Transform(aDadosTit[5],"@E 999,999,999.99")),oFont10)
 
-oPrint:Say  (nRow1+0400,0100,"Recebi(emos) o bloqueto/título",oFont10)
-oPrint:Say  (nRow1+0450,0100,"com as características acima.",oFont10)
-oPrint:Say  (nRow1+0350,1060,"Data",oFont8)
-oPrint:Say  (nRow1+0350,1410,"Assinatura",oFont8)
-oPrint:Say  (nRow1+0450,1060,"Data",oFont8)
-oPrint:Say  (nRow1+0450,1410,"Entregador",oFont8)
+oPrint:Say  (nRow1+0400,0100,"Recebi(emos) o bloqueto/título",	oFont10)
+oPrint:Say  (nRow1+0450,0100,"com as características acima.",	oFont10)
+oPrint:Say  (nRow1+0350,1060,"Data",							oFont8)
+oPrint:Say  (nRow1+0350,1410,"Assinatura",						oFont8)
+oPrint:Say  (nRow1+0450,1060,"Data",							oFont8)
+oPrint:Say  (nRow1+0450,1410,"Entregador",						oFont8)
 
 oPrint:Line (nRow1+0250, 100,nRow1+0250,1900 )
 oPrint:Line (nRow1+0350, 100,nRow1+0350,1900 )
@@ -527,14 +528,14 @@ oPrint:Line (nRow1+0350,1500,nRow1+0150,1500 ) //--
 oPrint:Line (nRow1+0550,1900,nRow1+0150,1900 )
 
 oPrint:Say  (nRow1+0165,1910,"(  )Mudou-se"                                	,oFont8)
-oPrint:Say  (nRow1+0205,1910,"(  )Ausente"                                    ,oFont8)
+oPrint:Say  (nRow1+0205,1910,"(  )Ausente"                                  ,oFont8)
 oPrint:Say  (nRow1+0245,1910,"(  )Não existe nº indicado"                  	,oFont8)
 oPrint:Say  (nRow1+0285,1910,"(  )Recusado"                                	,oFont8)
-oPrint:Say  (nRow1+0325,1910,"(  )Não procurado"                              ,oFont8)
+oPrint:Say  (nRow1+0325,1910,"(  )Não procurado"                            ,oFont8)
 oPrint:Say  (nRow1+0365,1910,"(  )Endereço insuficiente"                  	,oFont8)
 oPrint:Say  (nRow1+0405,1910,"(  )Desconhecido"                            	,oFont8)
-oPrint:Say  (nRow1+0445,1910,"(  )Falecido"                                   ,oFont8)
-oPrint:Say  (nRow1+0485,1910,"(  )Outros(anotar no verso)"                  	,oFont8)
+oPrint:Say  (nRow1+0445,1910,"(  )Falecido"                                 ,oFont8)
+oPrint:Say  (nRow1+0485,1910,"(  )Outros(anotar no verso)"                  ,oFont8)
 
 /*****************/
 /* SEGUNDA PARTE */
