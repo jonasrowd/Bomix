@@ -1,8 +1,5 @@
-#include "protheus.ch"
-#include "rwmake.ch"
-#include "rptdef.ch"       
-           
-                      
+#include "TOTVS.ch"
+#include "RWMAKE.ch"          
 
 #DEFINE __cCarteira "109"
 #DEFINE __cMoeda    "9"
@@ -17,11 +14,12 @@
 +-----------+------------------------------------------------------------+
 */
 User Function BLTITAU(cNota)
-Local	oSX1 		:= NIL
-Private lExec    	:= .F.
-Private cIndexName 	:= ''
-Private cIndexKey  	:= ''
-Private cFilter    	:= ''
+Local oSX1 := NIL // Objeto de criação de Pergunte()
+
+Private lExec    := .F.
+Private cIndexName := ''
+Private cIndexKey  := ''
+Private cFilter    := ''
 
 DEFAULT cNota := Space(09)
 
@@ -33,7 +31,7 @@ cDesc3   := ""
 cString  := "SE1"
 wnrel    := "BOLETO"
 lEnd     := .F.
-cPerg    := Padr("BLTITAU",10)
+cPerg   := Padr("BLTITAU",10)
 aReturn  := {"Zebrado", 1,"Administracao", 2, 2, 1, "",1 }
 nLastKey := 0
 
@@ -119,7 +117,7 @@ Else
 Endif                                                                                    
 cfilter     += " .And. E1_PORTADO <> 'CX1' "        
      
-
+    
 IndRegua("SE1", cIndexName, cIndexKey,, cFilter, "Aguarde selecionando registros....")
 DbSelectArea("SE1")
 #IFNDEF TOP
@@ -177,10 +175,9 @@ Local nI          := 1
 Local aCB_RN_NN   := {}
 Local nVlrAbat	  := 0
 Private cStartPath       := GetSrvProfString("Startpath","")
-
-// oPrint:= TMSPrinter():New( "Boleto Laser" )
-
-
+oPrint:= TMSPrinter():New( "Boleto Laser" )
+oPrint:SetPortrait() // ou SetLandscape()
+oPrint:Setup()   // Inicia uma nova página
 dbSelectArea("SE1")
 //SE1->(DbGoTop())
 ProcRegua(RecCount())
@@ -335,7 +332,7 @@ Do While SE1->(!EOF())
 		cNroDoc	:= StrZero(	Val(Alltrim(SE1->E1_NUM)+Alltrim(SE1->E1_PARCELA)),8)
 		DbSelectArea("SE1")
 		RecLock("SE1",.F.)
-		SE1->E1_NUMBCO 	:=	cNroDoc   		// Nosso número (Ver fórmula para calculo) 
+		SE1->E1_NUMBCO 	:=	cNroDoc   // Nosso número (Ver fórmula para calculo) 
 		SE1->E1_PORTADO :=	aDadosBanco[1]
 		SE1->E1_AGEDEP  :=	aDadosBanco[3]
 		SE1->E1_CONTA   :=	aDadosBanco[4]
@@ -376,13 +373,8 @@ Do While SE1->(!EOF())
 		E1_PREFIXO                          ,;  // [7] Prefixo da NF
 		E1_TIPO	                           	}   // [8] Tipo do Titulo
 		
-		oPrint := FWMsPrinter():New(cNumTit + ".rel", IMP_PDF, .T., NIL, .T.)
-		oPrint:SetPortrait() // ou SetLandFwTimeStamp(1)scape()
-		oPrint:SetParm( "-RFS")
-		oPrint:cPathPDF := "C:\SPOOL\"
-		// oPrint:Setup()   // Inicia uma nova página
 		Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolText,aCB_RN_NN,dvNN)
-		nX := nX++
+		nX := nX + 1
 	EndIf
 	dbSelectArea("SE1")
 	SE1->(DbSkip())
@@ -461,14 +453,12 @@ oPrint:Say  (nRow1+0250,1060,"Vencimento",oFont8)
 oPrint:Say  (nRow1+0300,1080,StrZero(Day(aDadosTit[4]),2) +"/"+ StrZero(Month(aDadosTit[4]),2) +"/"+ Right(Str(Year(aDadosTit[4])),4),oFont10)
 oPrint:Say  (nRow1+0250,1510,"Valor do Documento",oFont8)
 oPrint:Say  (nRow1+0300,1550,AllTrim(Transform(aDadosTit[5],"@E 999,999,999.99")),oFont10)
-
-oPrint:Say  (nRow1+0400,0100,"Recebi(emos) o bloqueto/título",	oFont10)
-oPrint:Say  (nRow1+0450,0100,"com as características acima.",	oFont10)
-oPrint:Say  (nRow1+0350,1060,"Data",							oFont8)
-oPrint:Say  (nRow1+0350,1410,"Assinatura",						oFont8)
-oPrint:Say  (nRow1+0450,1060,"Data",							oFont8)
-oPrint:Say  (nRow1+0450,1410,"Entregador",						oFont8)
-
+oPrint:Say  (nRow1+0400,0100,"Recebi(emos) o bloqueto/título",oFont10)
+oPrint:Say  (nRow1+0450,0100,"com as características acima.",oFont10)
+oPrint:Say  (nRow1+0350,1060,"Data",oFont8)
+oPrint:Say  (nRow1+0350,1410,"Assinatura",oFont8)
+oPrint:Say  (nRow1+0450,1060,"Data",oFont8)
+oPrint:Say  (nRow1+0450,1410,"Entregador",oFont8)
 oPrint:Line (nRow1+0250, 100,nRow1+0250,1900 )
 oPrint:Line (nRow1+0350, 100,nRow1+0350,1900 )
 oPrint:Line (nRow1+0450,1050,nRow1+0450,1900 ) //---
@@ -478,14 +468,14 @@ oPrint:Line (nRow1+0550,1400,nRow1+0350,1400 )
 oPrint:Line (nRow1+0350,1500,nRow1+0150,1500 ) //--
 oPrint:Line (nRow1+0550,1900,nRow1+0150,1900 )
 oPrint:Say  (nRow1+0165,1910,"(  )Mudou-se"                                	,oFont8)
-oPrint:Say  (nRow1+0205,1910,"(  )Ausente"                                  ,oFont8)
+oPrint:Say  (nRow1+0205,1910,"(  )Ausente"                                    ,oFont8)
 oPrint:Say  (nRow1+0245,1910,"(  )Não existe nº indicado"                  	,oFont8)
 oPrint:Say  (nRow1+0285,1910,"(  )Recusado"                                	,oFont8)
-oPrint:Say  (nRow1+0325,1910,"(  )Não procurado"                            ,oFont8)
+oPrint:Say  (nRow1+0325,1910,"(  )Não procurado"                              ,oFont8)
 oPrint:Say  (nRow1+0365,1910,"(  )Endereço insuficiente"                  	,oFont8)
 oPrint:Say  (nRow1+0405,1910,"(  )Desconhecido"                            	,oFont8)
-oPrint:Say  (nRow1+0445,1910,"(  )Falecido"                                 ,oFont8)
-oPrint:Say  (nRow1+0485,1910,"(  )Outros(anotar no verso)"                  ,oFont8)
+oPrint:Say  (nRow1+0445,1910,"(  )Falecido"                                   ,oFont8)
+oPrint:Say  (nRow1+0485,1910,"(  )Outros(anotar no verso)"                  	,oFont8)
 /*****************/
 /* SEGUNDA PARTE */
 /*****************/
@@ -595,7 +585,7 @@ Next nI
 oPrint:Line (nRow3+2000,100,nRow3+2000,2300)
 oPrint:Line (nRow3+2000,500,nRow3+1920, 500)
 oPrint:Line (nRow3+2000,710,nRow3+1920, 710)
-oPrint:Say  (nRow3+1934,100,aDadosBanco[2],oFont10)			// 	[2]Nome do Banco
+oPrint:Say  (nRow3+1934,100,aDadosBanco[2],oFont10)		// 	[2]Nome do Banco
 oPrint:Say  (nRow3+1925,513,aDadosBanco[1]+"-7",oFont20 )	// 	[1]Numero do Banco
 oPrint:Say  (nRow3+1934,755,aCB_RN_NN[2],oFont15n)			//	Linha Digitavel do Codigo de Barras
 oPrint:Line (nRow3+2100,100,nRow3+2100,2300 )
@@ -678,7 +668,7 @@ oPrint:Line (nRow3+2410,1800,nRow3+2410,2300 )
 oPrint:Line (nRow3+2480,1800,nRow3+2480,2300 )
 oPrint:Line (nRow3+2550,1800,nRow3+2550,2300 )
 oPrint:Line (nRow3+2620,1800,nRow3+2620,2300 )
-oPrint:Line (nRow3+2690,100,nRow3+2690,2300  )
+oPrint:Line (nRow3+2690,100 ,nRow3+2690,2300 )
 oPrint:Line (nRow3+2850,100,nRow3+2850,2300  )
 //MSBAR("INT25",25.5,1,aCB_RN_NN[1],oPrint,.F.,Nil,Nil,0.025,1.5,Nil,Nil,"A",.F.) //modali
 MSBAR("INT25",24.5,1,aCB_RN_NN[1],oPrint,.F.,Nil,Nil,0.022,1.5,Nil,Nil,"A",.F.) //datasupri
@@ -687,7 +677,6 @@ MSBAR("INT25",24.5,1,aCB_RN_NN[1],oPrint,.F.,Nil,Nil,0.022,1.5,Nil,Nil,"A",.F.) 
 //SE1->E1_NUMBCO 	:=	aCB_RN_NN[3]   // Nosso número (Ver fórmula para calculo)
 //MsUnlock()
 oPrint:EndPage() // Finaliza a página
-oPrint:Print()
 Return Nil
 /*
 +-----------+----------+-------+--------------------+------+-------------+
@@ -748,7 +737,7 @@ Alltrim(cCodMoeda)            			+ ; // 04 a 04
 Alltrim(cFator)               			+ ; // 06 a 09
 Alltrim(cValorFinal)          			+ ; // 10 a 19
 Alltrim(cCarteira)            			+ ; // 20 a 22
-Right(AllTrim(SE1->E1_NUMBCO),8) 		+ ; // 23 A 30
+Right(AllTrim(SE1->E1_NUMBCO),8) 		+; // 23 A 30
 Alltrim(cDvNN)                			+ ; // 31 a 31
 Alltrim(cAgencia)             			+ ; // 32 a 35
 Alltrim(Left(cConta,5))               	+ ; // 36 a 40
