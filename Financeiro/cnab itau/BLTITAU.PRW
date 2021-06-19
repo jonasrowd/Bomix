@@ -199,9 +199,7 @@ Local nVlrAbat	  := 0
 Private cStartPath       := GetSrvProfString("Startpath","")
 
 // oPrint:= TMSPrinter():New( "Boleto Laser" )
-oPrint := FWMsPrinter():New(FwTimeStamp(1) + ".rel", IMP_PDF, .T.)
-oPrint:SetPortrait() // ou SetLandscape()
-oPrint:Setup()   // Inicia uma nova página
+
 
 dbSelectArea("SE1")
 //SE1->(DbGoTop())
@@ -407,6 +405,12 @@ Do While SE1->(!EOF())
 		E1_PREFIXO                          ,;  // [7] Prefixo da NF
 		E1_TIPO	                           	}   // [8] Tipo do Titulo
 		
+		oPrint := FWMsPrinter():New( + ".rel", IMP_PDF, .T., NIL, .T.)
+		oPrint:SetPortrait() // ou SetLandFwTimeStamp(1)scape()
+		oPrint:cPathPDF := "C:\SPOOL\"
+		// oPrint:Setup()   // Inicia uma nova página
+		
+
 		Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolText,aCB_RN_NN,dvNN)
 		nX := nX + 1
 	EndIf
@@ -801,6 +805,7 @@ MSBAR("INT25",24.5,1,aCB_RN_NN[1],oPrint,.F.,Nil,Nil,0.022,1.5,Nil,Nil,"A",.F.) 
 //MsUnlock()
 
 oPrint:EndPage() // Finaliza a página
+oPrint:Print()
 Return Nil
 
 /*
