@@ -358,8 +358,8 @@ Static Function MontaRel()
 		IncProc()
 		nI++
 	EndDo
+	oPrint:Preview()     // Visualiza antes de imprimir
 	oPrint:EndPage()       // Finaliza a página
-	//oPrint:Preview()     // Visualiza antes de imprimir
 	//cJPEG := Iif(Empty(AllTrim(SE1->E1_NUM)),CriaTrab(,.f.),AllTrim(SE1->E1_NUM))
 	//oPrint:SaveAllAsJPEG(cStartPath+cJPEG,1000,1400,140)
 Return Nil
@@ -409,21 +409,21 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	/* PRIMEIRA PARTE */
 	/******************/
 	nRow1 := 20
-	oPrint:Line (0150,500,0070, 500)
-	oPrint:Line (0150,710,0070, 710)
-	oPrint:Say  (nRow1+0084,100,aDadosBanco[2],oFont10 )	        // [2]Nome do Banco
-	oPrint:Say  (nRow1+0075,513,aDadosBanco[1]+"-7",oFont20 )		// [1]Numero do Banco
-	oPrint:Say  (nRow1+0084,1900,"Comprovante de Entrega",oFont10)
+	oPrint:Line (0150,500,0070,500)
+	oPrint:Line (0150,710,0070,710)
+	oPrint:Say  (nRow1+0110,100,aDadosBanco[2],oFont10 )       // [2]Nome do Banco
+	oPrint:Say  (nRow1+0110,513,aDadosBanco[1]+"-7",oFont20 )	// [1]Numero do Banco
+	oPrint:Say  (nRow1+0110,1900,"Comprovante de Entrega",oFont10)
 	oPrint:Line (0150,100,0150,2300)
-	oPrint:Say  (nRow1+0150,100 ,"Beneficiário",oFont8)
-	oPrint:Say  (nRow1+0200,100 ,aDadosEmp[1],oFont10)				//Nome + CNPJ
+	oPrint:Say  (nRow1+0150,100,"Beneficiário",oFont8)
+	oPrint:Say  (nRow1+0200,100,aDadosEmp[1],oFont10)				//Nome + CNPJ
 	oPrint:Say  (nRow1+0150,1060,"Agência/Código Beneficiário",oFont8)
 	oPrint:Say  (nRow1+0200,1060,aDadosBanco[3]+"/"+aDadosBanco[4]+"-"+aDadosBanco[5],oFont10)
 	oPrint:Say  (nRow1+0150,1510,"Nro.Documento",oFont8)
 	//oPrint:Say  (nRow1+0200,1510,aDadosTit[7]+aDadosTit[1],oFont10) //Prefixo +Numero+Parcela
 	oPrint:Say  (nRow1+0200,1510,aDadosTit[1]						,oFont10) //Numero do Titulo
-	oPrint:Say  (nRow1+0250,100 ,"Pagador",oFont8)
-	oPrint:Say  (nRow1+0300,100 ,aDatSacado[1],oFont9)				//Nome
+	oPrint:Say  (nRow1+0250,100,"Pagador",oFont8)
+	oPrint:Say  (nRow1+0300,100,aDatSacado[1],oFont9)				//Nome
 	oPrint:Say  (nRow1+0250,1060,"Vencimento",oFont8)
 	oPrint:Say  (nRow1+0300,1080,StrZero(Day(aDadosTit[4]),2) +"/"+ StrZero(Month(aDadosTit[4]),2) +"/"+ Right(Str(Year(aDadosTit[4])),4),oFont10)
 	oPrint:Say  (nRow1+0250,1510,"Valor do Documento",oFont8)
@@ -436,10 +436,10 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oPrint:Say  (nRow1+0450,1060,"Data",							oFont8)
 	oPrint:Say  (nRow1+0450,1410,"Entregador",						oFont8)
 
-	oPrint:Line (0250, 100,0250,1900 )
-	oPrint:Line (0350, 100,0350,1900 )
+	oPrint:Line (0250,100,0250,1900 )
+	oPrint:Line (0350,100,0350,1900 )
 	oPrint:Line (0450,1050,0450,1900 ) //---
-	oPrint:Line (0550, 100,0550,2300 )
+	oPrint:Line (0550,100,0550,2300 )
 	oPrint:Line (0550,1050,0150,1050 )
 	oPrint:Line (0550,1400,0350,1400 )
 	oPrint:Line (0350,1500,0150,1500 ) //--
@@ -466,9 +466,9 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oPrint:Line (0710,100,0710,2300)
 	oPrint:Line (0710,500,0630,500)
 	oPrint:Line (0710,710,0630,710)
-	oPrint:Say  (nRow2+0644,100,aDadosBanco[2],oFont10 )		// [2]Nome do Banco
-	oPrint:Say  (nRow2+0635,513,aDadosBanco[1]+"-7",oFont20 )	// [1]Numero do Banco
-	oPrint:Say  (nRow2+0644,1800,"Recibo do Pagador",oFont10)
+	oPrint:Say  (nRow2+0670,100,aDadosBanco[2],oFont10 )		// [2]Nome do Banco
+	oPrint:Say  (nRow2+0670,513,aDadosBanco[1]+"-7",oFont20 )	// [1]Numero do Banco
+	oPrint:Say  (nRow2+0670,1800,"Recibo do Pagador",oFont10)
 	oPrint:Line (0810,100,0810,2300 )
 	oPrint:Line (0910,100,0910,2300 )
 	oPrint:Line (0980,100,0980,2300 )
@@ -479,14 +479,14 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oPrint:Line (0910,1300,0980,1300)
 	oPrint:Line (0910,1480,1050,1480)
 	oPrint:Say  (nRow2+0710,100 ,"Local de Pagamento",oFont8)
-	//oPrint:Say  (nRow2+0725,400 ,"ATE O VENCIMENTO PAGUE PREFERENCIALMENTE NO ITAU",oFont10)
+	//oPrint:Say (nRow2+0725,400 ,"ATE O VENCIMENTO PAGUE PREFERENCIALMENTE NO ITAU",oFont10)
 	oPrint:Say  (nRow2+0765,100 ,"APÓS O VENCIMENTO PAGUE SOMENTE NO ITAU",oFont10)
 	oPrint:Say  (nRow2+0710,1810,"Vencimento"                                     ,oFont8)
 	cString	:= StrZero(Day(aDadosTit[4]),2) +"/"+ StrZero(Month(aDadosTit[4]),2) +"/"+ Right(Str(Year(aDadosTit[4])),4)
 	nCol := 1810+(374-(len(cString)*22))
 	oPrint:Say  (nRow2+0750,nCol,cString,oFont11c)
 	oPrint:Say  (nRow2+0810,100 ,"Beneficiário"                                        ,oFont8)
-	oPrint:Say  (nRow2+0850,100 ,aDadosEmp[1]+"                  - "+aDadosEmp[6]	,oFont10) //Nome + CNPJ
+	oPrint:Say  (nRow2+0850,100 ,allTrim(aDadosEmp[1])+" - "+aDadosEmp[6]	,oFont10) //Nome + CNPJ
 	oPrint:Say  (nRow2+0810,1810,"Agência/Código Beneficiário",oFont8)
 	cString := Alltrim(aDadosBanco[3]+"/"+aDadosBanco[4]+"-"+aDadosBanco[5])
 	nCol := 1810+(374-(len(cString)*22))
@@ -496,7 +496,7 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	//oPrint:Say  (nRow2+0940,100, StrZero(Day(aDadosTit[2]),2) +"/"+ StrZero(Month(aDadosTit[2]),2) +"/"+ Right(Str(Year(aDadosTit[2])),4),oFont10)
 	oPrint:Say  (nRow2+0910,505 ,"Nro.Documento"                                  ,oFont8)
 	//oPrint:Say  (nRow2+0940,605 ,aDadosTit[7]+aDadosTit[1]						,oFont10) //Prefixo +Numero+Parcela
-	oPrint:Say (nRow2+0940,605 ,aDadosTit[1]						,oFont10) //Numero do Titulo
+	oPrint:Say  (nRow2+0940,605 ,aDadosTit[1]						,oFont10) //Numero do Titulo
 	oPrint:Say  (nRow2+0910,1005,"Espécie Doc."                                   ,oFont8)
 	oPrint:Say  (nRow2+0940,1050,aDadosTit[8]										,oFont10) //Tipo do Titulo
 	oPrint:Say  (nRow2+0910,1305,"Aceite"                                         ,oFont8)
@@ -550,8 +550,8 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oPrint:Line (1190,1800,1190,2300 )
 	oPrint:Line (1260,1800,1260,2300 )
 	oPrint:Line (1330,1800,1330,2300 )
-	oPrint:Line (1400,100,1400,2300 )
-	oPrint:Line (1640,100,1640,2300 )
+	oPrint:Line (1400,100,1400,2300  )
+	oPrint:Line (1640,100,1640,2300  )
 	/******************/
 	/* TERCEIRA PARTE */
 	/******************/
@@ -562,9 +562,9 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oPrint:Line (2000,100,2000,2300)
 	oPrint:Line (2000,500,1920, 500)
 	oPrint:Line (2000,710,1920, 710)
-	oPrint:Say  (nRow3+1934,100,aDadosBanco[2],oFont10)			// 	[2]Nome do Banco
-	oPrint:Say  (nRow3+1925,513,aDadosBanco[1]+"-7",oFont20 )	// 	[1]Numero do Banco
-	oPrint:Say  (nRow3+1934,755,aCB_RN_NN[2],oFont15n)			//	Linha Digitavel do Codigo de Barras
+	oPrint:Say  (nRow3+1960,100,aDadosBanco[2],oFont10)			// 	[2]Nome do Banco
+	oPrint:Say  (nRow3+1960,513,aDadosBanco[1]+"-7",oFont20 )	// 	[1]Numero do Banco
+	oPrint:Say  (nRow3+1960,755,aCB_RN_NN[2],oFont15n)			//	Linha Digitavel do Codigo de Barras
 	oPrint:Line (2100,100,2100,2300 )
 	oPrint:Line (2200,100,2200,2300 )
 	oPrint:Line (2270,100,2270,2300 )
@@ -574,32 +574,32 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oPrint:Line (2200,1000,2340,1000)
 	oPrint:Line (2200,1300,2270,1300)
 	oPrint:Line (2200,1480,2340,1480)
-	oPrint:Say  (2000,100 ,"Local de Pagamento",oFont8)
+	oPrint:Say  (nRow3+2000,100 ,"Local de Pagamento",oFont8)
 	//oPrint:Say  (nRow3+2015,400 ,"ATE O VENCIMENTO PAGUE PREFERENCIALMENTE NO ITAU",oFont10)
 	oPrint:Say  (nRow3+2055,100 ,"APÓS O VENCIMENTO PAGUE SOMENTE NO ITAU",oFont10)
 	oPrint:Say  (nRow3+2000,1810,"Vencimento",oFont8)
-	cString := StrZero(Day(aDadosTit[4]),2) +"/"+ StrZero(Month(aDadosTit[4]),2) +"/"+ Right(Str(Year(aDadosTit[4])),4)
+	cString 	 := StrZero(Day(aDadosTit[4]),2) +"/"+ StrZero(Month(aDadosTit[4]),2) +"/"+ Right(Str(Year(aDadosTit[4])),4)
 	nCol	 	 := 1810+(374-(len(cString)*22))
 	oPrint:Say  (nRow3+2040,nCol,cString,oFont11c)
 	oPrint:Say  (nRow3+2100,100 ,"Beneficiário",oFont8)
-	oPrint:Say  (nRow3+2140,100 ,aDadosEmp[1]+"                  - "+aDadosEmp[6]	,oFont10) //Nome + CNPJ
+	oPrint:Say  (nRow3+2140,100 ,aDadosEmp[1]+" - "+aDadosEmp[6]	,oFont10) //Nome + CNPJ
 	oPrint:Say  (nRow3+2100,1810,"Agência/Código Beneficiário",oFont8)
-	cString := Alltrim(aDadosBanco[3]+"/"+aDadosBanco[4]+"-"+aDadosBanco[5]) 
-	nCol 	 := 1810+(374-(len(cString)*22))
+	cString 	 := Alltrim(aDadosBanco[3]+"/"+aDadosBanco[4]+"-"+aDadosBanco[5]) 
+	nCol 	 	 := 1810+(374-(len(cString)*22))
 	oPrint:Say  (nRow3+2140,nCol,cString ,oFont11c)
-	oPrint:Say (nRow3+2200,100 ,"Data do Documento"                             ,oFont8)
-	oPrint:Say (nRow3+2230,100, StrZero(Day(dDataBase),2) +"/"+ StrZero(Month(dDataBase),2) +"/"+ Right(Str(Year(dDataBase)),4), oFont10)
-	oPrint:Say (nRow3+2200,505 ,"Nro.Documento"                                 ,oFont8)
+	oPrint:Say  (nRow3+2200,100 ,"Data do Documento"                             ,oFont8)
+	oPrint:Say  (nRow3+2230,100, StrZero(Day(dDataBase),2) +"/"+ StrZero(Month(dDataBase),2) +"/"+ Right(Str(Year(dDataBase)),4), oFont10)
+	oPrint:Say  (nRow3+2200,505 ,"Nro.Documento"                                 ,oFont8)
 	//oPrint:Say (nRow3+2230,605 ,aDadosTit[7]+aDadosTit[1]						,oFont10) //Prefixo +Numero+Parcela
-	oPrint:Say (nRow3+2230,605 ,aDadosTit[1]						,oFont10) //Numero do Titulo
-	oPrint:Say (nRow3+2200,1005,"Espécie Doc."                                  ,oFont8)
-	oPrint:Say (nRow3+2230,1050,aDadosTit[8]									,oFont10) //Tipo do Titulo
-	oPrint:Say (nRow3+2200,1305,"Aceite"                                        ,oFont8)
-	oPrint:Say (nRow3+2230,1400,"N"                                             ,oFont10)
+	oPrint:Say  (nRow3+2230,605 ,aDadosTit[1]						,oFont10) //Numero do Titulo
+	oPrint:Say  (nRow3+2200,1005,"Espécie Doc."                                  ,oFont8)
+	oPrint:Say  (nRow3+2230,1050,aDadosTit[8]									,oFont10) //Tipo do Titulo
+	oPrint:Say  (nRow3+2200,1305,"Aceite"                                        ,oFont8)
+	oPrint:Say  (nRow3+2230,1400,"N"                                             ,oFont10)
 	oPrint:Say  (nRow3+2200,1485,"Data do Processamento"                        ,oFont8)
 	oPrint:Say  (nRow3+2230,1550,StrZero(Day(aDadosTit[3]),2) +"/"+ StrZero(Month(aDadosTit[3]),2) +"/"+ Right(Str(Year(aDadosTit[3])),4)                               ,oFont10) // Data impressao
 	oPrint:Say  (nRow3+2200,1810,"Nosso Número"                                 ,oFont8)
-	cString := Alltrim(Substr(aDadosTit[6],1,3)+"/"+Right(AllTrim(SE1->E1_NUMBCO),8)+"-"+dvNN)   //Substr(aDadosTit[6],4)
+	cString 	 := Alltrim(Substr(aDadosTit[6],1,3)+"/"+Right(AllTrim(SE1->E1_NUMBCO),8)+"-"+dvNN)   //Substr(aDadosTit[6],4)
 	nCol := 1810+(374-(len(cString)*22))
 	oPrint:Say  (nRow3+2230,nCol,cString,oFont11c)
 	oPrint:Say  (nRow3+2270,100 ,"Uso do Banco"                                 ,oFont8)
@@ -635,11 +635,11 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	Else
 		oPrint:Say  (nRow3+2700,1750,"CPF: "+TRANSFORM(aDatSacado[7],"@R 999.999.999-99"),oFont10) 	// CPF
 	EndIf
-	oPrint:Say  (nRow3+2753,400 ,aDatSacado[3]                                  ,oFont10)
-	oPrint:Say  (nRow3+2806,400 ,aDatSacado[6]+"    "+aDatSacado[4]+" - "+aDatSacado[5],oFont10) // CEP+Cidade+Estado
-	oPrint:Say  (nRow3+2806,1750,Substr(aDadosTit[6],1,3)+Substr(aDadosTit[6],4)  ,oFont10)
-	oPrint:Say  (nRow3+2815,100 ,"Sacador/Avalista"                             ,oFont8)
-	oPrint:Say  (nRow3+2855,1500,"Autenticação Mecânica - Ficha de Compensação" ,oFont8)
+	oPrint:Say  (nRow3+2753,400 ,aDatSacado[3]                                    	,oFont10)
+	oPrint:Say  (nRow3+2806,400 ,aDatSacado[6]+"    "+aDatSacado[4]+ aDatSacado[5]	,oFont10) // CEP+Cidade+Estado
+	oPrint:Say  (nRow3+2806,1750,Substr(aDadosTit[6],1,3)+Substr(aDadosTit[6],4)  	,oFont10)
+	oPrint:Say  (nRow3+2815,100 ,"Sacador/Avalista"                    		        ,oFont8)
+	oPrint:Say  (nRow3+2855,1500,"Autenticação Mecânica - Ficha de Compensação" 	,oFont8)
 	oPrint:Line (2000,1800,2690,1800 )
 	oPrint:Line (2410,1800,2410,2300 )
 	oPrint:Line (2480,1800,2480,2300 )
