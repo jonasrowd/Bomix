@@ -140,7 +140,7 @@ Static Function MontaRel()
 	Local oPrint
 	Local nX			:= 0
 	Local cNroDoc 		:= " "
-	Local aDadosEmp    	:= {	SM0->M0_NOMECOM                                    	  ,; //[1]Nome da Empresa
+	Local aDadosEmp    	:= {SM0->M0_NOMECOM                                    	  ,; //[1]Nome da Empresa
 		SM0->M0_ENDCOB                                     						  ,; //[2]Endereço
 		AllTrim(SM0->M0_BAIRCOB)+", "+AllTrim(SM0->M0_CIDCOB)+", "+SM0->M0_ESTCOB ,; //[3]Complemento
 		"CEP: "+Subs(SM0->M0_CEPCOB,1,5)+"-"+Subs(SM0->M0_CEPCOB,6,3)             ,; //[4]CEP
@@ -274,7 +274,7 @@ Static Function MontaRel()
 			aAdd(aDadosBanco, Alltrim(SA6->A6_NOME))    // [2]Nome do Banco
 			aAdd(aDadosBanco, Alltrim(SA6->A6_AGENCIA)) // [3]Agência
 			aAdd(aDadosBanco, Alltrim(SA6->A6_NUMCON))  // [4]Conta Corrente
-			aAdd(aDadosBanco, Alltrim(SA6->A6_DVCTA))  // [5]Dígito da conta corrente
+			aAdd(aDadosBanco, Alltrim(SA6->A6_DVCTA))   // [5]Dígito da conta corrente
 			aAdd(aDadosBanco, Alltrim(__cCarteira))     // [6]Codigo da Carteira
 
 			If Empty(SA1->A1_ENDCOB)
@@ -314,6 +314,7 @@ Static Function MontaRel()
 			/*
 			----------------------
 			Monta codigo de barras
+
 			----------------------
 			*/                  
 			//mostra = str(nVlrAbat,12,2)
@@ -344,7 +345,7 @@ Static Function MontaRel()
 			E1_PREFIXO                          ,;  // [7] Prefixo da NF
 			E1_TIPO	                           	}   // [8] Tipo do Titulo
 
-			oPrint := FWMsPrinter():New(cNumTit + ".rel", IMP_PDF, .T., NIL, .T.)
+			oPrint := FWMsPrinter():New(cNumTit + ".rel", IMP_PDF, .T., NIL, .T.,,,,,,,.F.,)
 			oPrint:SetPortrait() // ou SetLandFwTimeStamp(1)scape()
 			oPrint:SetParm( "-RFS")
 			oPrint:cPathPDF := "C:\SPOOL\"
@@ -357,8 +358,8 @@ Static Function MontaRel()
 		IncProc()
 		nI++
 	EndDo
-	//oPrint:EndPage()     // Finaliza a página
-	oPrint:Preview()     // Visualiza antes de imprimir
+	oPrint:EndPage()       // Finaliza a página
+	//oPrint:Preview()     // Visualiza antes de imprimir
 	//cJPEG := Iif(Empty(AllTrim(SE1->E1_NUM)),CriaTrab(,.f.),AllTrim(SE1->E1_NUM))
 	//oPrint:SaveAllAsJPEG(cStartPath+cJPEG,1000,1400,140)
 Return Nil
@@ -387,40 +388,40 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	//1.Nome da Fonte (Windows)
 	//3.Tamanho em Pixels
 	//5.Bold (T/F)
-	oFont6   := TFont():New("Arial",9,6,.T.,.F.,5,.T.,5,.T.,.F.)
-	oFont7   := TFont():New("Arial",9,7,.T.,.F.,5,.T.,5,.T.,.F.)
-	oFont8   := TFont():New("Arial",9,8,.T.,.F.,5,.T.,5,.T.,.F.)
-	oFont9   := TFont():New("Arial",9,9,.T.,.F.,5,.T.,5,.T.,.F.)
-	oFont11c := TFont():New("Courier New",9,11,.T.,.T.,5,.T.,5,.T.,.F.)
-	oFont11  := TFont():New("Arial",9,11,.T.,.T.,5,.T.,5,.T.,.F.)
-	oFont9   := TFont():New("Arial",9,8,.T.,.T.,5,.T.,5,.T.,.F.)
-	oFont10  := TFont():New("Arial",9,10,.T.,.T.,5,.T.,5,.T.,.F.)
-	oFont14  := TFont():New("Arial",9,14,.T.,.T.,5,.T.,5,.T.,.F.)
-	oFont20  := TFont():New("Arial",9,20,.T.,.T.,5,.T.,5,.T.,.F.)
-	oFont21  := TFont():New("Arial",9,21,.T.,.T.,5,.T.,5,.T.,.F.)
-	oFont16n := TFont():New("Arial",9,16,.T.,.F.,5,.T.,5,.T.,.F.)
-	oFont15  := TFont():New("Arial",9,15,.T.,.T.,5,.T.,5,.T.,.F.)
-	oFont15n := TFont():New("Arial",9,14,.T.,.F.,5,.T.,5,.T.,.F.)
-	oFont14n := TFont():New("Arial",9,14,.T.,.F.,5,.T.,5,.T.,.F.)
-	oFont24  := TFont():New("Arial",9,24,.T.,.T.,5,.T.,5,.T.,.F.)
+	oFont6   := TFont():New("Arial",9,6,.T.,.F.,5,.T.,5,.T.,.F.,.F.)
+	oFont7   := TFont():New("Arial",9,7,.T.,.F.,5,.T.,5,.T.,.F.,.F.)
+	oFont8   := TFont():New("Arial",9,8,.T.,.F.,5,.T.,5,.T.,.F.,.F.)
+	oFont9   := TFont():New("Arial",9,9,.T.,.F.,5,.T.,5,.T.,.F.,.F.)
+	oFont11c := TFont():New("Courier New",9,11,.T.,.T.,5,.T.,5,.T.,.F.,.F.)
+	oFont11  := TFont():New("Arial",9,11,.T.,.T.,5,.T.,5,.T.,.F.,.F.)
+	oFont9   := TFont():New("Arial",9,8,.T.,.T.,5,.T.,5,.T.,.F.,.F.)
+	oFont10  := TFont():New("Arial",9,10,.T.,.T.,5,.T.,5,.T.,.F.,.F.)
+	oFont14  := TFont():New("Arial",9,14,.T.,.T.,5,.T.,5,.T.,.F.,.F.)
+	oFont20  := TFont():New("Arial",9,20,.T.,.T.,5,.T.,5,.T.,.F.,.F.)
+	oFont21  := TFont():New("Arial",9,21,.T.,.T.,5,.T.,5,.T.,.F.,.F.)
+	oFont16n := TFont():New("Arial",9,16,.T.,.F.,5,.T.,5,.T.,.F.,.F.)
+	oFont15  := TFont():New("Arial",9,15,.T.,.T.,5,.T.,5,.T.,.F.,.F.)
+	oFont15n := TFont():New("Arial",9,14,.T.,.F.,5,.T.,5,.T.,.F.,.F.)
+	oFont14n := TFont():New("Arial",9,14,.T.,.F.,5,.T.,5,.T.,.F.,.F.)
+	oFont24  := TFont():New("Arial",9,24,.T.,.T.,5,.T.,5,.T.,.F.,.F.)
 	oPrint:StartPage()   // Inicia uma nova página
 	/******************/
 	/* PRIMEIRA PARTE */
 	/******************/
-	nRow1 := 0
-	oPrint:Line (nRow1+0150,500,nRow1+0070, 500)
-	oPrint:Line (nRow1+0150,710,nRow1+0070, 710)
+	nRow1 := 20
+	oPrint:Line (0150,500,0070, 500)
+	oPrint:Line (0150,710,0070, 710)
 	oPrint:Say  (nRow1+0084,100,aDadosBanco[2],oFont10 )	        // [2]Nome do Banco
 	oPrint:Say  (nRow1+0075,513,aDadosBanco[1]+"-7",oFont20 )		// [1]Numero do Banco
 	oPrint:Say  (nRow1+0084,1900,"Comprovante de Entrega",oFont10)
-	oPrint:Line (nRow1+0150,100,nRow1+0150,2300)
+	oPrint:Line (0150,100,0150,2300)
 	oPrint:Say  (nRow1+0150,100 ,"Beneficiário",oFont8)
 	oPrint:Say  (nRow1+0200,100 ,aDadosEmp[1],oFont10)				//Nome + CNPJ
 	oPrint:Say  (nRow1+0150,1060,"Agência/Código Beneficiário",oFont8)
 	oPrint:Say  (nRow1+0200,1060,aDadosBanco[3]+"/"+aDadosBanco[4]+"-"+aDadosBanco[5],oFont10)
 	oPrint:Say  (nRow1+0150,1510,"Nro.Documento",oFont8)
 	//oPrint:Say  (nRow1+0200,1510,aDadosTit[7]+aDadosTit[1],oFont10) //Prefixo +Numero+Parcela
-	oPrint:Say (nRow1+0200,1510,aDadosTit[1]						,oFont10) //Numero do Titulo
+	oPrint:Say  (nRow1+0200,1510,aDadosTit[1]						,oFont10) //Numero do Titulo
 	oPrint:Say  (nRow1+0250,100 ,"Pagador",oFont8)
 	oPrint:Say  (nRow1+0300,100 ,aDatSacado[1],oFont9)				//Nome
 	oPrint:Say  (nRow1+0250,1060,"Vencimento",oFont8)
@@ -435,14 +436,14 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oPrint:Say  (nRow1+0450,1060,"Data",							oFont8)
 	oPrint:Say  (nRow1+0450,1410,"Entregador",						oFont8)
 
-	oPrint:Line (nRow1+0250, 100,nRow1+0250,1900 )
-	oPrint:Line (nRow1+0350, 100,nRow1+0350,1900 )
-	oPrint:Line (nRow1+0450,1050,nRow1+0450,1900 ) //---
-	oPrint:Line (nRow1+0550, 100,nRow1+0550,2300 )
-	oPrint:Line (nRow1+0550,1050,nRow1+0150,1050 )
-	oPrint:Line (nRow1+0550,1400,nRow1+0350,1400 )
-	oPrint:Line (nRow1+0350,1500,nRow1+0150,1500 ) //--
-	oPrint:Line (nRow1+0550,1900,nRow1+0150,1900 )
+	oPrint:Line (0250, 100,0250,1900 )
+	oPrint:Line (0350, 100,0350,1900 )
+	oPrint:Line (0450,1050,0450,1900 ) //---
+	oPrint:Line (0550, 100,0550,2300 )
+	oPrint:Line (0550,1050,0150,1050 )
+	oPrint:Line (0550,1400,0350,1400 )
+	oPrint:Line (0350,1500,0150,1500 ) //--
+	oPrint:Line (0550,1900,0150,1900 )
 	oPrint:Say  (nRow1+0165,1910,"(  )Mudou-se"                                	,oFont8)
 	oPrint:Say  (nRow1+0205,1910,"(  )Ausente"                                  ,oFont8)
 	oPrint:Say  (nRow1+0245,1910,"(  )Não existe nº indicado"                  	,oFont8)
@@ -455,28 +456,28 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	/*****************/
 	/* SEGUNDA PARTE */
 	/*****************/
-	nRow2 := 0
+	nRow2 := 20
 	//Pontilhado separador
 	/*
 	For nI := 100 to 2300 step 50
 	oPrint:Line(nRow2+0580, nI,nRow2+0580, nI+30)
 	Next nI
 	*/
-	oPrint:Line (nRow2+0710,100,nRow2+0710,2300)
-	oPrint:Line (nRow2+0710,500,nRow2+0630, 500)
-	oPrint:Line (nRow2+0710,710,nRow2+0630, 710)
+	oPrint:Line (0710,100,0710,2300)
+	oPrint:Line (0710,500,0630,500)
+	oPrint:Line (0710,710,0630,710)
 	oPrint:Say  (nRow2+0644,100,aDadosBanco[2],oFont10 )		// [2]Nome do Banco
 	oPrint:Say  (nRow2+0635,513,aDadosBanco[1]+"-7",oFont20 )	// [1]Numero do Banco
 	oPrint:Say  (nRow2+0644,1800,"Recibo do Pagador",oFont10)
-	oPrint:Line (nRow2+0810,100,nRow2+0810,2300 )
-	oPrint:Line (nRow2+0910,100,nRow2+0910,2300 )
-	oPrint:Line (nRow2+0980,100,nRow2+0980,2300 )
-	oPrint:Line (nRow2+1050,100,nRow2+1050,2300 )
-	oPrint:Line (nRow2+0910,500,nRow2+1050,500)
-	oPrint:Line (nRow2+0980,750,nRow2+1050,750)
-	oPrint:Line (nRow2+0910,1000,nRow2+1050,1000)
-	oPrint:Line (nRow2+0910,1300,nRow2+0980,1300)
-	oPrint:Line (nRow2+0910,1480,nRow2+1050,1480)
+	oPrint:Line (0810,100,0810,2300 )
+	oPrint:Line (0910,100,0910,2300 )
+	oPrint:Line (0980,100,0980,2300 )
+	oPrint:Line (1050,100,1050,2300 )
+	oPrint:Line (0910,500,1050,500)
+	oPrint:Line (0980,750,1050,750)
+	oPrint:Line (0910,1000,1050,1000)
+	oPrint:Line (0910,1300,0980,1300)
+	oPrint:Line (0910,1480,1050,1480)
 	oPrint:Say  (nRow2+0710,100 ,"Local de Pagamento",oFont8)
 	//oPrint:Say  (nRow2+0725,400 ,"ATE O VENCIMENTO PAGUE PREFERENCIALMENTE NO ITAU",oFont10)
 	oPrint:Say  (nRow2+0765,100 ,"APÓS O VENCIMENTO PAGUE SOMENTE NO ITAU",oFont10)
@@ -544,36 +545,36 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oPrint:Say  (nRow2+1589,1850,Substr(aDadosTit[6],1,3)+Substr(aDadosTit[6],4)  ,oFont10)
 	oPrint:Say  (nRow2+1605,100 ,"Sacador/Avalista",oFont8)
 	oPrint:Say  (nRow2+1645,1500,"Autenticação Mecânica",oFont8)
-	oPrint:Line (nRow2+0710,1800,nRow2+1400,1800 )
-	oPrint:Line (nRow2+1120,1800,nRow2+1120,2300 )
-	oPrint:Line (nRow2+1190,1800,nRow2+1190,2300 )
-	oPrint:Line (nRow2+1260,1800,nRow2+1260,2300 )
-	oPrint:Line (nRow2+1330,1800,nRow2+1330,2300 )
-	oPrint:Line (nRow2+1400,100 ,nRow2+1400,2300 )
-	oPrint:Line (nRow2+1640,100 ,nRow2+1640,2300 )
+	oPrint:Line (0710,1800,1400,1800 )
+	oPrint:Line (1120,1800,1120,2300 )
+	oPrint:Line (1190,1800,1190,2300 )
+	oPrint:Line (1260,1800,1260,2300 )
+	oPrint:Line (1330,1800,1330,2300 )
+	oPrint:Line (1400,100,1400,2300 )
+	oPrint:Line (1640,100,1640,2300 )
 	/******************/
 	/* TERCEIRA PARTE */
 	/******************/
-	nRow3 := 0
+	nRow3 := 20
 	For nI := 100 to 2300 step 50
 		oPrint:Line(nRow3+1880, nI, nRow3+1880, nI+30)
 	Next nI
-	oPrint:Line (nRow3+2000,100,nRow3+2000,2300)
-	oPrint:Line (nRow3+2000,500,nRow3+1920, 500)
-	oPrint:Line (nRow3+2000,710,nRow3+1920, 710)
+	oPrint:Line (2000,100,2000,2300)
+	oPrint:Line (2000,500,1920, 500)
+	oPrint:Line (2000,710,1920, 710)
 	oPrint:Say  (nRow3+1934,100,aDadosBanco[2],oFont10)			// 	[2]Nome do Banco
 	oPrint:Say  (nRow3+1925,513,aDadosBanco[1]+"-7",oFont20 )	// 	[1]Numero do Banco
 	oPrint:Say  (nRow3+1934,755,aCB_RN_NN[2],oFont15n)			//	Linha Digitavel do Codigo de Barras
-	oPrint:Line (nRow3+2100,100,nRow3+2100,2300 )
-	oPrint:Line (nRow3+2200,100,nRow3+2200,2300 )
-	oPrint:Line (nRow3+2270,100,nRow3+2270,2300 )
-	oPrint:Line (nRow3+2340,100,nRow3+2340,2300 )
-	oPrint:Line (nRow3+2200,500 ,nRow3+2340,500 )
-	oPrint:Line (nRow3+2270,750 ,nRow3+2340,750 )
-	oPrint:Line (nRow3+2200,1000,nRow3+2340,1000)
-	oPrint:Line (nRow3+2200,1300,nRow3+2270,1300)
-	oPrint:Line (nRow3+2200,1480,nRow3+2340,1480)
-	oPrint:Say  (nRow3+2000,100 ,"Local de Pagamento",oFont8)
+	oPrint:Line (2100,100,2100,2300 )
+	oPrint:Line (2200,100,2200,2300 )
+	oPrint:Line (2270,100,2270,2300 )
+	oPrint:Line (2340,100,2340,2300 )
+	oPrint:Line (2200,500 ,2340,500 )
+	oPrint:Line (2270,750 ,2340,750 )
+	oPrint:Line (2200,1000,2340,1000)
+	oPrint:Line (2200,1300,2270,1300)
+	oPrint:Line (2200,1480,2340,1480)
+	oPrint:Say  (2000,100 ,"Local de Pagamento",oFont8)
 	//oPrint:Say  (nRow3+2015,400 ,"ATE O VENCIMENTO PAGUE PREFERENCIALMENTE NO ITAU",oFont10)
 	oPrint:Say  (nRow3+2055,100 ,"APÓS O VENCIMENTO PAGUE SOMENTE NO ITAU",oFont10)
 	oPrint:Say  (nRow3+2000,1810,"Vencimento",oFont8)
@@ -639,13 +640,13 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oPrint:Say  (nRow3+2806,1750,Substr(aDadosTit[6],1,3)+Substr(aDadosTit[6],4)  ,oFont10)
 	oPrint:Say  (nRow3+2815,100 ,"Sacador/Avalista"                             ,oFont8)
 	oPrint:Say  (nRow3+2855,1500,"Autenticação Mecânica - Ficha de Compensação" ,oFont8)
-	oPrint:Line (nRow3+2000,1800,nRow3+2690,1800 )
-	oPrint:Line (nRow3+2410,1800,nRow3+2410,2300 )
-	oPrint:Line (nRow3+2480,1800,nRow3+2480,2300 )
-	oPrint:Line (nRow3+2550,1800,nRow3+2550,2300 )
-	oPrint:Line (nRow3+2620,1800,nRow3+2620,2300 )
-	oPrint:Line (nRow3+2690,100,nRow3+2690,2300  )
-	oPrint:Line (nRow3+2850,100,nRow3+2850,2300  )
+	oPrint:Line (2000,1800,2690,1800 )
+	oPrint:Line (2410,1800,2410,2300 )
+	oPrint:Line (2480,1800,2480,2300 )
+	oPrint:Line (2550,1800,2550,2300 )
+	oPrint:Line (2620,1800,2620,2300 )
+	oPrint:Line (2690,100,2690,2300  )
+	oPrint:Line (2850,100,2850,2300  )
 	//MSBAR("INT25",25.5,1,aCB_RN_NN[1],oPrint,.F.,Nil,Nil,0.025,1.5,Nil,Nil,"A",.F.) //modali
 	MSBAR("INT25",24.5,1,aCB_RN_NN[1],oPrint,.F.,Nil,Nil,0.022,1.5,Nil,Nil,"A",.F.) //datasupri
 	//DbSelectArea("SE1")
