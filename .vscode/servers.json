@@ -1,0 +1,57 @@
+{
+	"version": "0.2.1",
+	"includes": [
+		""
+	],
+	"permissions": {
+		"authorizationtoken": ""
+	},
+	"connectedServer": {
+		"id": "ljk6xh280sjkq9kazy9e2qg1yfxr7n",
+		"type": "totvs_server_protheus",
+		"name": "Julia_Teste",
+		"port": 1268,
+		"address": "192.168.254.53",
+		"buildVersion": "7.00.191205P",
+		"secure": true,
+		"includes": [
+			"C:\\temp\\include"
+		],
+		"environments": [
+			"Julia_Teste"
+		],
+		"username": "JONAS.MACHADO",
+		"environment": "Julia_Teste",
+		"token": "djM6bGprNnhoMjgwc2prcTlrYXp5OWUycWcxeWZ4cjduOjE6MTkyLjE2OC4yNTQuNTM6MTI2ODoxOjcuMDAuMTkxMjA1UDoz:djE6SnVsaWFfVGVzdGU6Sk9OQVMuTUFDSEFETzo3ZTB1RFh6bjNyUmo0ZWZqNkVZNnVkeWo1UlErYUIxZHZDSEFnNWQrY3prPQ==|djI6MTYyNDQ1Nzk2MTowOjE6MQ==.TFC2r+TgwQiMX0XIAnlIPRDKu6QSN8pDMyDITvLl7ijZ9gfcNof5gwyDLNdTekSAY5vtYaC8W8r8m5LUd1FagkOGxNt6Llcf241vl+IVX5o0aUCRiXvwqVSJElFH/58Xktqn2cJkXv/kZYCHxbQKinmIuTi+MgigWICgwl8R3qybRzdc+be1LWA1cSkrDRTejRoUnrhbu+tpyNYJp5+CFgwXki6miepuhBgFmNrrwpKZd8aWlwvslsEsa1zGjLxOeFtr90OXEm/nrD6JLIy1p4sdSN+9qhI5qVqywQaST2Wgbia+gfSuHbANRbes6Wyz49EmiqRBU9KRqIr/5lmG7Q=="
+	},
+	"configurations": [
+		{
+			"id": "ljk6xh280sjkq9kazy9e2qg1yfxr7n",
+			"type": "totvs_server_protheus",
+			"name": "Julia_Teste",
+			"port": 1268,
+			"address": "192.168.254.53",
+			"buildVersion": "7.00.191205P",
+			"secure": true,
+			"includes": [
+				"C:\\temp\\include"
+			],
+			"environments": [
+				"Julia_Teste"
+			],
+			"username": "JONAS.MACHADO",
+			"environment": "Julia_Teste",
+			"token": "djM6bGprNnhoMjgwc2prcTlrYXp5OWUycWcxeWZ4cjduOjE6MTkyLjE2OC4yNTQuNTM6MTI2ODoxOjcuMDAuMTkxMjA1UDoz:djE6SnVsaWFfVGVzdGU6Sk9OQVMuTUFDSEFETzo3ZTB1RFh6bjNyUmo0ZWZqNkVZNnVkeWo1UlErYUIxZHZDSEFnNWQrY3prPQ==|djI6MTYyNDQ1Nzk2MTowOjE6MQ==.TFC2r+TgwQiMX0XIAnlIPRDKu6QSN8pDMyDITvLl7ijZ9gfcNof5gwyDLNdTekSAY5vtYaC8W8r8m5LUd1FagkOGxNt6Llcf241vl+IVX5o0aUCRiXvwqVSJElFH/58Xktqn2cJkXv/kZYCHxbQKinmIuTi+MgigWICgwl8R3qybRzdc+be1LWA1cSkrDRTejRoUnrhbu+tpyNYJp5+CFgwXki6miepuhBgFmNrrwpKZd8aWlwvslsEsa1zGjLxOeFtr90OXEm/nrD6JLIy1p4sdSN+9qhI5qVqywQaST2Wgbia+gfSuHbANRbes6Wyz49EmiqRBU9KRqIr/5lmG7Q=="
+		}
+	],
+	"savedTokens": [
+		[
+			"ljk6xh280sjkq9kazy9e2qg1yfxr7n:Julia_Teste",
+			{
+				"id": "ljk6xh280sjkq9kazy9e2qg1yfxr7n",
+				"token": "djM6bGprNnhoMjgwc2prcTlrYXp5OWUycWcxeWZ4cjduOjE6MTkyLjE2OC4yNTQuNTM6MTI2ODoxOjcuMDAuMTkxMjA1UDoz:djE6SnVsaWFfVGVzdGU6Sk9OQVMuTUFDSEFETzo3ZTB1RFh6bjNyUmo0ZWZqNkVZNnVkeWo1UlErYUIxZHZDSEFnNWQrY3prPQ==|djI6MTYyNDQ1Nzk2MTowOjE6MQ==.TFC2r+TgwQiMX0XIAnlIPRDKu6QSN8pDMyDITvLl7ijZ9gfcNof5gwyDLNdTekSAY5vtYaC8W8r8m5LUd1FagkOGxNt6Llcf241vl+IVX5o0aUCRiXvwqVSJElFH/58Xktqn2cJkXv/kZYCHxbQKinmIuTi+MgigWICgwl8R3qybRzdc+be1LWA1cSkrDRTejRoUnrhbu+tpyNYJp5+CFgwXki6miepuhBgFmNrrwpKZd8aWlwvslsEsa1zGjLxOeFtr90OXEm/nrD6JLIy1p4sdSN+9qhI5qVqywQaST2Wgbia+gfSuHbANRbes6Wyz49EmiqRBU9KRqIr/5lmG7Q=="
+			}
+		]
+	],
+	"lastConnectedServer": "ljk6xh280sjkq9kazy9e2qg1yfxr7n"
+}
