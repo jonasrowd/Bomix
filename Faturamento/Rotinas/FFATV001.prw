@@ -77,7 +77,7 @@ Return(l_Ret)
 
 
 User Function FFATV001(c_Produto)
-	Local _cAlias := Alias()
+	//Local _cAlias := Alias()
 	Local l_Ret   := .T.
 	Local c_Var   := ReadVar()
 	Local a_Area  := GetArea()   
@@ -93,7 +93,7 @@ endif
 
 ////////
 	
-/*	
+	
 
 	dbSelectArea("SB1")
 	dbGoTop()
@@ -128,8 +128,6 @@ endif
 			TMP1->CK_FSTPITE := '2'
 		Endif
 	Endif
-	
-*/
 	
 	If 'C6' $ c_Var           //Verifica se é pedido de venda ou orçamento
 		c_Cliente := M->C5_CLIENTE

@@ -1,7 +1,5 @@
 #Include "TOTVS.ch"
 
-#Define CRLF Chr(13) + Chr(10)
-
 /*/{Protheus.doc} M415GRV
 	Ponto de entrada acionado após a gravação das informações do
 	orçamento em todas as opções (inclusão, alteraçãoo e exclusão).
