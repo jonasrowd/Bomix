@@ -22,7 +22,7 @@ User Function M415GRV()
 		Return(NIL)
 	EndIf
 
-	If (PARAMIXB[1] == 1)
+	If (PARAMIXB[1] == 1) .OR. (PARAMIXB[1] == 2)
 		DBSelectARea("TMP1")
 		DBGoTop()
 
