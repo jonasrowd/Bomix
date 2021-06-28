@@ -26,7 +26,7 @@
 			"name": "Computador BOMIX",
 			"program": "${command:AskForProgramName}",
 			"cwb": "${workspaceFolder}",
-			"smartclientBin": "C:\\Totvs\\PROTHEUS\\Protheus\\Bin\\smartclient.exe",
+			"smartclientBin": "C:\\Bomix\\PROTHEUS LOBO GUARA SMARTCLIENT 64\\smartclient.exe",
 			"isMultiSession": true,
 			"enableTableSync": true,
 			"programArguments": [],

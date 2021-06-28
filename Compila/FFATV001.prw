@@ -9,9 +9,10 @@
 	@param cProduto, Character, Código do produto do campo atualmente posicionado
 	@return Logical, Retorno lógico para validação do item
 /*/
-User Function FFATV001(cProduto)
+User Function FFATV001()
 	Local lOK   := .T.       // Controle de validação
 	Local aArea := GetArea() // Tabela e seu estado para posterior restauração
+	Local cProduto := SCK->CK_PRODUTO
 
 	// Validações específicas da arte do produto e amarração do produto x cliente
 	lOK := ValidaArte(cProduto) .And. ValidaSA7(cProduto)
@@ -33,7 +34,7 @@ Static Function ValidaArte(cProduto)
 	Local lOK := .T. // Controle de validação da arte
 
 	// Executa as validações apenas na rotina de orçamentos ou pedido de venda
-	If (FwIsInCallStack("MATA415") .Or. FwIsInCallStack("MATA410"))
+	If (FwIsInCallStack("MATA415") .Or. FwIsInCallStack("MATA410") .Or. FwIsInCallStack("MATA416")) 
 		// Pesquisa pelo produto na tabela SB1
 		DBSelectArea("SB1")
 		DBGoTop()
@@ -55,7 +56,7 @@ Static Function ValidaArte(cProduto)
 				lOK := IIf(FwIsInCallStack("MATA415"), .T., .F.)
 
 				Help(NIL, NIL, "ART_BLOCKED", NIL, "A arte deste produto não está disponível para utilização.",;
-					1, 0, NIL, NIL, NIL, NIL, NIL, {"Contate o setor de XXXXXXX."})
+					1, 0, NIL, NIL, NIL, NIL, NIL, {"Contate o setor de Computação Gráfica."})
 			EndIf
 		EndIf
 	EndIf
@@ -82,6 +83,9 @@ Static Function ValidaSA7(cProduto)
 			cCliente := M->C5_CLIENTE
 			cLoja    := M->C5_LOJACLI
 		ElseIf (FwIsInCallStack("MATA415"))
+			cCliente := M->CJ_CLIENTE
+			cLoja    := M->CJ_LOJA
+		ElseIf (FwIsInCallStack("MATA416"))
 			cCliente := M->CJ_CLIENTE
 			cLoja    := M->CJ_LOJA
 		EndIf

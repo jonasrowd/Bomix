@@ -1,16 +1,20 @@
 /*/{Protheus.doc} M410INIC
-(long_description)
-@type  Function
-@author Romulo Ferreira
-@since 26/03/2021
-@version version
-@param , ,
-@return nil, ,
-@example
-(examples)
-@see (links_or_references)
+    (long_description)
+    @type  Function
+    @author Romulo Ferreira
+    @since 26/03/2021
+    @version version
+    @param , ,
+    @return nil, ,
+    @example
+    (examples)
+    @see (links_or_references)
     /*/
 User Function M410INIC()
+Local aArea := GetArea()
+Local cProduto := SCK->CK_PRODUTO
+
+Alert('Passou pelo ponto entrada MTA416BX.')
 
 	If IsInCallStack("MATA416") 
 
@@ -48,4 +52,9 @@ User Function M410INIC()
         EndIf
 
 	EndIf
+
+        U_FFATV001()
+
+    RestArea(aArea)
+
 Return nil
