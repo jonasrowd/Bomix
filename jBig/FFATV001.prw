@@ -1,0 +1,108 @@
+#Include "TOTVS.ch"
+
+/*/{Protheus.doc} FFATV001
+	Valida o produto selecionado
+	@type Function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 25/06/2021
+	@param cProduto, Character, Código do produto do campo atualmente posicionado
+	@return Logical, Retorno lógico para validação do item
+/*/
+User Function FFATV001()
+	Local lOK   := .T.       // Controle de validação
+	Local aArea := GetArea() // Tabela e seu estado para posterior restauração
+	Local cProduto := SCK->CK_PRODUTO
+
+	// Validações específicas da arte do produto e amarração do produto x cliente
+	lOK := ValidaArte(cProduto) .And. ValidaSA7(cProduto)
+
+	// Restaura a área e seu estado anterior
+	RestArea(aArea)
+Return (lOK)
+
+/*/{Protheus.doc} ValidaArte
+	Validações específicas da arte do produto
+	@type Function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 25/06/2021
+	@param cProduto, Character, Código do produto do campo atualmente posicionado
+	@return Logical, Retorno lógico para validação do item
+/*/
+Static Function ValidaArte(cProduto)
+	Local lOK := .T. // Controle de validação da arte
+
+	// Executa as validações apenas na rotina de orçamentos ou pedido de venda
+	If (FwIsInCallStack("MATA415") .Or. FwIsInCallStack("MATA410") .Or. FwIsInCallStack("MATA416")) 
+		// Pesquisa pelo produto na tabela SB1
+		DBSelectArea("SB1")
+		DBGoTop()
+		DBSetOrder(1)
+		DBSeek(FwXFilial("SB1") + cProduto)
+
+		// Caso encontrado, verifica se o produto possui arte, se a mesma está desbloqueada e se é diferente de 99999
+		If (Found() .And. !Empty(SB1->B1_FSARTE) .And. SB1->B1_FSARTE <> "99999")
+			// Pesquisa pelo produto na tabela SZ2
+			DBSelectArea("SZ2")
+			DBGoTop()
+			DBSetOrder(1)
+			DBSeek(FwXFilial("SZ2") + SB1->B1_FSARTE)
+
+			// Verifica se a arte do produto é nova, bloqueada ou em desenvolvimento
+			If (Found() .And. SZ2->Z2_BLOQ $ "1|2|3")
+				// Se for um orçamento, libera para gravação
+				// Se for um pedido de venda, não permite a gravação
+				lOK := IIf(FwIsInCallStack("MATA415"), .T., .F.)
+
+				Help(NIL, NIL, "ART_BLOCKED", NIL, "A arte deste produto não está disponível para utilização.",;
+					1, 0, NIL, NIL, NIL, NIL, NIL, {"Contate o setor de Computação Gráfica."})
+			EndIf
+		EndIf
+	EndIf
+Return (lOK)
+
+/*/{Protheus.doc} ValidaArte
+	Valida a amarração do produto x cliente
+	@type Function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 25/06/2021
+	@param cProduto, Character, Código do produto do campo atualmente posicionado
+	@return Logical, Retorno lógico para validação do item
+/*/
+Static Function ValidaSA7(cProduto)
+	Local lOK      := .T. // Controle da amarração cliente x produto
+	Local cCliente := ""  // Código do cliente
+	Local cLoja    := ""  // Código da loja
+
+	// Verifica se está executando em qualquer outra filial que não seja a 030101
+	If (FwCodFil() != "030101")
+		// Captura o código do cliente e loja
+		If (FwIsInCallStack("MATA410")) 
+			cCliente := M->C5_CLIENTE
+			cLoja    := M->C5_LOJACLI
+		ElseIf (FwIsInCallStack("MATA415"))
+			cCliente := M->CJ_CLIENTE
+			cLoja    := M->CJ_LOJA
+		ElseIf (FwIsInCallStack("MATA416"))
+			cCliente := M->CJ_CLIENTE
+			cLoja    := M->CJ_LOJA
+		EndIf
+
+		// VerIfica se existe amarração Produto x Cliente
+		DBSelectArea("SA7")
+		DBGoTop()
+		DBSetOrder(2)
+		DBSeek(FwXFilial("SA7") + cProduto + cCliente + cLoja)
+
+		// Caso não exista, retorna falso para a validação e exibe uma mensagem de erro
+		If (!Found())
+			// Se for um orçamento, libera para gravação
+			// Se for um pedido de venda, não permite a gravação
+			lOK := .F. // IIf(FwIsInCallStack("MATA415"), .T., .F.)
+			Help(NIL, NIL, "SEM_AMARRA", NIL, "Amarração Produto x Cliente inválida.",;
+				1, 0, NIL, NIL, NIL, NIL, NIL, {"Digite um produto com amarração Produto x Cliente válida."})
+		EndIf
+	EndIf
+Return (lOK)
