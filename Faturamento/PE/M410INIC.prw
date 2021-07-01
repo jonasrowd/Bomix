@@ -11,12 +11,6 @@
     @see (links_or_references)
     /*/
 User Function M410INIC()
-Local aArea := GetArea()
-Local cProduto := SCK->CK_PRODUTO
-
-Alert('Passou pelo ponto entrada MTA416BX.')
-
-	If IsInCallStack("MATA416") 
 
         If Select("E1TEMP") > 0
             E1TEMP->(dbCloseArea())
@@ -52,9 +46,5 @@ Alert('Passou pelo ponto entrada MTA416BX.')
         EndIf
 
 	EndIf
-
-        U_FFATV001()
-
-    RestArea(aArea)
 
 Return nil

@@ -6,24 +6,7 @@
 	"permissions": {
 		"authorizationtoken": ""
 	},
-	"connectedServer": {
-		"id": "2e7t68jkkktkq9stnqdot9xs8i7mr8",
-		"type": "totvs_server_protheus",
-		"name": "DEV",
-		"port": 1268,
-		"address": "192.168.254.61",
-		"buildVersion": "7.00.191205P",
-		"secure": true,
-		"includes": [
-			"C:\\temp\\include"
-		],
-		"environments": [
-			"DEV"
-		],
-		"username": "DEV",
-		"environment": "DEV",
-		"token": "djM6MmU3dDY4amtra3RrcTlzdG5xZG90OXhzOGk3bXI4OjE6MTkyLjE2OC4yNTQuNjE6MTI2ODoxOjcuMDAuMTkxMjA1UDoz:djE6REVWOkRFVjpudkVoN1A1eHN2YWtCSngzY09xVTdVQ3grMC9zK21jbmd2N290dUF4RnFRPQ==|djI6MTYyNDg4MDg4MTowOjE6MQ==.hT+EAN1lgIoa+C7NSDIv3E2/GfdZRg2WTEw8G2QXRExQtA/IN7zuTvLnHhWMrkX/EJAaupxYdRr4qT06ETCwmThSP5zFaO3AirfTvL5gsmXQ2s+5+tgpyHAZ86WgnwR/XUocb0SPcnMVZcf0DRjMg/csz0Bfxccmgn5XeV66g5QgdCDxNfI/VWhg+PWTq8qgkvrI+1Iagv9KYLliyrxkW2bkgX9WhXEJMP+UnUgziRp3bol69N/QUPEPsxg0lcDf79+gYb9acE3foqF8HdHEbuPHn2x31645a9k/Jfzu3r1Ch0SLil813IXWP0u96d/G93/DQvYdR1o10RbdD6CZcw=="
-	},
+	"connectedServer": {},
 	"configurations": [
 		{
 			"id": "ljk6xh280sjkq9kazy9e2qg1yfxr7n",
@@ -59,7 +42,7 @@
 			],
 			"username": "DEV",
 			"environment": "DEV",
-			"token": "djM6MmU3dDY4amtra3RrcTlzdG5xZG90OXhzOGk3bXI4OjE6MTkyLjE2OC4yNTQuNjE6MTI2ODoxOjcuMDAuMTkxMjA1UDoz:djE6REVWOkRFVjpudkVoN1A1eHN2YWtCSngzY09xVTdVQ3grMC9zK21jbmd2N290dUF4RnFRPQ==|djI6MTYyNDg4MDg4MTowOjE6MQ==.hT+EAN1lgIoa+C7NSDIv3E2/GfdZRg2WTEw8G2QXRExQtA/IN7zuTvLnHhWMrkX/EJAaupxYdRr4qT06ETCwmThSP5zFaO3AirfTvL5gsmXQ2s+5+tgpyHAZ86WgnwR/XUocb0SPcnMVZcf0DRjMg/csz0Bfxccmgn5XeV66g5QgdCDxNfI/VWhg+PWTq8qgkvrI+1Iagv9KYLliyrxkW2bkgX9WhXEJMP+UnUgziRp3bol69N/QUPEPsxg0lcDf79+gYb9acE3foqF8HdHEbuPHn2x31645a9k/Jfzu3r1Ch0SLil813IXWP0u96d/G93/DQvYdR1o10RbdD6CZcw=="
+			"token": "djM6MmU3dDY4amtra3RrcTlzdG5xZG90OXhzOGk3bXI4OjE6MTkyLjE2OC4yNTQuNjE6MTI2ODoxOjcuMDAuMTkxMjA1UDoz:djE6REVWOkRFVjptVDYwODVtTU81ZzdEWHlkMkt3NlJFQVQ3dER3N1FBVFl6YlJWRFI0MmJFPQ==|djI6MTYyNTA3OTQ2NzowOjE6MQ==.YLg/auaZjoeiDE4QrF560YJHg0ztR8EvdzWuUXX7o3YAyUv8inuRrNJQ8WKr9LMWbcdZpPh8C48ONbqI4cdK7SmK9dh7VNgGUcenkpociV44PkbM7UREqLDHdC01fT4BEfbvY8vxt+b5NHm9vXSDZYkEG2nIBJ/lmIkeyDHEuRHMga3X8bwSJTJGCQ6TtBt9A0atA1bkybe0nC4Uhzv2DRoYoUzFtmBqXNYXvER0BA5lRg8miL1HNG6xF+8BjjaZr6COvQYP6G8WbVgbE6uZaDhwfS926BQsA/5SAHrAQJefsvu8TjnS4VkbUQSm45KwlBeFaJmM5/cbDI597aI+GQ=="
 		}
 	],
 	"savedTokens": [
@@ -74,9 +57,16 @@
 			"2e7t68jkkktkq9stnqdot9xs8i7mr8:DEV",
 			{
 				"id": "2e7t68jkkktkq9stnqdot9xs8i7mr8",
-				"token": "djM6MmU3dDY4amtra3RrcTlzdG5xZG90OXhzOGk3bXI4OjE6MTkyLjE2OC4yNTQuNjE6MTI2ODoxOjcuMDAuMTkxMjA1UDoz:djE6REVWOkRFVjpudkVoN1A1eHN2YWtCSngzY09xVTdVQ3grMC9zK21jbmd2N290dUF4RnFRPQ==|djI6MTYyNDg4MDg4MTowOjE6MQ==.hT+EAN1lgIoa+C7NSDIv3E2/GfdZRg2WTEw8G2QXRExQtA/IN7zuTvLnHhWMrkX/EJAaupxYdRr4qT06ETCwmThSP5zFaO3AirfTvL5gsmXQ2s+5+tgpyHAZ86WgnwR/XUocb0SPcnMVZcf0DRjMg/csz0Bfxccmgn5XeV66g5QgdCDxNfI/VWhg+PWTq8qgkvrI+1Iagv9KYLliyrxkW2bkgX9WhXEJMP+UnUgziRp3bol69N/QUPEPsxg0lcDf79+gYb9acE3foqF8HdHEbuPHn2x31645a9k/Jfzu3r1Ch0SLil813IXWP0u96d/G93/DQvYdR1o10RbdD6CZcw=="
+				"token": "djM6MmU3dDY4amtra3RrcTlzdG5xZG90OXhzOGk3bXI4OjE6MTkyLjE2OC4yNTQuNjE6MTI2ODoxOjcuMDAuMTkxMjA1UDoz:djE6REVWOkRFVjptVDYwODVtTU81ZzdEWHlkMkt3NlJFQVQ3dER3N1FBVFl6YlJWRFI0MmJFPQ==|djI6MTYyNTA3OTQ2NzowOjE6MQ==.YLg/auaZjoeiDE4QrF560YJHg0ztR8EvdzWuUXX7o3YAyUv8inuRrNJQ8WKr9LMWbcdZpPh8C48ONbqI4cdK7SmK9dh7VNgGUcenkpociV44PkbM7UREqLDHdC01fT4BEfbvY8vxt+b5NHm9vXSDZYkEG2nIBJ/lmIkeyDHEuRHMga3X8bwSJTJGCQ6TtBt9A0atA1bkybe0nC4Uhzv2DRoYoUzFtmBqXNYXvER0BA5lRg8miL1HNG6xF+8BjjaZr6COvQYP6G8WbVgbE6uZaDhwfS926BQsA/5SAHrAQJefsvu8TjnS4VkbUQSm45KwlBeFaJmM5/cbDI597aI+GQ=="
+			}
+		],
+		[
+			"gj4cjzn0fhkqjpspenw46whna8m6:homologa",
+			{
+				"id": "gj4cjzn0fhkqjpspenw46whna8m6",
+				"token": "djM6Z2o0Y2p6bjBmaGtxanBzcGVudzQ2d2huYThtNjoxOjE5Mi4xNjguMjU0Ljk0OjEyNjg6MTo3LjAwLjE5MTIwNVA6Mw==:djE6aG9tb2xvZ2E6am9uYXMubWFjaGFkbzowSUNjQzZUVGMrSzlpZWhpRnhNUXc0UXJGY3o3aE9IYThzdjFvQzl6SDFvPQ==|djI6MTYyNTA3NzYzODowOjE6MQ==.nx2c+jmTz0XsQDlOfnI6cNYNdQ+loba7ewNAU9mC4gVPHzNXmjjC4GKD9jbfg/D7IIE6Y6wuWuQmAhHG8D5HZmHFuvYaAVccVcnQLFKxi/sE73e3QKoPIdh+UMtTOergHFMpx6cs4DXe7ZqMySnz74dfNzT1dou0/Ito64bQQQv12guCJxJ0ME00y+MNELMbvhTQju0yvmIHhWjPUpmmW5ChJ8zWzIZYE/AXUWxwC1qzEtbG7Nvi/IuyzS7pZs8FsnRgT1kMe225qyEmKPvbhEu4zPK4pjPE5m9gHAn4Iho2PeEz0krA0e8jQsCHGY3G4udHYRD1uFMUSDrv6IzstQ=="
 			}
 		]
 	],
-	"lastConnectedServer": "2e7t68jkkktkq9stnqdot9xs8i7mr8"
+	"lastConnectedServer": ""
 }
