@@ -1,20 +1,16 @@
-/*/
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑษออออออออออัออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
-ฑฑบPrograma  ณA261TOK      บ Autor ณ AP6 IDE            บ Data ณ  28/09/12บฑฑ
-ฑฑฬออออออออออุออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
-ฑฑบDescricao ณ Valida็ใo da Transfer๊ncia Mod 2                           บฑฑ
-ฑฑบ          ณ O ponto sera disparado no inicio da chamada da funcao de   บฑฑ
-ฑฑบ          ณ validacao geral dos itens digitados. Serve para validar se บฑฑ
-ฑฑบ          ณ o movimento pode ser efetuado ou nao.					  บฑฑ
-ฑฑฬออออออออออุออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบUso       ณ AP6 IDE                                                    บฑฑ
-ฑฑศออออออออออฯออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿
-/*/
+##INCLUDE "TOTVS.CH"
 
+//-------------------------------------------------------------------
+/*/{Protheus.doc} A261TOK
+	Valida็ใo da Transfer๊ncia Mod 2. 
+	O ponto sera disparado no inicio da chamada da funcao de validacao geral dos itens digitados. 
+	Serve para validar se o movimento pode ser efetuado ou nao.	
+	@author  JONAS MACHADO
+	@since   01/07/2021
+	@version 12.1.25
+	@type Function
+/*/
+//-------------------------------------------------------------------
 User Function A261TOK( )
 	Local l_Ret    := .T.
 	Local c_Orig   := ''									//Armazem de Origem

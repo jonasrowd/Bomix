@@ -5,7 +5,6 @@
         }
     ],
     "settings": {
-        "totvsLanguageServer.welcomePage": false,
         "advpl.debug_multiThread": true,
         "totvsLanguageServer.workspaceServerConfig": true,
         "totvsLanguageServer.askCompileResult": true
