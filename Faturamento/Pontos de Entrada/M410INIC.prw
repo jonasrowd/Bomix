@@ -24,7 +24,7 @@ Alert('Passou pelo ponto entrada MTA416BX.')
 
     BeginSql alias 'E1TEMP'
         column E1_EMISSAO as Date
-        column E1_VENCTO  as Date
+        column E1_VENCTO  as Date 
 
         SELECT 
 

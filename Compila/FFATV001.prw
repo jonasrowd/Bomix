@@ -1,7 +1,7 @@
 #Include "TOTVS.ch"
 
 /*/{Protheus.doc} FFATV001
-	Valida o produto selecionado
+	Valida a arte e a amarração do produto x cliente
 	@type Function
 	@version 12.1.25
 	@author Jonas Machado
@@ -9,13 +9,17 @@
 	@param cProduto, Character, Código do produto do campo atualmente posicionado
 	@return Logical, Retorno lógico para validação do item
 /*/
-User Function FFATV001()
+User Function FFATV001(cProduto)
 	Local lOK   := .T.       // Controle de validação
 	Local aArea := GetArea() // Tabela e seu estado para posterior restauração
-	Local cProduto := SCK->CK_PRODUTO
 
-	// Validações específicas da arte do produto e amarração do produto x cliente
-	lOK := ValidaArte(cProduto) .And. ValidaSA7(cProduto)
+	// Valida o bloqueio da arte do produto
+	lOK := ValidaArte(cProduto) 
+	
+	// Se a arte estiver desbloqueada, valida a amarração do produto x cliente
+	If (lOK)
+		ValidaSA7(cProduto)
+	EndIf
 
 	// Restaura a área e seu estado anterior
 	RestArea(aArea)
@@ -55,7 +59,7 @@ Static Function ValidaArte(cProduto)
 				// Se for um pedido de venda, não permite a gravação
 				lOK := IIf(FwIsInCallStack("MATA415"), .T., .F.)
 
-				Help(NIL, NIL, "ART_BLOCKED", NIL, "A arte deste produto não está disponível para utilização.",;
+				Help(NIL, NIL, "ART_BLOCKED", NIL, "A arte produto " + AllTrim(cProduto) + " não está disponível para utilização.",;
 					1, 0, NIL, NIL, NIL, NIL, NIL, {"Contate o setor de Computação Gráfica."})
 			EndIf
 		EndIf
@@ -102,7 +106,7 @@ Static Function ValidaSA7(cProduto)
 			// Se for um pedido de venda, não permite a gravação
 			lOK := .F. // IIf(FwIsInCallStack("MATA415"), .T., .F.)
 			Help(NIL, NIL, "SEM_AMARRA", NIL, "Amarração Produto x Cliente inválida.",;
-				1, 0, NIL, NIL, NIL, NIL, NIL, {"Digite um produto com amarração Produto x Cliente válida."})
+				1, 0, NIL, NIL, NIL, NIL, NIL, {"O produto " + AllTrim(cProduto) + " não possuí amarração Produto x Cliente válida."})
 		EndIf
 	EndIf
 Return (lOK)
