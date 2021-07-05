@@ -70,6 +70,8 @@ User Function BLTITAU(cNota)
 	
 	If Empty(cNF)
 
+
+	//alterar por fwtemporarytable
 	cIndexName	:= Criatrab(Nil,.F.)
 	//	cIndexKey	:= "E1_PORTADO+E1_CLIENTE+E1_PREFIXO+E1_NUM+E1_PARCELA+E1_TIPO+DTOS(E1_EMISSAO)"
 	cIndexKey	:= "E1_PREFIXO+E1_NUM+E1_PARCELA+E1_TIPO+DTOS(E1_EMISSAO)+E1_PORTADO+E1_CLIENTE"
@@ -358,7 +360,7 @@ Static Function MontaRel()
 		IncProc()
 		nI++
 	EndDo
-	oPrint:Preview()     // Visualiza antes de imprimir
+	//oPrint:Preview()     // Visualiza antes de imprimir
 	oPrint:EndPage()       // Finaliza a página
 	//cJPEG := Iif(Empty(AllTrim(SE1->E1_NUM)),CriaTrab(,.f.),AllTrim(SE1->E1_NUM))
 	//oPrint:SaveAllAsJPEG(cStartPath+cJPEG,1000,1400,140)
