@@ -1,4 +1,4 @@
-#Include "TOTVS.ch"
+#Include "totvs.ch"
 
 /*/{Protheus.doc} FFATV001
 	Valida a arte e a amarração do produto x cliente
