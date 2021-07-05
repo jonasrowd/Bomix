@@ -7,22 +7,22 @@
 		"authorizationtoken": ""
 	},
 	"connectedServer": {
-		"id": "uo1siybfbzkqqk2w6y5mxxmumwhvl",
+		"id": "1yzc1k5epbakqqq1y8evmyr5gnfzg",
 		"type": "totvs_server_protheus",
-		"name": "94",
+		"name": "61",
 		"port": 1268,
-		"address": "192.168.254.94",
+		"address": "192.168.254.61",
 		"buildVersion": "7.00.191205P",
 		"secure": true,
 		"includes": [
 			"C:\\temp\\include"
 		],
 		"environments": [
-			"homologa"
+			"dev"
 		],
-		"username": "jonas.machado",
-		"environment": "homologa",
-		"token": "djM6dW8xc2l5YmZiemtxcWsydzZ5NW14eG11bXdodmw6MToxOTIuMTY4LjI1NC45NDoxMjY4OjE6Ny4wMC4xOTEyMDVQOjM=:djE6aG9tb2xvZ2E6am9uYXMubWFjaGFkbzpsUEVRTTJKRVY5cEJjRlZ6cHE4YmVlSmJTdmZyRWtjdTJvZCtSV24wV1RZPQ==|djI6MTYyNTQ4NjMyNTowOjE6MQ==.AlhGO57x45g+No022kyANwJU39If0WbIgsnvfFziwypUW+Ms+iZkuII+T3dHhJMpKYjZztjGNw9oWhUVAmO5LUy2ICGQxe0I8EOKU2LxRj5fACRAQWSFmsD1QGAx0J8dB+XYmwjLCtB/qeafg3SmKrcuhiWHXVM8hRTYbOu3FBMQoJPfF/ClTuXJUyGJGRi7QjqYeFY3JIDLdBtmLskI6FF81iAjH2qMINCpFsBc9R1MMZOoky1fs5kzagRI/46HNi9DnsIVRfhDLvvxcY6M+BsR2lYg/ir/wSVyMvGt6W3L+CA7b5AAmVvgueCPRNkP3pc5NHUv0U44aurVYdA6Qw=="
+		"username": "dev",
+		"environment": "dev",
+		"token": "djM6MXl6YzFrNWVwYmFrcXFxMXk4ZXZteXI1Z25memc6MToxOTIuMTY4LjI1NC42MToxMjY4OjE6Ny4wMC4xOTEyMDVQOjM=:djE6ZGV2OmRldjo5WSsxNTdMS3o0M1diRXh1dVh1VHZOYUN3YmhDcjlQZnNjVFI3L0lBRHc0PQ==|djI6MTYyNTQ5NTUyMTowOjE6MQ==.POKnsic9OOTmM/WzRqBT3egXI6zSL1DwOKriLk4JmLIaVXRG+bPMfRKBRFIMXGrV8FSwezEvzVsts/zP9N2aAkxD3ppgWg+HAsPiDesoRn9MD4h1kFLe6xE0hjL7ELw+BaKLmbMFgCNbLcTJaTSt7a2VfpPxE27YZOn3s1WhJOAGcZiDraaN68ySgjdEN1rQ/zBB23sXrD3dmlVg2fS4Bnz8Zbp0S6k3TORgzWbLEhF5dXQDhVibdByPOoBxYREm8Tz0/uWJ5Ew9dtAYzmi+4UhERm5bCIBPvp54lQY/tTJ5cYiTfzj+tZH/IWy+IBeWP8sw9Dwy+Noi+1oArXPBYQ=="
 	},
 	"configurations": [
 		{
@@ -42,6 +42,24 @@
 			"username": "jonas.machado",
 			"environment": "homologa",
 			"token": "djM6dW8xc2l5YmZiemtxcWsydzZ5NW14eG11bXdodmw6MToxOTIuMTY4LjI1NC45NDoxMjY4OjE6Ny4wMC4xOTEyMDVQOjM=:djE6aG9tb2xvZ2E6am9uYXMubWFjaGFkbzpsUEVRTTJKRVY5cEJjRlZ6cHE4YmVlSmJTdmZyRWtjdTJvZCtSV24wV1RZPQ==|djI6MTYyNTQ4NjMyNTowOjE6MQ==.AlhGO57x45g+No022kyANwJU39If0WbIgsnvfFziwypUW+Ms+iZkuII+T3dHhJMpKYjZztjGNw9oWhUVAmO5LUy2ICGQxe0I8EOKU2LxRj5fACRAQWSFmsD1QGAx0J8dB+XYmwjLCtB/qeafg3SmKrcuhiWHXVM8hRTYbOu3FBMQoJPfF/ClTuXJUyGJGRi7QjqYeFY3JIDLdBtmLskI6FF81iAjH2qMINCpFsBc9R1MMZOoky1fs5kzagRI/46HNi9DnsIVRfhDLvvxcY6M+BsR2lYg/ir/wSVyMvGt6W3L+CA7b5AAmVvgueCPRNkP3pc5NHUv0U44aurVYdA6Qw=="
+		},
+		{
+			"id": "1yzc1k5epbakqqq1y8evmyr5gnfzg",
+			"type": "totvs_server_protheus",
+			"name": "61",
+			"port": 1268,
+			"address": "192.168.254.61",
+			"buildVersion": "7.00.191205P",
+			"secure": true,
+			"includes": [
+				"C:\\temp\\include"
+			],
+			"environments": [
+				"dev"
+			],
+			"username": "dev",
+			"environment": "dev",
+			"token": "djM6MXl6YzFrNWVwYmFrcXFxMXk4ZXZteXI1Z25memc6MToxOTIuMTY4LjI1NC42MToxMjY4OjE6Ny4wMC4xOTEyMDVQOjM=:djE6ZGV2OmRldjo5WSsxNTdMS3o0M1diRXh1dVh1VHZOYUN3YmhDcjlQZnNjVFI3L0lBRHc0PQ==|djI6MTYyNTQ5NTUyMTowOjE6MQ==.POKnsic9OOTmM/WzRqBT3egXI6zSL1DwOKriLk4JmLIaVXRG+bPMfRKBRFIMXGrV8FSwezEvzVsts/zP9N2aAkxD3ppgWg+HAsPiDesoRn9MD4h1kFLe6xE0hjL7ELw+BaKLmbMFgCNbLcTJaTSt7a2VfpPxE27YZOn3s1WhJOAGcZiDraaN68ySgjdEN1rQ/zBB23sXrD3dmlVg2fS4Bnz8Zbp0S6k3TORgzWbLEhF5dXQDhVibdByPOoBxYREm8Tz0/uWJ5Ew9dtAYzmi+4UhERm5bCIBPvp54lQY/tTJ5cYiTfzj+tZH/IWy+IBeWP8sw9Dwy+Noi+1oArXPBYQ=="
 		}
 	],
 	"savedTokens": [
@@ -51,7 +69,14 @@
 				"id": "uo1siybfbzkqqk2w6y5mxxmumwhvl",
 				"token": "djM6dW8xc2l5YmZiemtxcWsydzZ5NW14eG11bXdodmw6MToxOTIuMTY4LjI1NC45NDoxMjY4OjE6Ny4wMC4xOTEyMDVQOjM=:djE6aG9tb2xvZ2E6am9uYXMubWFjaGFkbzpsUEVRTTJKRVY5cEJjRlZ6cHE4YmVlSmJTdmZyRWtjdTJvZCtSV24wV1RZPQ==|djI6MTYyNTQ4NjMyNTowOjE6MQ==.AlhGO57x45g+No022kyANwJU39If0WbIgsnvfFziwypUW+Ms+iZkuII+T3dHhJMpKYjZztjGNw9oWhUVAmO5LUy2ICGQxe0I8EOKU2LxRj5fACRAQWSFmsD1QGAx0J8dB+XYmwjLCtB/qeafg3SmKrcuhiWHXVM8hRTYbOu3FBMQoJPfF/ClTuXJUyGJGRi7QjqYeFY3JIDLdBtmLskI6FF81iAjH2qMINCpFsBc9R1MMZOoky1fs5kzagRI/46HNi9DnsIVRfhDLvvxcY6M+BsR2lYg/ir/wSVyMvGt6W3L+CA7b5AAmVvgueCPRNkP3pc5NHUv0U44aurVYdA6Qw=="
 			}
+		],
+		[
+			"1yzc1k5epbakqqq1y8evmyr5gnfzg:dev",
+			{
+				"id": "1yzc1k5epbakqqq1y8evmyr5gnfzg",
+				"token": "djM6MXl6YzFrNWVwYmFrcXFxMXk4ZXZteXI1Z25memc6MToxOTIuMTY4LjI1NC42MToxMjY4OjE6Ny4wMC4xOTEyMDVQOjM=:djE6ZGV2OmRldjo5WSsxNTdMS3o0M1diRXh1dVh1VHZOYUN3YmhDcjlQZnNjVFI3L0lBRHc0PQ==|djI6MTYyNTQ5NTUyMTowOjE6MQ==.POKnsic9OOTmM/WzRqBT3egXI6zSL1DwOKriLk4JmLIaVXRG+bPMfRKBRFIMXGrV8FSwezEvzVsts/zP9N2aAkxD3ppgWg+HAsPiDesoRn9MD4h1kFLe6xE0hjL7ELw+BaKLmbMFgCNbLcTJaTSt7a2VfpPxE27YZOn3s1WhJOAGcZiDraaN68ySgjdEN1rQ/zBB23sXrD3dmlVg2fS4Bnz8Zbp0S6k3TORgzWbLEhF5dXQDhVibdByPOoBxYREm8Tz0/uWJ5Ew9dtAYzmi+4UhERm5bCIBPvp54lQY/tTJ5cYiTfzj+tZH/IWy+IBeWP8sw9Dwy+Noi+1oArXPBYQ=="
+			}
 		]
 	],
-	"lastConnectedServer": "uo1siybfbzkqqk2w6y5mxxmumwhvl"
+	"lastConnectedServer": "1yzc1k5epbakqqq1y8evmyr5gnfzg"
 }
