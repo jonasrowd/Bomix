@@ -105,8 +105,8 @@ Static Function ValidaSA7(cProduto)
 			// Se for um orçamento, libera para gravação
 			// Se for um pedido de venda, não permite a gravação
 			lOK := .F. // IIf(FwIsInCallStack("MATA415"), .T., .F.)
-			Help(NIL, NIL, "SEM_AMARRA", NIL, "Amarração Produto x Cliente inválida.",;
-				1, 0, NIL, NIL, NIL, NIL, NIL, {"O produto " + AllTrim(cProduto) + " não possuí amarração Produto x Cliente válida."})
+			Help(NIL, NIL, "ERROR: PRODUTO X CLIENTE", NIL, "Amarração Produto x Cliente inválida.",;
+				1, 0, NIL, NIL, NIL, NIL, NIL, {"O produto " + AllTrim(cProduto) + " não possui amarração Produto x Cliente válida."})
 		EndIf
 	EndIf
 Return (lOK)

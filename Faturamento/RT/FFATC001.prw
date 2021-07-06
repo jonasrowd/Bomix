@@ -1,21 +1,15 @@
-/*
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑษออออออออออัออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
-ฑฑบPrograma  ณ FFATC001   บAutor  ณ Christian Rocha    บ      ณ           บฑฑ
-ฑฑฬออออออออออุออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
-ฑฑบDesc.     ณ Retorna a descri็ใo do produto na consulta padrใo    	  บฑฑ
-ฑฑบ          ณ customizada SA7FS.								 		  บฑฑ
-ฑฑฬออออออออออุออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบUso       ณ SIGAFAT - Faturamento								      บฑฑ
-ฑฑฬออออออออออหออออออออออออออออออหอออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบData      บProgramador       บAlteracoes                               บฑฑ
-ฑฑบ          บ                  บ                                         บฑฑ
-ฑฑศออออออออออสออออออออออออออออออสอออออออออออออออออออออออออออออออออออออออออผฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿
-*/
-
+#Include "Totvs.ch"
+//-------------------------------------------------------------------
+/*/{Protheus.doc} FFATC001
+   Retorna a descri็ใo do produto na consulta padrใo customizada SA7FS como SA7FS1.
+   @type Function
+   @author  Christian Rocha
+   @since   10/05/2017 08:49
+   @version 12.1.25
+   @return character, descri็ใo do produto.
+   @history 06/07/2021, Jonas Machado, Realizado a documenta็ใo da user function e homologada como a mais atual.
+/*/
+//-------------------------------------------------------------------
 User Function FFATC001(c_Produto) 
 
 	Local c_Desc := Posicione("SB1", 1, xFilial("SB1") + c_Produto, "B1_DESC")

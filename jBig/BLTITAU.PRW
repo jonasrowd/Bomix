@@ -355,9 +355,9 @@ Static Function MontaRel()
 			Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolText,aCB_RN_NN,dvNN)
 			nX := nX++
 		EndIf
-		dbSelectArea("SE1")
-		SE1->(DbSkip())
-		IncProc()
+			dbSelectArea("SE1")
+			SE1->(DbSkip())
+			IncProc()
 		nI++
 	EndDo
 	//oPrint:Preview()     // Visualiza antes de imprimir
