@@ -17,7 +17,7 @@
 /*/
 User Function BLTITAU(cNota)
 		Local	oSX1 		:= NIL
-		Private lExec    	:= .F.
+		Private lExec    	:= .T.
 		Private cIndexName 	:= '' //
 		Private cIndexKey  	:= ''
 		Private cFilter    	:= ''
@@ -347,9 +347,14 @@ Static Function MontaRel()
 			E1_PREFIXO                          ,;  // [7] Prefixo da NF
 			E1_TIPO	                           	}   // [8] Tipo do Titulo
 
+			If (File("C:\SPOOL\" + cNumTit + ".pdf"))
+				FErase("C:\SPOOL\" + cNumTit + ".pdf")
+			EndIf
+
 			oPrint := FWMsPrinter():New(cNumTit + ".rel", IMP_PDF, .T., NIL, .T.,,,,,,,.F.,)
 			oPrint:SetPortrait() // ou SetLandFwTimeStamp(1)scape()
 			oPrint:SetParm( "-RFS")
+			oPrint:SetPaperSize(9)
 			oPrint:cPathPDF := "C:\SPOOL\"
 			// oPrint:Setup()   // Inicia uma nova página
 			Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolText,aCB_RN_NN,dvNN)
@@ -361,7 +366,7 @@ Static Function MontaRel()
 		nI++
 	EndDo
 	//oPrint:Preview()     // Visualiza antes de imprimir
-	oPrint:EndPage()       // Finaliza a página
+	// oPrint:EndPage()       // Finaliza a página
 	//cJPEG := Iif(Empty(AllTrim(SE1->E1_NUM)),CriaTrab(,.f.),AllTrim(SE1->E1_NUM))
 	//oPrint:SaveAllAsJPEG(cStartPath+cJPEG,1000,1400,140)
 Return Nil
@@ -650,7 +655,7 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oPrint:Line (2690,100,2690,2300  )
 	oPrint:Line (2850,100,2850,2300  )
 	//MSBAR("INT25",25.5,1,aCB_RN_NN[1],oPrint,.F.,Nil,Nil,0.025,1.5,Nil,Nil,"A",.F.) //modali
-	MSBAR("INT25",24.5,1,aCB_RN_NN[1],oPrint,.F.,Nil,Nil,0.022,1.5,Nil,Nil,"A",.F.) //datasupri
+	oPrint:FwMsBar("INT25",24.5,1,StrTran(StrTran(aCB_RN_NN[2], ".", ""), " ", ""),oPrint,.F.,Nil,Nil,0.1,1.5,Nil,Nil,"A",.F.) //datasupri
 	//DbSelectArea("SE1")
 	//RecLock("SE1",.f.)
 	//SE1->E1_NUMBCO 	:=	aCB_RN_NN[3]   // Nosso número (Ver fórmula para calculo)
