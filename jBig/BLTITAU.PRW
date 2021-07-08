@@ -99,7 +99,7 @@ User Function BLTITAU(cNota)
 	Else
 		cFilter		+= "E1_NUM = '" + cNF + "' "
 	Endif                                                                                    
-	cFilter     += " .And. E1_PORTADO <> 'CX1' "        
+	cFilter     += " .And. E1_PORTADO <> '	' "        
 
 	
 	
@@ -331,13 +331,15 @@ Static Function MontaRel()
 			E1_VENCTO           ,; // Data de Vencimento do Titulo
 			cNroDoc              ) // Numero do Documento no Contas a Receber
 			dvNN := Alltrim(Str(Modulo10(aDadosBanco[3]+aDadosBanco[4]+aDadosBanco[6]+cNroDoc)))		
-			
+			//FALAR COM BIGOIS DESSE MEU IF QUE EM TESE RESOLVEU OS TITULOS SEM PARCELAS.
 			If Empty(SE1->E1_PARCELA)
 		    	cNumTit := AllTrim(E1_NUM)
 			Else                     
 			    cNumTit := AllTrim(E1_NUM)+"-"+AllTrim(E1_PARCELA)
 		    Endif
-	
+
+
+
 	       // MsgBox(STR(nVlrAbat))  
 			aDadosTit	:= {cNumTit				,;  // [1] Número do título
 			E1_EMISSAO                          ,;  // [2] Data da emissão do título
@@ -352,10 +354,7 @@ Static Function MontaRel()
 				FErase(cLocal + cNumTit + ".pdf")
 			EndIf
 			
-			If E1_PARCELA <>''
 			oPrint := FWMsPrinter():New(cNumTit + ".rel", IMP_PDF, .T., cLocal, .T.,,,,,,,.F.,)
-			Endif
-			
 			oPrint:SetPortrait()
 			oPrint:SetParm( "-RFS")
 			oPrint:SetPaperSize(9)
