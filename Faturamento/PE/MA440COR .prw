@@ -18,5 +18,7 @@ Local aCor := aclone(PARAMIXB)
 aCor[1][1] := "Empty(C5_LIBEROK).And.Empty(C5_NOTA) .And. Empty(C5_BLQ) .And. SC5->C5_BXSTATU<>'B'" 
 
 AADD(aCor,{"SC5->C5_BXSTATU=='B'" , "BR_PINK"   })
+AADD(aCor,{"SC5->C5_BXSTATU=='P'" , "BR_PRETO"   })
+AADD(aCor,{"SC5->C5_BXSTATU=='E'" , "BR_MARROM"   })
 	
 return aCor

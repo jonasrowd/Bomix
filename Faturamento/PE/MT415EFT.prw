@@ -21,16 +21,20 @@ Local c_UserLib := GETMV("BM_USERLIB")
 nAtrasados := u_FFATVATR(SA1->A1_COD, SA1->A1_LOJA)//SA1->A1_ATR
 cNome := SA1->A1_NOME
 
+DbSelectArea("SC9")
+DbSetOrder(1)	
+
+If (DBSEEK(xFilial("SC9")+SC9->C9_PEDIDO))
+	RecLock("SC9", .F.)
+	SC9->C9_BLCRED := ''
+	MsUnlock()
+EndIf   
 
 If nAtrasados <> 0  
 
-	If !__CUSERID$(c_UserLib)
-		ShowHelpDlg(SM0->M0_NOME +" MAAVCRED",;
-		{"O Cliente " + AllTrim(cNome) + ", orçamento "+SCJ->CJ_NUM+", possui restrições financeiras no total de R$ "+alltrim(Transform(nAtrasados,"@e 9,999,999,999,999.99"))+"."},5,;
-		{"Caso queira concluir a liberação deste pedido, solicite a liberação dos responsáveis."},5) 
-	EndIf
+	MsGInfo("Existem restrições financeiras para este Cliente. Por favor solicitar Liberação", "Atenção!")
 	
-	l_Ret := .F.	
+	l_Ret := .T.	
 	
 	DbSelectArea("SC5")
 	DbSetOrder(1)
@@ -57,36 +61,15 @@ If !l_Ret
 			
 			If (DBSEEK(xFilial("SC5")+SC5->C5_NUM))
 				RecLock("SC5", .F.)
-					SC5->C5_BXSTATU := 'A'		//Bloqueado Financeiro
+					SC5->C5_BXSTATU := 'B'		//Bloqueado Financeiro
 				MsUnlock()
 			EndIf
 			
-			
-			DbSelectArea("SC9")
-	        DbSetOrder(1)	
-	
-	        If (DBSEEK(xFilial("SC9")+SC9->C9_PEDIDO))
-		        RecLock("SC9", .F.)
-			    SC9->C9_BLCRED := ''
-		        MsUnlock()
-	        EndIf   
 			
 		EndIf
 		
 	Endif
 EndIf
-
-If l_Ret .AND. !__CUSERID$(c_UserLib)
-
-	DbSelectArea("SC5")
-	DbSetOrder(1)		
-	If (DBSEEK(xFilial("SC5")+SC5->C5_NUM))
-		RecLock("SC5", .F.)
-			SC5->C5_BXSTATU := ''		//Bloqueado Financeiro
-		MsUnlock()
-	EndIf
-	
-Endif
 
 RESTAREA(_CALIAS)
 

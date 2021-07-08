@@ -1,16 +1,18 @@
 /*/{Protheus.doc} M410INIC
-    (long_description)
-    @type  Function
-    @author Romulo Ferreira
-    @since 26/03/2021
-    @version version
-    @param , ,
-    @return nil, ,
-    @example
-    (examples)
-    @see (links_or_references)
+(long_description)
+@type  Function
+@author Romulo Ferreira
+@since 26/03/2021
+@version version
+@param , ,
+@return nil, ,
+@example
+(examples)
+@see (links_or_references)
     /*/
 User Function M410INIC()
+
+	If IsInCallStack("MATA416") 
 
         If Select("E1TEMP") > 0
             E1TEMP->(dbCloseArea())
@@ -18,7 +20,7 @@ User Function M410INIC()
 
     BeginSql alias 'E1TEMP'
         column E1_EMISSAO as Date
-        column E1_VENCTO  as Date 
+        column E1_VENCTO  as Date
 
         SELECT 
 
@@ -44,7 +46,5 @@ User Function M410INIC()
         M->C5_BXSTATU := 'B'
         M->C5_BLQ := 'B'
         EndIf
-
 	EndIf
-
 Return nil

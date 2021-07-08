@@ -358,7 +358,7 @@ Static Function MontaRel()
 			oPrint:SetPortrait()
 			oPrint:SetParm( "-RFS")
 			oPrint:SetPaperSize(9)
-			oPrint:cPathPDF := cLocal
+			oPrint:cPathPDF := cLocal //Acrescentado 
 			Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolText,aCB_RN_NN,dvNN)
 			Sleep(3000)
 			nX := nX++
@@ -538,7 +538,6 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oPrint:Say  (nRow2+1190,1810,"(+)Mora/Multa"                                  ,oFont8)
 	oPrint:Say  (nRow2+1260,1810,"(+)Outros Acréscimos"                           ,oFont8)
 	oPrint:Say  (nRow2+1330,1810,"(=)Valor Cobrado"                               ,oFont8)
-	
 	//Temp
 	//oPrint:Say  (nRow2+1350,100,"APOS VCTO ACESSE WWW.ITAU.COM.BR/BOLETOS PARA ATUALIZAR SEU BOLETO"                               ,oFont10)
 	oPrint:Say  (nRow2+1400,100 ,"Pagador"                                         ,oFont8)

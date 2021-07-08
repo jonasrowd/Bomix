@@ -1,73 +1,72 @@
-#Include "TOTVS.ch"
-
-/*/{Protheus.doc} M415GRV
-	Ponto de entrada acionado apÃ³s a gravaÃ§Ã£o das informaÃ§Ãµes do
-	orÃ§amento em todas as opÃ§Ãµes (inclusÃ£o, alteraÃ§Ã£oo e exclusÃ£o).
-	O PARAMIXB estarÃ¡ com o nÃºmero da opÃ§Ãµao (1, 2 ou 3).
-	@type Function
-	@author Christian Rocha
-	@since 10/11/2012
-	@obs Bloqueia a arte caso o orÃ§amento defina o bloqueio da arte
 /*/
-User Function M415GRV()
-	Local a_Area     := GetArea()
-	Local c_Produto := ""
-	Local c_SitArte := ""
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  ³M415GRV   º Autor ³ Christian Rocha    º Data ³Novembro/2012º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDescricao ³ Ponto de entrada acionado após a gravação das informações  º±±
+±±º          ³ do Orçamento em todas as opções (inclusão, alteração e 	  º±±
+±±º          ³ exclusão). O PARAMIXB estará com o número da opção (1, 2   º±±
+±±º          ³ ou 3).													  º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³ Bloqueia a arte caso o Orçamento defina o bloqueio da arte.º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±º                     A T U A L I Z A C O E S                           º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDATA      ºANALISTA           ºALTERACOES                              º±±
+±±º          º                   º                                        º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+/*/
 
-	Private cFil := FwCodFil()
+User Function M415GRV
 
+	private cfil :="      "
+	cFil := FWCodFil()
+	if cFil = "030101"
+		return
+	endif
 
+	If PARAMIXB[1] == 1 .OR. PARAMIXB[1] == 2
 
-	If (cFil == "030101")
-		Return(NIL)
+		If Select("E1TEMP") > 0
+			E1TEMP->(dbCloseArea())
+		Endif
+
+		BeginSql alias 'E1TEMP'
+        column E1_EMISSAO as Date
+        column E1_VENCTO  as Date
+
+        SELECT 
+
+        sum(E1_VALOR) VALOR
+
+        FROM %table:SE1% SE1
+
+        WHERE 
+        E1_SALDO > 0 AND 
+        E1_CLIENTE = %exp:SCJ->CJ_CLIENTE% AND
+        E1_LOJA = %exp:SCJ->CJ_LOJA% AND
+        SE1.%notDel% AND
+        E1_TIPO = 'NF' AND 
+        E1_VENCTO < %exp:DtoS(dDataBase)% AND 
+        E1_BAIXA = ''
+        
+		EndSql
+
+		RecLock("SCJ",.F.)
+		If E1TEMP->(!Eof())
+			SCJ->CJ_BXSTATU := 'B'
+		Else
+			SCJ->CJ_BXSTATU := 'L'
+		EndIf
+
+		SCJ->(MsUnlock())
+
+	EndIF
+
+	If SCJ->CJ_BXSTATU = 'B'
+		MsgStop("Tratar as pendências financeiras deste cliente.", "Atenção!")
 	EndIf
-
-	If (PARAMIXB[1] == 1) .OR. (PARAMIXB[1] == 2)
-		DBSelectARea("TMP1")
-		DBGoTop()
-
-		While (TMP1->(!EOF()))
-			If (!TMP1->CK_FLAG)
-				c_Produto := TMP1->CK_PRODUTO
-				c_SitArte := TMP1->CK_FSTPITE
-
-				If (c_SitArte == "1")
-					DBSelectArea("SB1")
-					DBGoTop()
-					DBSetOrder(1)
-					DBSeek(FwXFilial("SB1") + c_Produto)
-
-					If (Found())
-						//Verifica se o flag de arte do produto estÃ¡ marcado com SIM
-						If (SB1->B1_FSFARTE == "1")
-							DBSelectArea("SZ2")
-							DBGoTop()
-							DBSetOrder(1)
-							DBSeek(FwXFilial("SZ2") + SB1->B1_FSARTE)
-
-							If (Found())
-								If (SZ2->Z2_BLOQ != "2")
-									// Bloqueia a arte do produto
-									RecLock("SZ2", .F.)
-										SZ2->Z2_BLOQ   := "2"
-										SZ2->Z2_DATA   := dDatabase
-										SZ2->Z2_RESP   := Upper(UsrRetName(__cUserID))
-										SZ2->Z2_OBSERV := IIf(!Empty(SZ2->Z2_OBSERV), SZ2->Z2_OBSERV + CRLF + CRLF, "") + ;
-														"OrÃ§aamento: " + AllTrim(SCJ->CJ_NUM) + ", Data: " +Dtoc(DDATABASE) + ", Hora: " + Time() + ;
-														", ResponsÃ¡vel: " + Upper(UsrRetName(__cUserID))
-									MsUnlock()
-
-									U_FALTSZ2()
-								EndIf
-							EndIf
-						EndIf
-					EndIf
-				EndIf
-			EndIf
-
-			TMP1->(dbSkip())
-		End
-	EndIf
-
-	RestArea(a_Area)
-Return (NIL)
+Return

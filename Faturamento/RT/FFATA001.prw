@@ -5,7 +5,7 @@
 /*/{Protheus.doc} FFATA001
     (long_description)
     @type  Function
-    @author user
+    @author R�mulo Ferreira
     @since 03/04/2021
     @version version
     @param param_name, param_type, param_descr
@@ -13,7 +13,7 @@
     @example
     (examples)
     @see Job para manutenção dos status dos pedidos de vendas
-    /*/
+/*/
 User Function FFATA001()
 
 PREPARE ENVIRONMENT EMPRESA '01' FILIAL '010101'

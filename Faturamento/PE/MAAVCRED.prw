@@ -12,74 +12,54 @@ Ponto de Entrada para validação das retrições financeiras dos clientes, na Análi
 
 user function MAAVCRED()
 
-Local _CALIAS    :=GETAREA()
 Local c_UserLib := GETMV("BM_USERLIB")
-Local cMensagem := ""
 Local l_Ret := .T.
-
-//nAtrasados := u_FFATVATR(SC5->C5_CLIENTE, SC5->C5_LOJACLI)//SA1->A1_ATR
 nAtrasados := u_FFATVATR(SA1->A1_COD, SA1->A1_LOJA)
 cNome := SA1->A1_NOME
 
-If nAtrasados <> 0  
+	If nAtrasados <> 0
 
-	If !__CUSERID$(c_UserLib)
-		ShowHelpDlg(SM0->M0_NOME +" MAAVCRED",;
-		{"O Cliente " + AllTrim(cNome) +"Pedido "+SC5->C5_NUM+", possui restrições financeiras no total de R$ "+alltrim(Transform(nAtrasados,"@e 9,999,999,999,999.99"))+"."},5,;
-		{"Caso queira concluir a liberação deste pedido, solicite a liberação dos responsáveis."},5) 
-	EndIf
-	
-	l_Ret := .F.	
-	
-		DbSelectArea("SC5")
-	DbSetOrder(1)
-	
-	If (DBSEEK(xFilial("SC5")+SC5->C5_NUM))
-		RecLock("SC5", .F.)
-			SC5->C5_BXSTATU := 'B'		//Bloqueado Financeiro
-		MsUnlock()
-	EndIf
-	
-EndIf
-
-If !l_Ret 
-	If  __CUSERID$(c_UserLib)
-
-		cMensagem := "O pedido encontra-se com bloqueio, devido a restrição financeira do cliente no total de R$ "+alltrim(Transform(nAtrasados,"@e 9,999,999,999,999.99"))+"# gostaria de realizar o desbloqueio?"
-		If  u_BXMENATR(cMensagem,SC5->C5_CLIENTE, SC5->C5_LOJACLI)
+		If !__CUSERID$(c_UserLib)
 		
-			//MsgYesNo ("O pedido encontra-se com bloqueio, devido a restrição financeira do cliente no total de R$ "+alltrim(Transform(nAtrasados,"@e 9,999,999,999,999.99"))+" gostaria de realizar o desbloqueio?", "Atenção")
+		If Select("E1TEMP") > 0
+			E1TEMP->(dbCloseArea())
+		Endif
 
-			l_Ret := .T. 
-			
-				
-			DbSelectArea("SC5")
-			DbSetOrder(1)
-			
-			If (DBSEEK(xFilial("SC5")+SC5->C5_NUM))
-				RecLock("SC5", .F.)
-					SC5->C5_BXSTATU := 'A'		//Bloqueado Financeiro
-				MsUnlock()
-			EndIf
-			
+		BeginSql alias 'E1TEMP'
+        column E1_EMISSAO as Date
+        column E1_VENCTO  as Date
+
+        SELECT 
+
+        sum(E1_VALOR) VALOR
+
+        FROM %table:SE1% SE1
+
+        WHERE 
+        E1_SALDO > 0 AND 
+        E1_CLIENTE = %exp:SC5->C5_CLIENTE% AND
+        E1_LOJA = %exp:SC5->C5_LOJACLI% AND
+        SE1.%notDel% AND
+		E1_TIPO = 'NF' AND 
+        E1_VENCTO < %exp:DtoS(dDataBase)% AND 
+        E1_BAIXA = ''
+        
+		EndSql
+
+		RecLock("SC5",.F.)
+		If E1TEMP->(!Eof())
+			SC5->C5_BXSTATU := 'B'
+			SC5->C5_BLQ := 'B'
+		Else
+			SC5->C5_BXSTATU := 'L'
+			SC5->C5_BLQ := ''
 		EndIf
-		
-	Endif
-EndIf
-
-If l_Ret .AND. !__CUSERID$(c_UserLib)
-
-	DbSelectArea("SC5")
-	DbSetOrder(1)		
-	If (DBSEEK(xFilial("SC5")+SC5->C5_NUM))
-		RecLock("SC5", .F.)
-			SC5->C5_BXSTATU := ''		//Bloqueado Financeiro
 		MsUnlock()
-	EndIf
-	
-Endif
-RESTAREA(_CALIAS)
 
-	
+		EndIf
+
+		l_Ret := .F.
+
+	EndIf
+
 return l_Ret
-	

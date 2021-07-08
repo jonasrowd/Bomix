@@ -7,7 +7,7 @@
 ±±ºDescricao ³ Ponto de entrada acionado após a gravação das informações  º±±
 ±±º          ³ do Orçamento em todas as opções (inclusão, alteração e 	  º±±
 ±±º          ³ exclusão). O PARAMIXB estará com o número da opção (1, 2   º±±
-±±º          ³ ou 3).													  º±±	
+±±º          ³ ou 3).													  º±±
 ±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
 ±±ºUso       ³ Bloqueia a arte caso o Orçamento defina o bloqueio da arte.º±±
 ±±ÌÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
@@ -21,47 +21,52 @@
 /*/
 
 User Function M415GRV
-	Local a_Area := GetArea()
 
-	If PARAMIXB[1] == 1
-		dbSelectARea("TMP1")
-		dbGoTop()
-		While TMP1->(!Eof())
-			If TMP1->CK_FLAG == .F.
-				c_Produto := TMP1->CK_PRODUTO
-			    c_SitArte := TMP1->CK_FSTPITE
-			    
-			    If c_SitArte == '1'  					//Se a arte for bloqueada
-					dbSelectArea("SB1")
-					dbGoTop()
-					dbSetOrder(1)
-					If dbSeek(xFilial("SB1")+c_Produto)
-						If SB1->B1_FSFARTE == '1'		//Verifica se o flag de arte do produto está marcado com sim
-							dbSelectArea("SZ2")
-							dbGoTop()
-							dbSetOrder(1)
-							If dbSeek(xFilial("SZ2")+SB1->B1_FSARTE)
-								If SZ2->Z2_BLOQ != '2'							
-									RecLock("SZ2", .F.)
-									SZ2->Z2_BLOQ   := '2'		//Bloqueia a arte do produto
-									SZ2->Z2_DATA   := DDATABASE
-									SZ2->Z2_RESP   := Upper(UsrRetName(__CUSERID))
-									SZ2->Z2_OBSERV := IIF(!Empty(SZ2->Z2_OBSERV), SZ2->Z2_OBSERV + chr(13) + chr(10) + chr(13) + chr(10),'') + ;
-													  "Orçamento: " + AllTrim(SCJ->CJ_NUM) + ", Data: " +Dtoc(DDATABASE) + ", Hora: " + Time() + ;
-													  ", Responsável: " + Upper(UsrRetName(__CUSERID))
-									MsUnlock()
-									
-									U_FALTSZ2()
-								Endif
-							Endif
-						Endif
-					Endif
-				Endif
-			Endif
-			
-			TMP1->(dbSkip())
-		End
-	Endif
-	
-	RestArea(a_Area)
+	private cfil :="      "
+	cFil := FWCodFil()
+	if cFil = "030101"
+		return
+	endif
+
+	If PARAMIXB[1] == 1 .OR. PARAMIXB[1] == 2
+
+		If Select("E1TEMP") > 0
+			E1TEMP->(dbCloseArea())
+		Endif
+
+		BeginSql alias 'E1TEMP'
+        column E1_EMISSAO as Date
+        column E1_VENCTO  as Date
+
+        SELECT 
+
+        sum(E1_VALOR) VALOR
+
+        FROM %table:SE1% SE1
+
+        WHERE 
+        E1_SALDO > 0 AND 
+        E1_CLIENTE = %exp:SCJ->CJ_CLIENTE% AND
+        E1_LOJA = %exp:SCJ->CJ_LOJA% AND
+        SE1.%notDel% AND
+        E1_TIPO = 'NF' AND 
+        E1_VENCTO < %exp:DtoS(dDataBase)% AND 
+        E1_BAIXA = ''
+        
+		EndSql
+
+		RecLock("SCJ",.F.)
+		If E1TEMP->(!Eof())
+			SCJ->CJ_BXSTATU := 'B'
+		Else
+			SCJ->CJ_BXSTATU := 'L'
+		EndIf
+
+		SCJ->(MsUnlock())
+
+	EndIF
+
+	If SCJ->CJ_BXSTATU = 'B'
+		MsgStop("Tratar as pendências financeiras deste cliente.", "Atenção!")
+	EndIf
 Return

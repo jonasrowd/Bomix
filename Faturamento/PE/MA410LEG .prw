@@ -15,5 +15,7 @@ user function MA410LEG ()
 Local aLegenda := aclone(PARAMIXB)
 
 aadd(aLegenda ,{'BR_PINK' , 'Pedido Bloqueado por Restrição Financeira'  })
+aadd(aLegenda ,{'BR_MARROM' , 'Pedido Liberado para Expedição'  })
+aadd(aLegenda ,{'BR_PRETO' , 'Pedido Bloqueado por Restrição Financeira - Produção Liberada'  })
 	
 return aLegenda

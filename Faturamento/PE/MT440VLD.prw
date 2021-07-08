@@ -48,6 +48,7 @@ If !lRet
 			If (DBSEEK(xFilial("SC5")+SC5->C5_NUM))
 				RecLock("SC5", .F.)
 					SC5->C5_BXSTATU := 'A'		//Bloqueado Financeiro
+					SC5->C5_BLQ := 'B'
 				MsUnlock()
 			EndIf
 		
@@ -63,6 +64,7 @@ If lRet .AND. !__CUSERID$(c_UserLib)
 	If (DBSEEK(xFilial("SC5")+SC5->C5_NUM))
 		RecLock("SC5", .F.)
 			SC5->C5_BXSTATU := ''		//Bloqueado Financeiro
+			SC5->C5_BLQ := ''
 		MsUnlock()
 	EndIf
 Endif

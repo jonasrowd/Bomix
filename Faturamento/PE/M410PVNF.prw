@@ -18,53 +18,20 @@
 ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 /*/
 
-User Function M410PVNF     
+User Function M410PVNF
 
-
-	Local c_Prefixo := IIF(cFilAnt == "010101", "ABT", "ABST")
-	Local a_Area    := GetArea()
 	Local l_Ret     := .T.
 
+	private cfil :="      "
+	cFil := FWCodFil()
+	if cFil = "030101"
+		Return(l_Ret)
+	endif
 
-//testa filial atual
+	If SC5->C5_LIBEROK  = 'L' .AND. Empty(SC5->C5_BLQ)
+		Return .T.
+	Endif
 
-private cfil :="      "
-cFil := FWCodFil()
-if cFil = "030101"
-   Return(l_Ret)
-endif
+	MsgStop("Pedido com restrições financeiras, por favor solicite a liberação aos responsáveis. ", "Atenção")
 
-////////
-
-
-
-
-
-
-	dbSelectArea("SC6")
-	dbSetOrder(1)
-	dbSeek(xFilial("SC6") + SC5->C5_NUM)
-	While SC6->(!EoF()) .And. SC6->(C6_FILIAL + C6_NUM) == xFilial("SC6") + SC5->C5_NUM
-		If Substr(SC6->C6_PRODUTO, 1, 1) $ c_Prefixo
-			dbSelectArea("SB1")
-			dbSetOrder(1)
-			If dbSeek(xFilial("SB1") + SC6->C6_PRODUTO)
-				If SB1->B1_PESO == 0
-					If SB1->B1_TIPO == "SU" .And. cFilAnt == "020101"
-						l_Ret := .T.
-                    Else
-						ShowHelpDlg(SM0->M0_NOME,;
-						{"Cadastro do Produto " + AllTrim(SC6->C6_PRODUTO)  + " foi efetuado sem o preenchimento da informação de Peso Líquido."},5,;
-						{"Contacte o responsável pelo cadastro de produtos e solicite o preenchimento do campo Peso Líquido."},5)
-						l_Ret := .F.
-						Exit
-					Endif
-				Endif
-			Endif
-        Endif
-
-        SC6->(dbSkip())
-	End
-
-	RestArea(a_Area)
-Return l_Ret
+Return .F.
