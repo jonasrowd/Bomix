@@ -37,32 +37,32 @@ User Function BLTITAU(cNota)
 		nLastKey 	:= 0
 		cNf			:= cNota
 	
-	// Cria instância do objeto
-	oSX1 := CreateSX1():New("BLTITAU")
-	// Adiciona novos itens da SX1
-	oSX1:NewItem({01, "De Prefixo",     "MV_CH1", "C", 03, 00, "G", NIL})
-	oSX1:NewItem({02, "Ate Prefixo",    "MV_CH2", "C", 03, 00, "G", NIL})
-	oSX1:NewItem({03, "De Numero",      "MV_CH3", "C", 09, 00, "G", "SE1"})
-	oSX1:NewItem({04, "Ate Numero",     "MV_CH4", "C", 09, 00, "G", "SE1"})
-	oSX1:NewItem({05, "De Parcela",     "MV_CH5", "C", 01, 00, "G", NIL})
-	oSX1:NewItem({06, "Ate Parcela",    "MV_CH6", "C", 01, 00, "G", NIL})
-	oSX1:NewItem({07, "De Portador",    "MV_CH7", "C", 03, 00, "G", NIL})
-	oSX1:NewItem({08, "Ate Portador",   "MV_CH8", "C", 03, 00, "G", NIL})
-	oSX1:NewItem({09, "De Cliente",     "MV_CH9", "C", 06, 00, "G", "SA1"})
-	oSX1:NewItem({10, "Ate Cliente",    "MV_CHA", "C", 06, 00, "G", "SA1"})
-	oSX1:NewItem({11, "De Loja",        "MV_CHB", "C", 02, 00, "G", NIL})
-	oSX1:NewItem({12, "Ate Loja",       "MV_CHC", "C", 02, 00, "G", NIL})
-	oSX1:NewItem({13, "De Emissao",     "MV_CHD", "D", 08, 00, "G", NIL})
-	oSX1:NewItem({14, "Ate Emissao",    "MV_CHE", "D", 08, 00, "G", NIL})
-	oSX1:NewItem({15, "De Vencimento",  "MV_CHF", "D", 08, 00, "G", NIL})
-	oSX1:NewItem({16, "Ate Vencimento", "MV_CHG", "D", 08, 00, "G", NIL})
-	oSX1:NewItem({17, "Do Bordero",     "MV_CHH", "C", 06, 00, "G", NIL})
-	oSX1:NewItem({18, "Ate Bordero",    "MV_CHI", "C", 06, 00, "G", NIL})
-	oSX1:NewItem({19, "Banco",          "MV_CHJ", "C", 03, 00, "G", "SA6"})
-	oSX1:NewItem({20, "Agencia",        "MV_CHL", "C", 05, 00, "G", NIL})
-	oSX1:NewItem({21, "Conta",          "MV_CHM", "C", 10, 00, "G", NIL})
-	
-	oSX1:Commit()
+		// Cria instância do objeto
+		oSX1 := CreateSX1():New("BLTITAU")
+		// Adiciona novos itens da SX1
+		oSX1:NewItem({01, "De Prefixo",     "MV_CH1", "C", 03, 00, "G", NIL})
+		oSX1:NewItem({02, "Ate Prefixo",    "MV_CH2", "C", 03, 00, "G", NIL})
+		oSX1:NewItem({03, "De Numero",      "MV_CH3", "C", 09, 00, "G", "SE1"})
+		oSX1:NewItem({04, "Ate Numero",     "MV_CH4", "C", 09, 00, "G", "SE1"})
+		oSX1:NewItem({05, "De Parcela",     "MV_CH5", "C", 01, 00, "G", NIL})
+		oSX1:NewItem({06, "Ate Parcela",    "MV_CH6", "C", 01, 00, "G", NIL})
+		oSX1:NewItem({07, "De Portador",    "MV_CH7", "C", 03, 00, "G", NIL})
+		oSX1:NewItem({08, "Ate Portador",   "MV_CH8", "C", 03, 00, "G", NIL})
+		oSX1:NewItem({09, "De Cliente",     "MV_CH9", "C", 06, 00, "G", "SA1"})
+		oSX1:NewItem({10, "Ate Cliente",    "MV_CHA", "C", 06, 00, "G", "SA1"})
+		oSX1:NewItem({11, "De Loja",        "MV_CHB", "C", 02, 00, "G", NIL})
+		oSX1:NewItem({12, "Ate Loja",       "MV_CHC", "C", 02, 00, "G", NIL})
+		oSX1:NewItem({13, "De Emissao",     "MV_CHD", "D", 08, 00, "G", NIL})
+		oSX1:NewItem({14, "Ate Emissao",    "MV_CHE", "D", 08, 00, "G", NIL})
+		oSX1:NewItem({15, "De Vencimento",  "MV_CHF", "D", 08, 00, "G", NIL})
+		oSX1:NewItem({16, "Ate Vencimento", "MV_CHG", "D", 08, 00, "G", NIL})
+		oSX1:NewItem({17, "Do Bordero",     "MV_CHH", "C", 06, 00, "G", NIL})
+		oSX1:NewItem({18, "Ate Bordero",    "MV_CHI", "C", 06, 00, "G", NIL})
+		oSX1:NewItem({19, "Banco",          "MV_CHJ", "C", 03, 00, "G", "SA6"})
+		oSX1:NewItem({20, "Agencia",        "MV_CHL", "C", 05, 00, "G", NIL})
+		oSX1:NewItem({21, "Conta",          "MV_CHM", "C", 10, 00, "G", NIL})
+		
+		oSX1:Commit()
 	
 	If !Pergunte (cPerg,.T.)
 		Return
@@ -214,45 +214,36 @@ Static Function MontaRel()
 				//Posiciona o SA6 (Bancos)
 				DbSelectArea("SA6")
 				DbSetOrder(1)                                    
-
 				//DbSeek(xFilial("SA6")+MV_PAR19+MV_PAR20+MV_PAR21)
 				If DbSeek(xFilial("SA6")+SE1->(E1_PORTADO+E1_AGEDEP+E1_CONTA)) == .F.
-					ShowHelpDlg(SM0->M0_NOME,;
-						{"Banco/Agência/Conta inválido."},5,;
-						{"Verifique se os parâmetros estão preenchidos corretamente."},5)
+						Help(NIL, NIL, "CADASTRO BANCO", NIL, ("Banco " + MV_PAR19 + "/ Agência: " + MV_PAR20 + " /Conta: " + MV_PAR21 + " inválidos."); 
+						,1, 0, NIL, NIL, NIL, NIL, NIL, {"Verifique se os parâmetros estão preenchidos corretamente."})
 					Return
 				Endif
-
 				//Posiciona na Arq de Parametros CNAB
 				DbSelectArea("SEE")
 				DbSetOrder(1)
-
 				//DbSeek(xFilial("SEE")+MV_PAR19+MV_PAR20+MV_PAR21)
 				If DbSeek(xFilial("SEE")+SE1->(E1_PORTADO+E1_AGEDEP+E1_CONTA)) == .F.
-					ShowHelpDlg(SM0->M0_NOME,;
-						{"Parâmetros de Banco do Banco/Agência/Conta/Sub-Conta inválido."},5,;
-						{"Verifique se os parâmetros estão preenchidos corretamente."},5)
+						Help(NIL, NIL, "CADASTRO BANCO", NIL, ("Banco " + MV_PAR19 + "/ Agência: " + MV_PAR20 + " /Conta: " + MV_PAR21 + " inválidos."); 
+						,1, 0, NIL, NIL, NIL, NIL, NIL, {"Verifique se os parâmetros estão preenchidos corretamente."})
 					Return
 				Endif
 			Else
-
 				//Posiciona o SA6 (Bancos)
 				DbSelectArea("SA6")
 				DbSetOrder(1)
 				If DbSeek(xFilial("SA6")+MV_PAR19+MV_PAR20+MV_PAR21) == .F.
-					ShowHelpDlg(SM0->M0_NOME,;
-						{"Banco/Agência/Conta inválido."},5,;
-						{"Verifique se os parâmetros estão preenchidos corretamente."},5)
+					Help(NIL, NIL, "CADASTRO BANCO", NIL, ("Banco " + MV_PAR19 + "/ Agência: " + MV_PAR20 + " /Conta: " + MV_PAR21 + " inválidos."); 
+					,1, 0, NIL, NIL, NIL, NIL, NIL, {"Verifique se os parâmetros estão preenchidos corretamente."})
 					Return
 				Endif			
-
 				//Posiciona na Arq de Parametros CNAB
 				DbSelectArea("SEE")
 				DbSetOrder(1)
 				If DbSeek(xFilial("SEE")+MV_PAR19+MV_PAR20+MV_PAR21) == .F.
-					ShowHelpDlg(SM0->M0_NOME,;
-						{"Parâmetros de Banco do Banco/Agência/Conta/Sub-Conta inválido."},5,;
-						{"Verifique se os parâmetros estão preenchidos corretamente."},5)
+					Help(NIL, NIL, "CADASTRO BANCO", NIL, ("Parâmetros de Banco " + MV_PAR19 + "/ Agência: " + MV_PAR20 + " /Conta: " + MV_PAR21 + " inválidos."); 
+					,1, 0, NIL, NIL, NIL, NIL, NIL, {"Verifique se os parâmetros estão preenchidos corretamente."})
 					Return
 				Endif
 			Endif
@@ -330,15 +321,18 @@ Static Function MontaRel()
 		    (E1_VALOR-nVlrAbat) ,; // Valor do Titulo		
 			E1_VENCTO           ,; // Data de Vencimento do Titulo
 			cNroDoc              ) // Numero do Documento no Contas a Receber
-			dvNN := Alltrim(Str(Modulo10(aDadosBanco[3]+aDadosBanco[4]+aDadosBanco[6]+cNroDoc)))		
+			dvNN := Alltrim(Str(Modulo10(aDadosBanco[3]+aDadosBanco[4]+aDadosBanco[6]+cNroDoc)))
+			
 			//FALAR COM BIGOIS DESSE MEU IF QUE EM TESE RESOLVEU OS TITULOS SEM PARCELAS.
 			If Empty(SE1->E1_PARCELA)
-		    	cNumTit := AllTrim(E1_NUM)
+		    	cNumTit := AllTrim(E1_NUM+"-"+"1")
+			Elseif  SE1->E1_SALDO == 0 .And. Empty(SE1->E1_PARCELA)
+				cNumTit := AllTrim(E1_NUM+"-"+"1"+"PG")
+			Elseif SE1->E1_SALDO == 0 .And. !Empty(SE1->E1_PARCELA)
+				cNumTit := AllTrim(E1_NUM)+"-"+AllTrim(E1_PARCELA)+"PG"
 			Else                     
 			    cNumTit := AllTrim(E1_NUM)+"-"+AllTrim(E1_PARCELA)
 		    Endif
-
-
 
 	       // MsgBox(STR(nVlrAbat))  
 			aDadosTit	:= {cNumTit				,;  // [1] Número do título
@@ -358,9 +352,9 @@ Static Function MontaRel()
 			oPrint:SetPortrait()
 			oPrint:SetParm( "-RFS")
 			oPrint:SetPaperSize(9)
-			oPrint:cPathPDF := cLocal //Acrescentado 
+			oPrint:cPathPDF := cLocal //Acrescentado destino na variável
 			Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolText,aCB_RN_NN,dvNN)
-			Sleep(3000)
+			Sleep(3000) //Acrescentado um Sleep para que possa gerar todos os boletos cadenciados.
 			nX := nX++
 		EndIf
 
