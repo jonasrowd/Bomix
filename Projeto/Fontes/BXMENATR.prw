@@ -86,8 +86,8 @@ DbSeek(SC5->C5_FILIAL+SC5->C5_NUM)
 	If lRet
 		RecLock("SC5",.F.)
 		SC5->C5_BXSTATU := cBx
-		If cBx = 'L'
-			SC5->C5_LIBEROK := cBx	
+		If cBx = 'L' .OR. cBx = 'E'
+			SC5->C5_LIBEROK := 'L'	
 			SC5->C5_BLQ := ''		
 		EndIf
 		SC5->(MsUnlock())
