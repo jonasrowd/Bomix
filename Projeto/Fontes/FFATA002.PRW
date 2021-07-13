@@ -2,6 +2,6 @@
 
 User Function FFATA002()
 	
-AxCadastro("Z06","Histórico de Liberações")
+AxCadastro("Z07","Histórico de Liberações")
 	
 Return

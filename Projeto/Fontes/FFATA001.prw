@@ -41,7 +41,7 @@ BeginSql alias 'C5TEMP'
     C5.D_E_L_E_T_ <> '*'   AND 
     C6_QTDENT < C6_QTDVEN  AND 
     C5_NOTA = ''  AND C6_NUMORC <> '' 
-    AND C5_LIBEROK <> 'E'
+    AND C5_LIBEROK <> 'E'  
 
 EndSql
 
@@ -71,16 +71,15 @@ While C5TEMP->(!Eof())
         E1_LOJA = %exp:SC5->C5_LOJACLI% AND
         SE1.%notDel% AND
         E1_TIPO = 'NF' AND 
-        E1_VENCTO < %exp:DtoS(dDataBase)% AND 
+        E1_VENCREA < %exp:DtoS(dDataBase)% AND 
         E1_BAIXA = ''
         
     EndSql
 
     RecLock("SC5",.F.)
-    If E1TEMP->(!Eof())
+    If E1TEMP->(VALOR) != 0
         SC5->C5_BXSTATU := 'B'
 		SC5->C5_BLQ := 'B'
-        
     Else
         SC5->C5_BXSTATU := 'L'
         SC5->C5_BLQ := ''

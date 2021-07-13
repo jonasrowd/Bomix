@@ -92,21 +92,21 @@ DbSeek(SC5->C5_FILIAL+SC5->C5_NUM)
 		EndIf
 		SC5->(MsUnlock())
 
-		dbSelectArea("Z06")
-		RecLock("Z06",.T.)
-			Z06->Z06_FILIAL := SC5->C5_FILIAL
-			Z06->Z06_PEDIDO := SC5->C5_NUM
-			Z06->Z06_JUSTIF := 'Liberada '+IIF(cBx = 'P','Produção','Venda')+' Usuário: '+RetCodUsr()
-			Z06->Z06_DATA := dDataBase
-			Z06->Z06_HORA := SUBSTRING(TIME(),1,5)
+		dbSelectArea("Z07")
+		RecLock("Z07",.T.)
+			Z07->Z07_FILIAL := SC5->C5_FILIAL
+			Z07->Z07_PEDIDO := SC5->C5_NUM
+			Z07->Z07_JUSTIF := 'Liberada '+IIF(cBx = 'P','Produção','Venda')+' Usuário: '+RetCodUsr()
+			Z07->Z07_DATA := dDataBase
+			Z07->Z07_HORA := SUBSTRING(TIME(),1,5)
 		MsUnlock()
 	Else 
-		RecLock("Z06",.T.)
-			Z06->Z06_FILIAL := SC5->C5_FILIAL
-			Z06->Z06_PEDIDO := SC5->C5_NUM
-			Z06->Z06_JUSTIF := 'Não Liberado: '+cJust
-			Z06->Z06_DATA := dDataBase
-			Z06->Z06_HORA := SUBSTRING(TIME(),1,5)
+		RecLock("Z07",.T.)
+			Z07->Z07_FILIAL := SC5->C5_FILIAL
+			Z07->Z07_PEDIDO := SC5->C5_NUM
+			Z07->Z07_JUSTIF := 'Não Liberado: '+cJust
+			Z07->Z07_DATA := dDataBase
+			Z07->Z07_HORA := SUBSTRING(TIME(),1,5)
 		MsUnlock()
 	EndIf
 

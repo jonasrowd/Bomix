@@ -34,7 +34,7 @@ Local c_Qry:=""
 		nRet := 0
 	Endif
 	
-	QRY->(dbCloseArea())		
+	QRY->(dbCloseArea())
 	
 RestArea(aArea)
 		
