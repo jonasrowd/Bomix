@@ -86,7 +86,15 @@
 		{
 			"label": "APSDU",
 			"description": "<nil>"
+		},
+		{
+			"label": "u_FFATA001",
+			"description": "<nil>"
+		},
+		{
+			"label": "u_FFATA002",
+			"description": "<nil>"
 		}
 	],
-	"lastProgramExecuted": "SIGAFAT"
+	"lastProgramExecuted": "u_FFATA002"
 }
