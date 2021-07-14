@@ -16,7 +16,7 @@ If !( RetCodUsr()$ Supergetmv("BM_USERLIB",.F.,"000000;000915" ) )
 	return .F.
 Endif
 
-If SC5->C5_BXSTATU = 'L'
+If SC5->C5_BXSTATU = 'L' .AND. SC5->C5_LIBEROK <> 'S'
 	MsgInfo("Pedido de venda já liberado anteriormente","Atenção!")
 	return .F.
 EndIf
@@ -44,7 +44,7 @@ DbSeek(SC5->C5_FILIAL+SC5->C5_NUM)
 
 	BeginSql alias 'E1TEMP'
         column E1_EMISSAO as Date
-        column E1_VENCTO  as Date
+        column E1_VENCREA  as Date
 
         SELECT 
 
@@ -58,13 +58,13 @@ DbSeek(SC5->C5_FILIAL+SC5->C5_NUM)
         E1_LOJA = %exp:SC5->C5_LOJACLI% AND
         SE1.%notDel% AND
 		E1_TIPO = 'NF' AND 
-        E1_VENCTO < %exp:DtoS(dDataBase)% AND 
+        E1_VENCREA < %exp:DtoS(dDataBase)% AND 
         E1_BAIXA = ''
         
 	EndSql
 
 	RecLock("SC5",.F.)
-	If E1TEMP->(!Eof())
+	If E1TEMP->(VALOR) != 0
 		SC5->C5_BXSTATU := 'B'
 		pMensagem += " Este Cliente possui pendências financeiras com valor total somado: "+ Transform(E1TEMP->VALOR,PesqPict("SC6","C6_VALOR"))
 	Else
@@ -91,6 +91,8 @@ DbSeek(SC5->C5_FILIAL+SC5->C5_NUM)
 			SC5->C5_BLQ := ''		
 		EndIf
 		SC5->(MsUnlock())
+
+		atuSC9(SC5->C5_NUM)
 
 		dbSelectArea("Z07")
 		RecLock("Z07",.T.)
@@ -161,3 +163,9 @@ Static oDlgJust
 		Return cGet1
 	EndIf
 Return ""
+
+Static Function atuSC9(_cPed)
+
+	TcSqlExec(" UPDATE SC9010 SET C9_BLCRED = '' WHERE C9_PEDIDO = '"+_cPed+"' AND D_E_L_E_T_ <> '*'" )
+
+Return 

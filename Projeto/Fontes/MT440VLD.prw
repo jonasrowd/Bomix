@@ -16,7 +16,6 @@ Local lRet:= .T.
 Local nAtrasados := 0
 Local cNome := ""
 Local _CALIAS    :=GETAREA()
-Local c_UserLib := GETMV("BM_USERLIB")
 
 nAtrasados := u_FFATVATR(SA1->A1_COD, SA1->A1_LOJA)//SA1->A1_ATR
 cNome := SA1->A1_NOME
@@ -26,49 +25,44 @@ If nAtrasados <> 0
 	{"Caso queira concluir a efetivação deste pedido, solicite a liberação dos responsáveis."},5) 
 	
 	lRet := .F.
-	
-	DbSelectArea("SC5")
-	DbSetOrder(1)
-	
-	If (DBSEEK(xFilial("SC5")+SC5->C5_NUM))
-		RecLock("SC5", .F.)
-			SC5->C5_BXSTATU := 'B'		//Bloqueado Financeiro
-		MsUnlock()
-	EndIf
 
 EndIf
-
-If !lRet
-	If  __CUSERID$(c_UserLib)
-		If MsgYesNo ("O orçamento encontra-se com bloqueio, devido a restrição financeira do cliente no total de R$ "+alltrim(Transform(nAtrasados,"@e 9,999,999,999,999.99"))+", gostaria de realizar o desbloqueio?", "Atenção")
-			lRet := .T.		
-			DbSelectArea("SC5")
-			DbSetOrder(1)
-			
-			If (DBSEEK(xFilial("SC5")+SC5->C5_NUM))
-				RecLock("SC5", .F.)
-					SC5->C5_BXSTATU := 'A'		//Bloqueado Financeiro
-					SC5->C5_BLQ := 'B'
-				MsUnlock()
-			EndIf
-		
-		EndIf
-		
-	Endif
-EndIf
-
-If lRet .AND. !__CUSERID$(c_UserLib)
-
-	DbSelectArea("SC5")
-	DbSetOrder(1)		
-	If (DBSEEK(xFilial("SC5")+SC5->C5_NUM))
-		RecLock("SC5", .F.)
-			SC5->C5_BXSTATU := ''		//Bloqueado Financeiro
-			SC5->C5_BLQ := ''
-		MsUnlock()
-	EndIf
-Endif
 
 RESTAREA(_CALIAS)
 
 return lRet
+
+
+ /*/{Protheus.doc} pesqLib
+	(long_description)
+	@type  Function
+	@author Rômulo Ferreira
+	@since 13/07/2021
+	@version version
+	@param param_name, param_type, param_descr
+	@return return_var, , return_description
+	@example
+	(examples)
+	@see (links_or_references)
+	/*/
+Static Function estaLib(_cPed)
+Default _cPed := ""
+
+DbSelectArea("Z07")
+DbSetOrder(1)
+
+If dbSeek( SC5->C5_FILIAL + SC5->C5_NUM ) .AND. (!estaLib(SC5->C5_NUM))
+
+	While Z07->(!Eof()) .AND.  SC5->C5_NUM  = Z07->Z07_PEDIDO 
+
+		If 'Venda' $ Z07->Z07_JUSTIF
+			Return .T.
+		EndIf
+
+		Z07->(dbSkip())
+	EndDo
+
+EndIf
+	
+Return .F.
+

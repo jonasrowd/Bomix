@@ -57,7 +57,6 @@ While C5TEMP->(!Eof())
 
     BeginSql alias 'E1TEMP'
         column E1_EMISSAO as Date
-        column E1_VENCTO  as Date
 
         SELECT 
 
@@ -76,16 +75,33 @@ While C5TEMP->(!Eof())
         
     EndSql
 
-    RecLock("SC5",.F.)
-    If E1TEMP->(VALOR) != 0
-        SC5->C5_BXSTATU := 'B'
-		SC5->C5_BLQ := 'B'
-    Else
-        SC5->C5_BXSTATU := 'L'
-        SC5->C5_BLQ := ''
+    lAtualiza := .T.
+    dbSelectArea("Z07")
+    dbSetOrder(1)
+    If dbSeek(SC5->C5_FILIAL+SC5->C5_NUM)
+        While Z07->(!Eof()) .AND. Z07->Z07_PEDIDO = SC5->C5_NUM
+            If 'Venda' $ Z07->Z07_JUSTIF .OR. 'Produ' $ Z07->Z07_JUSTIF 
+                lAtualiza := .F.
+            EndIf
+            Z07->(dbSkip())
+        EndDo
+
     EndIf
 
-    MsUnlock()
+    If lAtualiza
+
+        RecLock("SC5",.F.)
+        If E1TEMP->(VALOR) != 0
+            SC5->C5_BXSTATU := 'B'
+            SC5->C5_BLQ := 'B'
+        Else
+            SC5->C5_BXSTATU := 'L'
+            SC5->C5_BLQ := ''
+            SC5->C5_LIBEROK = 'L'
+        EndIf
+        MsUnlock()
+    EndIf
+    
     C5TEMP->(dbSkip())
 EndDo
 

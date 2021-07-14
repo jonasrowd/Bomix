@@ -20,14 +20,6 @@
 
 User Function M410PVNF
 
-	Local l_Ret     := .T.
-
-	private cfil :="      "
-	cFil := FWCodFil()
-	if cFil = "030101"
-		Return(l_Ret)
-	endif
-
 	If SC5->C5_LIBEROK  = 'L' .AND. Empty(SC5->C5_BLQ)
 		Return .T.
 	Endif

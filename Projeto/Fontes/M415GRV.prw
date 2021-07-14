@@ -36,7 +36,7 @@ User Function M415GRV
 
 		BeginSql alias 'E1TEMP'
         column E1_EMISSAO as Date
-        column E1_VENCTO  as Date
+        column E1_VENCREA  as Date
 
         SELECT 
 
@@ -50,13 +50,13 @@ User Function M415GRV
         E1_LOJA = %exp:SCJ->CJ_LOJA% AND
         SE1.%notDel% AND
         E1_TIPO = 'NF' AND 
-        E1_VENCTO < %exp:DtoS(dDataBase)% AND 
+        E1_VENCREA < %exp:DtoS(dDataBase)% AND 
         E1_BAIXA = ''
         
 		EndSql
 
 		RecLock("SCJ",.F.)
-		If E1TEMP->(!Eof())
+		If E1TEMP->(VALOR) != 0
 			SCJ->CJ_BXSTATU := 'B'
 		Else
 			SCJ->CJ_BXSTATU := 'L'

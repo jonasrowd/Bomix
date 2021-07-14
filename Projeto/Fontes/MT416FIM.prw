@@ -32,7 +32,7 @@ User Function MT416FIM
 
 	BeginSql alias 'E1TEMP'
         column E1_EMISSAO as Date
-        column E1_VENCTO  as Date
+        column E1_VENCREA  as Date
 
         SELECT 
 
@@ -46,12 +46,12 @@ User Function MT416FIM
         E1_LOJA = %exp:M->C5_LOJACLI% AND
         SE1.%notDel% AND
 		E1_TIPO = 'NF' AND 
-        E1_VENCTO < %exp:DtoS(dDataBase)% AND 
+        E1_VENCREA < %exp:DtoS(dDataBase)% AND 
         E1_BAIXA = ''
         
 	EndSql
 
-	If E1TEMP->(!Eof())
+	If E1TEMP->(VALOR) != 0
 		M->C5_BXSTATU := 'B'
 		M->C5_BLQ := 'B'
 		pMensagem += " Este Cliente possui pendências financeiras com valor total somado: "+ Transform(E1TEMP->VALOR,PesqPict("SC6","C6_VALOR"))
@@ -106,7 +106,7 @@ While C5TEMP->(!Eof())
 
     BeginSql alias 'E1TEMP'
         column E1_EMISSAO as Date
-        column E1_VENCTO  as Date
+        column E1_VENCREA  as Date
 
         SELECT 
 
@@ -120,13 +120,13 @@ While C5TEMP->(!Eof())
         E1_LOJA = %exp:SC5->C5_LOJACLI% AND
         SE1.%notDel% AND
         E1_TIPO = 'NF' AND 
-        E1_VENCTO < %exp:DtoS(dDataBase)% AND 
+        E1_VENCREA < %exp:DtoS(dDataBase)% AND 
         E1_BAIXA = ''
         
     EndSql
 
     RecLock("SC5",.F.)
-    If E1TEMP->(!Eof())
+    If E1TEMP->(VALOR) != 0
         SC5->C5_BXSTATU := 'B'
 		SC5->C5_BLQ := 'B'
         

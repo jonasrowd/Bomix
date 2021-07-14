@@ -20,13 +20,13 @@ User Function M410INIC()
 
     BeginSql alias 'E1TEMP'
         column E1_EMISSAO as Date
-        column E1_VENCTO  as Date
+        column E1_VENCREA  as Date
 
         SELECT 
 
         E1_NUM,
         E1_EMISSAO,
-        E1_VENCTO,
+        E1_VENCREA,
         E1_VALOR, 
         E1_HIST 
 
@@ -38,11 +38,11 @@ User Function M410INIC()
         E1_LOJA = %exp:M->C5_LOJACLI% AND
         SE1.%notDel% AND
         E1_TIPO = 'NF' AND 
-        E1_VENCTO < %exp:DtoS(dDataBase)%
-        ORDER BY E1_VENCTO ASC
+        E1_VENCREA < %exp:DtoS(dDataBase)%
+        ORDER BY E1_VENCREA ASC
         EndSql
 
-        If E1TEMP->(!Eof())
+        If E1TEMP->(VALOR) != 0
         M->C5_BXSTATU := 'B'
         M->C5_BLQ := 'B'
         EndIf
