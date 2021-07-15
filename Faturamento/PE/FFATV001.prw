@@ -1,156 +1,146 @@
-#INCLUDE 'TOPCONN.CH'
+#Include "totvs.ch"
 
-/*
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
-±±ºPrograma  ³ FFATV001   ºAutor  ³ Christian Rocha    º      ³           º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºDesc.     ³ Validação para o produto selecionado no item do pedido de  º±±
-±±º          ³ venda.											  		  º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºUso       ³ SIGAFAT - Faturamento									  º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºData      ºProgramador       ºAlteracoes                               º±±
-±±º          º                  º                                         º±±
-±±ÈÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
-*/
+/*/{Protheus.doc} FFATV001
+	Valida a arte e a amarração do produto x cliente
+	@type Function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 25/06/2021
+	@param cProduto, Character, Código do produto do campo atualmente posicionado
+	@return Logical, Retorno lógico para validação do item
+/*/
+User Function FFATV001(cProduto)
+	Local lOK   := .T.       // Controle de validação
+	Local aArea := GetArea() // Tabela e seu estado para posterior restauração
 
-/* VERSÃO EM PRODUÇÃO ANTES DA ALTERAÇÃO DA ROTINA DE ARTE
-User Function FFATV001(c_Produto)
-	Local _cAlias := Alias()
-	Local l_Ret   := .T.
-	Local c_Var   := ReadVar()
-	Local a_Area  := GetArea()
-
-	dbSelectArea("SB1")
-	dbGoTop()
-	dbSetOrder(1)
-	dbSeek(xFilial("SB1")+c_Produto)
-	If !Empty(SB1->B1_FSARTE) 				//Verifica se o produto possui arte
-		If SB1->B1_FSARTE <> '99999'	    //Verifica se a arte do produto é diferente de 99999
-			dbSelectArea("SZ2")
-			dbGoTop()
-			dbSetOrder(1)
-			dbSeek(xFilial("SZ2")+SB1->B1_FSARTE)
-			If SZ2->Z2_BLOQ == '1'          //Verifica se a arte do produto está bloqueada
-				ShowHelpDlg(SM0->M0_NOME, {"A arte deste produto está bloqueada."},5,;
-		                                  {"Contacte o administrador do sistema."},5)
-				If 'C6' $ c_Var           //Verifica se é pedido de venda ou orçamento
-					aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'C6_FSTPITE' })] := '2'         //Altera a situação da arte para alterada
-				Else
-					(_cAlias)->CK_FSTPITE := '2'
-				Endif
-			Endif
-		Else
-			ShowHelpDlg(SM0->M0_NOME, {"1) Produto bloqueado", "2) Arte em desenvolvimento"},5,;
-	                                  {"Contacte o administrador do sistema."},5)    
-			l_Ret := .F.
-		Endif
-	Endif
+	// Valida o bloqueio da arte do produto
+	lOK := ValidaArte(cProduto) 
 	
-	If l_Ret
-		If 'C6' $ c_Var           //Verifica se é pedido de venda ou orçamento
-			c_Cliente := M->C5_CLIENTE
-			c_Loja    := M->C5_LOJACLI
-		Else
-			c_Cliente := M->CJ_CLIENTE
-			c_Loja    := M->CJ_LOJA
-		Endif
+	// Se a arte estiver desbloqueada, valida a amarração do produto x cliente
+	If (lOK)
+		ValidaSA7(cProduto)
+	EndIf
 
-     	dbSelectArea("SA7")			
-	    dbGoTop()
-	    dbSetOrder(2)
-	    If !MsSeek(xFilial("SA7") + c_Produto + c_Cliente + c_Loja)			//Verifica se existe amarração Produto x Cliente
-   			ShowHelpDlg(SM0->M0_NOME, {"1) Amarração Produto X Cliente inválida"},5,;
-		                              {"Digite um produto com Amarração Produto X Cliente válida."},5)    
-	    	l_Ret := .F.
-	    Endif
+	If (lOk)
+		jFSESPEC(cProduto)
 	Endif
 
-	RestArea(a_Area)	
+	// Restaura a área e seu estado anterior
+	RestArea(aArea)
+Return (lOK)
 
-Return(l_Ret)
-*/
+/*/{Protheus.doc} ValidaArte
+	Validações específicas da arte do produto
+	@type Function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 25/06/2021
+	@param cProduto, Character, Código do produto do campo atualmente posicionado
+	@return Logical, Retorno lógico para validação do item
+/*/
+Static Function ValidaArte(cProduto)
+	Local lOK := .T. // Controle de validação da arte
 
+	// Executa as validações apenas na rotina de orçamentos ou pedido de venda
+	If (FwIsInCallStack("MATA415") .Or. FwIsInCallStack("MATA410") .Or. FwIsInCallStack("MATA416")) 
+		// Pesquisa pelo produto na tabela SB1
+		DBSelectArea("SB1")
+		DBGoTop()
+		DBSetOrder(1)
+		DBSeek(FwXFilial("SB1") + cProduto)
 
-User Function FFATV001(c_Produto)
-	Local _cAlias := Alias()
-	Local l_Ret   := .T.
-	Local c_Var   := ReadVar()
-	Local a_Area  := GetArea()   
-	
-	
-	//testa filial atual
+		// Caso encontrado, verifica se o produto possui arte, se a mesma está desbloqueada e se é diferente de 99999
+		If (Found() .And. !Empty(SB1->B1_FSARTE) .And. SB1->B1_FSARTE <> "99999")
+			// Pesquisa pelo produto na tabela SZ2
+			DBSelectArea("SZ2")
+			DBGoTop()
+			DBSetOrder(1)
+			DBSeek(FwXFilial("SZ2") + SB1->B1_FSARTE)
 
-private cfil :="      "
-cFil := FWCodFil()
-if cFil = "030101"
-   return(l_Ret)
-endif
+			// Verifica se a arte do produto é nova, bloqueada ou em desenvolvimento
+			If (Found() .And. SZ2->Z2_BLOQ $ "1|2|3")
+				// Se for um orçamento, libera para gravação
+				// Se for um pedido de venda, não permite a gravação
+				lOK := IIf(FwIsInCallStack("MATA415"), .T., .F.)
 
-////////
-	
-/*	
+				Help(NIL, NIL, "ART_BLOCKED", NIL, "A arte produto " + AllTrim(cProduto) + " não está disponível para utilização.",;
+					1, 0, NIL, NIL, NIL, NIL, NIL, {"Contate o setor de Computação Gráfica."})
+			EndIf
+		EndIf
+	EndIf
+Return (lOK)
 
-	dbSelectArea("SB1")
-	dbGoTop()
-	dbSetOrder(1)
-	dbSeek(xFilial("SB1")+c_Produto)
-	If !Empty(SB1->B1_FSARTE) 				//Verifica se o produto possui arte
-		dbSelectArea("SZ2")
-		dbGoTop()
-		dbSetOrder(1)
-		dbSeek(xFilial("SZ2")+SB1->B1_FSARTE)
-		If SZ2->Z2_BLOQ == '1' .Or. SZ2->Z2_BLOQ == '2'         //Verifica se a arte do produto é nova ou está bloqueada
-			ShowHelpDlg(SM0->M0_NOME, {"A arte deste produto é nova ou está bloqueada."},5,;
-	                                  {"Contacte o administrador do sistema."},5)
-			If 'C6' $ c_Var           //Verifica se é pedido de venda ou orçamento
-				aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'C6_FSTPITE' })] := '1'         //Altera o bloqueio da arte para Sim
-			Else
-//				(_cAlias)->CK_FSTPITE := '1'
-				TMP1->CK_FSTPITE := '1'
-			Endif
-			l_Ret := .F.
-		Else
-			If 'C6' $ c_Var           //Verifica se é pedido de venda ou orçamento
-				aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'C6_FSTPITE' })] := '2'         //Altera o bloqueio da arte para Nao
-			Else
-				TMP1->CK_FSTPITE := '2'
-			Endif
-		Endif
-	Else
-		If 'C6' $ c_Var           //Verifica se é pedido de venda ou orçamento
-			aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'C6_FSTPITE' })] := '2'         //Altera o bloqueio da arte para Nao
-		Else
-			TMP1->CK_FSTPITE := '2'
-		Endif
-	Endif
-	
-*/
-	
-	If 'C6' $ c_Var           //Verifica se é pedido de venda ou orçamento
-		c_Cliente := M->C5_CLIENTE
-		c_Loja    := M->C5_LOJACLI
-	Else
-		c_Cliente := M->CJ_CLIENTE
-		c_Loja    := M->CJ_LOJA
-	Endif
-    
-    IF M->C5_TIPO <> "B"
+/*/{Protheus.doc} ValidaArte
+	Valida a amarração do produto x cliente
+	@type Function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 25/06/2021
+	@param cProduto, Character, Código do produto do campo atualmente posicionado
+	@return Logical, Retorno lógico para validação do item
+/*/
+Static Function ValidaSA7(cProduto)
+	Local lOK      := .T. // Controle da amarração cliente x produto
+	Local cCliente := ""  // Código do cliente
+	Local cLoja    := ""  // Código da loja
 
-   	   dbSelectArea("SA7")			
-       dbGoTop()
-       dbSetOrder(2)
-       If !MsSeek(xFilial("SA7") + c_Produto + c_Cliente + c_Loja)			//Verifica se existe amarração Produto x Cliente
-	     	ShowHelpDlg(SM0->M0_NOME, {"1) Amarração Produto X Cliente inválida"},5,;
-	                              {"Digite um produto com Amarração Produto X Cliente válida."},5)    
-    	   l_Ret := .F.
-       Endif
-       
-    ENDIF
-	RestArea(a_Area)	
+	// Verifica se está executando em qualquer outra filial que não seja a 030101
+	If (FwCodFil() != "030101")
+		// Captura o código do cliente e loja
+		If (FwIsInCallStack("MATA410")) 
+			cCliente := M->C5_CLIENTE
+			cLoja    := M->C5_LOJACLI
+		ElseIf (FwIsInCallStack("MATA415"))
+			cCliente := M->CJ_CLIENTE
+			cLoja    := M->CJ_LOJA
+		ElseIf (FwIsInCallStack("MATA416"))
+			cCliente := M->CJ_CLIENTE
+			cLoja    := M->CJ_LOJA
+		EndIf
 
-Return(l_Ret)
+		// VerIfica se existe amarração Produto x Cliente
+		DBSelectArea("SA7")
+		DBGoTop()
+		DBSetOrder(2)
+		DBSeek(FwXFilial("SA7") + cProduto + cCliente + cLoja)
+
+		// Caso não exista, retorna falso para a validação e exibe uma mensagem de erro
+		If (!Found())
+			// Se for um orçamento, libera para gravação
+			// Se for um pedido de venda, não permite a gravação
+			lOK := .F. // IIf(FwIsInCallStack("MATA415"), .T., .F.)
+			Help(NIL, NIL, "ERROR: PRODUTO X CLIENTE", NIL, "Amarração Produto x Cliente inválida.",;
+				1, 0, NIL, NIL, NIL, NIL, NIL, {"O produto " + AllTrim(cProduto) + " não possui amarração Produto x Cliente válida."})
+		EndIf
+	EndIf
+Return (lOK)
+
+/*/{Protheus.doc} jFSESPEC
+	Função para validar se o campo C5_FSESPEC está preenchido.
+	@type Function
+	@version  12.1.25
+	@author Jonas Machado
+	@since 15/07/2021
+	@param cProduto, character, Produto passado por parâmetro para função.
+/*/
+Static Function jFSESPEC(cProduto)
+ 	Local l0K    := .T.
+	Local cCliente := ""  // Código do cliente
+	Local cLoja    := ""  // Código da loja
+	Local a_Area   := GetArea()
+
+	DBSelectArea("SC5")
+	DBGoTop()
+	DBSetOrder(1)
+	DBSeek(FwXFilial("SC5") + cProduto + cCliente + cLoja)
+
+	If (FwIsInCallStack("MATA410")) 
+			M->C5_FSESPEC  = '' .AND. xFilial("SC5")<>'030101' .AND. cProduto
+				Help(NIL, NIL, "ERROR: C5_FSESPEC", NIL, "O campo (Especifidade) deve ser preenchido.",;
+					1, 0, NIL, NIL, NIL, NIL, NIL, {"Preencha corretamente."})
+			l0K := .F.
+		Return Nil
+	EndIf
+
+	RestArea(a_Area)
+Return l0K

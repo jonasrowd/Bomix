@@ -43,8 +43,8 @@ User Function M410INIC()
         EndSql
 
         If E1TEMP->(VALOR) != 0
-        M->C5_BXSTATU := 'B'
-        M->C5_BLQ := 'B'
+            M->C5_BXSTATU := 'B'
+            M->C5_BLQ := 'B'
         EndIf
 	EndIf
 Return nil

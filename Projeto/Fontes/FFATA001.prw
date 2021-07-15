@@ -4,15 +4,15 @@
 
 /*/{Protheus.doc} FFATA001
     (long_description)
-    @type  Function
-    @author RÙmulo Ferreira
-    @since 03/04/2021
-    @version version
-    @param param_name, param_type, param_descr
-    @return return_var, return_type, return_description
-    @example
-    (examples)
-    @see Job para manuten√ß√£o dos status dos pedidos de vendas
+   @type  Function
+   @author RÙmulo Ferreira
+   @since 03/04/2021
+   @version version
+   @param param_name, param_type, param_descr
+   @return return_var, return_type, return_description
+   @example
+   (examples)
+   @see Job para manuten√ß√£o dos status dos pedidos de vendas
 /*/
 User Function FFATA001()
 
@@ -41,7 +41,7 @@ BeginSql alias 'C5TEMP'
     C5.D_E_L_E_T_ <> '*'   AND 
     C6_QTDENT < C6_QTDVEN  AND 
     C5_NOTA = ''  AND C6_NUMORC <> '' 
-    AND C5_LIBEROK <> 'E'  
+    AND C5_LIBEROK <> 'E' // AND C6_BLQ<>'R' ACRESCENTAR O CAMPO DE RESÕDUO COMO FILTRO
 
 EndSql
 
@@ -94,6 +94,7 @@ While C5TEMP->(!Eof())
         If E1TEMP->(VALOR) != 0
             SC5->C5_BXSTATU := 'B'
             SC5->C5_BLQ := 'B'
+            //VERIFICAR SE N√O DEVERIA COLOCAR O CAMPO C5_LIBEROK COMO S TAMB…M;
         Else
             SC5->C5_BXSTATU := 'L'
             SC5->C5_BLQ := ''
