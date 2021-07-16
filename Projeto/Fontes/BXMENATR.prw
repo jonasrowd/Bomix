@@ -47,7 +47,7 @@ DbSeek(SC5->C5_FILIAL+SC5->C5_NUM)
 	nAtrasados := u_FFATVATR(SC5->C5_CLIENTE, SC5->C5_LOJACLI)
 	
 	If  nAtrasados != 0
-		pMensagem += " Este Cliente possui pendências financeiras com valor total somado: "+ Transform(E1TEMP->VALOR,PesqPict("SC6","C6_VALOR"))
+		pMensagem += " Este Cliente possui pendências financeiras com valor total somado: "+ Transform(nTotal,PesqPict("SC6","C6_VALOR"))
 	EndIf
 	MsUnlock()
 	cBx := 'B'
