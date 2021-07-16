@@ -34,11 +34,15 @@ User Function BLTITAU()
 	// Se estive sendo executa via interface gráfica,
 	// monta e exibe a tela de seleção de títulos
 	If (lOK .And. !IsBlind())
-		@ 001,001 TO 400,700 DIALOG oDlg TITLE "Seleção de Titulos"
-		@ 001,001 TO 170,350 BROWSE cAlias MARK "E1_OK"
-		@ 180,310 BMPBUTTON TYPE 01 ACTION (lOK := .T., Close(oDlg))
-		@ 180,280 BMPBUTTON TYPE 02 ACTION (lOK := .F., Close(oDlg))
-		ACTIVATE DIALOG oDlg CENTERED
+		Private cMark   := GetMark()
+		Private aCpoBro := FieldDef(1)
+		Private oDlg    := NIL
+		Private oMark   := NIL
+
+		DEFINE MSDIALOG oDlg TITLE "Títulos" FROM 9,0 TO 315,800 PIXEL
+			oMark := MSSelect():New(cAlias, "E1_OK", "", aCpoBro, .F., @cMark, {17, 1, 150, 400}, NIL, NIL, NIL, NIL, NIL)
+			oMark:bMark := {|| DoMark(cAlias, cMark)}
+		ACTIVATE MSDIALOG oDlg CENTERED ON INIT EnchoiceBar(oDlg, {|| lOK := .T., oDlg:End()}, {|| lOK := .F., oDlg:End()})
 	EndIf
 
 	// Se o clicado em OK, imprime
@@ -46,6 +50,10 @@ User Function BLTITAU()
 	If (lOK)
 		Processa({||MontaRel()})
 	EndIf
+
+	// Fecha a tabela após o uso
+	DBSelectArea(cAlias)
+	DBCloseArea()
 Return (NIL)
 
 /*/{Protheus.doc} MontaRel
@@ -802,7 +810,7 @@ Return (NIL)
 /*/
 Static Function TableDef()
 	Local cAlias  := GetNextAlias()                          // Alias da tabela temporária
-	Local aFields := SE1->(DBStruct())                       // Campos para a tabela temporária
+	Local aFields := FieldDef(2)                             // Campos para a tabela temporária
 	Local oTable  := FwTemporaryTable():New(cAlias, aFields) // Monta a tabela temporária
 	Local cQuery  := QueryDef()                              // Definição da query
 
@@ -829,9 +837,16 @@ Return (cAlias)
 	@return Character, Comando de pesquisa SQL
 /*/
 Static Function QueryDef()
-	Local cAux   := ""                                               // Auxiliar de montagem de MVABATIM
-	Local cQuery := "SELECT * FROM " + RetSQLName("SE1") + " WHERE " // Base da query
+	Local cAux    := ""          // Auxiliar de montagem de MVABATIM
+	Local cQuery  := "SELECT "   // Base da query
+	Local aFields := FieldDef(3) // Retorna os campos da query
 
+	// Adiciona os campos na query
+	aEval(aFields, {|x| cQuery += x + ", "} )
+	cQuery := SubStr(cQuery, 1, Len(cQuery) - 2) + " "
+
+	// Restante do corpo da query
+	cQuery += "FROM " + RetSQLName("SE1") + " WHERE "
 	cQuery += "E1_FILIAL = '" + FwXFilial("SE1")  + "' AND "
 	cQuery += "E1_SALDO > 0 "                     +   "AND "
 	cQuery += "E1_PREFIXO >= '" + MV_PAR01        + "' AND "
@@ -883,6 +898,65 @@ Static Function QueryDef()
 	// Portador não pode ser vazio
 	cQuery += "AND E1_PORTADO <> ''"
 Return (cQuery)
+
+/*/{Protheus.doc} FieldDef
+	description
+	@type function
+	@version
+	@author Guilherme Bigois
+	@since 15/07/2021
+	@param nType, numeric, param_description
+	@return variant, return_description
+/*/
+Static Function FieldDef(nType)
+	Local nX      := 0  // Contador do laço de campos
+	Local aAux    := {} // Auxiliar da montagem de estrutura de campos
+	Local aFields := {} // Campos do cabeçalho ou tabela temporária
+
+	// Monta vetor com os campos utilizados
+	AEval(StrTokArr2(SE1->(IndexKey()), "+"), {|x| AAdd(aAux, x)})
+	AAdd(aAux, "E1_CLIENTE")
+	AAdd(aAux, "E1_VALOR")
+	AAdd(aAux, "E1_VENCREA")
+	AAdd(aAux, "E1_NUMBOR")
+
+	// Define o retorno da função
+	If (nType == 1) // Se o tipo for 1 (grid), retorna a estrutura de cabeçalho
+		AAdd(aFields, {"E1_OK", NIL, " ", "@!"})
+		For nX := 1 To Len(aAux)
+			AAdd(aFields, {aAux[nX], NIL, GetSX3Cache(aAux[nX], "X3_TITULO"), GetSX3Cache(aAux[nX], "X3_PICTURE")})
+		Next nX
+	ElseIf (nType == 2) // Se o tipo for 2 (table), retorna a estrutura da SX3
+		AAdd(aFields, {"E1_OK", "C", 2, 0})
+		For nX := 1 To Len(aAux)
+			AAdd(aFields, {aAux[nX], GetSX3Cache(aAux[nX], "X3_TIPO"), GetSX3Cache(aAux[nX], "X3_TAMANHO"), GetSX3Cache(aAux[nX], "X3_DECIMAL")})
+		Next nX
+	ElseIf (nType == 3) // Se o tipo for 3 (query), retorna os campos para query
+		aFields := aAux
+	EndIf
+Return (aFields)
+
+/*/{Protheus.doc} DoMark
+	Marca o registro atualmente posicionado
+	@type Function
+	@version 12.1.25
+	@author Guilherme Bigois
+	@since 15/07/2021
+/*/
+Static Function DoMark(cAlias, cMark)
+	// Trava o registro para alteração
+	RecLock(cAlias, .F.)
+		// Inverte a marcação da linha
+		If (Marked("E1_OK"))
+			E1_OK := cMark
+		Else
+			E1_OK := ""
+		Endif
+	MsUnlock()
+
+	// Atualiza a grid
+	oMark:oBrowse:Refresh()
+Return (NIL)
 
 /*/{Protheus.doc} CreateSX1
 	Classe para criação de registros na SX1

@@ -13,7 +13,12 @@ Ponto de Entrada para inclusão de uma nova legenda na tela de orçamentos SIGAFAT
 user function MA415LEG ()
 
 Local aLegenda := aclone(PARAMIXB)
+	private cfil :="      "
 
+	cFil := FWCodFil()
+		if cFil = "030101"
+			return aLegenda
+		endif
 aadd(aLegenda ,{'BR_PINK'    , 'Orcamento Bloqueado por Restrição Financeira'  })
 aadd(aLegenda ,{'BR_AZUL_CLARO'    , 'Orcamento Baixado com Restrição Financeira'  })
 

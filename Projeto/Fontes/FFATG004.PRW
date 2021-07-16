@@ -11,7 +11,12 @@ User Function FFATG004(cCampo,cCampo2)
 	Local oLegVerde     := LoadBitmap( GetResources(), "BR_VERDE" )
 	Local oLegVermelho	:= LoadBitmap( GetResources(), "BR_VERMELHO" )
 	default cCampo := ''
+	private cfil :="      "
 
+	cFil := FWCodFil()
+		if cFil = "030101"
+			return 'L'
+		endif
 	If !IsInCallStack("MATA311")
 
 		DbSelectArea("SA1")

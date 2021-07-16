@@ -41,7 +41,7 @@ BeginSql alias 'C5TEMP'
     C5.D_E_L_E_T_ <> '*'   AND 
     C6_QTDENT < C6_QTDVEN  AND 
     C5_NOTA = ''  AND C6_NUMORC <> '' 
-    AND C5_LIBEROK <> 'E' // AND C6_BLQ<>'R' ACRESCENTAR O CAMPO DE RESÍDUO COMO FILTRO
+    AND C5_LIBEROK <> 'E'  AND C6_BLQ<>'R' // ACRESCENTAR O CAMPO DE RESÍDUO COMO FILTRO
 
 EndSql
 
@@ -56,11 +56,10 @@ While C5TEMP->(!Eof())
     Endif
 
     BeginSql alias 'E1TEMP'
-        column E1_EMISSAO as Date
 
         SELECT 
 
-        sum(E1_VALOR) VALOR
+        sum(E1_SALDO) VALOR
 
         FROM %table:SE1% SE1
 
@@ -70,8 +69,7 @@ While C5TEMP->(!Eof())
         E1_LOJA = %exp:SC5->C5_LOJACLI% AND
         SE1.%notDel% AND
         E1_TIPO = 'NF' AND 
-        E1_VENCREA < %exp:DtoS(dDataBase)% AND 
-        E1_BAIXA = ''
+        E1_VENCREA < %exp:DtoS(dDataBase)% 
         
     EndSql
 
@@ -94,7 +92,7 @@ While C5TEMP->(!Eof())
         If E1TEMP->(VALOR) != 0
             SC5->C5_BXSTATU := 'B'
             SC5->C5_BLQ := 'B'
-            //VERIFICAR SE NÃO DEVERIA COLOCAR O CAMPO C5_LIBEROK COMO S TAMBÉM;
+            SC5->C5_LIBEROK = 'S'
         Else
             SC5->C5_BXSTATU := 'L'
             SC5->C5_BLQ := ''

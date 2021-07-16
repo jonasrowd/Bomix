@@ -9,8 +9,14 @@ Local lRet := .F.
 Local xLinha := 10
 Local nTotal := 0
 Local cJust := ""
+Local nAtrasados := 0
 Public oDlg
+	private cfil :="      "
 
+	cFil := FWCodFil()
+		if cFil = "030101"
+			return .T.
+		endif
 If !( RetCodUsr()$ Supergetmv("BM_USERLIB",.F.,"000000;000915" ) )
 	MsgInfo("Usuário sem permissão para liberar. (BM_USERLIB)","Atenção!")
 	return .F.
@@ -38,37 +44,10 @@ DbSeek(SC5->C5_FILIAL+SC5->C5_NUM)
     pMensagem += chr(10) + chr(13) +"Cliente: "+SA1->A1_NOME + chr(10) + chr(13) 
     pMensagem += "Valor R$"+alltrim(Transform(nTotal,PesqPict("SC6","C6_VALOR"))) + chr(10) + chr(13) 
 
-	If Select("E1TEMP") > 0
-            E1TEMP->(dbCloseArea())
-	Endif
-
-	BeginSql alias 'E1TEMP'
-        column E1_EMISSAO as Date
-        column E1_VENCREA  as Date
-
-        SELECT 
-
-        sum(E1_VALOR) VALOR
-
-        FROM %table:SE1% SE1
-
-        WHERE 
-        E1_SALDO > 0 AND 
-        E1_CLIENTE = %exp:SC5->C5_CLIENTE% AND
-        E1_LOJA = %exp:SC5->C5_LOJACLI% AND
-        SE1.%notDel% AND
-		E1_TIPO = 'NF' AND 
-        E1_VENCREA < %exp:DtoS(dDataBase)% AND 
-        E1_BAIXA = ''
-        
-	EndSql
-
-	RecLock("SC5",.F.)
-	If E1TEMP->(VALOR) != 0
-		SC5->C5_BXSTATU := 'B'
+	nAtrasados := u_FFATVATR(SC5->C5_CLIENTE, SC5->C5_LOJACLI)
+	
+	If  nAtrasados != 0
 		pMensagem += " Este Cliente possui pendências financeiras com valor total somado: "+ Transform(E1TEMP->VALOR,PesqPict("SC6","C6_VALOR"))
-	Else
-		SC5->C5_BXSTATU := 'L'
 	EndIf
 	MsUnlock()
 	cBx := 'B'
@@ -85,14 +64,13 @@ DbSeek(SC5->C5_FILIAL+SC5->C5_NUM)
 
 	If lRet
 		RecLock("SC5",.F.)
-		SC5->C5_BXSTATU := cBx
+			SC5->C5_BXSTATU := cBx
 		If cBx = 'L' .OR. cBx = 'E'
 			SC5->C5_LIBEROK := 'L'	
-			SC5->C5_BLQ := ''		
+			SC5->C5_BLQ := ''	
+			atuSC9(SC5->C5_NUM)
 		EndIf
 		SC5->(MsUnlock())
-
-		atuSC9(SC5->C5_NUM)
 
 		dbSelectArea("Z07")
 		RecLock("Z07",.T.)
@@ -106,7 +84,7 @@ DbSeek(SC5->C5_FILIAL+SC5->C5_NUM)
 		RecLock("Z07",.T.)
 			Z07->Z07_FILIAL := SC5->C5_FILIAL
 			Z07->Z07_PEDIDO := SC5->C5_NUM
-			Z07->Z07_JUSTIF := 'Não Liberado: '+cJust
+			Z07->Z07_JUSTIF := 'Não Liberado: '+ alltrim(cJust) +' Usuário: '+RetCodUsr()
 			Z07->Z07_DATA := dDataBase
 			Z07->Z07_HORA := SUBSTRING(TIME(),1,5)
 		MsUnlock()

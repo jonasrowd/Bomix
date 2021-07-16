@@ -17,16 +17,7 @@ Local cNome := ""
 Local _CALIAS    :=GETAREA()
 
 nAtrasados := u_FFATVATR(SA1->A1_COD, SA1->A1_LOJA)//SA1->A1_ATR
-cNome := SA1->A1_NOME
-
-DbSelectArea("SC9")
-DbSetOrder(1)	
-
-If (DBSEEK(xFilial("SC9")+SC9->C9_PEDIDO))
-	RecLock("SC9", .F.)
-	SC9->C9_BLCRED := ''
-	MsUnlock()
-EndIf   
+cNome := SA1->A1_NOME 
 
 If nAtrasados <> 0  .AND. (!estaLib(SC5->C5_NUM))
 
@@ -54,6 +45,12 @@ return l_Ret
 	/*/
 Static Function estaLib(_cPed)
 Default _cPed := ""
+	private cfil :="      "
+
+	cFil := FWCodFil()
+		if cFil = "030101"
+			return .T.
+		endif
 
 DbSelectArea("Z07")
 DbSetOrder(1)

@@ -12,11 +12,16 @@ Ponto de Entrada para validação das retrições financeiras dos clientes na libera
 
 user function MT440AT()
 
-Local lRet:= .T.	
+Local lRet:= .T.
 Local nAtrasados := 0
 Local cNome := ""
 Local _CALIAS    :=GETAREA()
+	private cfil :="      "
 
+	cFil := FWCodFil()
+		if cFil = "030101"
+			return .T.
+		endif
 
 
 nAtrasados := u_FFATVATR(SA1->A1_COD, SA1->A1_LOJA)//SA1->A1_ATR
@@ -50,6 +55,7 @@ return lRet
 	/*/
 Static Function estaLib(_cPed)
 Default _cPed := ""
+
 
 DbSelectArea("Z07")
 DbSetOrder(1)

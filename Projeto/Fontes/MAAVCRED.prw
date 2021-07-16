@@ -12,44 +12,21 @@ Ponto de Entrada para validação das retrições financeiras dos clientes, na Análi
 
 user function MAAVCRED()
 
-Local c_UserLib := GETMV("BM_USERLIB")
 Local l_Ret := .T.
+	private cfil :="      "
+
+	cFil := FWCodFil()
+		if cFil = "030101"
+			return .T.
+		endif
 nAtrasados := u_FFATVATR(SA1->A1_COD, SA1->A1_LOJA)
 cNome := SA1->A1_NOME
 
 	If nAtrasados <> 0 .AND. (!estaLib(SC5->C5_NUM))
-
-		If !__CUSERID$(c_UserLib) 
-		
-		If Select("E1TEMP") > 0
-			E1TEMP->(dbCloseArea())
-		Endif
-
-		BeginSql alias 'E1TEMP'
-        column E1_EMISSAO as Date
-        column E1_VENCREA  as Date
-
-        SELECT 
-
-        sum(E1_VALOR) VALOR
-
-        FROM %table:SE1% SE1
-
-        WHERE 
-        E1_SALDO > 0 AND 
-        E1_CLIENTE = %exp:SC5->C5_CLIENTE% AND
-        E1_LOJA = %exp:SC5->C5_LOJACLI% AND
-        SE1.%notDel% AND
-		E1_TIPO = 'NF' AND 
-        E1_VENCREA < %exp:DtoS(dDataBase)% AND 
-        E1_BAIXA = ''
-        
-		EndSql
-
-		EndIf
-
+		ShowHelpDlg(SM0->M0_NOME,;
+		{"O Cliente: " + AllTrim(cNome)  + " Pedido: "+SC5->C5_NUM+", possue restrições financeiras no total de R$ "+alltrim(Transform(nAtrasados,"@e 9,999,999,999,999.99"))+"."},5,;
+		{"Caso queira concluir a liberação deste pedido, solicite a liberação dos responsáveis."},5) 
 		l_Ret := .F.
-
 	EndIf
 
 return l_Ret
@@ -87,4 +64,3 @@ If dbSeek( SC5->C5_FILIAL + SC5->C5_NUM )
 EndIf
 	
 Return .F.
-

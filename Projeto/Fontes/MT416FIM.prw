@@ -24,120 +24,24 @@
 
 
 User Function MT416FIM
-	Local pMensagem := "" 
+	
+    Local nAtrasados := u_FFATVATR(M->C5_CLIENTE, M->C5_LOJACLI) 
+	private cfil :="      "
 
-	If Select("E1TEMP") > 0
-            E1TEMP->(dbCloseArea())
-	Endif
-
-	BeginSql alias 'E1TEMP'
-        column E1_EMISSAO as Date
-        column E1_VENCREA  as Date
-
-        SELECT 
-
-        sum(E1_VALOR) VALOR
-
-        FROM %table:SE1% SE1
-
-        WHERE 
-        E1_SALDO > 0 AND 
-        E1_CLIENTE = %exp:M->C5_CLIENTE% AND
-        E1_LOJA = %exp:M->C5_LOJACLI% AND
-        SE1.%notDel% AND
-		E1_TIPO = 'NF' AND 
-        E1_VENCREA < %exp:DtoS(dDataBase)% AND 
-        E1_BAIXA = ''
-        
-	EndSql
-
-	If E1TEMP->(VALOR) != 0
+	cFil := FWCodFil()
+		if cFil = "030101"
+			return 
+		endif
+	If nAtrasados != 0
 		M->C5_BXSTATU := 'B'
 		M->C5_BLQ := 'B'
-		pMensagem += " Este Cliente possui pendências financeiras com valor total somado: "+ Transform(E1TEMP->VALOR,PesqPict("SC6","C6_VALOR"))
+        M->C5_LIBEROK = 'S'
+        MsGInfo("Existem restrições financeiras para este Cliente. Por favor solicitar Liberação", "Atenção!")
 	Else
-		M->C5_BXSTATU := 'L'
-		M->C5_BLQ := ''
+        SC5->C5_BXSTATU := 'L'
+        SC5->C5_BLQ := ''
+        SC5->C5_LIBEROK = 'L'
 	EndIf
-
-	statusUpd() 
 
 Return
 
-Static Function statusUpd() 
-
-
-If Select("C5TEMP") > 0
-    C5TEMP->(dbCloseArea())
-Endif
-
-BeginSql alias 'C5TEMP'
-    SELECT 
-
-    DISTINCT
-    C5_FILIAL FILIAL, C5_NUM NUM
-
-    FROM 
-
-    SC5010 C5 
-
-    INNER JOIN SC6010 C6 ON 
-    C5_FILIAL = C6_FILIAL AND 
-    C5_NUM = C6_NUM AND 
-    C6.D_E_L_E_T_ <> '*'
-
-    WHERE 
-    C5.D_E_L_E_T_ <> '*'   AND 
-    C6_QTDENT < C6_QTDVEN  AND 
-    C5_NOTA = ''  AND C6_NUMORC <> '' 
-    AND C5_LIBEROK <> 'E'
-
-EndSql
-
-While C5TEMP->(!Eof())
-
-    DBSelectArea("SC5")
-    DBSetOrder(1)
-    dbSeek(C5TEMP->FILIAL+C5TEMP->NUM)
-
-    If Select("E1TEMP") > 0
-        E1TEMP->(dbCloseArea())
-    Endif
-
-    BeginSql alias 'E1TEMP'
-        column E1_EMISSAO as Date
-        column E1_VENCREA  as Date
-
-        SELECT 
-
-        sum(E1_VALOR) VALOR
-
-        FROM %table:SE1% SE1
-
-        WHERE 
-        E1_SALDO > 0 AND 
-        E1_CLIENTE = %exp:SC5->C5_CLIENTE% AND
-        E1_LOJA = %exp:SC5->C5_LOJACLI% AND
-        SE1.%notDel% AND
-        E1_TIPO = 'NF' AND 
-        E1_VENCREA < %exp:DtoS(dDataBase)% AND 
-        E1_BAIXA = ''
-        
-    EndSql
-
-    RecLock("SC5",.F.)
-    If E1TEMP->(VALOR) != 0
-        SC5->C5_BXSTATU := 'B'
-		SC5->C5_BLQ := 'B'
-        
-    Else
-        SC5->C5_BXSTATU := 'L'
-        SC5->C5_BLQ := ''
-    EndIf
-
-    MsUnlock()
-    C5TEMP->(dbSkip())
-EndDo
-
-
-Return 

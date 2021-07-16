@@ -12,7 +12,12 @@ Ponto de Entrada para inclusão de novas cores de legendas na tela de orçamentos 
 
 user function MA415COR()
 Local aCor := aclone(PARAMIXB)
+	private cfil :="      "
 
+	cFil := FWCodFil()
+		if cFil = "030101"
+			return aCor
+		endif
 aCor[1]:= {"SCJ->CJ_STATUS=='A' .AND. SCJ->CJ_BXSTATU<>'B'" , "ENABLE"    }
 aCor[2]:= {"SCJ->CJ_STATUS=='B' .AND. SCJ->CJ_BXSTATU<>'B'" , "DISABLE"   }
 

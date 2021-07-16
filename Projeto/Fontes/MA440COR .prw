@@ -13,7 +13,12 @@ Ponto de Entrada para inclusão de uma nova legenda na tela de Liberação de Pedid
 user function MA440COR ()
 	
 Local aCor := aclone(PARAMIXB)
+	private cfil :="      "
 
+	cFil := FWCodFil()
+		if cFil = "030101"
+			return aCor
+		endif
 
 aCor[1][1] := "Empty(C5_LIBEROK).And.Empty(C5_NOTA) .And. Empty(C5_BLQ) .And. SC5->C5_BXSTATU<>'B'" 
 

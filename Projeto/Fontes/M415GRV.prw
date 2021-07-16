@@ -21,7 +21,7 @@
 /*/
 
 User Function M415GRV
-
+	Local nAtrasados := 0
 	private cfil :="      "
 	cFil := FWCodFil()
 	if cFil = "030101"
@@ -30,33 +30,10 @@ User Function M415GRV
 
 	If PARAMIXB[1] == 1 .OR. PARAMIXB[1] == 2
 
-		If Select("E1TEMP") > 0
-			E1TEMP->(dbCloseArea())
-		Endif
-
-		BeginSql alias 'E1TEMP'
-        column E1_EMISSAO as Date
-        column E1_VENCREA  as Date
-
-        SELECT 
-
-        sum(E1_VALOR) VALOR
-
-        FROM %table:SE1% SE1
-
-        WHERE 
-        E1_SALDO > 0 AND 
-        E1_CLIENTE = %exp:SCJ->CJ_CLIENTE% AND
-        E1_LOJA = %exp:SCJ->CJ_LOJA% AND
-        SE1.%notDel% AND
-        E1_TIPO = 'NF' AND 
-        E1_VENCREA < %exp:DtoS(dDataBase)% AND 
-        E1_BAIXA = ''
-        
-		EndSql
+		nAtrasados := u_FFATVATR(SCJ->CJ_CLIENTE, SCJ->CJ_LOJA)
 
 		RecLock("SCJ",.F.)
-		If E1TEMP->(VALOR) != 0
+		If nAtrasados != 0
 			SCJ->CJ_BXSTATU := 'B'
 		Else
 			SCJ->CJ_BXSTATU := 'L'

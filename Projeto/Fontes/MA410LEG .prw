@@ -13,7 +13,12 @@ Ponto de Entrada para inclusão de uma nova legenda na tela de Liberação de Pedid
 user function MA410LEG ()
 	
 Local aLegenda := aclone(PARAMIXB)
+	private cfil :="      "
 
+	cFil := FWCodFil()
+		if cFil = "030101"
+			return aLegenda
+		endif
 aadd(aLegenda ,{'BR_PINK' , 'Pedido Bloqueado por Restrição Financeira'  })
 aadd(aLegenda ,{'BR_MARROM' , 'Pedido Liberado para Expedição'  })
 aadd(aLegenda ,{'BR_PRETO' , 'Pedido Bloqueado por Restrição Financeira - Produção Liberada'  })

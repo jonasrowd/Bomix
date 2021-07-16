@@ -16,7 +16,12 @@ Local lRet:= .T.
 Local nAtrasados := 0
 Local cNome := ""
 Local _CALIAS    :=GETAREA()
+	private cfil :="      "
 
+	cFil := FWCodFil()
+		if cFil = "030101"
+			return
+		endif
 nAtrasados := u_FFATVATR(SA1->A1_COD, SA1->A1_LOJA)//SA1->A1_ATR
 cNome := SA1->A1_NOME
 

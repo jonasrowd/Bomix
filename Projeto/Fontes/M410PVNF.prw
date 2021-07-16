@@ -19,6 +19,12 @@
 /*/
 
 User Function M410PVNF
+	private cfil :="      "
+
+	cFil := FWCodFil()
+		if cFil = "030101"
+			return .T.
+		endif
 
 	If SC5->C5_LIBEROK  = 'L' .AND. Empty(SC5->C5_BLQ)
 		Return .T.
