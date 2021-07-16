@@ -18,11 +18,13 @@ User Function FFATV001(cProduto)
 	
 	// Se a arte estiver desbloqueada, valida a amarração do produto x cliente
 	If (lOK)
-		ValidaSA7(cProduto)
+		lOK := ValidaSA7(cProduto)
 	EndIf
 
+	// Se a amarração do produto x cliente estiver OK,
+	// valida se o campo C5_FSESPEC está preenchido.
 	If (lOk)
-		jFSESPEC(cProduto)
+		lOK := jFSESPEC(cProduto)
 	Endif
 
 	// Restaura a área e seu estado anterior
@@ -116,31 +118,36 @@ Static Function ValidaSA7(cProduto)
 Return (lOK)
 
 /*/{Protheus.doc} jFSESPEC
-	Função para validar se o campo C5_FSESPEC está preenchido.
+	Valida se o campo C5_FSESPEC está preenchido.
 	@type Function
 	@version  12.1.25
 	@author Jonas Machado
 	@since 15/07/2021
 	@param cProduto, character, Produto passado por parâmetro para função.
+	@return Logical, Retorno lógico para validação do item
 /*/
 Static Function jFSESPEC(cProduto)
- 	Local l0K    := .T.
-	Local cCliente := ""  // Código do cliente
-	Local cLoja    := ""  // Código da loja
-	Local a_Area   := GetArea()
+ 	Local lOK      := .T.           // Controle de validação da função
+	Local aArea    := GetArea()     // Área de trabalho anterior
+	Local cLoja    := M->C5_LOJACLI // Código da loja
+	Local cCliente := M->C5_CLIENTE // Código do cliente
 
-	DBSelectArea("SC5")
-	DBGoTop()
-	DBSetOrder(1)
-	DBSeek(FwXFilial("SC5") + cProduto + cCliente + cLoja)
+	// Se for a rotina MATA410
+	If (FwIsInCallStack("MATA410"))
+		// Posiciona no cabeçalho do pedido de vendas
+		DBSelectArea("SC5")
+		DBSetOrder(1)
+		DBGoTop()
+		DBSeek(FwXFilial("SC5") + cProduto + cCliente + cLoja)
 
-	If (FwIsInCallStack("MATA410")) 
-			M->C5_FSESPEC  = '' .AND. xFilial("SC5")<>'030101' .AND. cProduto
-				Help(NIL, NIL, "ERROR: C5_FSESPEC", NIL, "O campo (Especifidade) deve ser preenchido.",;
-					1, 0, NIL, NIL, NIL, NIL, NIL, {"Preencha corretamente."})
-			l0K := .F.
-		Return Nil
+		// Verifica se o campo C5_FSESPEC estiver vázio e a filial é diferente de 030101 
+		If (Empty(M->C5_FSESPEC) .And. FwXFilial("SC5") != "030101")
+			lOK := .F.
+			Help(NIL, NIL, "ERROR: C5_FSESPEC", NIL, "O campo (Especifidade) deve ser preenchido.",;
+				1, 0, NIL, NIL, NIL, NIL, NIL, {"Preencha corretamente."})
+		EndIf
 	EndIf
 
-	RestArea(a_Area)
-Return l0K
+	// Restaura área de trabalho anterior
+	RestArea(aArea)
+Return (lOK)
