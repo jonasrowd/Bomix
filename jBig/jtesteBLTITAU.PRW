@@ -1,6 +1,6 @@
-#INCLUDE "TOTVS.CH"
-#INCLUDE "RWMAKE.CH"
-#INCLUDE "RPTDEF.CH"       
+#Include "TOTVS.ch"
+#Include "RWMAKE.ch"
+#Include "RPTDEF.ch"      
 
 #DEFINE __cCarteira "109"
 #DEFINE __cMoeda    "9"
@@ -11,17 +11,18 @@
 	@version 12.1.25
 	@author Greice Wicks
 	@since 08/11/12
-	@history 19/06/2021,Jonas Machado, Criação da Classe CreateSx1 em alteração do método Puts depreciado
-	 para versão do dicionário de dados no banco. Alterado a classe TMSPrinter que foi depreciada nas versões lobo guará e utilizada a FwMsPrinter.
+	@history 19/06/2021,Jonas Machado, Criação da Classe CreateSx1 em alteração do método Puts depreciado;
+	 para versão do dicionário de dados no banco. Alterado a classe TMSPrinter que foi depreciada nas versões lobo guará e utilizada a FwMsPrinter;
 	 Ajustes visuais no boleto por conta da troca da classe TMSPrinter. Identação do fonte com base nas boas práticas de programação.
 /*/
 User Function BLTITAU(cNota)
 		Local	oSX1 		:= NIL
+		Local   cWhere		:= "E1_FILIAL = '"+FWxFilial('SE1')+"'"
 		Private lExec    	:= .T.
 		Private cIndexName 	:= ''
 		Private cIndexKey  	:= ''
-		Private cFilter    	:= ''
-	
+		Private cQry    	:= GetNextAlias()
+		
 		DEFAULT cNota := Space(09)
 	
 		Tamanho  	:= "M"
@@ -35,7 +36,7 @@ User Function BLTITAU(cNota)
 		cPerg    	:= Padr("BLTITAU",10)
 		aReturn  	:= {"Zebrado", 1,"Administracao", 2, 2, 1, "",1 }
 		nLastKey 	:= 0
-		cNf			:= cNota
+
 	
 		// Cria instância do objeto
 		oSX1 := CreateSX1():New("BLTITAU")
@@ -64,53 +65,109 @@ User Function BLTITAU(cNota)
 		
 		oSX1:Commit()
 	
-	If !Pergunte (cPerg,.T.)
+	If Pergunte(cPerg,.T.)
 		Return
 	Endif
-	
-	If Empty(cNF)
 
+		If Empty(cNota)
+			cIndexKey	:= "E1_PREFIXO+E1_NUM+E1_PARCELA+E1_TIPO+DTOS(E1_EMISSAO)+E1_PORTADO+E1_CLIENTE"
+			cWhere		+= " AND E1_SALDO>0 AND "
+			cWhere		+= "E1_PREFIXO>='" + MV_PAR01 + "'AND E1_PREFIXO<='" + MV_PAR02 + "' AND "  
+			cWhere     	+= "E1_PORTADO<>'"+"CX1"+"' AND "
+			cWhere		+= "E1_NUM>='" + MV_PAR03 + "' AND E1_NUM<='" + MV_PAR04 + "' AND "
+			cWhere		+= "E1_PARCELA>='" + MV_PAR05 + "' AND E1_PARCELA<='" + MV_PAR06 + "' AND "
+			cWhere		+= "E1_CLIENTE>='" + MV_PAR09 + "' AND E1_CLIENTE<='" + MV_PAR10 + "' AND "
+			cWhere		+= "E1_LOJA>='" + MV_PAR11 + "' AND E1_LOJA<='"+MV_PAR12+"' AND "
+			cWhere		+= "E1_EMISSAO>='"+DTOS(MV_PAR13)+"' AND E1_EMISSAO<='"+DTOS(MV_PAR14)+"' AND "
+			cWhere		+= "E1_VENCREA>='"+DTOS(MV_PAR15)+"' AND E1_VENCREA<='"+DTOS(MV_PAR16)+"' AND "
+			cWhere		+= "E1_NUMBOR>=	'" + MV_PAR17 + "' AND E1_NUMBOR<='" + MV_PAR18 + "' AND "
+			cWhere		+= "E1_TIPO='NF'"
+		If Empty(MV_PAR19)
+			cWhere		+= " AND E1_PORTADO>='" + MV_PAR07 + "' AND E1_PORTADO<='" + MV_PAR08 + "' "
+			cWhere		+= " AND E1_PORTADO<>'   '"
+		Else
+			cWhere		+= " AND (E1_PORTADO ='" + MV_PAR19 + "' OR E1_PORTADO<>' ') "
+		Endif
+		If !Empty(MV_PAR20)
+			cWhere		+= " AND (E1_AGEDEP='" + MV_PAR20 + "' OR E1_AGEDEP<>' ') "
+		Endif
+		If !Empty(MV_PAR21)
+			cWhere		+= " AND (E1_CONTA='" + MV_PAR21 + "' OR E1_CONTA <> ' ') "
+		Endif
+	Else
+		cWhere			+= " E1_NUM = '" + cNota + "' "
+	Endif                                                                                    
+		cWhere     		+= " AND E1_PORTADO <> '	' "  
+
+cWhere := '%'+cWhere+'%'
+
+		BeginSql Alias cQry
+			column E1_EMISSAO as Date
+			column E1_VENCREA as Date
+			SELECT
+				E1_FILIAL,
+				E1_SALDO,
+				E1_PREFIXO,
+				E1_PORTADO,
+				E1_NUM,
+				E1_PARCELA,
+				E1_CLIENTE,
+				E1_LOJA,
+				E1_EMISSAO,
+				E1_VENCREA,
+				E1_NUMBOR,
+				E1_TIPO
+			FROM %TABLE:SE1%
+			WHERE  
+			%exp:cWhere% AND
+			%NotDel%
+			ORDER BY E1_PREFIXO,E1_NUM,E1_PARCELA,E1_TIPO,E1_EMISSAO,E1_PORTADO,E1_CLIENTE
+		EndSql
+
+aRetSql := GetLastQuery()
+
+memowrite("C:\Temp\BLTITAU.txt",aRetSql[2])
+/*	
+	If Empty(cNota)
 	cIndexName	:= Criatrab(Nil,.F.)
 	//	cIndexKey	:= "E1_PORTADO+E1_CLIENTE+E1_PREFIXO+E1_NUM+E1_PARCELA+E1_TIPO+DTOS(E1_EMISSAO)"
 	cIndexKey	:= "E1_PREFIXO+E1_NUM+E1_PARCELA+E1_TIPO+DTOS(E1_EMISSAO)+E1_PORTADO+E1_CLIENTE"
-	cFilter		+= "E1_FILIAL=='"+xFilial("SE1")+"'.And.E1_SALDO>0.And."
-	cFilter		+= "E1_PREFIXO>='" + MV_PAR01 + "'.And.E1_PREFIXO<='" + MV_PAR02 + "'.And."  
-	cfilter     += "E1_PORTADO<>'"+"CX1"+"'.And."
-	cFilter		+= "E1_NUM>='" + MV_PAR03 + "'.And.E1_NUM<='" + MV_PAR04 + "'.And."
-	cFilter		+= "E1_PARCELA>='" + MV_PAR05 + "'.And.E1_PARCELA<='" + MV_PAR06 + "'.And."
-	cFilter		+= "E1_CLIENTE>='" + MV_PAR09 + "'.And.E1_CLIENTE<='" + MV_PAR10 + "'.And."
-	cFilter		+= "E1_LOJA>='" + MV_PAR11 + "'.And.E1_LOJA<='"+MV_PAR12+"'.And."
-	cFilter		+= "DTOS(E1_EMISSAO)>='"+DTOS(mv_par13)+"'.And.DTOS(E1_EMISSAO)<='"+DTOS(mv_par14)+"'.And."
-	cFilter		+= "DTOS(E1_VENCREA)>='"+DTOS(mv_par15)+"'.And.DTOS(E1_VENCREA)<='"+DTOS(mv_par16)+"'.And."
-	cFilter		+= "E1_NUMBOR>=	'" + MV_PAR17 + "'.And.E1_NUMBOR<='" + MV_PAR18 + "'.And."
-	cFilter		+= "!(E1_TIPO$MVABATIM)"
-	If Empty(MV_PAR19)
-		cFilter		+= ".And. E1_PORTADO>='" + MV_PAR07 + "'.And.E1_PORTADO<='" + MV_PAR08 + "' "
-		cFilter		+= ".And. E1_PORTADO<>'   '"
-	Else
-		cFilter		+= ".And. (E1_PORTADO =='" + MV_PAR19 + "' .Or. Empty(E1_PORTADO)) "
-	Endif
-	If !Empty(MV_PAR20)
-		cFilter		+= ".And. (E1_AGEDEP=='" + MV_PAR20 + "' .Or. Empty(E1_AGEDEP)) "
-	Endif
+	cQry		+= "E1_FILIAL=='"+xFilial("SE1")+"'.And.E1_SALDO>0.And."
+	cQry		+= "E1_PREFIXO>='" + MV_PAR01 + "'.And.E1_PREFIXO<='" + MV_PAR02 + "'.And."  
+	cQry     	+= "E1_PORTADO<>'"+"CX1"+"'.And."
+	cQry		+= "E1_NUM>='" + MV_PAR03 + "'.And.E1_NUM<='" + MV_PAR04 + "'.And."
+	cQry		+= "E1_PARCELA>='" + MV_PAR05 + "'.And.E1_PARCELA<='" + MV_PAR06 + "'.And."
+	cQry		+= "E1_CLIENTE>='" + MV_PAR09 + "'.And.E1_CLIENTE<='" + MV_PAR10 + "'.And."
+	cQry		+= "E1_LOJA>='" + MV_PAR11 + "'.And.E1_LOJA<='"+MV_PAR12+"'.And."
+	cQry		+= "DTOS(E1_EMISSAO)>='"+DTOS(MV_PAR13)+"'.And.DTOS(E1_EMISSAO)<='"+DTOS(MV_PAR14)+"'.And."
+	cQry		+= "DTOS(E1_VENCREA)>='"+DTOS(MV_PAR15)+"'.And.DTOS(E1_VENCREA)<='"+DTOS(MV_PAR16)+"'.And."
+	cQry		+= "E1_NUMBOR>=	'" + MV_PAR17 + "'.And.E1_NUMBOR<='" + MV_PAR18 + "'.And."
+	cQry		+= "!(E1_TIPO$MVABATIM)"
+		If Empty(MV_PAR19)
+			cQry		+= ".And. E1_PORTADO>='" + MV_PAR07 + "'.And.E1_PORTADO<='" + MV_PAR08 + "' "
+			cQry		+= ".And. E1_PORTADO<>'   '"
+		Else
+			cQry		+= ".And. (E1_PORTADO =='" + MV_PAR19 + "' .Or. Empty(E1_PORTADO)) "
+		Endif
+		If !Empty(MV_PAR20)
+			cQry		+= ".And. (E1_AGEDEP=='" + MV_PAR20 + "' .Or. Empty(E1_AGEDEP)) "
+		Endif
 		If !Empty(MV_PAR21)
-			cFilter		+= ".And. (E1_CONTA=='" + MV_PAR21 + "' .Or. Empty(E1_CONTA)) "
+			cQry		+= ".And. (E1_CONTA=='" + MV_PAR21 + "' .Or. Empty(E1_CONTA)) "
 		Endif
 	Else
-		cFilter		+= "E1_NUM = '" + cNF + "' "
+		cQry		+= "E1_NUM = '" + cNota + "' "
 	Endif                                                                                    
-	cFilter     += " .And. E1_PORTADO <> '	' "        
-
-	
-	
-	IndRegua("SE1", cIndexName, cIndexKey,, cFilter, "Aguarde selecionando registros....")
+	cQry     += " .And. E1_PORTADO <> '	' "        
+*/
+	IndRegua("SE1", cIndexName, cIndexKey,, cWhere, "Aguarde selecionando registros....")
 	DbSelectArea("SE1")
 	#IFNDEF TOP
 		DbSetIndex(cIndexName + OrdBagExt())
 	#ENDIF
 	dbGoTop()
-	
-	If Empty(cNF)
+
+	If Empty(cNota)
 		
 		@ 001,001 TO 400,700 DIALOG oDlg TITLE "Seleção de Titulos"
 		@ 001,001 TO 170,350 BROWSE "SE1" MARK "E1_OK"
@@ -253,7 +310,7 @@ Static Function MontaRel()
 			DbSetOrder(1)
 			DbSeek(xFilial("SC5")+SE1->E1_PEDIDO,.T.)
 
-			If !empty(SC5->C5_CLIENTE+SC5->C5_LOJACLI).and.(SC5->C5_FILIAL+SC5->C5_NUM==SE1->E1_FILIAL+SE1->E1_PEDIDO)        
+			If !Empty(SC5->C5_CLIENTE+SC5->C5_LOJACLI).and.(SC5->C5_FILIAL+SC5->C5_NUM==SE1->E1_FILIAL+SE1->E1_PEDIDO)        
 				DbSelectArea("SA1")
 				DbSetOrder(1)
 				DbSeek(xFilial("SA1")+SC5->C5_CLIENTE+SC5->C5_LOJACLI,.T.)
