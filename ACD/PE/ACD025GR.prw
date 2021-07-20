@@ -1,4 +1,15 @@
+#Include "Totvs.ch"
+
+/*/{Protheus.doc} ACD025GR
+Ponto de entrada localizado após a gravação do apontamento de produção.
+@type function
+@version 12.1.25
+@author  Jonas Machado	
+@since 20/07/2021
+@return variant, null
+/*/
 User Function ACD025GR  
+
 	cOp       := PARAMIXB[1]
 	cOperacao := PARAMIXB[2]
 	cRecurso  := PARAMIXB[3]
@@ -38,4 +49,5 @@ User Function ACD025GR
 	RestArea(a_AreaSH6)	
 	RestArea(a_AreaSC2)
 	RestArea(a_Area)
+
 Return

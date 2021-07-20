@@ -1,23 +1,16 @@
-#INCLUDE "APVT100.CH"
-#INCLUDE "PROTHEUS.CH" 
+#INCLUDE "Totvs.ch" 
+#INCLUDE "Apvt100.ch"
 
 
-/*
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑษออออออออออัออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
-ฑฑบPrograma  ณCBINVVAL  บAutor  ณFrancisco Rezende   บ Data ณ  01/16/15   บฑฑ
-ฑฑฬออออออออออุออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
-ฑฑบDesc.     ณษ executado dentro da valida็ใo da etiqueta de produtos,    บฑฑ
-ฑฑบ          ณretornando um valor l๓gico .T. para continuar a valida็ใo   บฑฑ
-ฑฑบ          ณpadrใo ou .F. para abortar a valida็ใoPonto                 บฑฑ
-ฑฑฬออออออออออุออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบUso       ณ AP                                                        บฑฑ
-ฑฑศออออออออออฯออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿
-*/
-
+/*/{Protheus.doc} CBINVVAL
+	ษ executado dentro da valida็ใo da etiqueta de produtos, retornando um valor l๓gico .T. ; 
+	para continuar a valida็ใo padrใo ou .F. para abortar a valida็ใoPonto
+	@type function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 20/07/2021
+	@return variant, l_Ret
+/*/
 User Function CBINVVAL()    
 
 	Local l_Ret     := .F.

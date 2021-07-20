@@ -1,8 +1,16 @@
-#INCLUDE "APVT100.CH"
-#INCLUDE "PROTHEUS.CH" 
+#Include "Totvs.ch" 
+#Include "Apvt100.ch"
 #INCLUDE "TOPCONN.CH" 
 
-User Function FACDA001
+/*/{Protheus.doc} FACDA001
+	Add descrição após testar.
+	@type function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 20/07/2021
+	@return variant, Null
+/*/
+User Function FACDA001()
     Local c_Unitiz   := Space(TamSX3("DCO_CODANA")[1])
     Local l_Unitiz   := .F.
     Local c_Produto  := SDB->DB_PRODUTO

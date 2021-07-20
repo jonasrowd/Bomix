@@ -1,13 +1,19 @@
-#include "apvt100.ch"
-#INCLUDE "PROTHEUS.CH" 
+#Include "Totvs.ch" 
+#Include "Apvt100.ch"
 
-User Function FACDA005
+/*/{Protheus.doc} FACDA005
+	Verificar pra que serve
+	@type function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 20/07/2021
+	@return logical, .T.
+/*/
+User Function FACDA005()
     Local c_Unitiz   := Space(TamSX3("DC1_CODUNI")[1])
-//    Local l_Unitiz   := .F.
     Local c_CodAna   := Space(TamSX3("DCO_CODANA")[1])
     Local c_ConfAna  := Space(TamSX3("DCO_CODANA")[1])    
     Local l_CodAna   := .F.
-	Local c_Codigo   := ""
 	Local a_Area     := GetArea()
 	Local l_Ret      := .T.
 	Local a_Tela     := VTSave(0, 0, 4, 10)
@@ -19,28 +25,7 @@ User Function FACDA005
 	Local i          := 1
 
 	VTClear Screen
-/*
-	While l_Unitiz == .F.
-		@ 0, 0 VTSAY "Unitizador: " VTGET c_Unitiz
-	    VTRead
 
-		If VtLastKey() == 27
-			RestArea(a_Area)
-			VTClear Screen			
-			VTRestore(0, 0, 4, 10, a_Tela)
-			Return .F.
-		Endif
-
-		dbSelectArea("DC1")
-		dbSetOrder(1)
-		dbSeek(xFilial("DC1") + c_Unitiz)
-		If Found()
-			l_Unitiz := .T.
-		Else
-			VTAlert("Unitizador " + AllTrim(c_Unitiz) + " inválido. Por favor contactar o administrador do sistema.", "Aviso")
-		Endif
-	End
-*/	
 	While l_CodAna == .F.
 		@ 1, 0 VTSAY "Unitizador: " VTGET c_CodAna
 	    VTRead

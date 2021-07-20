@@ -1,3 +1,14 @@
+#Include "Totvs.ch"
+
+/*/{Protheus.doc} DL150AEX
+	Localizado após todo o processo de execução ou estorno de uma ou mais Ordens de Serviço do WMS,; 
+	 apenas quando as mesmas são executadas manualmente pela rotina de Execução de Serviços (WMSA150).
+	@type function
+	@version  12.1.25
+	@author Jonas Machado
+	@since 20/07/2021
+	@return variant, Null
+/*/
 User Function DL150AEX
 	Local a_Area  := GetArea()
 	Local c_IDDCF := DCF->DCF_ID

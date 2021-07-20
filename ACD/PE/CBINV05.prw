@@ -1,6 +1,14 @@
-#include "apvt100.ch"
-#INCLUDE "PROTHEUS.CH" 
+#INCLUDE "Totvs.ch" 
+#include "Apvt100.ch"
 
+/*/{Protheus.doc} CBINV05
+	Ponto de entrada na rotina de inventário, sem documentação na internet
+	@type function
+	@version  12.1.25
+	@author Jonas Machado
+	@since 20/07/2021
+	@return variant, null
+/*/
 User Function CBINV05
 	Local cProduto  := PARAMIXB[1]
 	Local cArmazem  := PARAMIXB[2]

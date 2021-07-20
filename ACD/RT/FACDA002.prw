@@ -1,8 +1,16 @@
-#include "apvt100.ch"
-#INCLUDE "PROTHEUS.CH" 
-#INCLUDE "TOPCONN.CH" 
+#INCLUDE "Totvs.ch" 
+#include "Apvt100.ch"
+#INCLUDE "Topconn.ch" 
 
-User Function FACDA002
+/*/{Protheus.doc} FACDA002
+	Verificar pra que serve
+	@type function
+	@version 12.1.25
+	@author jonas.machado
+	@since 20/07/2021
+	@return logical, .T.
+/*/
+User Function FACDA002()
     Local c_Unitiz   := Space(TamSX3("DCO_CODANA")[1])
     Local c_UnitDest := Space(TamSX3("DCO_CODANA")[1])    
     Local l_Unitiz   := .F.
@@ -23,7 +31,6 @@ User Function FACDA002
 	Local n_QtdUnitz := 0
 	Local c_ConfUnit := Space(TamSX3("DCO_CODANA")[1])
 	Local c_ConfDest := Space(TamSX3("DCO_CODANA")[1])	
-	Local c_Transp   := Space(1)
 	Local c_IDDCF    := ""
 
 	c_Qry := " SELECT DCF_ID FROM " + RetSqlName("DCF") + " DCF "
