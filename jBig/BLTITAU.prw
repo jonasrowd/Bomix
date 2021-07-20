@@ -904,13 +904,13 @@ Static Function QueryDef()
 Return (cQuery)
 
 /*/{Protheus.doc} FieldDef
-	description
+	Definição de campos a serem utilizados.
 	@type function
-	@version
+	@version 12.1.25
 	@author Guilherme Bigois
 	@since 15/07/2021
-	@param nType, numeric, param_description
-	@return variant, return_description
+	@param nType, numeric, Ver
+	@return variant, VEr
 /*/
 Static Function FieldDef(nType)
 	Local nX      := 0  // Contador do laço de campos
