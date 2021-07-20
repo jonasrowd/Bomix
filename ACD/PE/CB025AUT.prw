@@ -1,6 +1,14 @@
-#INCLUDE "APVT100.CH"
-#INCLUDE "PROTHEUS.CH" 
+#INCLUDE "Totvs.ch" 
+#INCLUDE "Apvt100.Ch"
 
+/*/{Protheus.doc} CB025AUT
+Antes da execução da rotina automática, permite a manipulação do conteúdo do array a ser passado para rotina automática.
+	@type function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 20/07/2021
+	@return array, array correspondente ao param 
+/*/
 User Function CB025AUT()
 	a_PEAux    :=PARAMIXB[1]
 	c_OP	   :=PARAMIXB[2]	

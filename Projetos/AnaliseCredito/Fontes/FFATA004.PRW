@@ -3,7 +3,7 @@
 #include "tbiconn.ch"
 
 /*/{Protheus.doc} FFATA001
-    (long_description)
+   (long_description)
    @type  Function
    @author R�mulo Ferreira
    @since 03/04/2021
@@ -14,9 +14,9 @@
    (examples)
    @see Job para manutenção dos status dos pedidos de vendas
 /*/
-User Function FFATA001()
+User Function FFATA004()
 
-PREPARE ENVIRONMENT EMPRESA '01' FILIAL '010101'
+PREPARE ENVIRONMENT EMPRESA '01' FILIAL '020101'
 
 If Select("C5TEMP") > 0
     C5TEMP->(dbCloseArea())
@@ -41,10 +41,11 @@ BeginSql alias 'C5TEMP'
     C5.D_E_L_E_T_ <> '*'   AND 
     C6_QTDENT < C6_QTDVEN  AND 
     (C5_NOTA = '' OR C5_NOTA LIKE '%X') AND 
-    C6_NUMORC <> '' AND 
-    C5_LIBEROK <> 'E'  AND 
-    C6_BLQ<>'R'
-
+    //C6_NUMORC <> '' AND 
+    C5_LIBEROK <> 'E' AND 
+    C6_BLQ <> 'R' AND
+    C6_FILIAL = '020101'
+    
 EndSql
 
 While C5TEMP->(!Eof())
@@ -72,7 +73,8 @@ While C5TEMP->(!Eof())
         SE1.%notDel% AND
         E1_TIPO = 'NF' AND 
         E1_VENCREA >= '20210101' AND 
-        E1_VENCREA < %exp:DtoS(dDataBase)% 
+        E1_VENCREA < %exp:DtoS(dDataBase)% AND
+        E1_FILIAL = '020101'
         
     EndSql
 
@@ -86,7 +88,6 @@ While C5TEMP->(!Eof())
             EndIf
             Z07->(dbSkip())
         EndDo
-
     EndIf
 
     If lAtualiza

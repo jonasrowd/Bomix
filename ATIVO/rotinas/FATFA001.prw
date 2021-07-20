@@ -1,28 +1,13 @@
-#INCLUDE 'TOTVS.CH'
-#INCLUDE 'FONT.CH'
-#INCLUDE 'COLORS.CH'
-#INCLUDE "RWMAKE.CH" 
-#INCLUDE "TBICONN.CH" 
-#INCLUDE "TOPCONN.CH" 
+#Include "Totvs.ch"
 
-/*
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
-±±ºPrograma  ³FATFA001  ºAutor  ³                    º Data ³             º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºDesc.     ³Programa responsavel por importacao de arquivo texto.       º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºUso       ³ SIGAATF                                                    º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±º                     A L T E R A C O E S                               º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºData      ºProgramador       ºAlteracoes                               º±±
-±±ÈÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
-*/
-
+/*/{Protheus.doc} FATFA001
+	Programa responsável pela importação de arquivo de texto para rotina de Ativo Fixo (Verificar se funciona.)
+	@type function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 20/07/2021
+	@return variant, Texto
+/*/
 User Function FATFA001()
 	Local c_Texto  := "Esta rotina tem a finalidade de importar os ativos a partir do arquivo CSV selecionado  pelo usuário para o Cadastro de Ativos do sistema."
 	Local c_Erro   := "É necessário selecionar o arquivo CSV para efetuar essa operação."
@@ -49,38 +34,27 @@ User Function FATFA001()
 	oDlg1:Activate(,,,.T.)
 Return()
 
-/*
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
-±±ºFunção    ³ f_MontaRegua ºAutor  ³                     º Data ³		  º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºDesc.     ³ Efetua a montagem da régua de processamento				  º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-*/
-
+/*/{Protheus.doc} f_MontaRegua
+	efetua a montagem da régua de processamento
+	@type function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 20/07/2021
+	@return variant, null
+/*/
 Static Function f_MontaRegua()
 	Processa({|| f_ImportaDados()}, "Aguarde...", "Importando os dados do arquivo...",.F.)
 Return
 
-/*
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
-±±ºPrograma  ³f_ImportaDadosºAutor  ³                º Data ³             º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºDesc.     ³Funcao resposnavel pela leitura do arquivo texto e gravacao º±±
-±±º          ³dos dados                                                   º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºUso       ³ SIGAATF                                                    º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±º                     A L T E R A C O E S                               º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºData      ºProgramador       ºAlteracoes                               º±±
-±±ÈÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
-*/
 
+/*/{Protheus.doc} f_ImportaDados
+	Função responsável pela leitura do arquivo de texto e gravação dos dados
+	@type function
+	@version  12.1.25
+	@author Jonas Machado
+	@since 20/07/2021
+	@return variant, null
+/*/
 Static Function f_ImportaDados()
 	Private n_Pos    := 1    //Numero da linha do arquivo
 	Private n_QtdInc := 0    //Conta quantas linhas foram importadas
@@ -214,60 +188,16 @@ Static Function f_ImportaDados()
 			DBSEEK(XFILIAL("SN1") + c_CBASE + c_ITEM)
 			IF FOUND()
 		    	n_QtdErr++
-				c_Obs  := "Ativo " + AllTrim(c_CBASE) + " Item " + AllTrim(c_ITEM)" não foi importado pela rotina, porque já está cadastrado no sistema."
+				c_Obs  := "Ativo " + AllTrim(c_CBASE) + " Item " + AllTrim(c_ITEM) + "não foi importado pela rotina, porque já está cadastrado no sistema."
 			ELSE
+
+			
+
 			ENDIF
 		END
-User Function Myatfa010Inc()
-Local aItens := {}
-Local aDadosAuto := {} // Array com os dados a serem enviados pela MsExecAuto() para gravacao automatica dos itens do ativo 
-Local aCab := { {'N1_FILIAL' ,'01' ,NIL},; 
-{'N1_CBASE' ,'13 ' ,NIL},; 
-{'N1_ITEM' ,'01' ,NIL},; 
-{'N1_AQUISIC' ,dDataBase ,NIL},; 
-{'N1_DESCRIC' ,'MS EXEC AUTO' ,NIL},; 
-{'N1_QUANTD' , 1 ,NIL},; 
-{'N1_CHAPA' ,'987' ,NIL} }
-// Array com os dados a serem enviados pela MsExecAuto() para gravacao automatica da capa do bem 
-Private lMsHelpAuto := .f. // Determina se as mensagens de help devem ser direcionadas para o arq. de log
-Private lMsErroAuto := .f. // Determina se houve alguma inconsistencia na execucao da rotina 
-aAdd(aItens,{ {'N3_TIPO' ,'01' , NIL},;
-{'N3_HISTOR' ,"INCLUSAOTIPO 01 " , NIL},; 
-{'N3_TPSALDO' ,'1' , NIL},; 
-{'N3_TPDEPR' ,'1' , NIL},; 
-{'N3_CCONTAB' ,'11101001 ' , NIL},; 
-{'N3_VORIG1' , 10000 , NIL},; 
-{'N3_VORIG2' , 20000 , NIL},; 
-{'N3_VORIG3' , 30000 , NIL},; 
-{'N3_VMXDEPR' , 0 , NIL},; 
-{'N3_VLSALV1' , 0 , NIL},; 
-{'N3_PERDEPR' , 0 , NIL},; 
-{'N3_PRODMES' , 0 , NIL},; 
-{'N3_PRODANO' , 0 , NIL},; 
-{'N3_DINDEPR' ,dDataBase ,NIL} } ) 
-//array com os dados a serem enviados pela MsExecAuto() para gravacao automatica do item tipo 01
-aAdd(aItens,{ {'N3_TIPO' ,'10' , NIL},;
-{'N3_HISTOR' ,"INCLUSÃO TIPO 10 " , NIL},; 
-{'N3_TPSALDO' ,'1' , NIL},; 
-{'N3_TPDEPR' ,'1' , NIL},; 
-{'N3_CCONTAB' ,'11101001 ' , NIL},; 
-{'N3_VORIG1' , 10000 , NIL},; 
-{'N3_VORIG2' , 20000 , NIL},; 
-{'N3_VORIG3' , 30000 , NIL},; 
-{'N3_VMXDEPR' , 0 , NIL},; 
-{'N3_VLSALV1' , 0 , NIL},; 
-{'N3_PERDEPR' , 0 , NIL},; 
-{'N3_PRODMES' , 0 , NIL},; 
-{'N3_PRODANO' , 0 , NIL},; 
-{'N3_DINDEPR' ,dDataBase ,NIL} } ) //array com os dados a serem enviados pela MsExecAuto() para gravacao automatica do item tipo 10 
-MSExecAuto( {|X,Y,Z| ATFA010(X,Y,Z)} ,aCab ,aItens, 3) 
-If lMsErroAuto 
-lRetorno := .F. 
-MostraErro()
-Else
-lRetorno:=.T.
-EndIf
-Return
+	ENDIF
+
+
 
 
 
@@ -341,24 +271,14 @@ Return
 	ENDIF
 Return() 
 
+/*/{Protheus.doc} f_ExpLog
+	Exporta o log de importação para um arquivo texto
+	@type function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 20/07/2021
+	@return variant, null
 /*/
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
-±±ºPrograma  ³ f_ExpLog º Autor ³                  º Data ³    Julho/2011 º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºDescricao ³ Exporta o log de importação para um arquivo texto          º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºUso       ³ SIGAATF                                                    º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±º                     A L T E R A C O E S                               º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºData      ºProgramador       ºAlteracoes                               º±±
-±±ÈÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
-/*/
-
 Static Function f_ExpLog()
 	Local c_Destino := FCREATE("C:\TEMP\LOG_ATUALIZACAO_POSIPI_NCM.TXT")
 	Local c_Linha := ""
@@ -369,7 +289,7 @@ Static Function f_ExpLog()
 	 	RETURN
 	ENDIF
 
-	c_Linha:= "LINHA ;   FILIAL;   "+Padr("PRODUTO", TamSX3('B1_COD')[1])+";   "+Padr("DESCRICAO", TamSX3('B1_COD')[1])+";   "+Padr("NCMANT", TamSX3('B1_COD')[1])+";   "+Padr("NCM", TamSX3('B1_COD')[1])+";   "+Padr("OBSERVACAO", TamSX3('B1_COD')[1]) + CHR(13)+CHR(10)
+	c_Linha:= "LINHA ;   FILIAL;   "+Padr("PRODUTO", TamSX3('B1_COD')[1])+";   "+Padr("DESCRICAO", TamSX3('B1_COD')[1])+";   "+Padr("NCMANT", TamSX3('B1_COD')[1])+";   "+Padr("NCM", TamSX3('B1_COD')[1])+";   "+Padr("OBSERVACAO", TamSX3('B1_COD')[1]) + CRLF
 
 	IF FWRITE(c_Destino,c_Linha,LEN(c_Linha)) != LEN(c_Linha)
 		IF !MSGALERT("Ocorreu um erro na gravação do arquivo destino. Continuar?","Atenção")
@@ -388,7 +308,7 @@ Static Function f_ExpLog()
 
 	TRC->(DBGOTOP())
 	WHILE !(TRC->(EOF()))
-		c_Linha:= STRZERO(TRC->TB_POS,6)+";   "+TRC->TB_FILIAL+";   "+TRC->TB_PRODUTO+";   "+TRC->TB_DESC+";   "+TRC->TB_NCMANT+";   "+TRC->TB_NCM+";   "+TRC->TB_OBS + CHR(13)+CHR(10)
+		c_Linha:= STRZERO(TRC->TB_POS,6)+";   "+TRC->TB_FILIAL+";   "+TRC->TB_PRODUTO+";   "+TRC->TB_DESC+";   "+TRC->TB_NCMANT+";   "+TRC->TB_NCM+";   "+TRC->TB_OBS + CRLF
 
 		IF FWRITE(c_Destino,c_Linha,LEN(c_Linha)) != LEN(c_Linha)
 			IF !MSGALERT("Ocorreu um erro na gravação do arquivo destino. Continuar?","Atenção")
@@ -407,4 +327,63 @@ Static Function f_ExpLog()
 	FCLOSE(c_Destino)
 	DBSELECTAREA("TRC")
 	DBGOTOP()
+Return
+
+/*/{Protheus.doc} Myatfa010Inc
+	ExecAuto para incluir produtos no Ativo Fixo
+	@type function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 20/07/2021
+	@return variant, null
+/*/
+User Function Myatfa010Inc()
+	Local aItens := {}
+	Local aDadosAuto := {} // Array com os dados a serem enviados pela MsExecAuto() para gravacao automatica dos itens do ativo 
+	Local aCab := { {'N1_FILIAL' ,'01' ,NIL},; 
+	{'N1_CBASE' ,'13 ' ,NIL},; 
+	{'N1_ITEM' ,'01' ,NIL},; 
+	{'N1_AQUISIC' ,dDataBase ,NIL},; 
+	{'N1_DESCRIC' ,'MS EXEC AUTO' ,NIL},; 
+	{'N1_QUANTD' , 1 ,NIL},; 
+	{'N1_CHAPA' ,'987' ,NIL} }
+	// Array com os dados a serem enviados pela MsExecAuto() para gravacao automatica da capa do bem 
+	Private lMsHelpAuto := .f. // Determina se as mensagens de help devem ser direcionadas para o arq. de log
+	Private lMsErroAuto := .f. // Determina se houve alguma inconsistencia na execucao da rotina 
+	aAdd(aItens,{ {'N3_TIPO' ,'01' , NIL},;
+	{'N3_HISTOR' ,"INCLUSAOTIPO 01 " , NIL},; 
+	{'N3_TPSALDO' ,'1' , NIL},; 
+	{'N3_TPDEPR' ,'1' , NIL},; 
+	{'N3_CCONTAB' ,'11101001 ' , NIL},; 
+	{'N3_VORIG1' , 10000 , NIL},; 
+	{'N3_VORIG2' , 20000 , NIL},; 
+	{'N3_VORIG3' , 30000 , NIL},; 
+	{'N3_VMXDEPR' , 0 , NIL},; 
+	{'N3_VLSALV1' , 0 , NIL},; 
+	{'N3_PERDEPR' , 0 , NIL},; 
+	{'N3_PRODMES' , 0 , NIL},; 
+	{'N3_PRODANO' , 0 , NIL},; 
+	{'N3_DINDEPR' ,dDataBase ,NIL} } ) 
+	//array com os dados a serem enviados pela MsExecAuto() para gravacao automatica do item tipo 01
+	aAdd(aItens,{ {'N3_TIPO' ,'10' , NIL},;
+	{'N3_HISTOR' ,"INCLUSÃO TIPO 10 " , NIL},; 
+	{'N3_TPSALDO' ,'1' , NIL},; 
+	{'N3_TPDEPR' ,'1' , NIL},; 
+	{'N3_CCONTAB' ,'11101001 ' , NIL},; 
+	{'N3_VORIG1' , 10000 , NIL},; 
+	{'N3_VORIG2' , 20000 , NIL},; 
+	{'N3_VORIG3' , 30000 , NIL},; 
+	{'N3_VMXDEPR' , 0 , NIL},; 
+	{'N3_VLSALV1' , 0 , NIL},; 
+	{'N3_PERDEPR' , 0 , NIL},; 
+	{'N3_PRODMES' , 0 , NIL},; 
+	{'N3_PRODANO' , 0 , NIL},; 
+	{'N3_DINDEPR' ,dDataBase ,NIL} } ) //array com os dados a serem enviados pela MsExecAuto() para gravacao automatica do item tipo 10 
+	MSExecAuto( {|X,Y,Z| ATFA010(X,Y,Z)} ,aCab ,aItens, 3) 
+	If lMsErroAuto 
+		lRetorno := .F. 
+		MostraErro()
+	Else
+		lRetorno:=.T.
+	EndIf
 Return
