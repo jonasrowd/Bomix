@@ -29,7 +29,7 @@ cNome := SA1->A1_NOME
 If nAtrasados <> 0 .AND. (!estaLib(SC5->C5_NUM))
 
 	ShowHelpDlg(SM0->M0_NOME,;
-	{"O Cliente: " + AllTrim(cNome)  + " Pedido: "+SC5->C5_NUM+", possue restrições financeiras no total de R$ "+alltrim(Transform(nAtrasados,"@e 9,999,999,999,999.99"))+"."},5,;
+	{"O Cliente: " + AllTrim(cNome)  + " Pedido: "+SC5->C5_NUM+", possui restrições financeiras no total de R$ "+alltrim(Transform(nAtrasados,"@e 9,999,999,999,999.99"))+"."},5,;
 	{"Caso queira concluir a liberação deste pedido, solicite a liberação dos responsáveis."},5) 
 	
 	lRet := .F.

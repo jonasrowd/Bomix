@@ -1,33 +1,17 @@
-#INCLUDE "rwmake.ch"
-#INCLUDE "topconn.ch"
-#INCLUDE "protheus.ch"
-#INCLUDE "totvs.ch"
-#INCLUDE "TRYEXCEPTION.CH" 
+#Include "Totvs.ch"
+#Include "Topconn.ch"
+#Include "Tryexception.ch" 
 
+
+/*/{Protheus.doc} FESTA002
+	Cadastro de Artes
+	@type function
+	@version 12.1.25
+	@author jonas.machado
+	@since 21/07/2021
+	@return variant, Null
 /*/
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑษออออออออออัออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
-ฑฑบPrograma  ณFESTA002  บ Autor ณ Christian Rocha    บ Data ณ  17/12/12   บฑฑ
-ฑฑฬออออออออออุออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
-ฑฑบDescricao ณ Cadastro de Artes.			                              บฑฑ
-ฑฑบ          ณ                                                            บฑฑ
-ฑฑฬออออออออออุออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบUso       ณ 			                                                  บฑฑ
-ฑฑศออออออออออฯออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿
-/*/
-
-User Function FESTA002
-	//ฺฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฟ
-	//ณ Declaracao de Variaveis                                             ณ
-	//ภฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤู
-
-
-	Local cVldAlt := ".T." // Validacao para permitir a alteracao. Pode-se utilizar ExecBlock.
-	Local cVldExc := ".F." // Validacao para permitir a exclusao. Pode-se utilizar ExecBlock.
-
+User Function FESTA002()
 
 	Private cString := "SZ2"
 
@@ -36,27 +20,17 @@ User Function FESTA002
 
 	AxCadastro(cString,"Cadastro de Artes","U_FDELSZ2()", "U_FALTSZ2()")
 
-Return
+Return()
 
+/*/{Protheus.doc} FDELSZ2
+	Valida็ใo da Exclusใo de Artes.
+	@type Function
+	@version 12.1.25
+	@author jonas.machado
+	@since 21/07/2021
+	@return variant, Query
 /*/
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑษออออออออออัออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
-ฑฑบPrograma  ณFDELSZ2   บ Autor ณ Christian Rocha    บ Data ณ  17/12/12   บฑฑ
-ฑฑฬออออออออออุออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
-ฑฑบDescricao ณ Valida็ใo da Exclusใo de Artes.	                          บฑฑ
-ฑฑบ          ณ                                                            บฑฑ
-ฑฑฬออออออออออุออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบUso       ณ 			                                                  บฑฑ
-ฑฑศออออออออออฯออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿
-/*/
-
-User Function FDELSZ2
-	//ฺฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฟ
-	//ณ Declaracao de Variaveis                                             ณ
-	//ภฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤู
+User Function FDELSZ2()
 
 	Local l_Ret   := .T.
 	Private c_Qry := ""
@@ -78,7 +52,14 @@ User Function FDELSZ2
 
 Return l_Ret
 
-
+/*/{Protheus.doc} f_Qry
+	Fun็ใo para selecionar os produtos com arte.
+	@type function
+	@version 12.1.25
+	@author jonas.machado
+	@since 21/07/2021
+	@return variant, Query
+/*/
 Static Function f_Qry()
 
 	c_Qry := " SELECT * FROM " + RetSqlName("SB1") + " SB1 " + chr(13)
@@ -86,31 +67,24 @@ Static Function f_Qry()
 
 Return c_Qry
 
+/*/{Protheus.doc} FALTSZ2
+	Rotina para altera็ใo da Arte.
+	@type function
+	@version 12.1.25
+	@author jonas.machado
+	@since 21/07/2021
+	@return variant, Verdadeiro
 /*/
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑษออออออออออัออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
-ฑฑบPrograma  ณFALTSZ2   บ Autor ณ Christian Rocha    บ Data ณ  17/12/12   บฑฑ
-ฑฑฬออออออออออุออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
-ฑฑบDescricao ณ Rotina para altera็ใo da Arte.	                          บฑฑ
-ฑฑบ          ณ                                                            บฑฑ
-ฑฑฬออออออออออุออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบUso       ณ 			                                                  บฑฑ
-ฑฑศออออออออออฯออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿
-/*/
-
-User Function FALTSZ2
+User Function FALTSZ2()
 	//ฺฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฟ
 	//ณ Declaracao de Variaveis                                             ณ
 	//ภฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤู
 
-	Local l_Ret   := .T.
-	PRIVATE l_EnviaE   := .F.
+	Local l_Ret   		:= .T.
+	PRIVATE l_EnviaE    := .F.
 	PRIVATE l_EnviaEc   := .F.
-	PRIVATE l_EE   := .T.
-	PRIVATE l_Ec   := .F.	
+	PRIVATE l_EE   		:= .T.
+	PRIVATE l_Ec   		:= .F.	
 
 	If !INCLUI
 
@@ -141,10 +115,17 @@ User Function FALTSZ2
 	Endif
 Return l_Ret
 
-
+/*/{Protheus.doc} f_QryAlt
+	Atualiza o bloqueio da arte no or็amento.
+	@type function
+	@version 12.1.25
+	@author jonas.machado
+	@since 21/07/2021
+	@return variant, Query
+/*/
 Static Function f_QryAlt()
 
-	Local c_CRLF := chr(13) + chr(10)
+	//Local c_CRLF := chr(13) + chr(10)
 
 	//c_Qry := " BEGIN TRAN " + c_CRLF
 	// Atualiza os Or็amentos
@@ -244,17 +225,22 @@ Static Function f_QryAlt()
 					ENDEXCEPTION
 
 // FIM TRECHO ALTERADO POR VICTOR SOUSA 28/06/20 O TRATAMENTO ANTERIOR DE GTRAVAวรO ESTAVA GERANDO ERRO NO DBACCESS ATUAL
-	
-	
 		
 Return l_Ret
 
-
+/*/{Protheus.doc} f_OpsApt
+Verificar o que faz com calma
+@type function
+@version 12.1.25 
+@author Jonas Machado
+@since 21/07/2021
+@return variant, l_EnviaE
+/*/
 Static Function f_OpsApt()
 	/*ฤฤฤฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤฤฤมฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤูฑฑ
 	ฑฑ Declara็ใo de Variaveis Private dos Objetos                             ฑฑ
 	ูฑฑภฤฤฤฤฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤฤฤมฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤ*/
-	Local c_CRLF 	 := chr(13) + chr(10)
+	//Local c_CRLF 	 := chr(13) + chr(10)
 	Local a_Area     := GetArea()
 	Local c_To       := GETMV("FS_EMAIL")	//Destinatแrio do e-mail
 	Local c_Corpo    := ''					//Corpo do e-mail
@@ -365,7 +351,14 @@ Return l_EnviaE
 
 
 
-
+/*/{Protheus.doc} f_OpsAptc
+Verificar o que faz
+@type function
+@version 12.1.25
+@author jonas.machado
+@since 21/07/2021
+@return variant, l_EnviaEc
+/*/					
 Static Function f_OpsAptc()
 	/*ฤฤฤฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤฤฤมฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤูฑฑ
 	ฑฑ Declara็ใo de Variaveis Private dos Objetos                             ฑฑ
@@ -399,7 +392,14 @@ Static Function f_OpsAptc()
 Return l_EnviaEc
 
 
-
+/*/{Protheus.doc} f_ImpOps
+Verificar o que faz
+@type function
+@version 12.1.25
+@author jonas.machado
+@since 21/07/2021
+@return variant, Null
+/*/
 Static Function f_ImpOps
 	//ฺฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฟ
 	//ณ Declaracao de Variaveis                                             ณ
@@ -408,17 +408,14 @@ Static Function f_ImpOps
 	Local cDesc1         := "Este programa tem como objetivo imprimir relatorio "
 	Local cDesc2         := "de acordo com os parametros informados pelo usuario."
 	Local cDesc3         := ""
-	Local cPict          := ""
 	Local titulo         := "ARTE - " + AllTrim(SZ2->Z2_DESC)
 	Local nLin           := 80
 	Local Cabec1         := "           Ordens de Produ็ใo com Apontamentos Parciais"
 	Local Cabec2         := "Ord. Prod.  Item  Produto                         Pedido  Item PV"
-	Local imprime        := .T.
 	Local aOrd 			 := {}
 
 	Private lEnd         := .F.
 	Private lAbortPrint  := .F.
-	Private CbTxt        := ""
 	Private limite       := 080
 	Private tamanho      := "P"
 	Private nomeprog     := "FESTA002" // Coloque aqui o nome do programa para impressao no cabecalho
@@ -457,24 +454,21 @@ Static Function f_ImpOps
 	RptStatus({|| RunReport(Cabec1,Cabec2,Titulo,nLin) },Titulo)
 Return
 
-/*/
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑษออออออออออัออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
-ฑฑบFuno    ณRUNREPORT บ Autor ณ AP6 IDE            บ Data ณ  28/09/12   บฑฑ
-ฑฑฬออออออออออุออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
-ฑฑบDescrio ณ Funcao auxiliar chamada pela RPTSTATUS. A funcao RPTSTATUS บฑฑ
-ฑฑบ          ณ monta a janela com a regua de processamento.               บฑฑ
-ฑฑฬออออออออออุออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบUso       ณ Programa principal                                         บฑฑ
-ฑฑศออออออออออฯออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿
-/*/
 
+/*/{Protheus.doc} RunReport
+	Funcao auxiliar chamada pela RPTSTATUS. A funcao RPTSTATUS monta a janela com a regua de processamento. 
+	@type function
+	@version 12.1.25
+	@author jonas.machado
+	@since 21/07/2021
+	@param Cabec1, character, Cabe็alho
+	@param Cabec2, character, Cabe็alho
+	@param Titulo, variant, Tํtulo
+	@param nLin, numeric, N๚mero da linha calculada no for
+	@return variant, Null
+/*/
 Static Function RunReport(Cabec1,Cabec2,Titulo,nLin)
-	Local nOrdem
-
+	
 	//ฺฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฟ
 	//ณ SETREGUA -> Indica quantos registros serao processados para a regua ณ
 	//ภฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤู
@@ -548,24 +542,17 @@ Static Function RunReport(Cabec1,Cabec2,Titulo,nLin)
 	MS_FLUSH()
 Return
 
-/*
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑษออออออออออัออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
-ฑฑบPrograma  ณf_Enviar บAutor  ณChristian Rocha     บ Data ณ			  บฑฑ
-ฑฑฬออออออออออุออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
-ฑฑบDesc.     ณEnvia e-mail notificando sobre bloqueio de arte		      บฑฑ
-ฑฑฬออออออออออุออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบUso       ณ 			                                                  บฑฑ
-ฑฑฬออออออออออฯออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบ                     A L T E R A C O E S                               บฑฑ
-ฑฑฬออออออออออหออออออออออออออออออหอออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบData      บProgramador       บAlteracoes                               บฑฑ
-ฑฑศออออออออออสออออออออออออออออออสอออออออออออออออออออออออออออออออออออออออออผฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿
-*/
 
+/*/{Protheus.doc} f_Enviar
+	Envia e-mail notificando sobre bloqueio de arte
+	@type function
+	@version 12.1.25
+	@author jonas.machado
+	@since 21/07/2021
+	@param c_To, character, Destinatแrio do e-mail
+	@param c_Corpo, character, Corpo do e-mail
+	@return variant, Null
+/*/
 Static Function f_Enviar(c_To, c_Corpo)
 	Local c_status := ''
 

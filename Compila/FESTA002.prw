@@ -1,34 +1,21 @@
-#INCLUDE "rwmake.ch"
-#INCLUDE "topconn.ch"
-#INCLUDE "protheus.ch"
-#INCLUDE "totvs.ch"
-#INCLUDE "TRYEXCEPTION.CH" 
+#Include "Totvs.ch"
+#Include "Topconn.ch"
+#Include "Tryexception.ch" 
 
+#Define CRLF Chr(10) + Chr(13)
+
+/*/{Protheus.doc} FESTA002
+	Cadastro de Artes
+	@type function
+	@version 12.1.25
+	@author jonas.machado
+	@since 21/07/2021
+	@return variant, Null
 /*/
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
-±±ºPrograma  ³FESTA002  º Autor ³ Christian Rocha    º Data ³  17/12/12   º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºDescricao ³ Cadastro de Artes.			                              º±±
-±±º          ³                                                            º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºUso       ³ 			                                                  º±±
-±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
-/*/
+User Function FESTA002()
 
-User Function FESTA002
-	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-	//³ Declaracao de Variaveis                                             ³
-	//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
-
-
-	Local cVldAlt := ".T." // Validacao para permitir a alteracao. Pode-se utilizar ExecBlock.
-	Local cVldExc := ".F." // Validacao para permitir a exclusao. Pode-se utilizar ExecBlock.
-
-
+	//Local cVldAlt := ".T." // Validacao para permitir a alteracao. Pode-se utilizar ExecBlock.
+	//Local cVldExc := ".F." // Validacao para permitir a exclusao. Pode-se utilizar ExecBlock.
 	Private cString := "SZ2"
 
 	dbSelectArea("SZ2")
@@ -36,23 +23,16 @@ User Function FESTA002
 
 	AxCadastro(cString,"Cadastro de Artes","U_FDELSZ2()", "U_FALTSZ2()")
 
-Return
+Return()
 
+/*/{Protheus.doc} FDELSZ2
+	Validação da Exclusão de Artes.
+	@type Function
+	@version 12.1.25
+	@author jonas.machado
+	@since 21/07/2021
+	@return variant, Query
 /*/
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
-±±ºPrograma  ³FDELSZ2   º Autor ³ Christian Rocha    º Data ³  17/12/12   º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºDescricao ³ Validação da Exclusão de Artes.	                          º±±
-±±º          ³                                                            º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºUso       ³ 			                                                  º±±
-±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
-/*/
-
 User Function FDELSZ2
 	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
 	//³ Declaracao de Variaveis                                             ³
@@ -78,7 +58,14 @@ User Function FDELSZ2
 
 Return l_Ret
 
-
+/*/{Protheus.doc} f_Qry
+	Função para selecionar os produtos com arte.
+	@type function
+	@version 12.1.25
+	@author jonas.machado
+	@since 21/07/2021
+	@return variant, Query
+/*/
 Static Function f_Qry()
 
 	c_Qry := " SELECT * FROM " + RetSqlName("SB1") + " SB1 " + chr(13)
@@ -86,31 +73,24 @@ Static Function f_Qry()
 
 Return c_Qry
 
+/*/{Protheus.doc} FALTSZ2
+	Rotina para alteração da Arte.
+	@type function
+	@version 12.1.25
+	@author jonas.machado
+	@since 21/07/2021
+	@return variant, Verdadeiro
 /*/
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
-±±ºPrograma  ³FALTSZ2   º Autor ³ Christian Rocha    º Data ³  17/12/12   º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºDescricao ³ Rotina para alteração da Arte.	                          º±±
-±±º          ³                                                            º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºUso       ³ 			                                                  º±±
-±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
-/*/
-
 User Function FALTSZ2
 	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
 	//³ Declaracao de Variaveis                                             ³
 	//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
-	Local l_Ret   := .T.
-	PRIVATE l_EnviaE   := .F.
+	Local l_Ret   		:= .T.
+	PRIVATE l_EnviaE   	:= .F.
 	PRIVATE l_EnviaEc   := .F.
-	PRIVATE l_EE   := .T.
-	PRIVATE l_Ec   := .F.	
+	PRIVATE l_EE   		:= .T.
+	PRIVATE l_Ec   		:= .F.	
 
 	If !INCLUI
 
@@ -141,58 +121,63 @@ User Function FALTSZ2
 	Endif
 Return l_Ret
 
-
+/*/{Protheus.doc} f_QryAlt
+	Atualiza o bloqueio da arte no orçamento.
+	@type function
+	@version 12.1.25
+	@author jonas.machado
+	@since 21/07/2021
+	@return variant, Query
+/*/
 Static Function f_QryAlt()
 
-	Local c_CRLF := chr(13) + chr(10)
-
-	//c_Qry := " BEGIN TRAN " + c_CRLF
+	//c_Qry := " BEGIN TRAN " + CRLF
 	// Atualiza os Orçamentos
-	c_Qry := " UPDATE " + RetSqlName("SCK") + " SET CK_FSTPITE = '" + IIF(IIF(AllTrim(FunName()) == 'FESTA002', M->Z2_BLOQ == '2', SZ2->Z2_BLOQ == '2'), "1' ", "2' ") + c_CRLF
-	c_Qry += " WHERE (CK_FILIAL + CK_NUM + CK_ITEM + CK_PRODUTO) IN (" + c_CRLF
-	c_Qry += " SELECT (CK_FILIAL + CK_NUM + CK_ITEM + CK_PRODUTO) FROM SCK010 SCK " + c_CRLF
-	c_Qry += " 		INNER JOIN SB1010 SB1 ON B1_FILIAL = '" + xFilial("SB1") + "' " + c_CRLF
-	c_Qry += " 			AND B1_COD = CK_PRODUTO " + c_CRLF
-	c_Qry += " 			AND B1_FSARTE = '" + SZ2->Z2_COD + "' " + c_CRLF
-	c_Qry += " 			AND SB1.D_E_L_E_T_<>'*' " + c_CRLF
-	c_Qry += " 	WHERE SCK.D_E_L_E_T_<>'*' AND CK_FILIAL = '" + xFilial("SCK") + "')" + c_CRLF	
+	c_Qry := " UPDATE " + RetSqlName("SCK") + " SET CK_FSTPITE = '" + IIF(IIF(AllTrim(FunName()) == 'FESTA002', M->Z2_BLOQ == '2', SZ2->Z2_BLOQ == '2'), "1' ", "2' ") + CRLF
+	c_Qry += " WHERE (CK_FILIAL + CK_NUM + CK_ITEM + CK_PRODUTO) IN (" + CRLF
+	c_Qry += " SELECT (CK_FILIAL + CK_NUM + CK_ITEM + CK_PRODUTO) FROM SCK010 SCK " + CRLF
+	c_Qry += " 		INNER JOIN SB1010 SB1 ON B1_FILIAL = '" + xFilial("SB1") + "' " + CRLF
+	c_Qry += " 			AND B1_COD = CK_PRODUTO " + CRLF
+	c_Qry += " 			AND B1_FSARTE = '" + SZ2->Z2_COD + "' " + CRLF
+	c_Qry += " 			AND SB1.D_E_L_E_T_<>'*' " + CRLF
+	c_Qry += " 	WHERE SCK.D_E_L_E_T_<>'*' AND CK_FILIAL = '" + xFilial("SCK") + "')" + CRLF	
 	// Atualiza os Pedidos de Venda
-	c_Qry += " UPDATE " + RetSqlName("SC6") + " SET C6_FSTPITE = '" + IIF(IIF(AllTrim(FunName()) == 'FESTA002', M->Z2_BLOQ == '2', SZ2->Z2_BLOQ == '2'), "1' ", "2' ") + c_CRLF
-	c_Qry += " WHERE (C6_FILIAL + C6_NUM + C6_ITEM + C6_PRODUTO) IN (" + c_CRLF
-	c_Qry += " SELECT (C6_FILIAL + C6_NUM + C6_ITEM + C6_PRODUTO) FROM SC6010 SC6 " + c_CRLF
-	c_Qry += " 		INNER JOIN SB1010 SB1 ON B1_FILIAL = '" + xFilial("SB1") + "' " + c_CRLF
-	c_Qry += " 			AND B1_COD = C6_PRODUTO " + c_CRLF
-	c_Qry += " 			AND B1_FSARTE = '" + SZ2->Z2_COD + "' " + c_CRLF
-	c_Qry += " 			AND SB1.D_E_L_E_T_<>'*' " + c_CRLF
-	c_Qry += " 	WHERE SC6.D_E_L_E_T_<>'*'  AND C6_FILIAL = '" + xFilial("SC6") + "')" + c_CRLF
+	c_Qry += " UPDATE " + RetSqlName("SC6") + " SET C6_FSTPITE = '" + IIF(IIF(AllTrim(FunName()) == 'FESTA002', M->Z2_BLOQ == '2', SZ2->Z2_BLOQ == '2'), "1' ", "2' ") + CRLF
+	c_Qry += " WHERE (C6_FILIAL + C6_NUM + C6_ITEM + C6_PRODUTO) IN (" + CRLF
+	c_Qry += " SELECT (C6_FILIAL + C6_NUM + C6_ITEM + C6_PRODUTO) FROM SC6010 SC6 " + CRLF
+	c_Qry += " 		INNER JOIN SB1010 SB1 ON B1_FILIAL = '" + xFilial("SB1") + "' " + CRLF
+	c_Qry += " 			AND B1_COD = C6_PRODUTO " + CRLF
+	c_Qry += " 			AND B1_FSARTE = '" + SZ2->Z2_COD + "' " + CRLF
+	c_Qry += " 			AND SB1.D_E_L_E_T_<>'*' " + CRLF
+	c_Qry += " 	WHERE SC6.D_E_L_E_T_<>'*'  AND C6_FILIAL = '" + xFilial("SC6") + "')" + CRLF
 	// Atualiza as Ordens de Produção sem apontamentos
 	If IIF(AllTrim(FunName()) == 'FESTA002', M->Z2_BLOQ == '2', SZ2->Z2_BLOQ == '2')
-		c_Qry += " UPDATE " + RetSqlName("SC2") + " SET C2_TPOP = 'P' " + c_CRLF
-		c_Qry += " WHERE (C2_FILIAL + C2_NUM + C2_ITEM) IN (" + c_CRLF
-		c_Qry += " SELECT (C2_FILIAL + C2_NUM + C2_ITEM) FROM SC2010 SC2 " + c_CRLF
-		c_Qry += " 		INNER JOIN SB1010 SB1 ON B1_FILIAL = '" + xFilial("SB1") + "' " + c_CRLF
-		c_Qry += " 			AND B1_COD = C2_PRODUTO " + c_CRLF
-		c_Qry += " 			AND B1_FSARTE = '" + SZ2->Z2_COD + "' " + c_CRLF
-		c_Qry += " 			AND SB1.D_E_L_E_T_<>'*' " + c_CRLF
-		c_Qry += " 	WHERE SC2.D_E_L_E_T_<>'*' AND C2_STATUS<>'U' AND C2_QUJE = 0 AND C2_FILIAL = '" + xFilial("SC2") + "')" + c_CRLF
+		c_Qry += " UPDATE " + RetSqlName("SC2") + " SET C2_TPOP = 'P' " + CRLF
+		c_Qry += " WHERE (C2_FILIAL + C2_NUM + C2_ITEM) IN (" + CRLF
+		c_Qry += " SELECT (C2_FILIAL + C2_NUM + C2_ITEM) FROM SC2010 SC2 " + CRLF
+		c_Qry += " 		INNER JOIN SB1010 SB1 ON B1_FILIAL = '" + xFilial("SB1") + "' " + CRLF
+		c_Qry += " 			AND B1_COD = C2_PRODUTO " + CRLF
+		c_Qry += " 			AND B1_FSARTE = '" + SZ2->Z2_COD + "' " + CRLF
+		c_Qry += " 			AND SB1.D_E_L_E_T_<>'*' " + CRLF
+		c_Qry += " 	WHERE SC2.D_E_L_E_T_<>'*' AND C2_STATUS<>'U' AND C2_QUJE = 0 AND C2_FILIAL = '" + xFilial("SC2") + "')" + CRLF
 	Elseif IIF(AllTrim(FunName()) == 'FESTA002', M->Z2_BLOQ == '3', SZ2->Z2_BLOQ == '3')
-		c_Qry += " UPDATE " + RetSqlName("SC2") + " SET C2_TPOP = 'F' " + c_CRLF
-		c_Qry += " WHERE (C2_FILIAL + C2_NUM + C2_ITEM) IN (" + c_CRLF
-		c_Qry += " SELECT (C2_FILIAL + C2_NUM + C2_ITEM) FROM SC2010 SC2 " + c_CRLF
-		c_Qry += " 		INNER JOIN SB1010 SB1 ON B1_FILIAL = '" + xFilial("SB1") + "' " + c_CRLF
-		c_Qry += " 			AND B1_COD = C2_PRODUTO " + c_CRLF
-		c_Qry += " 			AND B1_FSARTE = '" + SZ2->Z2_COD + "' " + c_CRLF
-		c_Qry += " 			AND SB1.D_E_L_E_T_<>'*' " + c_CRLF
-		c_Qry += " 	WHERE SC2.D_E_L_E_T_<>'*' AND C2_STATUS<>'U' AND C2_QUJE = 0 AND C2_FILIAL = '" + xFilial("SC2") + "') AND C2_SEQPAI NOT IN ('', '000') AND C2_SEQUEN > '001' " + c_CRLF
+		c_Qry += " UPDATE " + RetSqlName("SC2") + " SET C2_TPOP = 'F' " + CRLF
+		c_Qry += " WHERE (C2_FILIAL + C2_NUM + C2_ITEM) IN (" + CRLF
+		c_Qry += " SELECT (C2_FILIAL + C2_NUM + C2_ITEM) FROM SC2010 SC2 " + CRLF
+		c_Qry += " 		INNER JOIN SB1010 SB1 ON B1_FILIAL = '" + xFilial("SB1") + "' " + CRLF
+		c_Qry += " 			AND B1_COD = C2_PRODUTO " + CRLF
+		c_Qry += " 			AND B1_FSARTE = '" + SZ2->Z2_COD + "' " + CRLF
+		c_Qry += " 			AND SB1.D_E_L_E_T_<>'*' " + CRLF
+		c_Qry += " 	WHERE SC2.D_E_L_E_T_<>'*' AND C2_STATUS<>'U' AND C2_QUJE = 0 AND C2_FILIAL = '" + xFilial("SC2") + "') AND C2_SEQPAI NOT IN ('', '000') AND C2_SEQUEN > '001' " + CRLF
 	Else
-		c_Qry += " UPDATE " + RetSqlName("SC2") + " SET C2_TPOP = 'F' " + c_CRLF
-		c_Qry += " WHERE (C2_FILIAL + C2_NUM + C2_ITEM) IN (" + c_CRLF
-		c_Qry += " SELECT (C2_FILIAL + C2_NUM + C2_ITEM) FROM SC2010 SC2 " + c_CRLF
-		c_Qry += " 		INNER JOIN SB1010 SB1 ON B1_FILIAL = '" + xFilial("SB1") + "' " + c_CRLF
-		c_Qry += " 			AND B1_COD = C2_PRODUTO " + c_CRLF
-		c_Qry += " 			AND B1_FSARTE = '" + SZ2->Z2_COD + "' " + c_CRLF
-		c_Qry += " 			AND SB1.D_E_L_E_T_<>'*' " + c_CRLF
-		c_Qry += " 	WHERE SC2.D_E_L_E_T_<>'*' AND C2_STATUS<>'U' AND C2_QUJE = 0 AND C2_FILIAL = '" + xFilial("SC2") + "')" + c_CRLF
+		c_Qry += " UPDATE " + RetSqlName("SC2") + " SET C2_TPOP = 'F' " + CRLF
+		c_Qry += " WHERE (C2_FILIAL + C2_NUM + C2_ITEM) IN (" + CRLF
+		c_Qry += " SELECT (C2_FILIAL + C2_NUM + C2_ITEM) FROM SC2010 SC2 " + CRLF
+		c_Qry += " 		INNER JOIN SB1010 SB1 ON B1_FILIAL = '" + xFilial("SB1") + "' " + CRLF
+		c_Qry += " 			AND B1_COD = C2_PRODUTO " + CRLF
+		c_Qry += " 			AND B1_FSARTE = '" + SZ2->Z2_COD + "' " + CRLF
+		c_Qry += " 			AND SB1.D_E_L_E_T_<>'*' " + CRLF
+		c_Qry += " 	WHERE SC2.D_E_L_E_T_<>'*' AND C2_STATUS<>'U' AND C2_QUJE = 0 AND C2_FILIAL = '" + xFilial("SC2") + "')" + CRLF
 	Endif
 
 	/*
@@ -244,9 +229,6 @@ Static Function f_QryAlt()
 					ENDEXCEPTION
 
 // FIM TRECHO ALTERADO POR VICTOR SOUSA 28/06/20 O TRATAMENTO ANTERIOR DE GTRAVAÇÃO ESTAVA GERANDO ERRO NO DBACCESS ATUAL
-	
-	
-		
 Return l_Ret
 
 
@@ -254,7 +236,6 @@ Static Function f_OpsApt()
 	/*ÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ±±
 	±± Declaração de Variaveis Private dos Objetos                             ±±
 	Ù±±ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ*/
-	Local c_CRLF 	 := chr(13) + chr(10)
 	Local a_Area     := GetArea()
 	Local c_To       := GETMV("FS_EMAIL")	//Destinatário do e-mail
 	Local c_Corpo    := ''					//Corpo do e-mail
@@ -277,14 +258,14 @@ Static Function f_OpsApt()
 	Aadd(a_Campos,{"TB_PEDIDO"	,,'Pedido Venda'	,'@!'})
 	Aadd(a_Campos,{"TB_ITEMPV"	,,'Item PV'			,'@!'})
 
-	c_Qry := " SELECT C2_NUM, C2_ITEM, C2_PRODUTO, C2_PEDIDO, C2_ITEMPV FROM SC2010 SC2 " + c_CRLF
-	c_Qry += " 		INNER JOIN SB1010 SB1 ON B1_FILIAL = '" + xFilial("SB1") + "' " + c_CRLF
-	c_Qry += " 			AND B1_COD = C2_PRODUTO " + c_CRLF
-	c_Qry += " 			AND B1_FSARTE = '" + SZ2->Z2_COD + "' " + c_CRLF
-	c_Qry += " 			AND SB1.D_E_L_E_T_<>'*' " + c_CRLF
-	c_Qry += " 	WHERE SC2.D_E_L_E_T_<>'*' AND C2_STATUS<>'U' AND (C2_QUJE = 0 OR C2_QUJE < C2_QUANT) AND C2_DATRF = '' AND (C2_DATAPCP<>'' OR C2_PRIOR<500) AND C2_FILIAL = '" + xFilial("SC2") + "' " + c_CRLF
+	c_Qry := " SELECT C2_NUM, C2_ITEM, C2_PRODUTO, C2_PEDIDO, C2_ITEMPV FROM SC2010 SC2 " + CRLF
+	c_Qry += " 		INNER JOIN SB1010 SB1 ON B1_FILIAL = '" + xFilial("SB1") + "' " + CRLF
+	c_Qry += " 			AND B1_COD = C2_PRODUTO " + CRLF
+	c_Qry += " 			AND B1_FSARTE = '" + SZ2->Z2_COD + "' " + CRLF
+	c_Qry += " 			AND SB1.D_E_L_E_T_<>'*' " + CRLF
+	c_Qry += " 	WHERE SC2.D_E_L_E_T_<>'*' AND C2_STATUS<>'U' AND (C2_QUJE = 0 OR C2_QUJE < C2_QUANT) AND C2_DATRF = '' AND (C2_DATAPCP<>'' OR C2_PRIOR<500) AND C2_FILIAL = '" + xFilial("SC2") + "' " + CRLF
 
-	//	c_Qry += " 	WHERE SC2.D_E_L_E_T_<>'*' AND C2_STATUS<>'U' AND C2_QUJE > 0 AND C2_QUJE < C2_QUANT AND C2_DATRF = '' AND C2_DATAPCP<>'' AND C2_PRIOR<500 AND C2_FILIAL = '" + xFilial("SC2") + "' " + c_CRLF
+	//	c_Qry += " 	WHERE SC2.D_E_L_E_T_<>'*' AND C2_STATUS<>'U' AND C2_QUJE > 0 AND C2_QUJE < C2_QUANT AND C2_DATRF = '' AND C2_DATAPCP<>'' AND C2_PRIOR<500 AND C2_FILIAL = '" + xFilial("SC2") + "' " + CRLF
 
 
 	// '<p>A Arte ' + SZ2->Z2_COD + ' - ' + AllTrim(SZ2->Z2_DESC) + ' foi bloqueada pelo usuário ( ' + AllTrim(UsrRetName(__CUSERID)) + ' ), mas as ordens de produção listadas abaixo não foram bloqueadas porque possuem apontamentos de produção:</p>' +;
@@ -565,7 +546,16 @@ Return
 ±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
 ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 */
-
+/*/{Protheus.doc} f_Enviar
+Envia e-mail notificando sobre bloqueio de arte	
+@type function
+@version 12.1.25
+@author jonas.machado
+@since 21/07/2021
+@param c_To, character, Remetente
+@param c_Corpo, character, E-mail
+@return variant, Null
+/*/
 Static Function f_Enviar(c_To, c_Corpo)
 	Local c_status := ''
 

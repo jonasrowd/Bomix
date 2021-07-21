@@ -1,25 +1,13 @@
-#include "topconn.ch"
-#include "protheus.ch"
-#include "rwmake.ch"
-#include "tbiconn.ch"
-#include "tbicode.ch"
+#Include "Totvs.ch"
 
-/*
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑษออออออออออัอออออออออออออหอออออออัอออออออออออออออออออออหอออออออัอออออออออออปฑฑ
-ฑฑบPrograma  ?FCADUSERS   ?Autor ?VICTOR SOUSA
-ฑฑฬออออออออออุอออออออออออออสอออออออฯอออออออออออออออออออออสอออออออฯอออออออออออนฑฑ
-ฑฑบDescricao ?A rotina FCADUSERS vai alimentar as tabelas de usuarios e     บฑ?
-ฑฑ?         ?grupos com informacoes do cadastro de usuarios.				 บฑ?
-ฑฑฬออออออออออุอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบUso       ?SIGAP12													     บฑ?
-ฑฑศออออออออออสอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿
-*/
-
-
+/*/{Protheus.doc} FCADUSERS
+A rotina FCADUSERS vai alimentar as tabelas de usuarios e grupos com informacoes do cadastro de usuarios.
+@type function
+@version 12.1.25
+@author jonas.machado
+@since 21/07/2021
+@return variant, Null
+/*/
 User Function FCADUSERS()
 
 	//STARTJOB("U_ATUSERS",GetEnvServer(),.T.,"01","01")
@@ -27,12 +15,17 @@ User Function FCADUSERS()
 Return()
 
 
-
-
-User Function ATUSERS(c_Empresa,c_Filial)
-
-
-	//User Function ATUSERS("01","01")
+/*/{Protheus.doc} ATUSERS
+Fun็ใo para atualizar os usuแrios do ambiente
+@type function
+@version 12.1.25
+@author jonas.machado
+@since 21/07/2021
+@param c_Empresa, character, Empresa
+@param c_Filial, character, Filial
+@return variant, Null
+/*/
+Static Function ATUSERS(c_Empresa,c_Filial)
 
 	Local cPatch
 	Local aUsers
@@ -45,11 +38,13 @@ User Function ATUSERS(c_Empresa,c_Filial)
 	Local n_totusu
 	Local aArray
 	Local cGrupo
-	c_Empresa="01"
-	c_Filial="01"
+	c_Empresa='01'
+	c_Filial='01'
 	cGrupo=""
 
-	PREPARE ENVIRONMENT EMPRESA c_Empresa FILIAL c_Filial TABLES 'ZAL,ZAQ,ZAT,ZAS'
+	RPCSetType(3)
+	
+	PREPARE ENVIRONMENT EMPRESA c_Empresa FILIAL c_Filial TABLES "ZAL","ZAQ","ZAT","ZAS"
 
 	IF SELECT("SM0") <> 0
 		SM0->(DbCloseArea())
@@ -192,6 +187,8 @@ User Function ATUSERS(c_Empresa,c_Filial)
 		ZAS->(MsUnlock())
 
 	NEXT nY
+
+	RESET ENVIRONMENT
 
 Return()
 

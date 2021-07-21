@@ -1,6 +1,16 @@
-#include 'protheus.ch'
-#include 'parmtype.ch'
+#Include 'Totvs.ch'
 
+/*/{Protheus.doc} BXMENATR
+Função responsável por trazer os títulos em aberto na tela de orçamento.
+@type function
+@version 12.1.25
+@author jonas.machado
+@since 21/07/2021
+@param xPar, variant, iNCLUUSÃO
+@param pCliente, variant, param_description
+@param pLoja, variant, param_description
+@return variant, return_description
+/*/
 user function BXMENATR(xPar, pCliente, pLoja)
 	
 Local oBtnOK
@@ -108,6 +118,15 @@ Static Function libVend(_cBx)
 
 Return _cBx
 
+/*/{Protheus.doc} libExped
+	Libera pedido para expedição.
+	@type function
+	@version 12.1.25
+	@author jonas.machado
+	@since 21/07/2021
+	@param _cBx, variant, Número
+	@return variant, _cBx, Número do pedido
+/*/
 Static Function libExped(_cBx)
 
 	If MsgYesNo("Deseja Liberar a Expedição deste Pedido: "+SC5->C5_NUM +"?", 'Atenção')
@@ -116,6 +135,14 @@ Static Function libExped(_cBx)
 
 Return _cBx
 
+/*/{Protheus.doc} GetJust
+	Tela de justificativa  da liberação de crédito
+	@type function
+	@version 12.1.25
+	@author jonas.machado
+	@since 21/07/2021
+	@return variant, Null
+/*/
 Static Function GetJust()
 
 Local oGet1
@@ -142,6 +169,15 @@ Static oDlgJust
 	EndIf
 Return ""
 
+/*/{Protheus.doc} atuSC9
+	Atualiza a tabela SC9 com a liberação de crédito
+	@type function
+	@version 12.1.25
+	@author jonas.machado
+	@since 21/07/2021
+	@param _cPed, variant, Pedido
+	@return variant, Null
+/*/
 Static Function atuSC9(_cPed)
 
 	TcSqlExec(" UPDATE SC9010 SET C9_BLCRED = '' WHERE C9_PEDIDO = '"+_cPed+"' AND D_E_L_E_T_ <> '*'" )
