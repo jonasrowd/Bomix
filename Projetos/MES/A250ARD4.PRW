@@ -1,12 +1,12 @@
 #include "topconn.ch"
 
 /*/{Protheus.doc} A250ARD4
-Responsável pela gravação correta da perda.
-@type function
-@version 12.1.25
-@author jonas.machado
-@since 19/07/2021
-@return variant, Retorna os produtos que possuem perda.
+    Responsável pela gravação correta da perda.
+    @type function
+    @version 12.1.25
+    @author jonas.machado
+    @since 19/07/2021
+    @return variant, Retorna os produtos que possuem perda.
 /*/
 user function A250ARD4()
 Local nx := 0 

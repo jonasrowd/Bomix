@@ -3,44 +3,37 @@
 #include "topconn.ch"
 
 /*{Protheus.doc} FFATVATR
-Rotina para consulta SQL no banco, dos clientes que possuem retrições financeiras
-@author Elmer Farias
-@since 04/01/21
-@version 1.0
+	Rotina para consulta SQL no banco, dos clientes que possuem retrições financeiras
+	@author Elmer Farias
+	@since 04/01/21
+	@version 1.0
 	@example
 	u_FFATVATR()
 /*/
 
 user function FFATVATR(pCliente, pLoja)
-Local nRet := 0 
-Local aArea    := GetArea()
-Local c_Qry:=""	
-	private cfil :="      "
+	Local nRet := 0 
+	Local aArea    := GetArea()
+	Local c_Qry:=""	
 
-	cFil := FWCodFil()
-		if cFil = "030101"
-			return
-		endif
-	
-	c_Qry := " SELECT isnull(sum(SE1.E1_SALDO),0) as SALDO FROM " + RetSqlName("SE1") + " SE1 " + chr(13) + chr(10)
-	c_Qry += " WHERE SE1.D_E_L_E_T_ <> '*' " + chr(13) + chr(10)
-	c_Qry += " AND SE1.E1_CLIENTE = '" + pCliente + "' " + chr(13) + chr(10)
-	c_Qry += " AND SE1.E1_LOJA = '" + pLoja + "' " + chr(13) + chr(10)
-	c_Qry += " AND E1_VENCREA < '"+dtos(dDataBase)+"' " + chr(13) + chr(10)
-    c_Qry += " AND 0 < SE1.E1_SALDO AND E1_TIPO = 'NF' AND E1_VENCREA >= '20200101'" + chr(13) + chr(10)
+	If (FwCodFil() != "030101")
+		c_Qry := " SELECT isnull(sum(SE1.E1_SALDO),0) as SALDO FROM " + RetSqlName("SE1") + " SE1 " + chr(13) + chr(10)
+		c_Qry += " WHERE SE1.D_E_L_E_T_ <> '*' " + chr(13) + chr(10)
+		c_Qry += " AND SE1.E1_CLIENTE = '" + pCliente + "' " + chr(13) + chr(10)
+		c_Qry += " AND SE1.E1_LOJA = '" + pLoja + "' " + chr(13) + chr(10)
+		c_Qry += " AND E1_VENCREA < '"+dtos(dDataBase)+"' " + chr(13) + chr(10)
+		c_Qry += " AND 0 < SE1.E1_SALDO AND E1_TIPO = 'NF' AND E1_VENCREA >= '20200101'" + chr(13) + chr(10)
+		TCQUERY c_Qry NEW ALIAS "QRY"
 
-	TCQUERY c_Qry NEW ALIAS "QRY"
-
-	dbSelectArea("QRY")
-	QRY->(dbGoTop())
-	If !QRY->(EoF())
-		nRet := QRY->SALDO
-	Else
-		nRet := 0
-	Endif
-	
-	QRY->(dbCloseArea())
-	
-RestArea(aArea)
+		DBSelectArea("QRY")
+		DBGoTop()
+		If (!EOF())
+			nRet := SALDO
+		EndIf
 		
-return nRet
+		DBCloseArea()
+	EndIf
+
+	RestArea(aArea)
+	FwFreeArray(aArea)
+Return (nRet)
