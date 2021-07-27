@@ -1,18 +1,12 @@
-#include "protheus.ch"
-#include "topconn.ch"
-#include "tbiconn.ch"
+#Include "Totvs.ch"
+#Include "Tbiconn.ch"
 
-/*/{Protheus.doc} FFATA001
-   (long_description)
+/*/{Protheus.doc} FFATA004
+   Job para manutenção dos status dos pedidos de vendas.
    @type  Function
    @author Rômulo Ferreira
    @since 03/04/2021
-   @version version
-   @param param_name, param_type, param_descr
-   @return return_var, return_type, return_description
-   @example
-   (examples)
-   @see Job para manutenÃ§Ã£o dos status dos pedidos de vendas
+   @version 12.1.25
 /*/
 User Function FFATA004()
 
@@ -74,7 +68,8 @@ While C5TEMP->(!Eof())
         E1_TIPO = 'NF' AND 
         E1_VENCREA >= '20210101' AND 
         E1_VENCREA < %exp:DtoS(dDataBase)% AND
-        E1_FILIAL = '020101'
+        E1_FILIAL = '020101' AND 
+        E1_SALDO <> E1_JUROS
         
     EndSql
 

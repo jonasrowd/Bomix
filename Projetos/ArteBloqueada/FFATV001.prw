@@ -1,4 +1,4 @@
-#Include "totvs.ch"
+#Include "Totvs.ch"
 
 /*/{Protheus.doc} FFATV001
 	Valida a arte e a amarração do produto x cliente
@@ -10,7 +10,7 @@
 	@return Logical, Retorno lógico para validação do item
 /*/
 User Function FFATV001(cProduto)
-	Local lOK   := .T. // Controle de validação
+	Local lOK   := .T. 		 // Controle de validação
 	Local aArea := GetArea() // Tabela e seu estado para posterior restauração
 
 	// Valida o bloqueio da arte do produto

@@ -1,7 +1,7 @@
 #Include "TOTVS.ch"
 
 /*/{Protheus.doc} JBIG001
-	Cria tabela que exista Sx sem precisar acessar as rotinas.
+	Cria tabela que exista Sx sem precisar acessar a rotina.
 	@type function
 	@version  12.1.25
 	@author jonas.machado
