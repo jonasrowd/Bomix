@@ -1,6 +1,5 @@
 // Bibliotecas necessárias
 #Include "TOTVS.ch"
-#Include "RWMAKE.ch"
 #Include "RPTDEF.ch"
 
 /*/{Protheus.doc} BLTITAU

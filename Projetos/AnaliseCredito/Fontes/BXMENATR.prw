@@ -21,29 +21,30 @@ Local nTotal := 0
 Local cJust := ""
 Local nAtrasados := 0
 Public oDlg
-	private cfil :="      "
-
+	
+	Private cfil := ""
 	cFil := FWCodFil()
-		if cFil = "030101"
-			return .T.
-		endif
-If !( RetCodUsr()$ Supergetmv("BM_USERLIB",.F.,"000000;000915" ) )
-	MsgInfo("Usuário sem permissão para liberar. (BM_USERLIB)","Atenção!")
-	return .F.
-Endif
+		If cFil = "030101"
+			Return .T.
+		Endif
 
-If SC5->C5_BXSTATU = 'L' .AND. SC5->C5_LIBEROK <> 'S'
+	If !( RetCodUsr()$ Supergetmv("BM_USERLIB",.F.,"000000;000915" ) )
+		MsgInfo("Usuário sem permissão para liberar. (BM_USERLIB)","Atenção!")
+		Return .F.
+	Endif
+
+If  SC5->C5_BXSTATU = 'L' .AND. SC5->C5_LIBEROK <> 'S'
 	MsgInfo("Pedido de venda já liberado anteriormente","Atenção!")
-	return .F.
+	Return .F.
 EndIf
 
-dbSelectArea("SA1")
-DbSetOrder(1)
-DbSeek(xFilial("SA1")+SC5->C5_CLIENTE+SC5->C5_LOJACLI)
+	DBSelectArea("SA1")
+	DbSetOrder(1)
+	DbSeek(xFilial("SA1")+SC5->C5_CLIENTE+SC5->C5_LOJACLI)
 
-dbSelectArea("SC6")
-DbSetOrder(1)
-DbSeek(SC5->C5_FILIAL+SC5->C5_NUM)
+	DbSelectArea("SC6")
+	DbSetOrder(1)
+	DbSeek(SC5->C5_FILIAL+SC5->C5_NUM)
 
 	while SC6->(!Eof()) .AND. SC5->C5_NUM = SC6->C6_NUM
         nTotal += SC6->C6_VALOR

@@ -1,18 +1,49 @@
 // Bibliotecas necessárias
 #Include "TOTVS.ch"
 
+/*/{Protheus.doc} JB0001
+	Executa o job de análise de crédito para cada filil da empresa 01
+	@type Function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 27/07/2021
+/*/
+User Function JB0001()
+	Local nX      := 0  // Contador do laço de filiais
+	Local aBranch := {} // Filiais do sistema
+
+	// Prepara o ambiente para apenas uma empresa para
+	// capturar as filiais contidas neste grupos
+	RPCSetType(3)
+	RPCSetEnv("01")
+		aBranch := FwAllFilial()
+	RPCClearEnv()
+
+	// Abre uma nova thread para preparação de ambiente
+	// em cada filial do grupo de empresas
+	For nX := 1 To Len(aBranch)
+		StartJob("U_FFATA001", GetEnvServer(), .T., aBranch[nX])
+	Next nX
+Return (NIL)
+
 /*/{Protheus.doc} FFATA001
-	Job para manutenção dos status dos pedidos de vendas
+	Realiza a manutenção dos status dos pedidos de vendas bloqueando
+	ou liberando o cliente em caso de inadimplência
 	@type Function
 	@author Rômulo Ferreira
 	@since 03/04/2021
+	@param cBranch, Character, Filial do sistema que será executado o job
 	@version 12.1.25
 /*/
-User Function FFATA001()
+User Function FFATA001(cBranch)
 	Local lAtualiza := .T. // Alteração da cabeçalho do pedido de venda
 
+	// Definição padrão de filial
+	Default cBranch := "010101"
+
 	// Preparação do ambiente
-	RPCSetEnv("01", "010101")
+	RPCSetType(3)
+	RPCSetEnv("01", cBranch)
 		// Fecha o alias da tabela temporária, caso esteja aberto
 		If (Select("C5TEMP") > 0)
 			DBSelectArea(C5TEMP)
@@ -83,23 +114,23 @@ User Function FFATA001()
 			// Redefine a variável de controle
 			lAtualiza := .T.
 
-			// Posiciona na tabela de liberação de pedido
-			DBSelectArea("Z07")
-			DBSetOrder(1)
-			DBSeek(SC5->C5_FILIAL + SC5->C5_NUM)
+			// // Posiciona na tabela de liberação de pedido
+			// DBSelectArea("Z07")
+			// DBSetOrder(1)
+			// DBSeek(SC5->C5_FILIAL + SC5->C5_NUM)
 
-			// Se o pedido o foi liberado anteriormente, define lAtualiza como "NÃO ATUALIZA"
-			If (Found())
-				While (!EOF() .And. Z07_PEDIDO == SC5->C5_NUM)
-					lAtualiza := !("VENDA" $ Upper(Z07_JUSTIF) .Or. "PRODU" $ Upper(Z07_JUSTIF))
-					DBSkip()
-				End
-			EndIf
+			// // Se o pedido o foi liberado anteriormente, define lAtualiza como "NÃO ATUALIZA"
+			// If (Found())
+			// 	While (!EOF() .And. Z07_PEDIDO == SC5->C5_NUM)
+			// 		lAtualiza := !("VENDA" $ Upper(Z07_JUSTIF) .Or. "PRODU" $ Upper(Z07_JUSTIF))
+			// 		DBSkip()
+			// 	End
+			// EndIf
 
 			// Se o pedido foi não liberado anteriormente, atualiza
 			// os campos do cabeçalho do pedido de venda
 			If (lAtualiza)
-				DBSelecArea("SC5")
+				DBSelectArea("SC5")
 				RecLock("SC5", .F.)
 					If (E1TEMP->(VALOR) != 0)
 						C5_BXSTATU := "B"
