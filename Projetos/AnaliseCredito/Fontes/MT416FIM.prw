@@ -25,12 +25,14 @@ User Function MT416FIM
 				C5_BXSTATU := "B"
 				C5_BLQ     := "B"
 				C5_LIBEROK := "S"
+				C5->C5_FSSTBI 	:= "BLOQUEADO PR"
 				Help(NIL, NIL, "CLIENTE_ATRASO", NIL, "Existem restrições financeiras para este cliente.",;
 					1, 0, NIL, NIL, NIL, NIL, NIL, {"Por favor solicitar liberação ao departamento comercial."})
 			Else
 				C5_BXSTATU := "L"
 				C5_BLQ     := " "
 				C5_LIBEROK := "L"
+				C5->C5_FSSTBI 	:= "LIBERADO"
 			EndIf
 		MsUnlock()
 	EndIf

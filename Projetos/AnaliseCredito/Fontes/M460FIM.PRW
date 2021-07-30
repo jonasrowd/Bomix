@@ -12,7 +12,7 @@ User Function M460FIM()
     Local aArea := GetArea() // Armazena a área atual
 
 	// Processa apenas se não for a filial 030101
-	If (FwCodFil() != "030101")
+    If (FwCodFil() != "030101")
         // Atualiza os campos de status para o BI
         DBSelectArea("SC5")
         RecLock("SC5", .F.)
@@ -25,7 +25,6 @@ User Function M460FIM()
                 ElseIf (SC6->C6_QTDVEN > SC6->C6_QTDENT)
                     C5_FSSTBI := "PARCIAL"
                 EndIf
-                
                 // Altera o pedido para status final
                 C5_BLQ     := ""
                 C5_BXSTATU := ""
@@ -33,7 +32,6 @@ User Function M460FIM()
             EndIf 
         MsUnlock()
     EndIf
-
 	// Restaura a área de trabalho anterior
 	RestArea(aArea)
 Return (NIL)

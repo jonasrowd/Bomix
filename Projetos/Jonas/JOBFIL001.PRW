@@ -1,7 +1,7 @@
 // Bibliotecas necessárias
 #Include "TOTVS.ch"
 
-/*/{Protheus.doc} FFATA001
+/*/{Protheus.doc} JOBFIL001
 	Realiza a manutenção dos status dos pedidos de vendas bloqueando
 	ou liberando o cliente em caso de inadimplência
 	@type Function
@@ -10,7 +10,7 @@
 	@param cBranch, Character, Filial do sistema que será executado o job
 	@version 12.1.25
 /*/
-User Function FFATA001(cBranch)
+User Function JOBFIL001(cBranch)
 	Local lAtualiza := .T. // Alteração da cabeçalho do pedido de venda
 
 	// Definição padrão de filial
@@ -89,18 +89,18 @@ User Function FFATA001(cBranch)
 			// Redefine a variável de controle
 			lAtualiza := .T.
 
-			// // Posiciona na tabela de liberação de pedido
-			// DBSelectArea("Z07")
-			// DBSetOrder(1)
-			// DBSeek(SC5->C5_FILIAL + SC5->C5_NUM)
+			// Posiciona na tabela de liberação de pedido
+			DBSelectArea("Z07")
+			DBSetOrder(1)
+			DBSeek(SC5->C5_FILIAL + SC5->C5_NUM)
 
-			// // Se o pedido o foi liberado anteriormente, define lAtualiza como "NÃO ATUALIZA"
-			// If (Found())
-			// 	While (!EOF() .And. Z07_PEDIDO == SC5->C5_NUM)
-			// 		lAtualiza := !("VENDA" $ Upper(Z07_JUSTIF) .Or. "PRODU" $ Upper(Z07_JUSTIF))
-			// 		DBSkip()
-			// 	End
-			// EndIf
+			// Se o pedido o foi liberado anteriormente, define lAtualiza como "NÃO ATUALIZA"
+			If (Found())
+				While (!EOF() .And. Z07_PEDIDO == SC5->C5_NUM)
+					lAtualiza := !("VENDA" $ Upper(Z07_JUSTIF) .Or. "PRODU" $ Upper(Z07_JUSTIF))
+					DBSkip()
+				End
+			EndIf
 
 			// Se o pedido foi não liberado anteriormente, atualiza
 			// os campos do cabeçalho do pedido de venda

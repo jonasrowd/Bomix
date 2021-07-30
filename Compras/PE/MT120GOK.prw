@@ -1,51 +1,61 @@
-#include "rwmake.ch"
-/*
-/*******************************************************************************************************/
-/*** Descricao : Ponto Entrada na confirmação do pedido de compra 									 ***/
-/*** Programa  : MT120OK            		                          								 ***/
-/*** Criado em : 08/01/2015        								      								 ***/
-/*** Autor     : TBA001 - XXX: TBA001 -XXX			      													 ***/
-/*** Alteracoes:****************************************************************************************/
-/*** Data	   :                					      							 				 ***/
-/*** Autor     :         												   							 ***/
-/*******************************************************************************************************/
+#Include "Totvs.ch"
 
+/*/{Protheus.doc} MT120GOK
+	Inclui o nome reduzido do fornecedor na inclusão do pedido de compras
+	@type function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 29/07/2021
+	@return variant, Nil
+	@see https://tdn.totvs.com/pages/releaseview.action?pageId=6085477
+/*/
 User Function MT120GOK
 
-Local cFornece := ""
-Local cLoja    := ""
+	Local 	cFornece 	:= ""
+	Local 	cLoja    	:= ""
+	Private cNum	:= ""
+	Private	_cAlias := ""
+	Private _cOrd	:= ""
+	Private nReg	:= ""
 
-cFornece := SC7->C7_FORNECE
-cLoja 	 := SC7->C7_LOJA
-cNomeFor := alltrim(posicione("SA2",1,xfilial("SA2") + cFornece + cLoja, "A2_NREDUZ"))
+	cFornece := SC7->C7_FORNECE
+	cLoja 	 := SC7->C7_LOJA
+	cNomeFor := ALLTRIM(POSICIONE("SA2",1,XFILIAL("SA2") + cFornece + cLoja, "A2_NREDUZ"))
 
-If PARAMIXB[2]
-	_cAlias := ALIAS()
-	_cOrd   := INDEXORD()
-	nReg    := RECNO()
-	cNum    := SC7->C7_NUM
+	If PARAMIXB[2]
+		_cAlias := ALIAS()
+		_cOrd   := INDEXORD()
+		nReg    := RECNO()
+		cNum    := SC7->C7_NUM
+
+		GrvForne()
 		
-	grv_nmfor() //grava nome do fornecedor
-	
-	DbSelectArea( _cAlias )
-	DbSetOrder( _cOrd )
-	DbGoTo( nReg )
-endif     
+		DbSelectArea( _cAlias )
+		DbSetOrder( _cOrd )
+		DbGoTo( nReg )
+	EndIf     
 
 Return(.T.)
 
-//grava nome do fornecedor
-Static Function grv_nmfor()
+/*/{Protheus.doc} GrvForne
+	Grava o nome do fornecedor
+	@type function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 29/07/2021
+	@return variant, Nil
+/*/
+Static Function GrvForne()
 
-DbSelectArea("SC7")
-DbSetOrder(1)
-If DbSeek(xFilial("SC7") + cNum)
-	While SC7->(!eof()) .and. cNum == alltrim(SC7->C7_NUM)
-		Reclock("SC7",.F.)
-			C7_BXNREDU := cNomeFor
-		MsUnLock()
-		SC7->(dbskip())
-	enddo
-endif
+	DbSelectArea("SC7")		
+	DbSetOrder(1)
+	If DbSeek(xFilial("SC7") + cNum)
+		While SC7->(!eof()) .and. cNum == alltrim(SC7->C7_NUM)
+			Reclock("SC7",.F.)
+				C7_BXNREDU := cNomeFor
+			MsUnLock()
+			SC7->(dbskip())
+		enddo
+	endif
 
 Return

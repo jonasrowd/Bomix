@@ -1,13 +1,15 @@
-#include "protheus.ch"
+#Include "Totvs.ch"
 
+/*/{Protheus.doc} FFATA002
+	Tabela de histórico de liberações
+	@type function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 28/07/2021
+/*/
 User Function FFATA002()
-	private cfil :="      "
 
-	cFil := FWCodFil()
-		if cFil = "030101"
-			return
-		endif
-	
-AxCadastro("Z07","Histórico de Liberações")
-	
+	If FWCodFil() != "030101"
+		AxCadastro("Z07","Histórico de Liberações")
+	EndIf	
 Return
