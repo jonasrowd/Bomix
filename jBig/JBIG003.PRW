@@ -1,7 +1,7 @@
 // Bibliotecas necessárias
 #Include "TOTVS.ch"
 
-/*/{Protheus.doc} JOBFIL001
+/*/{Protheus.doc} JBIG003
 	Realiza a manutenção dos status dos pedidos de vendas bloqueando
 	ou liberando o cliente em caso de inadimplência
 	@type Function
@@ -10,7 +10,7 @@
 	@param cBranch, Character, Filial do sistema que será executado o job
 	@version 12.1.25
 /*/
-User Function JOBFIL001(cBranch)
+User Function JBIG003(cBranch)
 	Local lAtualiza := .T. // Alteração da cabeçalho do pedido de venda
 
 	// Definição padrão de filial

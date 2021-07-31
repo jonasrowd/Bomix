@@ -47,7 +47,7 @@ Static Function gravaPerda(_cCod)
     cQry += "                                     AND Z05.D_E_L_E_T_ <> '*'
     cQry += "                                     AND Z05_NOME = B1_BRTPPR
     cQry += " WHERE 
-    cQry += " B1_FILIAL = '"+xFilial("SB1")+"' 
+    cQry += " B1_FILIAL = '"+FWxFilial("SB1")+"' 
     cQry += " AND B1.D_E_L_E_T_ <> '*'
     cQry += " AND B1_BRTPPR <> ''
     cQry += " AND B1_COD = '"+_cCod+"'

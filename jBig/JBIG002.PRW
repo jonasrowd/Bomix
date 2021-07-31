@@ -1,12 +1,12 @@
-
-/*/{Protheus.doc} JB0001
+#Include "Totvs.ch"
+/*/{Protheus.doc} JBIG002
 	Executa o job de análise de crédito para cada filil da empresa 01
 	@type Function
 	@version 12.1.25
 	@author Jonas Machado
 	@since 27/07/2021
 /*/
-User Function JB0001()
+User Function JBIG002()
 	Local nX      := 0  // Contador do laço de filiais
 	Local aBranch := {} // Filiais do sistema
 
