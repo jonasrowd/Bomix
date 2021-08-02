@@ -10,8 +10,8 @@
 /*/
 User Function AfterLogin()
 
-Local cId       := ParamIXB[1]
-Local cNome     := ParamIXB[2]
+// Local cId       := ParamIXB[1]
+// Local cNome     := ParamIXB[2]
 
 
 SetKey(VK_F8, {|| U_ExecMyFunc()})
