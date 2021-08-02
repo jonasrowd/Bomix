@@ -1,5 +1,5 @@
 #Include "Totvs.ch"
-
+//Colocar no campo CK_PRODUTO VALIDACAO u_FFATV001(M->CK_PRODUTO)
 /*/{Protheus.doc} FFATV001
 	Valida a arte e a amarração do produto x cliente
 	@type Function

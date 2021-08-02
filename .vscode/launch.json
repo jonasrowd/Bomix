@@ -135,7 +135,11 @@
 		{
 			"label": "u_ff",
 			"description": "<nil>"
+		},
+		{
+			"label": "SIGACOM",
+			"description": "<nil>"
 		}
 	],
-	"lastProgramExecuted": "SIGACFG"
+	"lastProgramExecuted": "SIGACOM"
 }

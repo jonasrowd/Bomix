@@ -1,0 +1,3 @@
+
+		let dataProject = {"projectName":"","tree":{"name":"raiz","files":[{"file":"MT100LOK.prw","uniqueName":"MT100LOK.prw"}],"paths":[]},"files":[{"fileName":"MT100LOK.prw","functionList":[{"functionName":"MT100LOK","author":"Jonas Machado\r","description":"Ponto de entrada desenvolvido para impedir o cadastro de doc. de entrada \r<br>\tsem o lote do fornecedor quando o produto possuir controle de rastreabilidade.\r<br>\tBloqueia gravação de Doc. de Entrada sem CC, caso Rateio seja Não.","example":[],"history":[],"link":[],"param":[],"return":[{"type":"variant","description":"Logical"}],"see":"https://tdn.totvs.com/pages/releaseview.action?pageId=6085397\r","since":"02/08/2021\r","type":"function\r","version":"12.1.25\r"}]}]}
+		
