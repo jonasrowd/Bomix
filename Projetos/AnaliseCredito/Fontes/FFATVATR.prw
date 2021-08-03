@@ -23,6 +23,7 @@ user function FFATVATR(pCliente, pLoja)
 		c_Qry += " AND SE1.E1_LOJA = '" + pLoja + "' " + chr(13) + chr(10)
 		c_Qry += " AND E1_VENCREA < '"+dtos(dDataBase)+"' " + chr(13) + chr(10)
 		c_Qry += " AND 0 < SE1.E1_SALDO AND E1_TIPO = 'NF' AND E1_VENCREA >= '20200101'" + chr(13) + chr(10)
+		c_Qry += " AND SE1.E1_SALDO <> SE1.E1_JUROS"
 		TCQUERY c_Qry NEW ALIAS "QRY"
 
 		DBSelectArea("QRY")
