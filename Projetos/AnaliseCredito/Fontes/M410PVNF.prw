@@ -1,35 +1,24 @@
-/*/
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
-±±ºPrograma  ³M410PVNF   º Autor ³ Christian Rocha    º Data ³			  º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºDescricao ³ Ponto de entrada para validar a geração do documento de    º±±
-±±º          ³ saída													  º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºUso       ³ SIGAFAT													  º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±º                     A T U A L I Z A C O E S                           º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºDATA      ºANALISTA           ºALTERACOES                              º±±
-±±º          º                   º                                        º±±
-±±ÈÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
-/*/
+//Bibliotecas necessáras
+#Include 'Totvs.ch'
 
+/*/{Protheus.doc} M410PVNF
+Ponto de entrada para validar restrições financeiras
+@type Function
+@version 12.1.25 
+@author Rômulo Ferreira
+@since 04/08/2021
+@return lOK, Variável de Controle
+@see https://tdn.totvs.com/pages/releaseview.action?pageId=6784152
+/*/
 User Function M410PVNF
-	private cfil :="      "
+	Local lOK := .F.
 
-	cFil := FWCodFil()
-		if cFil = "030101"
-			return .T.
-		endif
-
-	If SC5->C5_LIBEROK  = 'L' .AND. Empty(SC5->C5_BLQ)
-		Return .T.
-	Endif
-
-	MsgStop("Pedido com restrições financeiras, por favor solicite a liberação aos responsáveis. ", "Atenção")
+	If FWCodFil() != "030101"
+		If SC5->C5_LIBEROK  = 'L' .AND. Empty(SC5->C5_BLQ)
+			lOK := .T.
+		Endif
+			Help(NIL, NIL, "PED_BLOCKED", NIL, "Pedido com restrições financeiras.",;
+				1, 0, NIL, NIL, NIL, NIL, NIL, {"Solicitar a liberação do setor comercial."})
+	EndIf
 
 Return .F.

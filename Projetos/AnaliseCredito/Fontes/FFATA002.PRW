@@ -1,7 +1,7 @@
 #Include "Totvs.ch"
 
 /*/{Protheus.doc} FFATA002
-	Tabela de histórico de liberações
+	Cria tabela de histórico de liberações
 	@type function
 	@version 12.1.25
 	@author Jonas Machado

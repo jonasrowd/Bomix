@@ -1,85 +1,72 @@
-#include 'protheus.ch'
-#include 'parmtype.ch'
+//Bibliotecas necessárias
+#Include 'Totvs.ch'
 
-/*{Protheus.doc} M460MARK
-Ponto de Entrada para validação das retrições financeiras dos clientes na preparação do documento de saída
-@author Elmer Farias
-@since 04/01/21
-@version 1.0
-	@example
-	u_M460MARK()
+/*/{Protheus.doc} M460MARK
+	Ponto de entrada para validação de pedidos marcados
+	@type Function
+	@version 12.1.25
+	@author Rômulo Ferreira
+	@since 04/08/2021
+	@return Logical, l_Ret
+	@see https://tdn.totvs.com/pages/releaseview.action?pageId=6784189
 /*/
+User Function M460MARK()
 
-user function M460MARK()
+	Local l_Ret		 := .T.
+	Local _cAlias    := GetArea()
+	Local nAtrasados := U_FFATVATR(SA1->A1_COD,SA1->A1_LOJA) //Valida se há títulos em aberto
 
-Local lRet:= .T.	
-Local nAtrasados := 0
-Local cNome := ""
-Local _CALIAS    :=GETAREA()
-	private cfil :="      "
+	If !FWCodFil() = '030101' //Se não for filial 03, segue o fonte
 
-	cFil := FWCodFil()
-		if cFil = "030101"
-			return
-		endif
-nAtrasados := u_FFATVATR(SA1->A1_COD, SA1->A1_LOJA)//SA1->A1_ATR
-cNome := SA1->A1_NOME
+		DbSelectArea('SC9')
+		DbSetOrder(1)
 
-DbSelectArea("SC9")
-DbSetOrder(1)
+		If nAtrasados != 0 .And. (!estaLib(SC5->C5_NUM)) //Verifica se há pedidos em atraso e já não foi liberado anteriormente, não deixa passar
+			l_Ret := .F.
+			Help(NIL, NIL, 'CLI_BLOCKED', NIL, 'O Cliente ' + AllTrim(SA1->A1_NOME)  + 'Pedido ' + SC5->C5_NUM + ;
+				', possui restrições financeiras no total de R$ ' + AllTrim(Transform(nAtrasados,'@e 9,999,999,999,999.99')) + '.',;
+				1, 0, NIL, NIL, NIL, NIL, NIL, {'Caso queira concluir a liberação deste pedido, solicite a liberação do setor comercial.'})
+		Else
+			l_Ret := .T.
+			DbSelectArea('SC9')
+			DbSetOrder(1)
 
-If nAtrasados <> 0 .AND. (!estaLib(SC5->C5_NUM))
+			If (DBSeek(FwXFilial('SC9') + SC5->C5_NUM)) //Se já está liberado
+				RecLock('SC9', .F.)
+				SC9->C9_BLCRED := ''
+				MsUnlock()
+			EndIf
+		EndIf
+	EndIf
 
-	ShowHelpDlg(SM0->M0_NOME,;
-	{"O Cliente " + AllTrim(cNome)  + "Pedido "+SC5->C5_NUM+", possui restrições financeiras no total de R$ "+alltrim(Transform(nAtrasados,"@e 9,999,999,999,999.99"))+"."},5,;
-	{"Caso queira concluir a liberação deste pedido, solicite a liberação dos responsáveis."},5) 
+	RestArea(_cAlias)
 
-	l_Ret := .F.	
-Else
-	l_Ret := .T.
-	DbSelectArea("SC9")
+Return(lRet)
+
+/*/{Protheus.doc} estaLib
+	Verifica se o pedido já foi liberado anteriormente.
+	@type Function
+	@version 12.1.25
+	@author Sandro Santos
+	@since 04/08/2021
+	@param _cPed, variant, Número do pedido capturado pelo ponto de entrada
+	@return Logical, lOK, Controle de liberação
+/*/
+Static Function estaLib(_cPed)
+	
+	Local lOK		:= .F.
+	Default _cPed 	:= ''
+
+	DbSelectArea('Z07')
 	DbSetOrder(1)
 
-	If (DBSEEK(xFilial("SC9")+SC5->C5_NUM))
-		RecLock("SC9", .F.)
-		SC9->C9_BLCRED := ''
-		MsUnlock()
-	EndIf 
-EndIf
+	If DBSeek(SC5->C5_FILIAL + SC5->C5_NUM)
+		While Z07->(!Eof()) .And. SC5->C5_NUM  == Z07->Z07_PEDIDO
+			If 'Venda' $ Z07->Z07_JUSTIF
+				lOK := .T.
+			EndIf
+			Z07->(dbSkip())
+		EndDo
+	EndIf
 
-RESTAREA(_CALIAS)	
-
-return lRet
-
- /*/{Protheus.doc} pesqLib
-	(long_description)
-	@type  Function
-	@author Rômulo Ferreira
-	@since 13/07/2021
-	@version version
-	@param param_name, param_type, param_descr
-	@return return_var, , return_description
-	@example
-	(examples)
-	@see (links_or_references)
-	/*/
-Static Function estaLib(_cPed)
-Default _cPed := ""
-
-DbSelectArea("Z07")
-DbSetOrder(1)
-
-If dbSeek( SC5->C5_FILIAL + SC5->C5_NUM )
-
-	While Z07->(!Eof()) .AND.  SC5->C5_NUM  = Z07->Z07_PEDIDO 
-
-		If 'Venda' $ Z07->Z07_JUSTIF
-			Return .T.
-		EndIf
-
-		Z07->(dbSkip())
-	EndDo
-
-EndIf
-	
-Return .F.
+Return (lOK)

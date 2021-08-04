@@ -38,39 +38,32 @@ EndIf
 
 RESTAREA(_CALIAS)	
 
-return lRet
+Return (lRet)
 
-
- /*/{Protheus.doc} pesqLib
-	(long_description)
-	@type  Function
-	@author Rômulo Ferreira
-	@since 13/07/2021
-	@version version
-	@param param_name, param_type, param_descr
-	@return return_var, , return_description
-	@example
-	(examples)
-	@see (links_or_references)
-	/*/
+/*/{Protheus.doc} estaLib
+	Verifica se o pedido já foi liberado anteriormente.
+	@type Function
+	@version 12.1.25
+	@author Sandro Santos
+	@since 04/08/2021
+	@param _cPed, variant, Número do pedido capturado pelo ponto de entrada
+	@return Logical, lOK, Controle de liberação
+/*/
 Static Function estaLib(_cPed)
-Default _cPed := ""
-
-
-DbSelectArea("Z07")
-DbSetOrder(1)
-
-If dbSeek( SC5->C5_FILIAL + SC5->C5_NUM )
-
-	While Z07->(!Eof()) .AND.  SC5->C5_NUM  = Z07->Z07_PEDIDO 
-
-		If 'Venda' $ Z07->Z07_JUSTIF
-			Return .T.
-		EndIf
-
-		Z07->(dbSkip())
-	EndDo
-
-EndIf
 	
-Return .F.
+	Local lOK		:= .F.
+	Default _cPed 	:= ''
+
+	DbSelectArea('Z07')
+	DbSetOrder(1)
+
+	If DBSeek(SC5->C5_FILIAL + SC5->C5_NUM)
+		While Z07->(!Eof()) .And. SC5->C5_NUM  == Z07->Z07_PEDIDO
+			If 'Venda' $ Z07->Z07_JUSTIF
+				lOK := .T.
+			EndIf
+			Z07->(dbSkip())
+		EndDo
+	EndIf
+
+Return (lOK)

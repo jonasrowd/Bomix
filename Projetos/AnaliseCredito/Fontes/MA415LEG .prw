@@ -23,4 +23,13 @@ aadd(aLegenda ,{'BR_PINK'    , 'Orcamento Bloqueado por Restrição Financeira'  }
 aadd(aLegenda ,{'BR_AZUL_CLARO'    , 'Orcamento Baixado com Restrição Financeira'  })
 
 	
-return aLegenda
+Return aLegenda
+
+
+/*
+{ 'ENABLE'    , STR0052 },; //'Orcamento em Aberto'
+					{ 'DISABLE'   , STR0053 },; //'Orcamento Baixado'
+					{ 'BR_PRETO'  , STR0054 },; //'Orcamento Cancelado'
+					{ 'BR_AMARELO', STR0055 },; //'Orcamento nao Orcado'
+					{ 'BR_MARROM' , STR0078 }}  //'Orcamento bloqueado'
+*/

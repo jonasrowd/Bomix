@@ -303,7 +303,7 @@ Else
 		CCISZN()
 		aItLimpo := aClone(aItMolde)   
 		CIMSZN()
-		oMGDMOLDDE  	:= MsNewGetDados():New(0,0,aPosObj[2,3]-120,aPosObj[2,4]-5,xOpcoes,,,"+ZN_SEQ+ZN_ORDEM",aCpoMolde,,999,,,,aFldF[1],aHdMolde,aItMolde)
+		oMGDMOLDDE  	:= MsNewGetDados():New(0,0,aPosObj[2,3]-300,aPosObj[2,4]-5,xOpcoes,,,"+ZN_SEQ+ZN_ORDEM",aCpoMolde,,999,,,,aFldF[1],aHdMolde,aItMolde)
 
 	ACTIVATE MSDIALOG oDlg ON INIT EnchoiceBar(oDlg, {||nOpca :=1,IIF(U_BRTDPVALIDI(aGets,aTela),oDlg:End(),.F.)},{||nOpca :=2,oDlg:End()},,)
 	

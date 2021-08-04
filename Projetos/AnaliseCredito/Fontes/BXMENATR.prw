@@ -9,7 +9,7 @@
 	@param xPar, variant, inclusão
 	@param pCliente, variant, Código do cliente
 	@param pLoja, variant, Loja do cliente
-	@return variant, Logical
+	@return Logical, lRet
 /*/
 User Function BXMENATR(pCliente, pLoja)
 		
