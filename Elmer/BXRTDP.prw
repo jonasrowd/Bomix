@@ -741,7 +741,7 @@ If n_Cont > 1
 
 Endif
 
-DbCloseArea()
+QRY->(DbCloseArea())
 oFolder:SetOption(1)
 Return (c_Ret)  
 

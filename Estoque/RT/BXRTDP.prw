@@ -183,7 +183,7 @@ DEFINE MSDIALOG oDlg TITLE cCadastro From aSize[7],00 To aSize[6],aSize[5] OF oM
 	
 	CCISZN() 
 	aItLimpo 	:= aClone(aItMolde)   
-	oMGDMolde	:= MsNewGetDados():New(0,0,aPosObj[2,3]-20,aPosObj[2,4]-5,GD_INSERT+GD_DELETE+GD_UPDATE,,,"+ZN_SEQ+ZN_ORDEM",aCpoMolde,,999,,,,aFldF[1],aHdMolde,aItMolde)
+	oMGDMolde	:= MsNewGetDados():New(0,0,aPosObj[2,3]-300,aPosObj[2,4]-5,GD_INSERT+GD_DELETE+GD_UPDATE,,,"+ZN_SEQ+ZN_ORDEM",aCpoMolde,,999,,,,aFldF[1],aHdMolde,aItMolde)
 
 ACTIVATE MSDIALOG oDlg ON INIT EnchoiceBar(oDlg, {||nOpca :=1,IIF(U_BRTDPVALIDI(aGets,aTela),oDlg:End(),.F.)},{||nOpca :=2,oDlg:End()},,aBotao)
 
