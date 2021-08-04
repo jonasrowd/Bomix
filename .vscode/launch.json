@@ -139,7 +139,11 @@
 		{
 			"label": "SIGACOM",
 			"description": "<nil>"
+		},
+		{
+			"label": "sigaest",
+			"description": "<nil>"
 		}
 	],
-	"lastProgramExecuted": "SIGAFIN"
+	"lastProgramExecuted": "sigaest"
 }

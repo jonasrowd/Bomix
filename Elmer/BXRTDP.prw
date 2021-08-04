@@ -2,7 +2,7 @@
 #INCLUDE "PROTHEUS.CH"
 #INCLUDE "TOPCONN.CH"
 #INCLUDE "COLORS.CH"
-#include "msobject.ch"
+#include "Msobject.ch"
 #include "tbiconn.ch"
 /*
 ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
@@ -91,9 +91,7 @@ Local cCadastro  := OemToAnsi("Cadastro de Item/Molde")
 Local nCntFor    := 0
 Local nOpcA      := 0
 Local oDlg
-Local cQuery     := ""
-Local aUsr   	 := Pswret(1)
-Local xUsr   	 := Substr(cUsuario,7,15) //aUsr[1][1][1]    
+
 //Variaveis Comuns
 Private xNUsrDad 	:= Substr(cUsuario,7,15) //aUsr[1][1][2]
 Private dLibDad		:= dDataBase
@@ -178,7 +176,7 @@ DEFINE MSDIALOG oDlg TITLE cCadastro From aSize[7],00 To aSize[6],aSize[5] OF oM
 	
 	CCISZN() 
 	aItLimpo 	:= aClone(aItMolde)   
-	oMGDMolde	:= MsNewGetDados():New(0,0,aPosObj[2,3]-120,aPosObj[2,4]-5,GD_INSERT+GD_DELETE+GD_UPDATE,,,"+ZN_SEQ+ZN_ORDEM",aCpoMolde,,999,,,,aFldF[1],aHdMolde,aItMolde)
+	oMGDMolde	:= MsNewGetDados():New(0,0,aPosObj[2,3]-300,aPosObj[2,4]-5,GD_INSERT+GD_DELETE+GD_UPDATE,,,"+ZN_SEQ+ZN_ORDEM",aCpoMolde,,999,,,,aFldF[1],aHdMolde,aItMolde)
 
 ACTIVATE MSDIALOG oDlg ON INIT EnchoiceBar(oDlg, {||nOpca :=1,IIF(U_BRTDPVALIDI(aGets,aTela),oDlg:End(),.F.)},{||nOpca :=2,oDlg:End()},,aBotao)
 
@@ -429,7 +427,6 @@ RETURN
 Static Function CIMSZN()
 Local n_cont    := 1
 Local c_Chave   := trim(M->ZT_GRUPOMS)
-Local c_CodObj  := ""  
 Local nUsado    :=	len(aHdMolde)
 
 DbSelectArea("SZN")
@@ -474,7 +471,7 @@ User Function GRV_ITENS(xTipo)
 Local nX	  	:= 0
 Local c_Cod 	:= ""
 Local l_Deletar	:= .F.
-Local c_Acoes 	:= ""
+
 
 For nX:=1 to len(oMGDMOLDE:aCols)
 	
@@ -545,7 +542,7 @@ For nX:=1 to len(oMGDMOLDE:aCols)
 		ENDIF
 	ENDIF
 next
-DBCLOSEAREA("SZN")
+SZN->(DBCLOSEAREA())
 
 Return
 /*
@@ -744,7 +741,7 @@ If n_Cont > 1
 
 Endif
 
-DbCloseArea("QRY")
+DbCloseArea()
 oFolder:SetOption(1)
 Return (c_Ret)  
 
