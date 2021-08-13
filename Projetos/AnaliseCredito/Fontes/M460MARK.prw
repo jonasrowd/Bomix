@@ -12,36 +12,25 @@
 /*/
 User Function M460MARK()
 
-	Local l_Ret		 := .T.
-	Local _cAlias    := GetArea()
-	Local nAtrasados := U_FFATVATR(SA1->A1_COD,SA1->A1_LOJA) //Valida se há títulos em aberto
+	Local lRet			:= .T.
+	Local nAtrasados	:= 0
+	Local cNome			:= ""
+	Local _CALIAS    	:= GETAREA()
 
-	If !FWCodFil() = '030101' //Se não for filial 03, segue o fonte
-
-		DbSelectArea('SC9')
-		DbSetOrder(1)
-
-		If nAtrasados != 0 .And. (!estaLib(SC5->C5_NUM)) //Verifica se há pedidos em atraso e já não foi liberado anteriormente, não deixa passar
-			l_Ret := .F.
-			Help(NIL, NIL, 'CLI_BLOCKED', NIL, 'O Cliente ' + AllTrim(SA1->A1_NOME)  + 'Pedido ' + SC5->C5_NUM + ;
-				', possui restrições financeiras no total de R$ ' + AllTrim(Transform(nAtrasados,'@e 9,999,999,999,999.99')) + '.',;
-				1, 0, NIL, NIL, NIL, NIL, NIL, {'Caso queira concluir a liberação deste pedido, solicite a liberação do setor comercial.'})
-		Else
-			l_Ret := .T.
-			DbSelectArea('SC9')
-			DbSetOrder(1)
-
-			If (DBSeek(FwXFilial('SC9') + SC5->C5_NUM)) //Se já está liberado
-				RecLock('SC9', .F.)
-				SC9->C9_BLCRED := ''
-				MsUnlock()
-			EndIf
+	If (FWCodFil() != '030101') .AND. cValToChar(DOW(DATE())) $ ('23456')
+		nAtrasados := u_FFATVATR(SA1->A1_COD, SA1->A1_LOJA)
+		cNome := SA1->A1_NOME
+		
+		If nAtrasados != 0 .AND. (!estaLib(SC5->C5_NUM))
+			lRet := .F.
+			Help(NIL, NIL, "CLIENTE_ATRASO", NIL, "O Cliente: " + AllTrim(cNome)  + " Pedido: "+SC5->C5_NUM+", possui restrições financeiras no total de R$ " ;
+			+AllTrim(Transform(nAtrasados,"@e 9,999,999,999,999.99"))+".",1, 0, NIL, NIL, NIL, NIL, NIL, {"Solicite a liberação ao departamento comercial."})
 		EndIf
+
+		RestArea(_CALIAS)
 	EndIf
-
-	RestArea(_cAlias)
-
-Return(lRet)
+	
+Return lRet
 
 /*/{Protheus.doc} estaLib
 	Verifica se o pedido já foi liberado anteriormente.
@@ -54,19 +43,23 @@ Return(lRet)
 /*/
 Static Function estaLib(_cPed)
 	
-	Local lOK		:= .F.
-	Default _cPed 	:= ''
+	Local lOK	  := .F.
+	Default _cPed := ''
 
 	DbSelectArea('Z07')
 	DbSetOrder(1)
 
 	If DBSeek(SC5->C5_FILIAL + SC5->C5_NUM)
-		While Z07->(!Eof()) .And. SC5->C5_NUM  == Z07->Z07_PEDIDO
-			If 'Venda' $ Z07->Z07_JUSTIF
+		While Z07->(!Eof()) .And. SC5->C5_NUM == Z07->Z07_PEDIDO
+			If 'Venda' $ Z07->Z07_JUSTIF .OR. 'Produ' $ Z07->Z07_JUSTIF .OR. 'Exped' $ Z07->Z07_JUSTIF
 				lOK := .T.
 			EndIf
 			Z07->(dbSkip())
-		EndDo
+		End
+	ElseIf SC5->C5_BXSTATU $ 'L|A' //POSSIVELMENTE INCLUIR O 'E'
+		lOK := .T.
+	Else
+		lOK := .F.
 	EndIf
 
 Return (lOK)

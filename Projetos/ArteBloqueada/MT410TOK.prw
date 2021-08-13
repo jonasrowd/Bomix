@@ -25,4 +25,3 @@ User Function MT410TOK()
         EndIf
     Next nX
 Return (lOK)
-

@@ -13,7 +13,7 @@ User Function MA415COR()
 
 	Local aCor := aClone(PARAMIXB)
 
-	If FWCodFil() != '030101'
+	If (FWCodFil() != '030101') //Se não for filial 03, segue o fonte
 		aCor[1]:= {"SCJ->CJ_STATUS=='A' .AND. SCJ->CJ_BXSTATU<>'B'" , "ENABLE"}
 		aCor[2]:= {"SCJ->CJ_STATUS=='B' .AND. SCJ->CJ_BXSTATU<>'B'" , "DISABLE"} 
 
@@ -22,12 +22,3 @@ User Function MA415COR()
 	EndIf
 
 Return aCor
-
-
-/*
-SCJ->CJ_STATUS=="A"', 'ENABLE'},;			 	//Orcamento em Aberto
-SCJ->CJ_STATUS=="B"', 'DISABLE'},;				//Orcamento Baixado
-SCJ->CJ_STATUS=="C"', 'BR_PRETO'},;				//Orcamento Cancelado
-SCJ->CJ_STATUS=="D"', 'BR_AMARELO'},;			//Orcamento nao Orcado
-SCJ->CJ_STATUS=="F"', 'BR_MARROM'}}				//Orcamento bloqueado
-*/

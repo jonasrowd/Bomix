@@ -17,29 +17,29 @@ User Function FFATA004()
     Endif
 
     BeginSql alias 'C5TEMP'
-        SELECT 
+        SELECT
 
         DISTINCT
         C5_FILIAL FILIAL, C5_NUM NUM
 
-        FROM 
+        FROM
 
-        SC5010 C5 
+        SC5010 C5
 
-        INNER JOIN SC6010 C6 ON 
-        C5_FILIAL = C6_FILIAL AND 
-        C5_NUM = C6_NUM AND 
+        INNER JOIN SC6010 C6 ON
+        C5_FILIAL = C6_FILIAL AND
+        C5_NUM = C6_NUM AND
         C6.D_E_L_E_T_ <> '*'
 
-        WHERE 
-        C5.D_E_L_E_T_ <> '*'   AND 
-        C6_QTDENT < C6_QTDVEN  AND 
-        (C5_NOTA = '' OR C5_NOTA LIKE '%X') AND 
-        //C6_NUMORC <> '' AND 
-        C5_LIBEROK <> 'E' AND 
+        WHERE
+        C5.D_E_L_E_T_ <> '*'   AND
+        C6_QTDENT < C6_QTDVEN  AND
+        C5_NOTA = '' AND
+        //C6_NUMORC <> '' AND
+        C5_LIBEROK <> 'E' AND
         C6_BLQ <> 'R' AND
         C6_FILIAL = '020101'
-        
+
     EndSql
 
     While C5TEMP->(!Eof())
@@ -54,52 +54,66 @@ User Function FFATA004()
 
         BeginSql alias 'E1TEMP'
 
-            SELECT 
+            SELECT
 
             sum(E1_SALDO) VALOR
 
             FROM %table:SE1% SE1
 
-            WHERE 
-            E1_SALDO > 0 AND 
+            WHERE
+            E1_SALDO > 0 AND
             E1_CLIENTE = %exp:SC5->C5_CLIENTE% AND
             E1_LOJA = %exp:SC5->C5_LOJACLI% AND
             SE1.%notDel% AND
-            E1_TIPO = 'NF' AND 
-            E1_VENCREA >= '20210101' AND 
+            E1_TIPO = 'NF' AND
+            E1_VENCREA >= '20210101' AND
             E1_VENCREA < %exp:DtoS(dDataBase)% AND
-            E1_FILIAL = '020101' AND 
+            E1_FILIAL = '020101' AND
             E1_SALDO <> E1_JUROS
-            
+
         EndSql
 
-        lAtualiza := .T.
+            lAtualiza := .T.
         dbSelectArea("Z07")
         dbSetOrder(1)
         If dbSeek(SC5->C5_FILIAL+SC5->C5_NUM)
             While Z07->(!Eof()) .AND. Z07->Z07_PEDIDO = SC5->C5_NUM
-                If 'Venda' $ Z07->Z07_JUSTIF .OR. 'Produ' $ Z07->Z07_JUSTIF 
-                    lAtualiza := .F.
-                EndIf
-                Z07->(dbSkip())
-            EndDo
-        EndIf
-
-        If lAtualiza
-
-            RecLock("SC5",.F.)
-            If E1TEMP->(VALOR) != 0
-                SC5->C5_BXSTATU := 'B'
-                SC5->C5_BLQ := 'B'
-                SC5->C5_LIBEROK = 'S'
-            Else
-                SC5->C5_BXSTATU := 'L'
-                SC5->C5_BLQ := ''
-                SC5->C5_LIBEROK = 'L'
+            If 'Venda' $ Z07->Z07_JUSTIF .OR. 'Produ' $ Z07->Z07_JUSTIF .OR. 'Exped' $ Z07->Z07_JUSTIF 
+                lAtualiza := .F.
             EndIf
-            MsUnlock()
+            Z07->(dbSkip())
+        EndDo
+
+    EndIf
+
+    If lAtualiza
+        RecLock("SC5",.F.)
+        If E1TEMP->(VALOR) != 0
+            C5_BXSTATU := "B"
+            C5_BLQ     := "B"
+            C5_LIBEROK := "S"
+
+            dbSelectArea("SC6")
+            dbSetOrder(1)
+            IF dbSeek(SC5->C5_FILIAL + SC5->C5_NUM )
+                While (!EOF()) .AND. C6_NUM == SC5->C5_NUM
+                    If SC6->C6_FSGEROP <> "1" .AND. EMPTY(SC6->C6_NUMOP)
+                        SC5->C5_FSSTBI 	:= "BLOQUEADO PR"
+                    Else 
+                        SC5->C5_FSSTBI 	:= "BLOQUEADO LO"
+                    EndIf
+                    SC6->(dbSkip())
+                End
+            Else
+            SC5->C5_BLQ := ''
+            SC5->C5_BXSTATU := 'L'
+            SC5->C5_LIBEROK := 'L'
+            SC5->C5_FSSTBI 	:= "LIBERADO"
+            EndIf
+        MsUnlock()
         EndIf
-        
+    EndIf
+
         C5TEMP->(dbSkip())
     EndDo
 

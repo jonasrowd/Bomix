@@ -4,7 +4,6 @@
 
 User Function FFATG004(cCampo,cCampo2)
 
-	Local cRet 	 	:= ''
 	Local cTexto 	:= Space(10)
 	Local cCliente 	:= Space(6)
 	Local cLoja  	:= Space(2)
@@ -26,41 +25,36 @@ User Function FFATG004(cCampo,cCampo2)
 			If cCampo = SC5->C5_CLIENTE .AND. cCampo2 = SC5->C5_LOJACLI
 				cCliente := SC5->C5_CLIENTE
 				cLoja 	 := SC5->C5_LOJACLI
-			Else 
+			Else
 				cCliente := M->C5_CLIENTE
 				cLoja 	 := M->C5_LOJACLI
-			End
+			EndIf
 		ElseIf Upper(FunName())== "MATA415" // Orcamento de Venda
 			cCliente := M->CJ_CLIENTE
 			cLoja 	 := M->CJ_LOJA
 		Endif
 
-		If SA1->( DbSeek(xFilial("SA1")+cCliente+cLoja ))
+		If SA1->( DbSeek(xFilial("SA1") + cCliente + cLoja ))
 
-			// Seleciona CGC
-			_cCGC   	:= SubStr(SA1->A1_CGC,1,8) //SubStr(SA1->A1_CGC,1,11)
+			l_Ret		:=''
+			_cCGC   	:= SubStr(SA1->A1_CGC,1,8)
 			nLimite 	:= 0
 			nVencido 	:= 0
-			cTexto 	 	:= ""
 			nVencer  	:= 0
 			nAberto  	:= 0
 			nSaldo   	:= 0
+			cTexto 	 	:= ''
 
 			_aArea  := GetArea()
-
 			DbSelectArea("SA1")
-			SA1->( DbSetOrder(3) )
-			SA1->( DbSeek(xFilial("SA1")+_cCGC ))
-			//While SA1->( !Eof() ) .And. _cCGC = SubStr(SA1->A1_CGC,1,8) //SubStr(SA1->A1_CGC,1,11)
-			nLimite 	:= 	SA1->A1_LC
-			nVencido 	:= 	retVencido(cCliente,cLoja)
-			nVencer  	:= 	retAVencer(cCliente,cLoja)
-			nAberto  	:= 	retAberto(cCliente,cLoja)
-			nSaldo   	:= 	SA1->(A1_LC - nVencido)
-
-			SA1->( DbSkip() )
-			//Enddo
-
+				SA1->( DbSetOrder(3) )
+				SA1->( DbSeek(xFilial("SA1")+_cCGC ))
+				nLimite 	:= 	SA1->A1_LC
+				nVencido 	:= 	retVencido(cCliente,cLoja)
+				nVencer  	:= 	retAVencer(cCliente,cLoja)
+				nAberto  	:= 	retAberto(cCliente,cLoja)
+				nSaldo   	:= 	(SA1->A1_LC - nVencido)
+				SA1->(DbSkip())
 			RestArea(_aArea)
 
 			oFont1    := TFont():New('Courier new',,-18,.T.)
@@ -70,7 +64,7 @@ User Function FFATG004(cCampo,cCampo2)
 			oFont3    := TFont():New('Courier new',,-20,.T.)
 			oFont3:Bold := .T.
 
-			oDlg1 := MSDialog():New(180,180,750,900,'Informações do Cliente',,,,,CLR_BLACK,CLR_WHITE,,,.T.)
+			oDlg1 := MSDialog():New(180,180,750,950,'Informações do Cliente',,,,,CLR_BLACK,CLR_WHITE,,,.T.)
 			oSay01:= tSay():New(03,130,{||"Posição do Cliente"},oDlg1,,oFont1,,,,.T.,CLR_BLACK,CLR_WHITE,120,30)
 
 			If nVencido > 0
@@ -78,62 +72,58 @@ User Function FFATG004(cCampo,cCampo2)
 			Else
 				oSay02:= tSay():New(25,005,{||"Titulos Vencidos:"},oDlg1,,,,,,.T.,CLR_BLACK,CLR_WHITE,070,30)
 			Endif
-			@ 23, 080 Get nVencido Object oVencido When .F. Size 060,010 Picture  "@E 99,999,999.99"
+			@ 23, 080 Get nVencido Object oVencido When .F. Size 060,010 Picture  "@E 99,999,999,999.99"
 
 			oSay03:= tSay():New(40,005,{||"Titulos a Vencer: "},oDlg1,,,,,,.T.,CLR_BLACK,CLR_WHITE,070,30)
-			@ 40, 080 Get nVencer Object oVencer When .F. Size 060,010 Picture "@E 99,999,999.99"
+			@ 40, 080 Get nVencer Object oVencer When .F. Size 060,010 Picture "@E 99,999,999,999.99"
 
 			oSay04:= tSay():New(55,005,{||"Titulos em Aberto:"},oDlg1,,,,,,.T.,CLR_BLACK,CLR_WHITE,070,30)
-			@ 55, 080 Get nAberto Object oAberto When .F. Size 060,010  Picture "@E 99,999,999.99"
+			@ 55, 080 Get nAberto Object oAberto When .F. Size 060,010  Picture "@E 99,999,999,999.99"
 
 			oSay05:= tSay():New(70,005,{||"Limite de Crédito:"},oDlg1,,,,,,.T.,CLR_BLACK,CLR_WHITE,070,30)
-			@ 70, 080 Get nLimite  Object oLimCred When .F. Size 060,010 Picture  "@E 99,999,999.99"
+			@ 70, 080 Get nLimite  Object oLimCred When .F. Size 060,010 Picture  "@E 99,999,999,999.99"
 
 			oSay06:= tSay():New(85,005,{||"Saldo Disponível: "},oDlg1,,oFont2,,,,.T.,CLR_RED,CLR_WHITE,070,30)
-			@ 85, 080 Get nSaldo Object oSaldo When .F. Size 060,010  Picture "@E 9,999,999.99"
+			@ 85, 080 Get nSaldo Object oSaldo When .F. Size 060,010  Picture "@E 99,999,999,999.99"
 
 			If nSaldo < 0
-				oSay07:= tSay():New(40,200,{||"Cliente inadimplente!!!!"},oDlg1,,oFont3,,,,.T.,CLR_RED,CLR_WHITE,100,40)
-				cRet := 'B'
+				oSay07:= tSay():New(40,200,{||"Cliente inadimplente!"},oDlg1,,oFont3,,,,.T.,CLR_RED,CLR_WHITE,100,40)
+				l_Ret := 'B'
 			Endif
 
 			oBtn  := TBtnBmp2():New( 200, 15, 35, 35, "OK" , "OK" , , ,{|| oDlg1:End()}, oDlg1, , , .T.)
-			oBrowse := TWBrowse():New( 120 , 005, 340,140,,{'','Titulo','Emissão','Vencimento','Valor','Historico','Saldo'},{20,20,20,20,20},;
-				oDlg1,,,,,{||},,,,,,,.F.,,.T.,,.F.,,, )
+			oBrowse := TWBrowse():New( 120 , 005, 380,140,,{'','Pedido','Titulo','Emissão','Vencimento','Valor','Historico','Saldo'},{20,20,20,20,20},oDlg1,,,,,{||},,,,,,,.F.,,.T.,,.F.,,, )
 			aBrowse   := getSE1Hist(cCliente,cLoja)
 			oBrowse:SetArray(aBrowse)
-			oBrowse:bLine := {||{if(aBrowse[oBrowse:nAt,03] < dDataBase, oLegVermelho,oLegVerde),; //Vencimento menor que hoje
+			oBrowse:bLine := {||{if(aBrowse[oBrowse:nAt,04] < dDataBase, oLegVermelho,oLegVerde),; //Vencimento menor que hoje
 									aBrowse[oBrowse:nAt,01],;
 									aBrowse[oBrowse:nAt,02],;
 									aBrowse[oBrowse:nAt,03],;
 									aBrowse[oBrowse:nAt,04],;
 									aBrowse[oBrowse:nAt,05],;
-									aBrowse[oBrowse:nAt,06] } } 
-
+									aBrowse[oBrowse:nAt,06],;
+									aBrowse[oBrowse:nAt,07] } }
 			Activate Dialog oDlg1 Centered
 		Endif
-
 	Endif
 
-Return cRet
+Return l_Ret
 
 /*/{Protheus.doc} getSE1Hist
-    (long_description)
-    @type  Static Function
-    @author Rômulo Ferreira
-    @since 18/03/2021
-    @version version
-    @param cCodCli,cLojaCli, Char, Codigo e Loja do cliente
-    @return aDadosCli, Array, Dados financeiros do cliente para exbição na tela
-    @example
-    (examples)
-    @see (links_or_references)
-    /*/
+	Busca títulos em aberto e vencidos para mostrar no Browse.
+	@type function
+	@version 12.1.25
+	@author jonas.machado
+	@since 05/08/2021
+	@param cCodCli, character, Código do cliente
+	@param cLojaCli, character, Código da loja.
+	@return variant, Array
+/*/
 Static Function getSE1Hist(cCodCli,cLojaCli)
 
 aDadosCli := {}
 
-If Select("E1TEMP") > 0 
+If Select("E1TEMP") > 0
     E1TEMP->(dbCloseArea())
 Endif
 
@@ -141,32 +131,35 @@ BeginSql alias 'E1TEMP'
     column E1_EMISSAO as Date
     column E1_VENCREA  as Date
 
-    SELECT 
-
+    SELECT
+	E1_PEDIDO,
     E1_NUM,
     E1_EMISSAO,
     E1_VENCREA,
-    E1_VALOR, 
+    E1_VALOR,
     E1_HIST,
 	E1_SALDO
 
     FROM %table:SE1% SE1
 
-    WHERE 
-    E1_SALDO > 0 AND 
+    WHERE
+    E1_SALDO > 0 AND
     E1_CLIENTE = %exp:cCodCli% AND
     E1_LOJA = %exp:cLojaCli% AND
-	E1_TIPO = 'NF' AND 
-    SE1.%notDel%
+    SE1.%notDel% AND
+	E1_TIPO = 'NF' AND
+	E1_SALDO <> E1_JUROS AND
+	E1_VENCREA >= '20210101'
     ORDER BY E1_VENCREA ASC
+
 EndSql
 
 while E1TEMP->(!EOF())
-    aadd(aDadosCli,{ E1TEMP->E1_NUM,E1TEMP->E1_EMISSAO,E1TEMP->E1_VENCREA,E1TEMP->E1_VALOR,E1TEMP->E1_HIST,E1_SALDO })
+    aadd(aDadosCli,{ E1TEMP->E1_PEDIDO, E1TEMP->E1_NUM,E1TEMP->E1_EMISSAO,E1TEMP->E1_VENCREA,E1TEMP->E1_VALOR,E1TEMP->E1_HIST,E1_SALDO })
     E1TEMP->(dbSkip())
 end
 
-If Len(aDadosCli) = 0 
+If Len(aDadosCli) = 0
 aadd(aDadosCli,{ '','',CtoD("  /  /  "),CtoD("  /  /  "),0,'',0 })
 
 EndIf
@@ -176,24 +169,26 @@ Return aDadosCli
 
 Static Function retVencido(cCliente,cLoja)
 
-If Select("E1TEMP") > 0 
+If Select("E1TEMP") > 0
     E1TEMP->(dbCloseArea())
 Endif
 
 BeginSql alias 'E1TEMP'
-    SELECT 
+    SELECT
 
 	SUM(E1_SALDO) VALOR
 
     FROM %table:SE1% SE1
 
-    WHERE 
-    E1_SALDO > 0 AND 
+    WHERE
+    E1_SALDO > 0 AND
     E1_CLIENTE = %exp:cCliente% AND
     E1_LOJA = %exp:cLoja% AND
-	E1_TIPO = 'NF' AND 
-    SE1.%notDel% AND 
-	E1_VENCREA < %exp:DtoS(dDataBase)%
+    SE1.%notDel% AND
+	E1_TIPO = 'NF' AND
+	E1_VENCREA >= '20210101' AND
+	E1_VENCREA < %exp:DtoS(dDataBase)% AND
+	E1_SALDO <> E1_JUROS
 EndSql
 
 If E1TEMP->(!EOF())
@@ -204,24 +199,25 @@ Return 0
 
 Static Function retAVencer(cCliente,cLoja)
 
-If Select("E1TEMP") > 0 
+If Select("E1TEMP") > 0
     E1TEMP->(dbCloseArea())
 Endif
 
 BeginSql alias 'E1TEMP'
-    SELECT 
+    SELECT
 
 	SUM(E1_SALDO) VALOR
 
     FROM %table:SE1% SE1
 
-    WHERE 
-    E1_SALDO > 0 AND 
+    WHERE
+    E1_SALDO > 0 AND
     E1_CLIENTE = %exp:cCliente% AND
     E1_LOJA = %exp:cLoja% AND
-	E1_TIPO = 'NF' AND 
-    SE1.%notDel% AND 
-	E1_VENCREA >= %exp:DtoS(dDataBase)%
+	E1_TIPO = 'NF' AND
+    SE1.%notDel% AND
+	E1_VENCREA >= %exp:DtoS(dDataBase)% AND
+	E1_SALDO <> E1_JUROS
 EndSql
 
 If E1TEMP->(!EOF())
@@ -230,29 +226,30 @@ EndIf
 
 Return 0
 
-Static Function retAberto(cCliente,cLoja) 
+Static Function retAberto(cCliente,cLoja)
 
-If Select("E1TEMP") > 0 
+If Select("E1TEMP") > 0
     E1TEMP->(dbCloseArea())
 Endif
 
 BeginSql alias 'E1TEMP'
-    SELECT 
+    SELECT
 
 	SUM(E1_SALDO) VALOR
 
     FROM %table:SE1% SE1
 
-    WHERE 
-    E1_SALDO > 0 AND 
+    WHERE
+    E1_SALDO > 0 AND
     E1_CLIENTE = %exp:cCliente% AND
     E1_LOJA = %exp:cLoja% AND
-	E1_TIPO = 'NF' AND 
-    SE1.%notDel% 
+	E1_TIPO = 'NF' AND
+    SE1.%notDel% AND
+	E1_SALDO <> E1_JUROS
 EndSql
 
 If E1TEMP->(!EOF())
 	RETURN E1TEMP->VALOR
 EndIf
 
-Return 0 
+Return 0

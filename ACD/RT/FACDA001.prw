@@ -1,6 +1,6 @@
 #Include "Totvs.ch" 
 #Include "Apvt100.ch"
-#INCLUDE "TOPCONN.CH" 
+#INCLUDE "Topconn.CH" 
 
 /*/{Protheus.doc} FACDA001
 	Add descrição após testar.

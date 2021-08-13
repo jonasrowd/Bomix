@@ -1,35 +1,22 @@
-#include 'protheus.ch'
-#include 'parmtype.ch'
+#Include 'Totvs.ch'
+#Include 'Parmtype.ch'
 
-/*{Protheus.doc} MA415LEG
-Ponto de Entrada para inclusão de uma nova legenda na tela de orçamentos SIGAFAT
-@author Elmer Farias
-@since 04/01/21
-@version 1.0
-	@example
-	u_MA415LEG()
+/*/{Protheus.doc} MA415LEG
+	Ponto de entrada para adicionar legenda customizada na rotina de orçamentos.
+	@type function
+	@version 12.1.25
+	@author Rômulo Ferreira
+	@since 09/08/2021
+	@return Array, Traz novas cores de status.
+	@see https://tdn.totvs.com/pages/releaseview.action?pageId=6784276
 /*/
+User Function MA415LEG()
 
-user function MA415LEG ()
+	Local aLegenda := aclone(PARAMIXB)
 
-Local aLegenda := aclone(PARAMIXB)
-	private cfil :="      "
-
-	cFil := FWCodFil()
-		if cFil = "030101"
-			return aLegenda
-		endif
-aadd(aLegenda ,{'BR_PINK'    , 'Orcamento Bloqueado por Restrição Financeira'  })
-aadd(aLegenda ,{'BR_AZUL_CLARO'    , 'Orcamento Baixado com Restrição Financeira'  })
-
+	If (FWCodFil() != '030101') //Se não for filial 03, segue o fonte	
+		aadd(aLegenda ,{'BR_PINK'    , 'Orçamento Bloqueado por Restrição Financeira'  })
+		aadd(aLegenda ,{'BR_AZUL_CLARO'    , 'Orçamento Baixado com Restrição Financeira'  })
+	EndIf
 	
 Return aLegenda
-
-
-/*
-{ 'ENABLE'    , STR0052 },; //'Orcamento em Aberto'
-					{ 'DISABLE'   , STR0053 },; //'Orcamento Baixado'
-					{ 'BR_PRETO'  , STR0054 },; //'Orcamento Cancelado'
-					{ 'BR_AMARELO', STR0055 },; //'Orcamento nao Orcado'
-					{ 'BR_MARROM' , STR0078 }}  //'Orcamento bloqueado'
-*/

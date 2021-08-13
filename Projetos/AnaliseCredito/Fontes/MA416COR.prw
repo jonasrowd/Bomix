@@ -1,29 +1,24 @@
-#include 'protheus.ch'
-#include 'parmtype.ch'
+#Include 'Totvs.ch'
+#Include 'Parmtype.ch'
 
-/*{Protheus.doc} MA416COR
-Ponto de Entrada para inclusão de uma nova legenda na tela de orçamentos SIGAFAT
-@author Elmer Farias
-@since 04/01/21
-@version 1.0
-	@example
-	u_MA416COR()
+/*/{Protheus.doc} MA416COR
+	Acrescenta novas cores de legenda.
+	@type function
+	@version 12.1.25
+	@author Rômulo Ferreira
+	@since 09/08/2021
+	@return Array, Retorna as novas cores de status.
+	@see https://tdn.engpro.totvs.com.br/display/public/PROT/MA416COR+-+Alterar+cores+do+browse+do+cadastro
 /*/
+User Function MA416COR()
 
-user function MA416COR()
-
-Local aCor := aclone(PARAMIXB)
-	private cfil :="      "
-
-	cFil := FWCodFil()
-		if cFil = "030101"
-			return aCor
-		endif
-
-aCor[1]:= {"SCJ->CJ_STATUS=='A' .AND. SCJ->CJ_BXSTATU<>'B'" , "ENABLE"    }
-aCor[2]:= {"SCJ->CJ_STATUS=='B' .AND. SCJ->CJ_BXSTATU<>'B'" , "DISABLE"   }
-
-AADD(aCor,{"SCJ->CJ_STATUS=='A' .AND. SCJ->CJ_BXSTATU=='B'" , "BR_PINK"   })
-AADD(aCor,{"SCJ->CJ_STATUS=='B' .AND. SCJ->CJ_BXSTATU=='B'" , "BR_AZUL_CLARO"   })
+	Local aCor := aclone(PARAMIXB)
 	
-return aCor
+	If (FWCodFil() != '030101') //Se não for filial 03, segue o fonte
+		aCor[1]:= {"SCJ->CJ_STATUS=='A' .AND. SCJ->CJ_BXSTATU<>'B'" , "ENABLE"    }
+		aCor[2]:= {"SCJ->CJ_STATUS=='B' .AND. SCJ->CJ_BXSTATU<>'B'" , "DISABLE"   }
+		AADD(aCor,{"SCJ->CJ_STATUS=='A' .AND. SCJ->CJ_BXSTATU=='B'" , "BR_PINK"   })
+		AADD(aCor,{"SCJ->CJ_STATUS=='B' .AND. SCJ->CJ_BXSTATU=='B'" , "BR_AZUL_CLARO"   })
+	EndIf
+
+Return aCor

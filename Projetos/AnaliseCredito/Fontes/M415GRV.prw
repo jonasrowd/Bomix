@@ -15,18 +15,18 @@ User Function M415GRV
 
 	If FWCodFil() != '030101'
 		RecLock('SCJ',.F.)
-		If PARAMIXB[1] == 1 .Or. PARAMIXB[1] == 2
-			If nAtrasados != 0
-				SCJ->CJ_BXSTATU := 'B'
-			Else
-				SCJ->CJ_BXSTATU := 'L'
-			EndIf
-		ElseIf PARAMIXB[1] == 3
-			SCJ->CJ_BXSTATU := ''
-		EndIF
-			SCJ->(MsUnlock())
+			If PARAMIXB[1] == 1 .Or. PARAMIXB[1] == 2
+				If nAtrasados != 0
+					SCJ->CJ_BXSTATU := 'B'
+				Else
+					SCJ->CJ_BXSTATU := 'L'
+				EndIf
+			ElseIf PARAMIXB[1] == 3
+				SCJ->CJ_BXSTATU := ''
+			EndIF
+		SCJ->(MsUnlock())
 		If SCJ->CJ_BXSTATU = 'B'
-			MsgStop("Tratar as pendências financeiras deste cliente.", "Atenção!")
+			Help(NIL, NIL, "CLI_BLOCKED", NIL, "Cliente com restrições financeiras.",1, 0, NIL, NIL, NIL, NIL, NIL, {"Solicitar a liberação do setor comercial."})
 		EndIf
 	EndIf
 Return
