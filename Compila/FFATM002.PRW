@@ -1,5 +1,5 @@
 #INCLUDE "TOPCONN.CH"
-//CONFERE COM A DATA DO INSPETOR
+
 User Function FFATM002   
 
 //testa filial atual
