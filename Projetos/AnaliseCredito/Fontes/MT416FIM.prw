@@ -27,9 +27,9 @@ User Function MT416FIM
 				C5_LIBEROK := "S"
 
 				If aCols[n][GDFIELDPOS("C6_FSGEROP")] = "1"
-					C5_FSSTBI	:= "BLOQUEADO PR"
+					C5_FSSTBI	:= "BLOQUEADO PR" //NÃO PODE BOTAR DATA NO PCP E NÃO GERA OP //P BLOQUEADO LO
 				Else
-					C5_FSSTBI 	:= "BLOQUEADO LO"
+					C5_FSSTBI 	:= "BLOQUEADO LO" //PODE BOTAR DATA NO PCP 
 				EndIf
 
 				Help(NIL, NIL, "CLIENTE_ATRASO", NIL, "Existem restrições financeiras para este cliente.",;

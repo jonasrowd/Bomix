@@ -19,7 +19,7 @@ Endif
 BeginSql alias 'C5TEMP'
     SELECT
 
-    C5_FILIAL FILIAL, 
+    C5_FILIAL FILIAL,
     C5_NUM NUM
 
     FROM
@@ -76,12 +76,11 @@ While C5TEMP->(!Eof())
     dbSetOrder(1)
     If dbSeek(SC5->C5_FILIAL+SC5->C5_NUM)
         While Z07->(!Eof()) .AND. Z07->Z07_PEDIDO = SC5->C5_NUM //verificar se consigo posicionar no último registro do EOF
-            If 'Venda' $ Z07->Z07_JUSTIF .OR. 'Produ' $ Z07->Z07_JUSTIF .OR. 'Exped' $ Z07->Z07_JUSTIF 
+            If 'Venda' $ Z07->Z07_JUSTIF .OR. 'Produ' $ Z07->Z07_JUSTIF .OR. 'Exped' $ Z07->Z07_JUSTIF
                 lAtualiza := .F.
             EndIf
             Z07->(dbSkip())
         EndDo
-
     EndIf
 
     If lAtualiza
@@ -97,12 +96,13 @@ While C5TEMP->(!Eof())
                 While SC6->(!EOF()) .AND. C6_NUM == SC5->C5_NUM
                     If SC6->C6_FSGEROP == '1' .AND. EMPTY(SC6->C6_NUMOP)
                         SC5->C5_FSSTBI 	:= 'BLOQUEADO PR'
-                    Else 
+                    Else
                         SC5->C5_FSSTBI 	:= 'BLOQUEADO LO'
                     EndIf
                     SC6->(dbSkip())
                 End
             Else
+
             SC5->C5_BLQ := ''
             SC5->C5_BXSTATU := 'L'
             SC5->C5_LIBEROK := 'L'
