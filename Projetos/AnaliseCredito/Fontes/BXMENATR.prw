@@ -15,6 +15,7 @@
 /*/
 User Function BXMENATR(xPar, pCliente, pLoja)
 
+	Local oSayTela
 	Local oBtnOK
 	Local oBtnCancel
 	Local oBtnLiberar
@@ -23,6 +24,9 @@ User Function BXMENATR(xPar, pCliente, pLoja)
 	Local xLinha 		:= 10
 	Local nTotal 		:= 0
 	Local cJust 		:= ''
+	Local cMensagem1	:= ""
+	Local cMensagem2	:= ""
+	Local cMensagem3	:= ""
 	Public oDlg
 
 	BEGIN SEQUENCE
@@ -31,7 +35,7 @@ User Function BXMENATR(xPar, pCliente, pLoja)
 				lRet := .F.
 				Help(NIL, NIL, "USR_PERM", NIL, "Usuário " + PswChave(RetCodUsr()) + " sem permissão de liberação.",1, 0, NIL, NIL, NIL, NIL, NIL, {"Contate o setor comercial."})
 				BREAK
-			ElseIf SC5->C5_BXSTATU $ ("L|A")
+			ElseIf SC5->C5_BXSTATU $ ("L|A|E")
 				lRet := .F.
 				Help(NIL, NIL, "PED_LIB", NIL, "Pedido de venda já liberado.",1, 0, NIL, NIL, NIL, NIL, NIL, {"Contate o setor comercial."})
 				BREAK
@@ -50,21 +54,18 @@ User Function BXMENATR(xPar, pCliente, pLoja)
 				SC6->(DBSkip())
 			End
 
-			cMensagem := "Deseja Liberar o pedido: "+ SC5->C5_NUM + CRLF
-			cMensagem += "Cliente: " + SA1->A1_NOME + CRLF
-			cMensagem += "Valor R$" + AllTrim(Transform(nTotal,PesqPict("SC6","C6_VALOR"))) + CRLF
-
-			If ( U_FFATVATR(SC5->C5_CLIENTE,SC5->C5_LOJACLI) != 0 )
-				cMensagem += "Este Cliente possui pendências financeiras com valor total somado: "+ AllTrim(Transform(nTotal,PesqPict("SC6","C6_VALOR")))
-			EndIf
+			cMensagem1 := "Deseja Liberar o pedido: "+ SC5->C5_NUM
+			cMensagem2 := "Cliente: " + SA1->A1_NOME
+			cMensagem3 := "Valor do Pedido R$" + AllTrim(Transform(nTotal,PesqPict("SC6","C6_VALOR")))
 
 			DEFINE MSDIALOG oDlg TITLE OemToAnsi("Atenção") FROM 000,000 TO 180,650 PIXEL
-			@ 010, 010 Say OemToAnsi(substr(cMensagem,1,at('#',cMensagem)-1)) PIXEL
-			@ 020, 010 Say OemToAnsi(substr(cMensagem,at('#',cMensagem)+1,len(cMensagem))) PIXEL
+			oSayTela	:= TSay():New(10,10,{||AllTrim(cMensagem1)},oDlg,,,,,,.T.,,,100,400,,,,,,)
+			oSayTela	:= TSay():New(20,10,{||AllTrim(cMensagem2)},oDlg,,,,,,.T.,,,100,400,,,,,,)
+			oSayTela	:= TSay():New(30,10,{||AllTrim(cMensagem3)},oDlg,,,,,,.T.,,,100,400,,,,,,)
 			oBtnOK		:= TButton():New(060,010+xLinha,"Visualizar"		,oDlg,{||u_FFATG004(pCliente,pLoja)},50,20,,,,.T.,,"",,,,.F.)
-			oBtnLiberar	:= TButton():New(060,070+xLinha,"Liberar Expedição"	,oDlg,{||lRet := .T.,cBx   := libExped(cBx)	,oDlg:End()},50,20,,,,.T.,,"",,,,.F.) //E
+			oBtnLiberar	:= TButton():New(060,070+xLinha,"Liberar Produção"	,oDlg,{||lRet := .T.,cBx   := libProd(cBx)	,oDlg:End()},50,20,,,,.T.,,"",,,,.F.) //P
 			oBtnLiberar	:= TButton():New(060,130+xLinha,"Liberar Venda"		,oDlg,{||lRet := .T.,cBx   := libVend(cBx)	,oDlg:End()},50,20,,,,.T.,,"",,,,.F.) //L
-			oBtnLiberar	:= TButton():New(060,190+xLinha,"Liberar Produção"	,oDlg,{||lRet := .T.,cBx   := libProd(cBx)	,oDlg:End()},50,20,,,,.T.,,"",,,,.F.) //P
+			oBtnLiberar	:= TButton():New(060,190+xLinha,"Liberar Expedição"	,oDlg,{||lRet := .T.,cBx   := libExped(cBx)	,oDlg:End()},50,20,,,,.T.,,"",,,,.F.) //E
 			oBtnCancel	:= TButton():New(060,250+xLinha,"Não Liberar"		,oDlg,{||lRet := .F.,cJust := justLibC()	,oDlg:End()},50,20,,,,.T.,,"",,,,.F.)
 			ACTIVATE MSDIALOG oDlg CENTERED
 
@@ -73,7 +74,7 @@ User Function BXMENATR(xPar, pCliente, pLoja)
 					SC5->C5_BXSTATU := cBx
 					SC5->C5_BLQ 	:= ''
 					SC5->C5_LIBEROK := 'L'
-					If SC5->C5_BXSTATU $ 'P|E'
+					If SC5->C5_BXSTATU $ 'P'
 						SC5->C5_FSSTBI 	:= "BLOQUEADO LO"
 					Else
 						SC5->C5_FSSTBI := 'LIBERADO'
@@ -83,14 +84,17 @@ User Function BXMENATR(xPar, pCliente, pLoja)
 				SC6->(DbGoTop())
 				If SC6->(DbSeek(SC5->C5_FILIAL+SC5->C5_NUM))
 					While SC6->(!Eof()) .AND. SC5->C5_NUM == SC6->C6_NUM
-						DbSelectArea("SC9")
-						DbSeek(SC6->C6_FILIAL+SC6->C6_NUM+SC6->C6_ITEM)
-						RecLock("SC9",.F.)
-							C9_BLCRED :=''
-						MsUnlock()
+						DBSelectArea("SC9")
+						DBSeek(SC6->C6_FILIAL + SC6->C6_NUM + SC6->C6_ITEM)
+						If (Found())
+							RecLock("SC9", .F.)
+								C9_BLCRED := ""
+							MsUnlock()
+						EndIf
 						SC6->(DBSkip())
 					End
 				EndIf
+
 				DBSelectArea("Z07")
 				RecLock("Z07",.T.)
 					Z07->Z07_FILIAL := SC5->C5_FILIAL

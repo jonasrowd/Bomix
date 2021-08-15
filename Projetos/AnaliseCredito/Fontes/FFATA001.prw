@@ -76,7 +76,7 @@ While C5TEMP->(!Eof())
     dbSetOrder(1)
     If dbSeek(SC5->C5_FILIAL+SC5->C5_NUM)
         While Z07->(!Eof()) .AND. Z07->Z07_PEDIDO = SC5->C5_NUM //verificar se consigo posicionar no último registro do EOF
-            If 'Venda' $ Z07->Z07_JUSTIF .OR. 'Produ' $ Z07->Z07_JUSTIF .OR. 'Exped' $ Z07->Z07_JUSTIF
+            If 'Venda' $ Z07->Z07_JUSTIF .OR. 'Exped' $ Z07->Z07_JUSTIF 
                 lAtualiza := .F.
             EndIf
             Z07->(dbSkip())

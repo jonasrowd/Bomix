@@ -51,12 +51,12 @@ Static Function estaLib(_cPed)
 
 	If DBSeek(SC5->C5_FILIAL + SC5->C5_NUM)
 		While Z07->(!Eof()) .And. SC5->C5_NUM == Z07->Z07_PEDIDO
-			If 'Venda' $ Z07->Z07_JUSTIF //.OR. 'Produ' $ Z07->Z07_JUSTIF .OR. 'Exped' $ Z07->Z07_JUSTIF
+			If 'Venda' $ Z07->Z07_JUSTIF .OR. 'Exped' $ Z07->Z07_JUSTIF
 				lOK := .T.
 			EndIf
 			Z07->(dbSkip())
 		End
-	ElseIf SC5->C5_BXSTATU $ 'L|A' //POSSIVELMENTE INCLUIR O 'E'
+	ElseIf SC5->C5_BXSTATU $ 'L|A|E'
 		lOK := .T.
 	Else
 		lOK := .F.

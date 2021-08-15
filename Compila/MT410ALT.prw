@@ -27,6 +27,7 @@ User Function MT410ALT
 	//testa filial atual
 	Local i
 	private cfil :="      "
+	
 
 	cFil := FWCodFil()
 	c_CRLF := chr(13) + chr(10)

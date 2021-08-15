@@ -19,9 +19,9 @@ User Function M460FIM()
             // Caso o pedido tenha sido faturado
             // Se a quantidade de venda foi completamente atendida,
             // marca o pedido como encerrado, caso não, marca como parcial
-            If (SC6->C6_QTDVEN == SC6->C6_QTDENT) .AND. SC5->C5_BXSTATU $ 'L|A'
+            If (SC6->C6_QTDVEN == SC6->C6_QTDENT) .AND. SC5->C5_BXSTATU $ 'L|A|E'
                 C5_FSSTBI := 'ENCERRADO'
-            ElseIf (SC6->C6_QTDVEN > SC6->C6_QTDENT)
+            ElseIf (SC6->C6_QTDVEN > SC6->C6_QTDENT) .AND. SC5->C5_BXSTATU $ 'L|A|E'
                 SC5->C5_FSSTBI := 'PARCIAL'
             EndIf
                 // Altera o pedido para status final

@@ -66,7 +66,7 @@ User Function FFATA004()
             E1_LOJA = %exp:SC5->C5_LOJACLI% AND
             SE1.%notDel% AND
             E1_TIPO = 'NF' AND
-            E1_VENCREA >= '20210101' AND
+            E1_VENCREA >= '20200101' AND
             E1_VENCREA < %exp:DtoS(dDataBase)% AND
             E1_FILIAL = '020101' AND
             E1_SALDO <> E1_JUROS
