@@ -1,16 +1,18 @@
 #INCLUDE "FCOMR001.CH"
-#INCLUDE "PROTHEUS.CH"
-
+#INCLUDE "PROTHEUS.CH"             
+    
+  
+  
 /*/
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-±±³Fun‡…o    ³ FCOMR001 ³ Autor ³ Alexandre Inacio Lemes³ Data ³06/09/2006³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄ´±±
-±±³Descri‡…o ³ Pedido de Compras e Autorizacao de Entrega                 ³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
-±±³Sintaxe   ³ MATR110(void)                                              ³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
-±±³ Uso      ³ Generico SIGACOM                                           ³±±
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±?
+±±³Fun‡…o    ?FCOMR001 ?Autor ?Alexandre Inacio Lemes?Data ?6/09/2006³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Descri‡…o ?Pedido de Compras e Autorizacao de Entrega                 ³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Sintaxe   ?MATR110(void)                                              ³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±?
+±±?Uso      ?Generico SIGACOM                                           ³±?
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±?
 /*/
 
 User Function FCOMR001( cAlias, nReg, nOpcx )
@@ -21,10 +23,10 @@ Local lTRepInUse := .T.
 PRIVATE lAuto := (nReg!=Nil)
 
 //ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-//³Para versoes localizadas em TReport R4 e usado o MATR110, a chamada e       ³
-//³realizada atraves do MATR111 onde a funcao TRepInUse() e executada para     ³
-//³selecionar o tipo de impressao R3 ou R4, este tratamento e para impedir que ³
-//³a pergunta seja apresentada 2 vezes.                                        ³
+//³Para versoes localizadas em TReport R4 e usado o MATR110, a chamada e       ?
+//³realizada atraves do MATR111 onde a funcao TRepInUse() e executada para     ?
+//³selecionar o tipo de impressao R3 ou R4, este tratamento e para impedir que ?
+//³a pergunta seja apresentada 2 vezes.                                        ?
 //ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 If FunName() == Alltrim("MATR111") .Or. (cPaisLoc <> "BRA" .And. FunName() == Alltrim("MATA121"))
 	lTRepInUse := .T.
@@ -34,7 +36,7 @@ EndIf
 
 //If FindFunction("TRepInUse") .And. lTRepInUse
 //ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-//³Interface de impressao                                                  ³
+//³Interface de impressao                                                  ?
 //ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 oReport:= ReportDef(nReg, nOpcx)
 oReport:PrintDialog()
@@ -42,16 +44,16 @@ oReport:PrintDialog()
 Return
 
 /*/
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-±±³Programa  ³ ReportDef³Autor  ³Alexandre Inacio Lemes ³Data  ³06/09/2006³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄ´±±
-±±³Descri‡…o ³ Pedido de Compras / Autorizacao de Entrega                 ³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
-±±³Parametros³ nExp01: nReg = Registro posicionado do SC7 apartir Browse  ³±±
-±±³          ³ nExp02: nOpcx= 1 - PC / 2 - AE                             ³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
-±±³Retorno   ³ oExpO1: Objeto do relatorio                                ³±±
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±?
+±±³Programa  ?ReportDef³Autor  ³Alexandre Inacio Lemes ³Data  ?6/09/2006³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Descri‡…o ?Pedido de Compras / Autorizacao de Entrega                 ³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Parametros?nExp01: nReg = Registro posicionado do SC7 apartir Browse  ³±?
+±±?         ?nExp02: nOpcx= 1 - PC / 2 - AE                             ³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Retorno   ?oExpO1: Objeto do relatorio                                ³±?
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±?
 /*/
 Static Function ReportDef(nReg,nOpcx)
 
@@ -64,33 +66,33 @@ Local oSection1
 Local oSection2
 
 //ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-//³ Variaveis utilizadas para parametros                         ³
-//³ mv_par01               Do Pedido                             ³
-//³ mv_par02               Ate o Pedido                          ³
-//³ mv_par03               A partir da data de emissao           ³
-//³ mv_par04               Ate a data de emissao                 ³
-//³ mv_par05               Somente os Novos                      ³
-//³ mv_par06               Campo Descricao do Produto    	     ³
-//³ mv_par07               Unidade de Medida:Primaria ou Secund. ³
-//³ mv_par08               Imprime ? Pedido Compra ou Aut. Entreg³
-//³ mv_par09               Numero de vias                        ³
-//³ mv_par10               Pedidos ? Liberados Bloqueados Ambos  ³
-//³ mv_par11               Impr. SC's Firmes, Previstas ou Ambas ³
-//³ mv_par12               Qual a Moeda ?                        ³
-//³ mv_par13               Endereco de Entrega                   ³
-//³ mv_par14               todas ou em aberto ou atendidos       ³
+//?Variaveis utilizadas para parametros                         ?
+//?mv_par01               Do Pedido                             ?
+//?mv_par02               Ate o Pedido                          ?
+//?mv_par03               A partir da data de emissao           ?
+//?mv_par04               Ate a data de emissao                 ?
+//?mv_par05               Somente os Novos                      ?
+//?mv_par06               Campo Descricao do Produto    	     ?
+//?mv_par07               Unidade de Medida:Primaria ou Secund. ?
+//?mv_par08               Imprime ? Pedido Compra ou Aut. Entreg?
+//?mv_par09               Numero de vias                        ?
+//?mv_par10               Pedidos ? Liberados Bloqueados Ambos  ?
+//?mv_par11               Impr. SC's Firmes, Previstas ou Ambas ?
+//?mv_par12               Qual a Moeda ?                        ?
+//?mv_par13               Endereco de Entrega                   ?
+//?mv_par14               todas ou em aberto ou atendidos       ?
 //ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 AjustaSX1()
 Pergunte("MTR110",.F.)
 //ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-//³Criacao do componente de impressao                                      ³
-//³                                                                        ³
-//³TReport():New                                                           ³
-//³ExpC1 : Nome do relatorio                                               ³
-//³ExpC2 : Titulo                                                          ³
-//³ExpC3 : Pergunte                                                        ³
-//³ExpB4 : Bloco de codigo que sera executado na confirmacao da impressao  ³
-//³ExpC5 : Descricao                                                       ³
+//³Criacao do componente de impressao                                      ?
+//?                                                                       ?
+//³TReport():New                                                           ?
+//³ExpC1 : Nome do relatorio                                               ?
+//³ExpC2 : Titulo                                                          ?
+//³ExpC3 : Pergunte                                                        ?
+//³ExpB4 : Bloco de codigo que sera executado na confirmacao da impressao  ?
+//³ExpC5 : Descricao                                                       ?
 //ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 oReport:= TReport():New("FCOMR001",cTitle,If(lAuto,Nil,"MTR110"), {|oReport| ReportPrint(oReport,nReg,nOpcx)},STR0001+" "+STR0002)
 oReport:SetPortrait()
@@ -99,36 +101,36 @@ oReport:HideHeader()
 oReport:HideFooter()
 oReport:SetTotalInLine(.F.)
 //ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-//³Criacao da secao utilizada pelo relatorio                               ³
-//³                                                                        ³
-//³TRSection():New                                                         ³
-//³ExpO1 : Objeto TReport que a secao pertence                             ³
-//³ExpC2 : Descricao da seçao                                              ³
-//³ExpA3 : Array com as tabelas utilizadas pela secao. A primeira tabela   ³
-//³        sera considerada como principal para a seção.                   ³
-//³ExpA4 : Array com as Ordens do relatório                                ³
-//³ExpL5 : Carrega campos do SX3 como celulas                              ³
-//³        Default : False                                                 ³
-//³ExpL6 : Carrega ordens do Sindex                                        ³
-//³        Default : False                                                 ³
+//³Criacao da secao utilizada pelo relatorio                               ?
+//?                                                                       ?
+//³TRSection():New                                                         ?
+//³ExpO1 : Objeto TReport que a secao pertence                             ?
+//³ExpC2 : Descricao da seçao                                              ?
+//³ExpA3 : Array com as tabelas utilizadas pela secao. A primeira tabela   ?
+//?       sera considerada como principal para a seção.                   ?
+//³ExpA4 : Array com as Ordens do relatório                                ?
+//³ExpL5 : Carrega campos do SX3 como celulas                              ?
+//?       Default : False                                                 ?
+//³ExpL6 : Carrega ordens do Sindex                                        ?
+//?       Default : False                                                 ?
 //ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 //ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-//³Criacao da celulas da secao do relatorio                                ³
-//³                                                                        ³
-//³TRCell():New                                                            ³
-//³ExpO1 : Objeto TSection que a secao pertence                            ³
-//³ExpC2 : Nome da celula do relatório. O SX3 será consultado              ³
-//³ExpC3 : Nome da tabela de referencia da celula                          ³
-//³ExpC4 : Titulo da celula                                                ³
-//³        Default : X3Titulo()                                            ³
-//³ExpC5 : Picture                                                         ³
-//³        Default : X3_PICTURE                                            ³
-//³ExpC6 : Tamanho                                                         ³
-//³        Default : X3_TAMANHO                                            ³
-//³ExpL7 : Informe se o tamanho esta em pixel                              ³
-//³        Default : False                                                 ³
-//³ExpB8 : Bloco de código para impressao.                                 ³
-//³        Default : ExpC2                                                 ³
+//³Criacao da celulas da secao do relatorio                                ?
+//?                                                                       ?
+//³TRCell():New                                                            ?
+//³ExpO1 : Objeto TSection que a secao pertence                            ?
+//³ExpC2 : Nome da celula do relatório. O SX3 ser?consultado              ?
+//³ExpC3 : Nome da tabela de referencia da celula                          ?
+//³ExpC4 : Titulo da celula                                                ?
+//?       Default : X3Titulo()                                            ?
+//³ExpC5 : Picture                                                         ?
+//?       Default : X3_PICTURE                                            ?
+//³ExpC6 : Tamanho                                                         ?
+//?       Default : X3_TAMANHO                                            ?
+//³ExpL7 : Informe se o tamanho esta em pixel                              ?
+//?       Default : False                                                 ?
+//³ExpB8 : Bloco de código para impressao.                                 ?
+//?       Default : ExpC2                                                 ?
 //ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 oSection1:= TRSection():New(oReport,STR0102,{"SC7","SM0","SA2"},/*aOrdem*/) //"| P E D I D O  D E  C O M P R A S"
 oSection1:SetLineStyle()
@@ -153,7 +155,9 @@ TRCell():New(oSection1,"M0_FAX"    ,"SM0",STR0093      ,/*Picture*/,34,/*lPixel*
 TRCell():New(oSection1,"FONE"      ,"   ",STR0094      ,/*Picture*/,25,/*lPixel*/,{|| "("+Substr(SA2->A2_DDD,1,3)+") "+Substr(SA2->A2_TEL,1,15)})
 TRCell():New(oSection1,"FAX"       ,"   ",STR0093      ,/*Picture*/,25,/*lPixel*/,{|| "("+Substr(SA2->A2_DDD,1,3)+") "+SubStr(SA2->A2_FAX,1,15)})
 TRCell():New(oSection1,"INSCR"     ,"   ",If( cPaisLoc$"ARG|POR|EUA",space(11) , STR0095 ),/*Picture*/,18,/*lPixel*/,{|| If( cPaisLoc$"ARG|POR|EUA",space(18), SA2->A2_INSCR ) })
-TRCell():New(oSection1,"M0_CGC"    ,"SM0",STR0124      ,/*Picture*/,18,/*lPixel*/,{|| Transform(SM0->M0_CGC,PesqPict("SA2","A2_CGC")) })
+TRCell():New(oSection1,"M0_CGC"    ,"SM0",STR0092      ,/*Picture*/,14,/*lPixel*/,{|| Transform(SM0->M0_CGC,PesqPict("SA2","A2_CGC")) })
+TRCell():New(oSection1,"ATENCAO: HORARIO DE ENTREGA DAS 08:00H AS 12:00H, DAS 13:30H AS 16:00H","SM0",STR0124      ,/*Picture*/,18,/*lPixel*/,/*{|| code-block de impressao }*/)
+
 
 If cPaisLoc == "BRA"
 	TRCell():New(oSection1,"M0IE"  ,"   ",STR0041      ,/*Picture*/,18,/*lPixel*/,{|| InscrEst()})
@@ -170,7 +174,8 @@ Else
 	If nTamCdDesc>30
 		nTamCdDesc:=30
 	EndIf
-EndIf
+EndIf  
+
 
 oSection2:= TRSection():New(oSection1,STR0103,{"SC7","SB1"},/*aOrdem*/)
 
@@ -190,17 +195,23 @@ TRCell():New(oSection2,"PRECO"      ,"   ",STR0098,/*Picture*/,16/*Tamanho*/,/*l
 TRCell():New(oSection2,"C7_IPI"     ,"SC7",/*Titulo*/,/*Picture*/,13,/*lPixel*/,/*{|| code-block de impressao }*/,,,,,,.F.)
 TRCell():New(oSection2,"TOTAL"      ,"   ",STR0099,/*Picture*/,17.5,/*lPixel*/,{|| nValTotSC7 },"RIGHT",,"RIGHT",,,.F.)
 TRCell():New(oSection2,"C7_DATPRF"  ,"SC7",/*Titulo*/,/*Picture*/,/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/,,,,,,.F.)
-TRCell():New(oSection2,"C7_CC"      ,"SC7",STR0066,PesqPict("SC7","C7_CC",20),9,/*lPixel*/,/*{|| code-block de impressao }*/,,,,,,.F.)
-TRCell():New(oSection2,"C7_NUMSC"   ,"SC7",STR0123,/*Picture*/,/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/,,,,,,.F.)
-TRCell():New(oSection2,"OPCC"       ,"   ",STR0100   ,/*Picture*/,30.5,/*lPixel*/,{|| cOPCC },,,,,,.F.)
-
+//TRCell():New(oSection2,"C7_CC"      ,"SC7",STR0066,PesqPict("SC7","C7_CC",20),9,/*lPixel*/,/*{|| code-block de impressao }*/,,,,,,.F.)
+TRCell():New(oSection2,"DESCCC"     ,"   ",STR0066,"@!",30,/*lPixel*/,{|| cDescCC },,,,,,.F.)
+//TRCell():New(oSection2,"C7_NUMSC"   ,"SC7",STR0123,/*Picture*/,/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/,,,,,,.F.)
+//TRCell():New(oSection2,"OPCC"       ,"   ",STR0100   ,/*Picture*/,30.5,/*lPixel*/,{|| cOPCC },,,,,,.F.)
+TRCell():New(oSection2,"C7_OBS"     ,"SC7","OBS",/*Picture*/,30.5,/*lPixel*/,{|| cOBS  },,,,,,.F.)
+                      
+oSection2:Cell("C7_FSMARCA"):SetLineBreak()
 oSection2:Cell("C7_PRODUTO"):SetLineBreak()
 oSection2:Cell("DESCPROD"):SetLineBreak()
-oSection2:Cell("C7_CC"):SetLineBreak()
-oSection2:Cell("OPCC"):SetLineBreak()
+//oSection2:Cell("C7_CC"):SetLineBreak()
+oSection2:Cell("DESCCC"):SetLineBreak()
+//oSection2:Cell("OPCC"):SetLineBreak()  
+oSection2:Cell("C7_OBS"):SetLineBreak()     
 
-oSection2:Cell("C7_NUMSC"):Disable()
-oSection2:Cell("C7_CC"   ):Disable()
+
+//oSection2:Cell("C7_NUMSC"):Disable()
+//oSection2:Cell("C7_CC"   ):Disable()
 
 n_Width := oSection2:GetWidth()
 
@@ -211,21 +222,21 @@ EndIf
 Return(oReport)
 
 /*/
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-±±³Programa  ³ReportPrin³ Autor ³Alexandre Inacio Lemes ³Data  ³06/09/2006³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄ´±±
-±±³Descri‡…o ³ Emissao do Pedido de Compras / Autorizacao de Entrega      ³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
-±±³Sintaxe   ³ ReportPrint(ExpO1,ExpN1,ExpN2)                             ³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
-±±³Parametros³ ExpO1 = Objeto oReport                      	              ³±±
-±±³          ³ ExpN1 = Numero do Recno posicionado do SC7 impressao Menu  ³±±
-±±³          ³ ExpN2 = Numero da opcao para impressao via menu do PC      ³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
-±±³Retorno   ³Nenhum                                                      ³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
-±±³Parametros³ExpO1: Objeto Report do Relatório                           ³±±
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±?
+±±³Programa  ³ReportPrin?Autor ³Alexandre Inacio Lemes ³Data  ?6/09/2006³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Descri‡…o ?Emissao do Pedido de Compras / Autorizacao de Entrega      ³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Sintaxe   ?ReportPrint(ExpO1,ExpN1,ExpN2)                             ³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Parametros?ExpO1 = Objeto oReport                      	              ³±?
+±±?         ?ExpN1 = Numero do Recno posicionado do SC7 impressao Menu  ³±?
+±±?         ?ExpN2 = Numero da opcao para impressao via menu do PC      ³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Retorno   ³Nenhum                                                      ³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Parametros³ExpO1: Objeto Report do Relatório                           ³±?
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±?
 /*/
 
 Static Function ReportPrint(oReport,nReg,nOpcX)
@@ -285,7 +296,9 @@ Local nLinPC2	  := 0
 Local nLinPC3	  := 0
 
 Private cDescPro  := ""
+Private cDescCC   := ""
 Private cOPCC     := ""
+Private cOBS      := ""
 Private	nVlUnitSC7:= 0
 Private nValTotSC7:= 0
 
@@ -305,6 +318,8 @@ Private cObs13    := ""
 Private cObs14    := ""
 Private cObs15    := ""
 Private cObs16    := ""
+Private l_Parcela := .F.
+
 If Type("lPedido") != "L"
 	lPedido := .F.
 Endif
@@ -313,7 +328,7 @@ If nTpImp==1 .Or. nTpImp==6
 	oSection2:ACELL[2]:NSIZE:=20
 	oSection2:ACELL[3]:NSIZE:=20
 	//	oSection2:ACELL[14]:NSIZE:=25	//Marca
-	oSection2:ACELL[15]:NSIZE:=25
+//	oSection2:ACELL[15]:NSIZE:=25  sc
 EndIf
 
 dbSelectArea("SC7")
@@ -370,9 +385,9 @@ oSection2:Cell("TOTAL"):SetPicture(cPictVTot)
 TRPosition():New(oSection2,"SB1",1,{ || xFilial("SB1") + SC7->C7_PRODUTO })
 TRPosition():New(oSection2,"SB5",1,{ || xFilial("SB5") + SC7->C7_PRODUTO })
 
-//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-//³ Executa o CodeBlock com o PrintLine da Sessao 1 toda vez que rodar o oSection1:Init()   ³
-//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ?
+//?Executa o CodeBlock com o PrintLine da Sessao 1 toda vez que rodar o oSection1:Init()   ?
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ?
 oReport:onPageBreak( { || nPagina++ , nPrinted := 0 , CabecPCxAE(oReport,oSection1,nVias,nPagina) })
 
 oReport:SetMeter(SC7->(LastRec()))
@@ -405,7 +420,8 @@ While !oReport:Cancel() .And. !SC7->(Eof()) .And. SC7->C7_FILIAL == xFilial("SC7
 	EndIf
 	
 	MaFisEnd()
-	MaFisIniPC(SC7->C7_NUM,,,cFiltro)
+//	MaFisIniPC(SC7->C7_NUM,,,cFiltro)
+	R110FIniPC(SC7->C7_NUM,,,cFiltro)
 	
 	cObs01    := " "
 	cObs02    := " "
@@ -425,12 +441,12 @@ While !oReport:Cancel() .And. !SC7->(Eof()) .And. SC7->C7_FILIAL == xFilial("SC7
 	cObs16    := " "
 	
 	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-	//³ Roda a impressao conforme o numero de vias informado no mv_par09 ³
+	//?Roda a impressao conforme o numero de vias informado no mv_par09 ?
 	//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 	For nVias := 1 to mv_par09
 		
 		//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-		//³ Dispara a cabec especifica do relatorio.                     ³
+		//?Dispara a cabec especifica do relatorio.                     ?
 		//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 		oReport:EndPage()
 		
@@ -473,14 +489,14 @@ While !oReport:Cancel() .And. !SC7->(Eof()) .And. SC7->C7_FILIAL == xFilial("SC7
 			EndIf
 			
 			//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-			//³ Salva os Recnos do SC7 no aRecnoSave para marcar reimpressao.³
+			//?Salva os Recnos do SC7 no aRecnoSave para marcar reimpressao.?
 			//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 			If Ascan(aRecnoSave,SC7->(Recno())) == 0
 				AADD(aRecnoSave,SC7->(Recno()))
 			Endif
 			
 			//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-			//³ Inicializa o descricao do Produto conf. parametro digitado.³
+			//?Inicializa o descricao do Produto conf. parametro digitado.?
 			//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 			cDescPro :=  ""
 			If Empty(mv_par06)
@@ -500,6 +516,8 @@ While !oReport:Cancel() .And. !SC7->(Eof()) .And. SC7->C7_FILIAL == xFilial("SC7
 				cDescPro := SC7->C7_DESCRI
 			EndIf
 			
+			    
+			
 			If Empty(cDescPro)
 				SB1->(dbSetOrder(1))
 				SB1->(dbSeek( xFilial("SB1") + SC7->C7_PRODUTO ))
@@ -516,8 +534,14 @@ While !oReport:Cancel() .And. !SC7->(Eof()) .And. SC7->C7_FILIAL == xFilial("SC7
 			Else
 				nDescProd+=SC7->C7_VLDESC
 			Endif
+
+			a_Area  := GetArea()			
+			cDescCC := AllTrim(SC7->C7_CC) + "-" + Posicione("CTT", 1, xFilial("CTT") + SC7->C7_CC, "CTT_DESC01")
+			cOBS    := AllTrim(SC7->C7_OBS)
+			RestArea(a_Area)
+			
 			//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-			//³ Inicializacao da Observacao do Pedido.                       ³
+			//?Inicializacao da Observacao do Pedido.                       ?
 			//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 			If !Empty(SC7->C7_OBS) .And. nLinObs < 17
 				nLinObs++
@@ -552,20 +576,23 @@ While !oReport:Cancel() .And. !SC7->(Eof()) .And. SC7->C7_FILIAL == xFilial("SC7
 			EndIf
 			
 			If mv_par08 == 1 .OR. mv_par08 == 3
-				oSection2:Cell("OPCC"):Disable()
+		//		oSection2:Cell("OPCC"):Disable()
 			Else
 				oSection2:Cell("C7_DATPRF"):SetSize(9)
-				oSection2:Cell("C7_CC"):Disable()
+//				oSection2:Cell("C7_CC"):Disable()
 				oSection2:Cell("C7_NUMSC"):Disable()
 				If !Empty(SC7->C7_OP)
-					cOPCC := STR0065 + " " + SC7->C7_OP
+		//			cOPCC := STR0065 + " " + SC7->C7_OP
 				ElseIf !Empty(SC7->C7_CC)
-					cOPCC := STR0066 + " " + SC7->C7_CC
+//					cOPCC := STR0066 + " " + SC7->C7_CC
 				EndIf
 			EndIf
 			
 			oSection2:PrintLine()
-			
+
+			nTotDesp  += SC7->C7_DESPESA
+//			nTotFrete += SC7->C7_VALFRE
+
 			nPrinted ++
 			lImpri  := .T.
 			dbSelectArea("SC7")
@@ -582,21 +609,21 @@ While !oReport:Cancel() .And. !SC7->(Eof()) .And. SC7->C7_FILIAL == xFilial("SC7
 			oReport:PrintText(STR0101,, 050 ) // Continua na Proxima pagina ....
 			
 			//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-			//³ Dispara a cabec especifica do relatorio.                     ³
+			//?Dispara a cabec especifica do relatorio.                     ?
 			//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 			oReport:EndPage()
 			oReport:PrintText(" ",1992 , 010 ) // Necessario para posicionar Row() para a impressao do Rodape
 			
-			oReport:Box( 280,010,oReport:Row() + oReport:LineHeight() * ( 93 - nPrinted ) , nPageWidth )
+			oReport:Box( 280,010,oReport:Row() + oReport:LineHeight() * ( 90 - nPrinted ) , nPageWidth )
 			
 		Else
-			oReport:Box( oReport:Row(),oReport:Col(),oReport:Row() + oReport:LineHeight() * ( 93 - nPrinted ) , nPageWidth )
+			oReport:Box( oReport:Row(),oReport:Col(),oReport:Row() + oReport:LineHeight() * ( 90 - nPrinted ) , nPageWidth )
 		EndIf
 		
-		oReport:Box( 1990 ,010,oReport:Row() + oReport:LineHeight() * ( 93 - nPrinted ) , nPageWidth )
-		oReport:Box( 2080 ,010,oReport:Row() + oReport:LineHeight() * ( 93 - nPrinted ) , nPageWidth )
-		oReport:Box( 2200 ,010,oReport:Row() + oReport:LineHeight() * ( 93 - nPrinted ) , nPageWidth )
-		oReport:Box( 2320 ,010,oReport:Row() + oReport:LineHeight() * ( 93 - nPrinted ) , nPageWidth )
+		oReport:Box( 1990 ,010,oReport:Row() + oReport:LineHeight() * ( 96 - nPrinted ) , nPageWidth )
+		oReport:Box( 2080 ,010,oReport:Row() + oReport:LineHeight() * ( 96 - nPrinted ) , nPageWidth )
+		oReport:Box( 2200 ,010,oReport:Row() + oReport:LineHeight() * ( 96 - nPrinted ) , nPageWidth )
+		oReport:Box( 2320 ,010,oReport:Row() + oReport:LineHeight() * ( 96 - nPrinted ) , nPageWidth )
 		
 		oReport:Box( 2200 , 830 , 2320 , 1080 ) // Box da Data de Emissao
 		oReport:Box( 2200 , 1080 , 2320 , 1400 ) // Box da Data de Emissao
@@ -623,9 +650,9 @@ While !oReport:Cancel() .And. !SC7->(Eof()) .And. SC7->C7_FILIAL == xFilial("SC7
 		oReport:SkipLine()
 		
 		//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-		//³ Posiciona o Arquivo de Empresa SM0.                          ³
-		//³ Imprime endereco de entrega do SM0 somente se o MV_PAR13 =" "³
-		//³ e o Local de Cobranca :                                      ³
+		//?Posiciona o Arquivo de Empresa SM0.                          ?
+		//?Imprime endereco de entrega do SM0 somente se o MV_PAR13 =" "?
+		//?e o Local de Cobranca :                                      ?
 		//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 		SM0->(dbSetOrder(1))
 		nRecnoSM0 := SM0->(Recno())
@@ -650,8 +677,9 @@ While !oReport:Cancel() .And. !SC7->(Eof()) .And. SC7->C7_FILIAL == xFilial("SC7
 		
 		nLinPC := oReport:Row()
 		oReport:PrintText( STR0011+SubStr(SE4->E4_COND,1,40),nLinPC,050 )
+		oReport:PrintText( "Data de Previsão",nLinPC,500 )
 		oReport:PrintText( "Prazo de Entrega",nLinPC,850 ) //"Prazo de Entrega"
-		oReport:PrintText( STR0070,nLinPC,1120 ) //"Data de Emissao"
+		oReport:PrintText( "Data de Emissão",nLinPC,1120 ) //"Data de Emissao"
 		oReport:PrintText( STR0013 +" "+ Transform(xMoeda(nTotal,SC7->C7_MOEDA,MV_PAR12,SC7->C7_DATPRF,MsDecimais(SC7->C7_MOEDA),nTxMoeda) , tm(nTotal,14,MsDecimais(MV_PAR12)) ),nLinPC,1612 ) //"Total das Mercadorias : "
 		oReport:SkipLine()
 		nLinPC := oReport:Row()
@@ -671,6 +699,7 @@ While !oReport:Cancel() .And. !SC7->(Eof()) .And. SC7->C7_FILIAL == xFilial("SC7
 			Transform(xMoeda(nValIVA,SC7->C7_MOEDA,MV_PAR12,SC7->C7_DATPRF,MsDecimais(SC7->C7_MOEDA),nTxMoeda) , tm(nValIVA,14,MsDecimais(MV_PAR12)) ),nLinPC,1612 )
 		Else
 			oReport:PrintText( SubStr(SE4->E4_DESCRI,1,34),nLinPC, 050 )
+			oReport:PrintText( Dtoc(SC7->C7_FSDTPRE),nLinPC,500 )
 			oReport:PrintText( AllTrim(STR(DATEDIFFDAY(SC7->C7_DATPRF,SC7->C7_EMISSAO))) + " dia(s)",nLinPC,850 )	//Prazo de Entrega
 			oReport:PrintText( dtoc(SC7->C7_EMISSAO),nLinPC,1120 )
 			oReport:PrintText( STR0064+ "  " + ; //"Total com Impostos:    "
@@ -680,11 +709,11 @@ While !oReport:Cancel() .And. !SC7->(Eof()) .And. SC7->C7_FILIAL == xFilial("SC7
 		
 		nTotIpi	  := MaFisRet(,'NF_VALIPI')
 		nTotIcms  := MaFisRet(,'NF_VALICM')
-		nTotDesp  := MaFisRet(,'NF_DESPESA')
+//		nTotDesp  := MaFisRet(,'NF_DESPESA')
 		nTotFrete := MaFisRet(,'NF_FRETE')
 		nTotSeguro:= MaFisRet(,'NF_SEGURO')
 		nTotalNF  := MaFisRet(,'NF_TOTAL')
-		
+
 		oReport:SkipLine()
 		oReport:SkipLine()
 		nLinPC := oReport:Row()
@@ -693,6 +722,8 @@ While !oReport:Cancel() .And. !SC7->(Eof()) .And. SC7->C7_FILIAL == xFilial("SC7
 		If SM4->(dbSeek(xFilial("SM4")+SC7->C7_REAJUST))
 			oReport:PrintText(  STR0014 + " " + SC7->C7_REAJUST + " " + SM4->M4_DESCR ,nLinPC, 050 )  //"Reajuste :"
 		EndIf
+
+		oReport:PrintText( "Responsável : " + Capital(FWLeUserlg("C7_USERLGI", 1)) ,nLinPC,050 )
 		
 		If cPaisLoc == "BRA"
 			oReport:PrintText( STR0071 + Transform(xMoeda(nTotIPI ,SC7->C7_MOEDA,MV_PAR12,SC7->C7_DATPRF,MsDecimais(SC7->C7_MOEDA),nTxMoeda) , tm(nTotIpi ,14,MsDecimais(MV_PAR12))) ,nLinPC,1320 ) //"IPI      :"
@@ -706,7 +737,7 @@ While !oReport:Cancel() .And. !SC7->(Eof()) .And. SC7->C7_FILIAL == xFilial("SC7
 		oReport:SkipLine()
 		
 		//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-		//³ Inicializar campos de Observacoes.                           ³
+		//?Inicializar campos de Observacoes.                           ?
 		//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 		If Empty(cObs02)
 			If Len(cObs01) > 30
@@ -736,6 +767,72 @@ While !oReport:Cancel() .And. !SC7->(Eof()) .And. SC7->C7_FILIAL == xFilial("SC7
 			cObs16:= Substr(cObs16,1,IIf(Len(cObs16)<30,Len(cObs01),30))
 		EndIf
 		
+		/*
+       		Condicao
+			Esta função permite avaliar uma condição de pagamento, retornando um array
+  			multidimensional com informações referentes ao valor e vencimento de cada
+   			parcela, de acordo com a condição de pagamento.
+  
+   			Sintaxe
+   			Condicao(nValTot,cCond,nVIPI,dData,nVSol)
+ 
+   			Parametros
+   			nValTot ?Valor total a ser parcelado
+   			cCond ?Código da condição de pagamento
+   			nVIPI ?Valor do IPI, destacado para condição que obrigue o pagamento
+   			do IPI na 1?parcela
+   			dData ?Data inicial para considerar
+  
+   			Retorna
+   			aRet ?Array de retorno ( { {dVencto, nValor} , ... } )
+       	*/
+       	If !l_Parcela
+	   		a_Parcelas := Condicao(nTotalNF, SC7->C7_COND, 0, SC7->C7_FSDTPRE)
+	   		j := 0
+	   		
+	   		If Empty(cObs01)
+	   			j := 1
+	   		Elseif Empty(cObs02)
+	   			j := 2   			
+	   		Elseif Empty(cObs03)
+	   			j := 3   			   			
+	   		Elseif Empty(cObs04)
+	   			j := 4
+	   		Elseif Empty(cObs05)
+	   			j := 5   			
+	   		Elseif Empty(cObs06)
+	   			j := 6   			
+	   		Elseif Empty(cObs07)
+	   			j := 7   			
+	   		Elseif Empty(cObs08)
+	   			j := 8   			   			
+	   		Elseif Empty(cObs09)
+	   			j := 9
+	   		Elseif Empty(cObs10)
+	   			j := 10   			
+	   		Elseif Empty(cObs11)
+	   			j := 11   				   			
+	   		Elseif Empty(cObs12)
+	   			j := 12   			
+	   		Elseif Empty(cObs13)
+	   			j := 13   			   			
+	   		Elseif Empty(cObs14)
+	   			j := 14
+	   		Elseif Empty(cObs15)
+	   			j := 15
+	   		Elseif Empty(cObs16)
+	   			j := 16
+	   		Endif
+
+			If j > 0
+		   		For i:=1 To Len(a_Parcelas)
+		           	&("cObs" + StrZero(j++, 2)) := StrZero(i, 2) + " - " + Dtoc(DataValida(a_Parcelas[i][1], .T.)) + Transform(a_Parcelas[i][2], "@E 999,999,999.99")
+		       	Next		
+		    Endif
+
+	       	l_Parcela := .T.
+		Endif
+	
 		cComprador:= ""
 		cAlter	  := ""
 		cAprov	  := ""
@@ -795,9 +892,12 @@ While !oReport:Cancel() .And. !SC7->(Eof()) .And. SC7->C7_FILIAL == xFilial("SC7
 		Endif
 		
 		nLinPC := oReport:Row()
-		oReport:PrintText( STR0077 ,nLinPC, 050 ) // "Observacoes "
-		//		oReport:PrintText( "Tipo Frete : " + c_TpFrete,nLinPC,1320 ) // "Tipo Frete "
-		oReport:PrintText( STR0076 + Transform(xMoeda(nTotSeguro,SC7->C7_MOEDA,MV_PAR12,SC7->C7_DATPRF,MsDecimais(SC7->C7_MOEDA),nTxMoeda) , tm(nTotSeguro,14,MsDecimais(MV_PAR12))) ,nLinPC, 1815 ) // "SEGURO   :"
+		oReport:PrintText("Observações" ,nLinPC, 050 ) // "Observacoes "    
+		oReport:PrintText("Seguro   :" + Transform(xMoeda(nTotSeguro,SC7->C7_MOEDA,MV_PAR12,SC7->C7_DATPRF,MsDecimais(SC7->C7_MOEDA),nTxMoeda) , tm(nTotSeguro,14,MsDecimais(MV_PAR12))) ,nLinPC, 1815 )
+
+		oReport:SkipLine()
+		nLinPC := oReport:Row()
+
 		oReport:SkipLine()
 		
 		nLinPC2 := oReport:Row()
@@ -833,24 +933,32 @@ While !oReport:Cancel() .And. !SC7->(Eof()) .And. SC7->C7_FILIAL == xFilial("SC7
 		oReport:PrintText(cObs14,,650 )
 		oReport:PrintText(cObs15,,650 )
 		oReport:PrintText(cObs16,,650 )
+/*		
+		oReport:Box( 2700 , 0010 , 3220 , 0400 )
+		oReport:Box( 2700 , 0400 , 3220 , 0800 )
+		oReport:Box( 2700 , 0800 , 3220 , 1220 )
+		oReport:Box( 2600 , 1220 , 3220 , 1770 )
+		oReport:Box( 2600 , 1770 , 3220 , nPageWidth )
+*/		
+		oReport:Box( 2700 , 0010 , 2905 , 0400 )
+		oReport:Box( 2700 , 0400 , 2905 , 0800 )
+		oReport:Box( 2700 , 0800 , 2905 , 1220 )
+		oReport:Box( 2600 , 1220 , 2905 , 1770 )
+		oReport:Box( 2600 , 1770 , 2905 , nPageWidth )
 		
-		oReport:Box( 2700 , 0010 , 3020 , 0400 )
-		oReport:Box( 2700 , 0400 , 3020 , 0800 )
-		oReport:Box( 2700 , 0800 , 3020 , 1220 )
-		oReport:Box( 2600 , 1220 , 3020 , 1770 )
-		oReport:Box( 2600 , 1770 , 3020 , nPageWidth )
-		
+		oReport:Line(2970 , 0010 , 2970 , nPageWidth )
+
 		oReport:SkipLine()
-		oReport:SkipLine()
-		oReport:SkipLine()
+//		oReport:SkipLine()
+//		oReport:SkipLine()
 		
 		nLinPC := oReport:Row()
-		oReport:PrintText( If((SC7->C7_TIPO == 1 .OR. SC7->C7_TIPO == 3),STR0079,STR0084),nLinPC,1310) //"Liberacao do Pedido"##"Liber. Autorizacao "
+		oReport:PrintText( If((SC7->C7_TIPO == 1 .OR. SC7->C7_TIPO == 3),"Liberação do Pedido",STR0084),nLinPC,1310) //"Liberacao do Pedido"##"Liber. Autorizacao "
 		oReport:PrintText( STR0080 + IF( SC7->C7_TPFRETE $ "F","FOB",IF(SC7->C7_TPFRETE $ "C","CIF"," " )) ,nLinPC,1820 )
 		oReport:SkipLine()
 		
-		oReport:SkipLine()
-		oReport:SkipLine()
+//		oReport:SkipLine()
+//		oReport:SkipLine()
 		
 		nLinPC := oReport:Row()
 		//			oReport:PrintText( STR0021 ,nLinPC, 050 ) //"Comprador"
@@ -863,7 +971,7 @@ While !oReport:Cancel() .And. !SC7->(Eof()) .And. SC7->C7_FILIAL == xFilial("SC7
 		
 		oReport:SkipLine()
 		oReport:SkipLine()
-		oReport:SkipLine()
+//		oReport:SkipLine()
 		
 		nLinPC := oReport:Row()
 		oReport:PrintText( Replic("_",23) ,nLinPC,  050 )
@@ -873,30 +981,43 @@ While !oReport:Cancel() .And. !SC7->(Eof()) .And. SC7->C7_FILIAL == xFilial("SC7
 		oReport:SkipLine()
 		
 		oReport:SkipLine()
-		oReport:SkipLine()
-		oReport:SkipLine()
-		oReport:SkipLine()
-		oReport:SkipLine()
+//		oReport:SkipLine()
+//		oReport:SkipLine()
+//		oReport:SkipLine()
+//		oReport:SkipLine()
 		nLinPC := oReport:Row()
 		oReport:PrintText( "Verificado conforme lista de inspeção para material controlado anexo 7.8 IT-ALMO" ,nLinPC, 050 )
 		oReport:PrintText( '[ ] - APROVADO' ,nLinPC,1310)
 		oReport:PrintText( '[ ] - REPROVADO',nLinPC,1560)
 		
 		//Inicio Bomix  (Sandro Santos 30/01/13)
+
+		oReport:SkipLine()
 		oReport:SkipLine()
 		nLinPC := oReport:Row()
-		oReport:PrintText( "O Fornecedor Declara que: Suas atividades e propriedades estão em conformidade com a lesgislação ambiental brasileira" ,nLinPC, 050)
+		oReport:PrintText( "O Fornecedor declara que suas atividades e propriedades estão em conformidade com a legislação ambiental brasileira e a legislação trabalhista relativa" ,nLinPC, 050)
 		
 		oReport:SkipLine()
 		nLinPC := oReport:Row()
-		oReport:PrintText( "e a legislação trabalhista relativa a saude e segurança ocupacional, inclusive quanto a ausencia de trabalho aralogo ao escravo e infantil",nLinPC, 050)
+		oReport:PrintText( "a saúde e segurança ocupacional, inclusive quanto a ausência de trabalho análogo ao escravo e infantil bem como a legislação ambiental brasileira.",nLinPC, 050)
+		
+		oReport:SkipLine()
+		oReport:SkipLine()
+		nLinPC := oReport:Row()
+		oReport:PrintText( "NOTA" ,nLinPC, 050 )
 		
 		oReport:SkipLine()
 		nLinPC := oReport:Row()
-		oReport:PrintText( "bem como a legislação ambiental brasileira. NOTA: So aceitaremos a mercadoria se na sua Nota Fiscal constar o numero do nosso Pedido de Compras." ,nLinPC, 050 )
+		oReport:PrintText( "I  - S?aceitaremos a mercadoria se na sua Nota Fiscal constar o número do nosso Pedido de Compras." ,nLinPC, 050 )
 		//Fim Bomix  (Sandro Santos 30/01/13)
 		
 		oReport:SkipLine()
+		nLinPC := oReport:Row()
+		oReport:PrintText("II - O pagamento da nota fiscal correspondente a esta autorização de fornecimento somente ser?efetuado após nossa confirmação do recebimento do arquivo XML" ,nLinPC, 050 )
+
+		oReport:SkipLine()
+		nLinPC := oReport:Row()
+		oReport:PrintText("     no e-mail nfe@bomix.com.br, disponibilizado compulsoriamente pelo emitente da NF-e, conforme base legal do Ajuste SINIEF 22/13. " ,nLinPC, 050 )
 		//			If SC7->C7_TIPO == 1 .OR. SC7->C7_TIPO == 3
 		//oReport:PrintText(STR0081,,050 ) //"NOTA: So aceitaremos a mercadoria se na sua Nota Fiscal constar o numero do nosso Pedido de Compras."
 		//			Else
@@ -949,7 +1070,7 @@ While !oReport:Cancel() .And. !SC7->(Eof()) .And. SC7->C7_FILIAL == xFilial("SC7
 	MaFisEnd()
 	
 	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-	//³ Grava no SC7 as Reemissoes e atualiza o Flag de impressao.   ³
+	//?Grava no SC7 as Reemissoes e atualiza o Flag de impressao.   ?
 	//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 	dbSelectArea("SC7")
 	If Len(aRecnoSave) > 0
@@ -961,7 +1082,7 @@ While !oReport:Cancel() .And. !SC7->(Eof()) .And. SC7->C7_FILIAL == xFilial("SC7
 			MsUnLock()
 		Next nX
 		//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-		//³ Reposiciona o SC7 com base no ultimo elemento do aRecnoSave. ³
+		//?Reposiciona o SC7 com base no ultimo elemento do aRecnoSave. ?
 		//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 		dbGoto(aRecnoSave[Len(aRecnoSave)])
 	Endif
@@ -978,9 +1099,9 @@ EndDo
 oSection2:Finish()
 
 //ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-//³ Executa o ponto de entrada M110MAIL quando a impressao for   ³
-//³ enviada por email, fornecendo um Array para o usuario conten ³
-//³ do os pedidos enviados para possivel manipulacao.            ³
+//?Executa o ponto de entrada M110MAIL quando a impressao for   ?
+//?enviada por email, fornecendo um Array para o usuario conten ?
+//?do os pedidos enviados para possivel manipulacao.            ?
 //ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 If ExistBlock("M110MAIL")
 	lEnvMail := HasEmail(,,,,.F.)
@@ -1000,20 +1121,20 @@ dbSetOrder(1)
 Return
 
 /*/
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-±±³Programa  ³CabecPCxAE³ Autor ³Alexandre Inacio Lemes ³Data  ³06/09/2006³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄ´±±
-±±³Descri‡…o ³ Emissao do Pedido de Compras / Autorizacao de Entrega      ³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
-±±³Sintaxe   ³ CabecPCxAE(ExpO1,ExpO2,ExpN1,ExpN2)                        ³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
-±±³Parametros³ ExpO1 = Objeto oReport                      	              ³±±
-±±³          ³ ExpO2 = Objeto da sessao1 com o cabec                      ³±±
-±±³          ³ ExpN1 = Numero de Vias                                     ³±±
-±±³          ³ ExpN2 = Numero de Pagina                                   ³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
-±±³Retorno   ³Nenhum                                                      ³±±
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±?
+±±³Programa  ³CabecPCxAE?Autor ³Alexandre Inacio Lemes ³Data  ?6/09/2006³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Descri‡…o ?Emissao do Pedido de Compras / Autorizacao de Entrega      ³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Sintaxe   ?CabecPCxAE(ExpO1,ExpO2,ExpN1,ExpN2)                        ³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Parametros?ExpO1 = Objeto oReport                      	              ³±?
+±±?         ?ExpO2 = Objeto da sessao1 com o cabec                      ³±?
+±±?         ?ExpN1 = Numero de Vias                                     ³±?
+±±?         ?ExpN2 = Numero de Pagina                                   ³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Retorno   ³Nenhum                                                      ³±?
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±?
 /*/
 Static Function CabecPCxAE(oReport,oSection1,nVias,nPagina)
 
@@ -1078,31 +1199,32 @@ oSection1:Finish()
 Return
 
 /*/
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-±±³Fun‡…o    ³R110Center³ Autor ³ Jose Lucas            ³ Data ³          ³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄ´±±
-±±³Descri‡…o ³ Centralizar o Nome do Liberador do Pedido.                 ³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
-±±³Sintaxe   ³ ExpC1 := R110CenteR(ExpC2)                                 ³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
-±±³Parametros³ ExpC1 := Nome do Liberador                                 ³±±
-±±³Parametros³ ExpC2 := Nome do Liberador Centralizado                    ³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
-±±³ Uso      ³ MatR110                                                    ³±±
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±?
+±±³Fun‡…o    ³R110Center?Autor ?Jose Lucas            ?Data ?         ³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Descri‡…o ?Centralizar o Nome do Liberador do Pedido.                 ³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Sintaxe   ?ExpC1 := R110CenteR(ExpC2)                                 ³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Parametros?ExpC1 := Nome do Liberador                                 ³±?
+±±³Parametros?ExpC2 := Nome do Liberador Centralizado                    ³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±?
+±±?Uso      ?MatR110                                                    ³±?
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±?
 /*/
 
 Static Function R110Center(cLiberador)
 Return( Space((30-Len(AllTrim(cLiberador)))/2)+AllTrim(cLiberador) )
+ 
 
 /*
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-±±ºPrograma  ³AjustaSX1 ºAutor  ³Alexandre Lemes     º Data ³ 17/12/2002  º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºDesc.     ³                                                            º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºUso       ³ MATR110                                                    º±±
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±?
+±±ºPrograma  ³AjustaSX1 ºAutor  ³Alexandre Lemes     ?Data ?17/12/2002  º±?
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±?
+±±ºDesc.     ?                                                           º±?
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±?
+±±ºUso       ?MATR110                                                    º±?
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±?
 */
 Static Function AjustaSX1()
 
@@ -1126,20 +1248,20 @@ PutSX1Help("P.MTR11014.",aHelpPor,aHelpEng,aHelpSpa)
 Return
 
 /*/
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-±±³Fun‡…o    ³ChkPergUs ³ Autor ³ Nereu Humberto Junior ³ Data ³21/09/07  ³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄ´±±
-±±³Descri‡…o ³ Funcao para buscar as perguntas que o usuario nao pode     ³±±
-±±³          ³ alterar para impressao de relatorios direto do browse      ³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
-±±³Sintaxe   ³ ChkPergUs(ExpC1,ExpC2,ExpC3)                               ³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
-±±³Parametros³ ExpC1 := Id do usuario                                     ³±±
-±±³          ³ ExpC2 := Grupo de perguntas                                ³±±
-±±³          ³ ExpC2 := Numero da sequencia da pergunta                   ³±±
-±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
-±±³ Uso      ³ MatR110                                                    ³±±
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±?
+±±³Fun‡…o    ³ChkPergUs ?Autor ?Nereu Humberto Junior ?Data ?1/09/07  ³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Descri‡…o ?Funcao para buscar as perguntas que o usuario nao pode     ³±?
+±±?         ?alterar para impressao de relatorios direto do browse      ³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Sintaxe   ?ChkPergUs(ExpC1,ExpC2,ExpC3)                               ³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Parametros?ExpC1 := Id do usuario                                     ³±?
+±±?         ?ExpC2 := Grupo de perguntas                                ³±?
+±±?         ?ExpC2 := Numero da sequencia da pergunta                   ³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±?
+±±?Uso      ?MatR110                                                    ³±?
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±?
 /*/
 
 Static Function ChkPergUs(cUserId,cGrupo,cSeq)
@@ -1163,3 +1285,79 @@ Endif
 RestArea(aArea)
 
 Return(cRet)
+
+/*
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ?
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±?
+±±ÚÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄ¿±?
+±±³Funcao    ³R110FIniPC?Autor ?Edson Maricate        ?Data ?0/05/2000³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Descricao ?Inicializa as funcoes Fiscais com o Pedido de Compras      ³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Sintaxe   ?R110FIniPC(ExpC1,ExpC2)                                    ³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±?
+±±³Parametros?ExpC1 := Numero do Pedido                                  ³±?
+±±?         ?ExpC2 := Item do Pedido                                    ³±?
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±?
+±±?Uso      ?MATR110,MATR120,Fluxo de Caixa                             ³±?
+±±ÀÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ±?
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±?
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß?
+*/
+Static Function R110FIniPC(cPedido,cItem,cSequen,cFiltro)
+
+Local aArea		:= GetArea()
+Local aAreaSC7	:= SC7->(GetArea())
+Local cValid		:= ""
+Local nPosRef		:= 0
+Local nItem		:= 0
+Local cItemDe		:= IIf(cItem==Nil,'',cItem)
+Local cItemAte	:= IIf(cItem==Nil,Repl('Z',Len(SC7->C7_ITEM)),cItem)
+Local cRefCols	:= ''
+DEFAULT cSequen	:= ""
+DEFAULT cFiltro	:= ""
+
+dbSelectArea("SC7")
+dbSetOrder(1)
+If dbSeek(xFilial("SC7")+cPedido+cItemDe+Alltrim(cSequen))
+	MaFisEnd()
+	MaFisIni(SC7->C7_FORNECE,SC7->C7_LOJA,"F","N","R",{})
+	While !Eof() .AND. SC7->C7_FILIAL+SC7->C7_NUM == xFilial("SC7")+cPedido .AND. ;
+			SC7->C7_ITEM <= cItemAte .AND. (Empty(cSequen) .OR. cSequen == SC7->C7_SEQUEN)
+
+		// Nao processar os Impostos se o item possuir residuo eliminado  
+		If &cFiltro
+			dbSelectArea('SC7')
+			dbSkip()
+			Loop
+		EndIf
+            
+		// Inicia a Carga do item nas funcoes MATXFIS  
+		nItem++
+		MaFisIniLoad(nItem)
+		dbSelectArea("SX3")
+		dbSetOrder(1)
+		dbSeek('SC7')
+		While !EOF() .AND. (X3_ARQUIVO == 'SC7')
+			cValid	:= StrTran(UPPER(SX3->X3_VALID)," ","")
+			cValid	:= StrTran(cValid,"'",'"')
+			If "MAFISREF" $ cValid
+				nPosRef  := AT('MAFISREF("',cValid) + 10
+				cRefCols := Substr(cValid,nPosRef,AT('","MT120",',cValid)-nPosRef )
+				// Carrega os valores direto do SC7.           
+				IF(SX3->X3_CAMPO <> "C7_OPER")
+					MaFisLoad(cRefCols,&("SC7->"+ SX3->X3_CAMPO),nItem)
+				EndIf
+			EndIf
+			dbSkip()
+		End
+		MaFisEndLoad(nItem,2)
+		dbSelectArea('SC7')
+		dbSkip()
+	End
+EndIf
+
+RestArea(aAreaSC7)
+RestArea(aArea)
+
+Return .T.
