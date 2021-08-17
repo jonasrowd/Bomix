@@ -2,6 +2,7 @@
 #Include "Topconn.ch"
 #Include "Tryexception.ch" 
 
+#Define c_CRLF Chr(10) + Chr(13)
 
 /*/{Protheus.doc} FESTA002
 	Cadastro de Artes
