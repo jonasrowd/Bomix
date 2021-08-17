@@ -20,6 +20,6 @@ User Function JBIG002()
 	// Abre uma nova thread para preparação de ambiente
 	// em cada filial do grupo de empresas
 	For nX := 1 To Len(aBranch)
-		StartJob("U_FFATA001", GetEnvServer(), .T., aBranch[nX])
+		StartJob("U_JOBZERAJBIG", GetEnvServer(), .T., aBranch[nX])
 	Next nX
 Return (NIL)

@@ -19,7 +19,7 @@ User Function MTA650OK( )
 	Local l_Ret    := .T.
 	Local a_Area   := GetArea()
 
-	IF SC2->C2_SEQUEN # ("001","002")
+	IF SC2->C2_SEQUEN # ("001","002") .AND. !EOF()
 		RECLOCK("SC2",.F.)
 		dbSelectArea("SC2")
 		SC2->C2_FSSALDO:=SC2->C2_QUANT

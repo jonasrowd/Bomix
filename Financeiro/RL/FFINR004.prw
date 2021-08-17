@@ -1,40 +1,23 @@
-#INCLUDE "PROTHEUS.CH"
-#include "rwmake.ch"
-#include "TbiConn.ch"
-#include "Report.ch"
-#INCLUDE "APVT100.CH"
-#INCLUDE "TOPCONN.CH"
-
-
 //Bibliotecas
-#Include "Protheus.ch"
-#Include "TopConn.ch"
+#Include 'Totvs.ch'
+#Include 'TopConn.ch'
 
 //Constantes
-#Define STR_PULA    Chr(13)+Chr(10)
+#Define STR_PULA	Chr(10) + Chr(10)
 
-
-
+/*/{Protheus.doc} FFINR004
+	Relatório de Fluxo de Caixa
+	@type Function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 16/08/2021
 /*/
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
-±±ºPrograma  ³FFINR004     º Autor ³ AP6 IDE            º Data ³  04/11/19º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºDescricao ³ Codigo gerado pelo AP6 IDE1.                               º±±
-±±º          ³                        ==>>  FLUXO DE CAIXA EXCEL <<==     º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºUso       ³ AP6 IDE                                                    º±±
-±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
-/*/
+User Function FFINR004()
 
-User Function FFINR004
-    Local aArea        := GetArea()
-    Local cQuery        := ""
-    Local oFWMsExcel
     Local oExcel
+    Local oFWMsExcel
+    Local aArea          := GetArea()
+    Local cQuery         := ""
   	Local cDesc1         := "Este programa tem como objetivo exportar o relatório de FLUXO DE CAIXA"
   	Local cDesc2         := "para o EXCEL de acordo com os parametros informados pelo usuario."
   	Local cDesc3         := "SERÁ GRAVADO NA PASTA c:\bomix\"
@@ -45,7 +28,7 @@ User Function FFINR004
 	Local Cabec2         := "Cliente/Fornecedor   Nat/CC                 Emissão   Num.        Pc       Venc Real  Vencimento        Receber          Pagar          Saldo      Usuario"
 	Local imprime        := .T.
 	Local aOrd 			 := {}
-
+	Local i				 := ''
 	Private lEnd         := .F.
 	Private lAbortPrint  := .F.
 	Private CbTxt        := ""
@@ -64,7 +47,7 @@ User Function FFINR004
 	Private cString   	 := ""
 	MPCC := 0.00
 
-  	//³ Monta a interface padrao com o usuario...                           ³
+  	//Monta a interface padrao com o usuario
 	CriaPerg(c_Perg)
 	Pergunte(c_Perg,.F.)
 
@@ -141,41 +124,38 @@ Static Function f_Qry()
     Local oExcel
     Local cArquivo    := "c:\bomix\" //FFINR004.xml GetTempPath()+'FFINR004.xml'
 
-	c_Qry := " SELECT * FROM " + chr(13)
-  	c_Qry += " (SELECT SC7.C7_DESCRI, A2_NOME FORNECE, C7_CC AS NATUREZA, CTT_DESC01 AS ED_DESCRIC, C7_OBS OBS, '' NOTA, C7_NUM PEDIDO, C7_DESCRI AS DESC_PEDIDO,C7_FSDTPRE EMISSAO, '' VENC, " +chr(13)
-	c_Qry += " CASE WHEN C7_QUJE > 0 AND C7_QUJE < C7_QUANT THEN (SUM(C7_QUJE*C7_PRECO)+SUM(C7_VALIPI)) ELSE (SUM(C7_TOTAL)+SUM(C7_VALIPI)) END AS VALOR, C7_COND CONDICAO, 'Previstos' TIPO " + chr(13)
-  	c_Qry += " FROM " + RetSqlName("SC7") + " SC7 (NOLOCK)" + chr(13)
-  	c_Qry += " JOIN " + RetSqlName("SA2") + " SA2  (NOLOCK) ON A2_COD = C7_FORNECE AND A2_LOJA = C7_LOJA AND (A2_COD BETWEEN '" + MV_PAR03 + "' AND '" + MV_PAR04 + "') AND SA2.D_E_L_E_T_<>'*' AND A2_FILIAL = '" + XFILIAL("SA2") + "'" + chr(13)
-	c_Qry += " LEFT JOIN "+RetSqlName("CTT") +" CTT (NOLOCK) ON " + chr(13)
-	c_Qry += " C7_CC=CTT.CTT_CUSTO AND CTT.D_E_L_E_T_<>'*' AND CTT.CTT_FILIAL= '" + XFILIAL("CTT") + "'" + chr(13)
-    c_Qry += " WHERE C7_QUJE < C7_QUANT AND SC7.C7_RESIDUO <> 'S' AND (C7_EMISSAO BETWEEN '" + Dtos(MV_PAR05) + "' AND '" + Dtos(MV_PAR06) + "') AND SC7.D_E_L_E_T_<>'*' " + chr(13)
-  	c_Qry += " AND C7_FILIAL = '" + xFilial("SC7") + "' " + chr(13)
-//  	c_Qry += " AND C7_NUM NOT IN (SELECT C7_NUM FROM " + RetSqlName("SC7") + " SC7 " + chr(13)
-//  	c_Qry += " JOIN " + RetSqlName("SD1") + " SD1  (NOLOCK) ON D1_PEDIDO = C7_NUM AND D1_ITEMPC = C7_ITEM AND D1_FILIAL = '" + xFilial("SD1") + "' AND SD1.D_E_L_E_T_<>'*' " + chr(13)
-//  	c_Qry += " WHERE SC7.D_E_L_E_T_<>'*' AND SC7.C7_RESIDUO <> 'S' AND C7_FILIAL = '" + xFilial("SC7") + "' GROUP BY C7_NUM) " + chr(13)
-  	c_Qry += " GROUP BY C7_NUM, A2_NOME, C7_OBS, C7_FSDTPRE, C7_COND,  C7_CC, CTT_DESC01, SC7.C7_DESCRI, C7_QUJE, C7_QUANT " + chr(13)
-  	c_Qry += " UNION ALL " + chr(13)
- 	c_Qry += " SELECT '' AS C7_DESCRI,CASE WHEN E2_ORIGEM='MATA460' THEN A1_NOME ELSE A2_NOME END, E2_NATUREZ AS NATUREZA, SED.ED_DESCRIC, E2_HIST OBS, E2_NUM NOTA, '' PEDIDO, '' AS DESC_PEDIDO, E2_EMISSAO EMISSAO, E2_VENCREA VENC, E2_SALDO VALOR, '', 'Pagar' TIPO " + chr(13)
-  	c_Qry += " FROM " + RetSqlName("SE2") + " SE2 (NOLOCK) " + chr(13)
-  	c_Qry += " LEFT JOIN " + RetSqlName("SA2") + " SA2 (NOLOCK) ON A2_COD = E2_FORNECE AND A2_LOJA = E2_LOJA AND SA2.D_E_L_E_T_<>'*' AND A2_FILIAL = '" + XFILIAL("SA2") + "'" + chr(13)
-  	c_Qry += " LEFT JOIN " + RetSqlName("SA1") + " SA1 (NOLOCK) ON A1_COD = E2_FORNECE AND A1_LOJA = E2_LOJA AND SA1.D_E_L_E_T_<>'*' AND A1_FILIAL = '" + XFILIAL("SA1") + "'" + chr(13)
-  	c_Qry += " INNER JOIN "+ RetSqlName("SED")+ " SED (NOLOCK) ON " + chr(13)
-  	c_Qry += " SED.ED_CODIGO=SE2.E2_NATUREZ AND SED.D_E_L_E_T_ <>'*' AND SED.ED_FILIAL='" + XFILIAL("SED") + "'" + chr(13)
-	c_Qry += " WHERE E2_TIPO <> 'PA' AND E2_SALDO <> 0 AND SE2.D_E_L_E_T_<>'*' " + chr(13)
-  	c_Qry += " AND E2_FILIAL = '" + xFilial("SE2") + "' " + chr(13)
-  	c_Qry += " AND (E2_FORNECE BETWEEN '" + MV_PAR03 + "' AND '" + MV_PAR04 + "') " + chr(13)
-  	c_Qry += " AND (E2_EMISSAO BETWEEN '" + Dtos(MV_PAR05) + "' AND '" + Dtos(MV_PAR06) + "') " + chr(13)
-  	c_Qry += " AND (E2_VENCREA BETWEEN '" + Dtos(MV_PAR07) + "' AND '" + Dtos(MV_PAR08) + "') " + chr(13)
-  	c_Qry += "   	UNION ALL " + chr(13)
- 	c_Qry += " SELECT '' AS C7_DESCRI,A1_NOME, E1_NATUREZ AS NATUREZA, SED.ED_DESCRIC, E1_HIST OBS, E1_NUM NOTA, '' PEDIDO, '' AS DESC_PEDIDO, E1_EMISSAO EMISSAO, E1_VENCREA VENC, E1_SALDO VALOR, '', 'Receber' TIPO " + chr(13)
-  	c_Qry += " FROM " + RetSqlName("SE1") + " SE1 (NOLOCK) " + chr(13)
-  	c_Qry += " JOIN " + RetSqlName("SA1") + " SA1 (NOLOCK) ON A1_COD = E1_CLIENTE AND A1_LOJA = E1_LOJA AND SA1.D_E_L_E_T_<>'*' AND A1_FILIAL = '" + XFILIAL("SA1") + "'" + chr(13)
-	c_Qry += " INNER JOIN "+ RetSqlName("SED") +" SED (NOLOCK) ON SED.ED_CODIGO=SE1.E1_NATUREZ AND SED.D_E_L_E_T_ <>'*' AND SED.ED_FILIAL = '" +XFILIAL("SED") + "'" + chr(13)
-  	c_Qry += " WHERE E1_SALDO <> 0 AND SE1.D_E_L_E_T_<>'*' " + chr(13)
-  	c_Qry += " AND E1_FILIAL = '" + xFilial("SE1") + "' " + chr(13)
-  	c_Qry += " AND (E1_CLIENTE BETWEEN '" + MV_PAR01 + "' AND '" + MV_PAR02 + "') " + chr(13)
-  	c_Qry += " AND (E1_EMISSAO BETWEEN '" + Dtos(MV_PAR05) + "' AND '" + Dtos(MV_PAR06) + "') " + chr(13)
-  	c_Qry += " AND (E1_VENCREA BETWEEN '" + Dtos(DaySub(MV_PAR07, 1)) + "' AND '" + Dtos(MV_PAR08) + "')) TAB " + chr(13)
+	c_Qry := " SELECT * FROM " + STR_PULA
+  	c_Qry += " (SELECT SC7.C7_DESCRI, A2_NOME FORNECE, C7_CC AS NATUREZA, CTT_DESC01 AS ED_DESCRIC, C7_OBS OBS, '' NOTA, C7_NUM PEDIDO, C7_DESCRI AS DESC_PEDIDO,C7_FSDTPRE EMISSAO, '' VENC, " +STR_PULA
+	c_Qry += " SUM(CASE WHEN C7_QUJE > 0 AND C7_QUJE < C7_QUANT THEN ((C7_QUANT-C7_QUJE)*(C7_PRECO))+((C7_QUANT-C7_QUJE) * C7_IPI/100) ELSE (C7_TOTAL)+(C7_VALIPI) END) AS TOTAL, C7_COND CONDICAO, 'Previstos' TIPO " + STR_PULA
+  	c_Qry += " FROM " + RetSqlName("SC7") + " SC7 (NOLOCK)" + STR_PULA
+  	c_Qry += " JOIN " + RetSqlName("SA2") + " SA2  (NOLOCK) ON A2_COD = C7_FORNECE AND A2_LOJA = C7_LOJA AND (A2_COD BETWEEN '" + MV_PAR03 + "' AND '" + MV_PAR04 + "') AND SA2.D_E_L_E_T_<>'*' AND A2_FILIAL = '" + XFILIAL("SA2") + "'" + STR_PULA
+	c_Qry += " LEFT JOIN "+RetSqlName("CTT") +" CTT (NOLOCK) ON " + STR_PULA
+	c_Qry += " C7_CC=CTT.CTT_CUSTO AND CTT.D_E_L_E_T_<>'*' AND CTT.CTT_FILIAL= '" + XFILIAL("CTT") + "'" + STR_PULA
+    c_Qry += " WHERE C7_QUJE < C7_QUANT AND SC7.C7_RESIDUO <> 'S' AND (C7_EMISSAO BETWEEN '" + Dtos(MV_PAR05) + "' AND '" + Dtos(MV_PAR06) + "') AND SC7.D_E_L_E_T_<>'*' " + STR_PULA
+  	c_Qry += " AND C7_FILIAL = '" + xFilial("SC7") + "' " + STR_PULA
+	c_Qry += " GROUP BY C7_NUM, A2_NOME, C7_OBS, C7_FSDTPRE, C7_COND,  C7_CC, CTT_DESC01, SC7.C7_DESCRI, C7_QUJE, C7_QUANT " + STR_PULA
+  	c_Qry += " UNION ALL " + STR_PULA
+ 	c_Qry += " SELECT '' AS C7_DESCRI,CASE WHEN E2_ORIGEM='MATA460' THEN A1_NOME ELSE A2_NOME END, E2_NATUREZ AS NATUREZA, SED.ED_DESCRIC, E2_HIST OBS, E2_NUM NOTA, '' PEDIDO, '' AS DESC_PEDIDO, E2_EMISSAO EMISSAO, E2_VENCREA VENC, E2_SALDO VALOR, '', 'Pagar' TIPO " + STR_PULA
+  	c_Qry += " FROM " + RetSqlName("SE2") + " SE2 (NOLOCK) " + STR_PULA
+  	c_Qry += " LEFT JOIN " + RetSqlName("SA2") + " SA2 (NOLOCK) ON A2_COD = E2_FORNECE AND A2_LOJA = E2_LOJA AND SA2.D_E_L_E_T_<>'*' AND A2_FILIAL = '" + XFILIAL("SA2") + "'" + STR_PULA
+  	c_Qry += " LEFT JOIN " + RetSqlName("SA1") + " SA1 (NOLOCK) ON A1_COD = E2_FORNECE AND A1_LOJA = E2_LOJA AND SA1.D_E_L_E_T_<>'*' AND A1_FILIAL = '" + XFILIAL("SA1") + "'" + STR_PULA
+  	c_Qry += " INNER JOIN "+ RetSqlName("SED")+ " SED (NOLOCK) ON " + STR_PULA
+  	c_Qry += " SED.ED_CODIGO=SE2.E2_NATUREZ AND SED.D_E_L_E_T_ <>'*' AND SED.ED_FILIAL='" + XFILIAL("SED") + "'" + STR_PULA
+	c_Qry += " WHERE E2_TIPO <> 'PA' AND E2_SALDO <> 0 AND SE2.D_E_L_E_T_<>'*' " + STR_PULA
+  	c_Qry += " AND E2_FILIAL = '" + xFilial("SE2") + "' " + STR_PULA
+  	c_Qry += " AND (E2_FORNECE BETWEEN '" + MV_PAR03 + "' AND '" + MV_PAR04 + "') " + STR_PULA
+  	c_Qry += " AND (E2_EMISSAO BETWEEN '" + Dtos(MV_PAR05) + "' AND '" + Dtos(MV_PAR06) + "') " + STR_PULA
+  	c_Qry += " AND (E2_VENCREA BETWEEN '" + Dtos(MV_PAR07) + "' AND '" + Dtos(MV_PAR08) + "') " + STR_PULA
+  	c_Qry += " UNION ALL " + STR_PULA
+ 	c_Qry += " SELECT '' AS C7_DESCRI,A1_NOME, E1_NATUREZ AS NATUREZA, SED.ED_DESCRIC, E1_HIST OBS, E1_NUM NOTA, '' PEDIDO, '' AS DESC_PEDIDO, E1_EMISSAO EMISSAO, E1_VENCREA VENC, E1_SALDO VALOR, '', 'Receber' TIPO " + STR_PULA
+  	c_Qry += " FROM " + RetSqlName("SE1") + " SE1 (NOLOCK) " + STR_PULA
+  	c_Qry += " JOIN " + RetSqlName("SA1") + " SA1 (NOLOCK) ON A1_COD = E1_CLIENTE AND A1_LOJA = E1_LOJA AND SA1.D_E_L_E_T_<>'*' AND A1_FILIAL = '" + XFILIAL("SA1") + "'" + STR_PULA
+	c_Qry += " INNER JOIN "+ RetSqlName("SED") +" SED (NOLOCK) ON SED.ED_CODIGO=SE1.E1_NATUREZ AND SED.D_E_L_E_T_ <>'*' AND SED.ED_FILIAL = '" +XFILIAL("SED") + "'" + STR_PULA
+  	c_Qry += " WHERE E1_SALDO <> 0 AND SE1.D_E_L_E_T_<>'*' " + STR_PULA
+  	c_Qry += " AND E1_FILIAL = '" + xFilial("SE1") + "' " + STR_PULA
+  	c_Qry += " AND (E1_CLIENTE BETWEEN '" + MV_PAR01 + "' AND '" + MV_PAR02 + "') " + STR_PULA
+  	c_Qry += " AND (E1_EMISSAO BETWEEN '" + Dtos(MV_PAR05) + "' AND '" + Dtos(MV_PAR06) + "') " + STR_PULA
+  	c_Qry += " AND (E1_VENCREA BETWEEN '" + Dtos(DaySub(MV_PAR07, 1)) + "' AND '" + Dtos(MV_PAR08) + "')) TAB " + STR_PULA
   	c_Qry += " ORDER BY EMISSAO"
 
 
