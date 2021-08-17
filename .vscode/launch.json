@@ -143,7 +143,11 @@
 		{
 			"label": "sigaest",
 			"description": "<nil>"
+		},
+		{
+			"label": "U_FFATA",
+			"description": "<nil>"
 		}
 	],
-	"lastProgramExecuted": "sigaest"
+	"lastProgramExecuted": "SIGAFAT"
 }
