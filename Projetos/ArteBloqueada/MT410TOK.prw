@@ -13,15 +13,17 @@ User Function MT410TOK()
     Local nX   := 0                                                   // Controle do laço de itens
     Local nPos := AScan(aHeader, {|x| AllTrim(x[2]) == "C6_PRODUTO"}) // Posição do código de produto dentro aCols
 
+    If C5_TIPO=='N'
     // Percorre todos os itens do vetor aCols
-    For nX := 1 To Len(aCols)
-        // Verifica se a linha não está deletada
-        If (!GDDeleted(nX, aHeader, aCols))
-            // Valida a arte e a amarração do produto x cliente
-            // Se der erro, para de percorrer o vetor
-            If !(lOK := U_FFATV001(aCols[nX][nPos]))
-                EXIT
+        For nX := 1 To Len(aCols)
+            // Verifica se a linha não está deletada
+            If (!GDDeleted(nX, aHeader, aCols))
+                // Valida a arte e a amarração do produto x cliente
+                // Se der erro, para de percorrer o vetor
+                If !(lOK := U_FFATV001(aCols[nX][nPos]))
+                    EXIT
+                EndIf
             EndIf
-        EndIf
-    Next nX
+        Next nX
+    EndIf
 Return (lOK)
