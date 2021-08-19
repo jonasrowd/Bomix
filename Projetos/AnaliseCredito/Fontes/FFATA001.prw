@@ -71,7 +71,7 @@ While C5TEMP->(!Eof())
 
     EndSql
 
-    lAtualiza := .T.
+   lAtualiza := .T.
     dbSelectArea("Z07")
     dbSetOrder(1)
     If dbSeek(SC5->C5_FILIAL+SC5->C5_NUM)
@@ -85,15 +85,14 @@ While C5TEMP->(!Eof())
 
     If lAtualiza
         RecLock('SC5',.F.)
-        If E1TEMP->(VALOR) != 0
-            C5_BXSTATU := 'B'
-            C5_BLQ     := 'B'
-            C5_LIBEROK := 'S'
-
+            If E1TEMP->(VALOR) != 0 //valor tem que estar em aberto
             dbSelectArea('SC6')
             dbSetOrder(1)
-            IF dbSeek(SC5->C5_FILIAL + SC5->C5_NUM )
-                While SC6->(!EOF()) .AND. C6_NUM == SC5->C5_NUM
+            dbSeek(SC5->C5_FILIAL + SC5->C5_NUM )
+                SC5->C5_BXSTATU := 'B'
+                SC5->C5_BLQ     := 'B'
+                SC5->C5_LIBEROK := 'S'
+                While SC6->(!EOF()) .AND. SC6->C6_NUM == SC5->C5_NUM
                     If SC6->C6_FSGEROP == '1' .AND. EMPTY(SC6->C6_NUMOP)
                         SC5->C5_FSSTBI 	:= 'BLOQUEADO PR'
                     Else
@@ -101,15 +100,25 @@ While C5TEMP->(!Eof())
                     EndIf
                     SC6->(dbSkip())
                 End
-            Else
-
-            SC5->C5_BLQ := ''
-            SC5->C5_BXSTATU := 'L'
-            SC5->C5_LIBEROK := 'L'
-            SC5->C5_FSSTBI 	:= 'LIBERADO'
+            Else 
+            dbSelectArea('SC6')
+            dbSetOrder(1)
+            dbSeek(SC5->C5_FILIAL + SC5->C5_NUM )
+                While SC6->(!EOF()) .AND. SC6->C6_NUM == SC5->C5_NUM
+                    If SC6->C6_QTDENT >0 .AND. SC6->C6_QTDVEN > SC6->C6_QTDENT
+                        SC5->C5_FSSTBI 	:= 'PARCIAL'
+                        SC5->C5_BXSTATU := 'A'
+                        SC5->C5_LIBEROK := ''
+                    Else
+                        SC5->C5_FSSTBI 	:= 'LIBERADO'
+                        SC5->C5_BXSTATU := 'L'
+                        SC5->C5_LIBEROK := 'L'
+                    EndIf
+                SC5->C5_BLQ     := ''
+                SC6->(dbSkip())
+                End
             EndIf
         MsUnlock()
-        EndIf
     EndIf
     C5TEMP->(dbSkip())
 EndDo
