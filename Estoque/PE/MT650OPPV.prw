@@ -41,6 +41,7 @@ User Function MT650OPPV()
 			c_Pedido := SC2->C2_PEDIDO
 			If !Empty(c_Pedido)				//Se OP estiver associada a um pedido de venda
 				c_Produto := SC2->C2_PRODUTO
+				cItemAux := a_OPsPV[i][1]
 				c_Cliente := Posicione("SC5", 1, xFilial("SC5") + c_Pedido, "C5_CLIENTE")
 				c_Loja    := Posicione("SC5", 1, xFilial("SC5") + c_Pedido, "C5_LOJACLI")
 
@@ -211,23 +212,91 @@ User Function MT650OPPV()
 
 					Read more: http://www.blacktdn.com.br/2012/03/blacktdn-funcao-nao-documentada.html#ixzz6QVFqdfpB
 					*/
-
-
-
-
-
-
-
-
-
 				Endif
-
 				//				f_Mata410(c_Pedido)
 			Endif
 			//IDENTIFICAÇÃO DO ERRO GERADO - FIM
-
 		Endif
 	Next i
+
+	// Gera um novo alias para a tabela temporária
+	c_AliasAux := GetNextAlias()
+
+	// Pesquisa pelos produtos que não devem
+	// gerar Ordem de Produção
+	BEGINSQL ALIAS c_AliasAux
+		SELECT
+			C2.C2_FILIAL  CFILAUX,
+			C2.C2_NUM     CNUMAUX,
+			C2.C2_ITEM    CITEMAUX,
+			C2.C2_SEQUEN  CSEQAUX,
+			C2.C2_PRODUTO CPRODAUX,
+			B1.B1_BRTPPR  CBRITOAUX,
+			Z05.Z05_CARRO CCARROAUX
+		FROM
+			%TABLE:SC2% C2
+			INNER JOIN
+				%TABLE:SB1% B1
+				ON B1.B1_FILIAL = %XFILIAL:SB1%
+				AND B1.B1_COD   = C2.C2_PRODUTO
+				AND B1.%NOTDEL%
+			INNER JOIN
+				%TABLE:Z05% Z05
+				ON Z05.Z05_FILIAL = %XFILIAL:Z05%
+				AND Z05.Z05_NOME  = B1.B1_BRTPPR
+				AND Z05.%NOTDEL%
+		WHERE
+			C2.C2_NUM         = %EXP:c_NumOP%
+			AND Z05.Z05_CARRO = 'N'
+			AND C2.%NOTDEL%
+
+	ENDSQL
+
+	// Percorre os registros trazido pela query
+	While (!EOF())
+		// Monta a chave de busca da Ordem de Produção
+		c_Key := CFILAUX + CNUMAUX + CITEMAUX + CSEQAUX
+
+		// Posiciona na Ordem de Produção
+		DBSelectArea("SC2")
+		DBSetOrder(1)
+		DBSeek(c_Key)
+
+		// Realiza deleção virtual de Ordem de Produção
+		If (Found())
+			RecLock("SC2", .F.)
+				DBDelete()
+			MsUnlock()
+		EndIf
+
+		// Reposiciona na tabela temporária para montagem
+		// da chave de pesquisa do Empenho
+		DBSelectArea(c_AliasAux)
+		c_Key := FwXFilial("SD4") + CPRODAUX + c_NumOP
+
+		// Posiciona no Empenho
+		DBSelectArea("SD4")
+		DBSetOrder(1)
+		DBSeek(c_Key)
+
+		// Percorre os Empenhos da OP
+		While (!EOF() .And. SubStr(D4_OP, 1, 6) == c_NumOP)
+			// Realiza deleção virtual do Empenho
+			If (D4_COD == (c_AliasAux)->(CPRODAUX))
+				RecLock("SD4", .F.)
+					DBDelete()
+				MsUnlock()
+			EndIf
+
+			// Salta para o próximo item do Empenho
+			DBSkip()
+		End
+
+		// Reposiciona na tabela temporária
+		// para saltar para o registro
+		DBSelectArea(c_AliasAux)
+		DBSkip()
+	End
 
 	RestArea(a_AreaSC2)
 	RestArea(a_Area)
@@ -250,70 +319,3 @@ Static Function f_SitArte
 
 	QRY->(dbCloseArea())
 Return c_SitArte
-
-
-/*
-Static Function f_Mata410(c_Pedido)
-Local a_Cabec   := {}	
-Local a_Itens   := {}
-Local a_Linha   := {}
-Local a_AreaSC5 := SC5->(GetArea())
-Local a_Area    := GetArea()
-
-Private lMsErroAuto := .F.
-
-a_Cabec := {}	
-a_Itens := {}
-
-dbSelectArea("SC5")
-dbSetOrder(1)
-If dbSeek(xFilial("SC5") + c_Pedido)
-aadd(a_Cabec,{"C5_NUM",		SC5->C5_NUM,		Nil})
-aadd(a_Cabec,{"C5_TIPO",	SC5->C5_TIPO,		Nil})
-aadd(a_Cabec,{"C5_CLIENTE",	SC5->C5_CLIENTE,	Nil})	
-aadd(a_Cabec,{"C5_LOJACLI",	SC5->C5_LOJACLI,	Nil})	
-aadd(a_Cabec,{"C5_LOJAENT",	SC5->C5_LOJAENT,	Nil})	
-aadd(a_Cabec,{"C5_CONDPAG",	SC5->C5_CONDPAG,	Nil})
-
-c_Qry := " SELECT * FROM " + RetSqlName("SC6") + " WHERE C6_FILIAL = '" + xFilial("SC6") + "' AND C6_NUM = '" + c_Pedido + "' "
-c_Qry += " AND D_E_L_E_T_ <> '*' ORDER BY C6_FILIAL, C6_NUM, C6_ITEM "
-
-TCQuery c_Qry New Alias QRY
-
-dbSelectArea("QRY")
-dbGoTop()
-While QRY->(!EoF())
-a_Linha := {}
-
-aadd(a_Linha,{"LINPOS",		"C6_ITEM",			QRY->C6_ITEM})
-aadd(a_Linha,{"AUTDELETA",	"N",				Nil})
-aadd(a_Linha,{"C6_PRODUTO",	QRY->C6_PRODUTO,	Nil})		
-aadd(a_Linha,{"C6_QTDVEN",	QRY->C6_QTDVEN,		Nil})		
-aadd(a_Linha,{"C6_PRCVEN",	QRY->C6_PRCVEN,		Nil})		
-aadd(a_Linha,{"C6_PRUNIT",	QRY->C6_PRUNIT,		Nil})		
-aadd(a_Linha,{"C6_VALOR",	QRY->C6_VALOR,		Nil})		
-aadd(a_Linha,{"C6_TES",		QRY->C6_TES,		Nil})
-
-If QRY->C6_OP $ "01/05"
-aadd(a_Linha,{"C6_QTDLIB",	QRY->C6_QTDVEN,	Nil})
-//				aadd(a_Linha,{"C6_RESERVA",	,	Nil})
-Endif
-
-aadd(a_Itens,a_Linha)	
-
-QRY->(dbSkip())
-End
-
-QRY->(dbCloseArea())
-
-MATA410(a_Cabec, a_Itens, 4)
-
-If lMsErroAuto
-MostraErro()
-EndIf
-Endif
-
-RestArea(a_AreaSC5)
-RestArea(a_Area)
-Return
-*/
