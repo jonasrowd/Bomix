@@ -14,21 +14,14 @@
 /*/
 User Function FFINR004()
 
-    Local oExcel
-    Local oFWMsExcel
-    Local aArea          := GetArea()
-    Local cQuery         := ""
-  	Local cDesc1         := "Este programa tem como objetivo exportar o relatório de FLUXO DE CAIXA"
+    Local cDesc1         := "Este programa tem como objetivo exportar o relatório de FLUXO DE CAIXA"
   	Local cDesc2         := "para o EXCEL de acordo com os parametros informados pelo usuario."
-  	Local cDesc3         := "SERÁ GRAVADO NA PASTA c:\bomix\"
-  	Local cPict          := ""
+  	Local cDesc3         := "SERA GRAVADO NA PASTA c:\bomix\"
   	Local titulo         := "Fluxo de Caixa - EXCEL
 	Local nLin           := 80
 	Local Cabec1         := ""
 	Local Cabec2         := "Cliente/Fornecedor   Nat/CC                 Emissão   Num.        Pc       Venc Real  Vencimento        Receber          Pagar          Saldo      Usuario"
-	Local imprime        := .T.
 	Local aOrd 			 := {}
-	Local i				 := ''
 	Private lEnd         := .F.
 	Private lAbortPrint  := .F.
 	Private CbTxt        := ""
@@ -38,7 +31,6 @@ User Function FFINR004()
 	Private nTipo        := 18
 	Private aReturn      := { "Zebrado", 1, "Administracao", 2, 2, 1, "", 1}
 	Private nLastKey     := 0
-	Private cbtxt        := Space(10)
 	Private cbcont       := 00
 	Private CONTFL       := 01
 	Private m_pag        := 01
@@ -90,16 +82,7 @@ Return
 /*/
 
 Static Function RunReport(Cabec1,Cabec2,Titulo,nLin)
-	Local nOrdem
-  	Local c_Tipo     := ""
-  	Local n_TotTipo  := 0
-  	Local n_TotDia   := 0
-  	Local n_TotDiaRc := 0
-  	Local n_Total    := 0
-  	Local n_TotalRec := 0
-  	Local d_Dia      := Stod("  /  /  ")
-  	Local a_Titulos  := {}
-  	Local n_Saldo    := MV_PAR09
+
 
   	c_Qry := f_Qry()
 
@@ -119,14 +102,15 @@ RETURN
 
 Static Function f_Qry()
     Local aArea        := GetArea()
-    Local cQuery        := ""
+	Local i		
     Local oFWMsExcel
     Local oExcel
     Local cArquivo    := "c:\bomix\" //FFINR004.xml GetTempPath()+'FFINR004.xml'
 
 	c_Qry := " SELECT * FROM " + STR_PULA
-  	c_Qry += " (SELECT SC7.C7_DESCRI, A2_NOME FORNECE, C7_CC AS NATUREZA, CTT_DESC01 AS ED_DESCRIC, C7_OBS OBS, '' NOTA, C7_NUM PEDIDO, C7_DESCRI AS DESC_PEDIDO,C7_FSDTPRE EMISSAO, '' VENC, " +STR_PULA
-	c_Qry += " SUM(CASE WHEN C7_QUJE > 0 AND C7_QUJE < C7_QUANT THEN ((C7_QUANT-C7_QUJE)*(C7_PRECO))+((C7_QUANT-C7_QUJE) * C7_IPI/100) ELSE (C7_TOTAL)+(C7_VALIPI) END) AS TOTAL, C7_COND CONDICAO, 'Previstos' TIPO " + STR_PULA
+  	c_Qry += " (SELECT SC7.C7_DESCRI, A2_NOME FORNECE, C7_CC AS NATUREZA, CTT_DESC01 AS ED_DESCRIC, C7_OBS OBS, '' NOTA, C7_NUM PEDIDO, C7_DESCRI AS DESC_PEDIDO,C7_FSDTPRE EMISSAO, '' VENC, " + STR_PULA
+	c_Qry += " SUM(CASE WHEN C7_QUJE > 0 AND C7_QUJE < C7_QUANT AND C7_VALIPI > 0 THEN ((C7_QUANT-C7_QUJE)*(C7_PRECO))+((C7_QUANT-C7_QUJE) * C7_IPI/100) " + STR_PULA
+	c_Qry += " WHEN C7_QUJE > 0 AND C7_QUJE < C7_QUANT AND C7_VALIPI = 0 THEN ((C7_QUANT-C7_QUJE)*(C7_PRECO)) ELSE (C7_TOTAL)+(C7_VALIPI) END) AS VALOR, C7_COND CONDICAO, 'Previstos' TIPO " + STR_PULA
   	c_Qry += " FROM " + RetSqlName("SC7") + " SC7 (NOLOCK)" + STR_PULA
   	c_Qry += " JOIN " + RetSqlName("SA2") + " SA2  (NOLOCK) ON A2_COD = C7_FORNECE AND A2_LOJA = C7_LOJA AND (A2_COD BETWEEN '" + MV_PAR03 + "' AND '" + MV_PAR04 + "') AND SA2.D_E_L_E_T_<>'*' AND A2_FILIAL = '" + XFILIAL("SA2") + "'" + STR_PULA
 	c_Qry += " LEFT JOIN "+RetSqlName("CTT") +" CTT (NOLOCK) ON " + STR_PULA
@@ -184,46 +168,28 @@ Static Function f_Qry()
         oFWMsExcel:AddColumn("FLUXO","FLUXO","VENC",1,4,.F.)
         oFWMsExcel:AddColumn("FLUXO","FLUXO","RECEBER",3,3,.T.)
         oFWMsExcel:AddColumn("FLUXO","FLUXO","PAGAR",3,3,.T.)
+		oFWMsExcel:AddColumn("FLUXO","FLUXO","PREVISTOS",3,3,.T.)
 
 
         //Criando as Linhas... Enquanto não for fim da query
 
-          oFWMsExcel:AddRow("FLUXO","FLUXO",{"S A L D O  I N I C I A L ",;
-																	"",;
-																	"",;
-																	"",;
-																	STOD(QRYPRO->EMISSAO),;
-									   								"",;
-																	"",;
-														 			"",;
-														 			"",;
-														 			STOD(QRYPRO->VENC),;
-																	mv_par09,;
-																0;
-																	})
+          oFWMsExcel:AddRow("FLUXO","FLUXO",{"S A L D O  I N I C I A L ","","","",STOD(QRYPRO->EMISSAO),"","","","",STOD(QRYPRO->VENC),mv_par09,0,0})
 
         While !QRYPRO->(eoF())
-          IF alltrim(QRYPRO->VENC)<>''
-          oFWMsExcel:AddRow("FLUXO","FLUXO",{QRYPRO->FORNECE,;
-          															ALLTRIM(QRYPRO->NATUREZA),;
-																	ALLTRIM(QRYPRO->ED_DESCRIC),;
-																	ALLTRIM(QRYPRO->OBS),;
-																	STOD(QRYPRO->EMISSAO),;
-									   								(QRYPRO->NOTA),;
-																	(QRYPRO->PEDIDO),;
-														 			 "",;
-														 			Iif(alltrim(QRYPRO->VENC)<>'',Iif(ALLTRIM(QRYPRO->TIPO) = "Receber",(DataValida(DaySum(Stod(QRYPRO->VENC), 1), .T.)),(DataValida(Stod(QRYPRO->VENC), .T.))),''),;
-														 			STOD(QRYPRO->VENC),;
-																	Iif(ALLTRIM(QRYPRO->TIPO) = "Receber",(QRYPRO->VALOR),0),;
-																	Iif(ALLTRIM(QRYPRO->TIPO) = "Pagar",(QRYPRO->VALOR),0);
-																	})
-
-
-
-
-            //Pulando Registro
-         Endif
-
+          	oFWMsExcel:AddRow("FLUXO","FLUXO",{QRYPRO->FORNECE,;
+			ALLTRIM(QRYPRO->NATUREZA),;
+			ALLTRIM(QRYPRO->ED_DESCRIC),;
+			ALLTRIM(QRYPRO->OBS),;
+			STOD(QRYPRO->EMISSAO),;
+			(QRYPRO->NOTA),;
+			(QRYPRO->PEDIDO),;
+			"",;
+			Iif(alltrim(QRYPRO->VENC)<>'',Iif(ALLTRIM(QRYPRO->TIPO) = "Receber",(DataValida(DaySum(Stod(QRYPRO->VENC), 1), .T.)),(DataValida(Stod(QRYPRO->VENC), .T.))),''),;
+			STOD(QRYPRO->VENC),;
+			Iif(ALLTRIM(QRYPRO->TIPO) = "Receber",(QRYPRO->VALOR),0),;
+			Iif(ALLTRIM(QRYPRO->TIPO) = "Pagar",(QRYPRO->VALOR),0),;
+			Iif(ALLTRIM(QRYPRO->TIPO) = "Previstos",(QRYPRO->VALOR),0)})
+				//Pulando Registro
             QRYPRO->(DbSkip())
         EndDo
 
@@ -237,7 +203,7 @@ Static Function f_Qry()
        		For i:=1 To Len(a_Parcelas)
            		If (a_Parcelas2[i][1] >= MV_PAR07) .And. (a_Parcelas2[i][1] <= MV_PAR08)
 
-          oFWMsExcel:AddRow("FLUXO","FLUXO",{QRYPRO->FORNECE,;
+          		oFWMsExcel:AddRow("FLUXO","FLUXO",{QRYPRO->FORNECE,;
 																	ALLTRIM(QRYPRO->NATUREZA),;
 																	ALLTRIM(QRYPRO->ED_DESCRIC),;
 																	ALLTRIM((QRYPRO->OBS)),;
@@ -248,8 +214,8 @@ Static Function f_Qry()
 														 			Stod(Dtos(DataValida(a_Parcelas2[i][1],.T.))),;
 														 			Stod(Dtos(a_Parcelas2[i][1])),;
 																	0,;
-														   			a_Parcelas2[i][2];
-																	})
+														   			a_Parcelas2[i][2],;
+																	0})
 
 
             //Pulando Registro
