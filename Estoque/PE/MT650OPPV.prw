@@ -220,7 +220,7 @@ User Function MT650OPPV()
 	Next i
 
 
-	//ATUALIZAÇÃO REALIZADA PARA O MES --JONAS--
+	//ATUALIZAÇÃO REALIZADA PARA O MES --JONAS-- 20/08/2021
 	// Gera um novo alias para a tabela temporária
 	c_AliasAux := GetNextAlias()
 
