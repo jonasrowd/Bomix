@@ -219,6 +219,8 @@ User Function MT650OPPV()
 		Endif
 	Next i
 
+
+	//ATUALIZAÇÃO REALIZADA PARA O MES --JONAS--
 	// Gera um novo alias para a tabela temporária
 	c_AliasAux := GetNextAlias()
 
@@ -249,12 +251,32 @@ User Function MT650OPPV()
 			C2.C2_NUM         = %EXP:c_NumOP%
 			AND Z05.Z05_CARRO = 'N'
 			AND C2.%NOTDEL%
-
 	ENDSQL
 
 	// Percorre os registros trazido pela query
 	While (!EOF())
-		// Monta a chave de busca da Ordem de Produção
+		// Monta a chave de busca da SD4
+		c_Key := CFILAUX + CNUMAUX + CITEMAUX + CSEQAUX
+
+		// Posiciona no Empenho
+		DBSelectArea("SD4")
+		DBSetOrder(2)
+		DBSeek(c_Key)
+
+		// Percorre os Empenhos da OP
+		While (!EOF()) .AND. (AllTrim(D4_OP) == (c_AliasAux)->(CNUMAUX + CITEMAUX + CSEQAUX))
+			// Realiza deleção virtual do Empenho
+				RecLock("SD4", .F.)
+					DBDelete()
+				MsUnlock()
+			// Salta para o próximo item do Empenho
+			DBSkip()
+		End
+
+		// Reposiciona na tabela temporária para montagem
+		// da chave de pesquisa do Empenho
+		DBSelectArea(c_AliasAux)
+
 		c_Key := CFILAUX + CNUMAUX + CITEMAUX + CSEQAUX
 
 		// Posiciona na Ordem de Produção
@@ -269,35 +291,12 @@ User Function MT650OPPV()
 			MsUnlock()
 		EndIf
 
-		// Reposiciona na tabela temporária para montagem
-		// da chave de pesquisa do Empenho
-		DBSelectArea(c_AliasAux)
-		c_Key := FwXFilial("SD4") + CPRODAUX + c_NumOP
-
-		// Posiciona no Empenho
-		DBSelectArea("SD4")
-		DBSetOrder(1)
-		DBSeek(c_Key)
-
-		// Percorre os Empenhos da OP
-		While (!EOF() .And. SubStr(D4_OP, 1, 6) == c_NumOP)
-			// Realiza deleção virtual do Empenho
-			If (D4_COD == (c_AliasAux)->(CPRODAUX))
-				RecLock("SD4", .F.)
-					DBDelete()
-				MsUnlock()
-			EndIf
-
-			// Salta para o próximo item do Empenho
-			DBSkip()
-		End
-
 		// Reposiciona na tabela temporária
 		// para saltar para o registro
 		DBSelectArea(c_AliasAux)
 		DBSkip()
 	End
-
+	
 	RestArea(a_AreaSC2)
 	RestArea(a_Area)
 Return Nil
