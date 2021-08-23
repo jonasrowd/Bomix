@@ -95,7 +95,7 @@ cQuery += "    ,SUBSTRING(D13.D1_DTDIGIT,7,2)+'/'+SUBSTRING(D13.D1_DTDIGIT,5,2)+
 cQuery += "    ,C7.C7_PRECO " + CRLF
 cQuery += "    ,ISNULL(D13.D1_VUNIT,0) DIFER " + CRLF
 cQuery += "    ,C7.C7_PRECO - ISNULL(D13.D1_VUNIT,0) AS DIFERENCA " + CRLF
-cQuery += "    FROM	
+cQuery += "    FROM " + RetSqlName("SC7") + " C7 " + CRLF
 cQuery += "    INNER JOIN " + RetSQLName("SA2") + " A2 " + CRLF 
 cQuery += "    ON A2.A2_FILIAL = '"+xFilial("SA2")+"'" + CRLF
 cQuery += "    AND A2.A2_COD = C7.C7_FORNECE " + CRLF
