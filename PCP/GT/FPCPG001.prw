@@ -21,11 +21,11 @@
 User Function FPCPG001
 	Local c_Lote   := ''                                                                                                       
 	//	Local c_Mes    := StrZero(Month(M->H6_DATAFIN), 2)
-	Local c_Ano    := cValToChar(Year(M->H6_DATAFIN))
-	Local n_Semana := 0
+	// Local c_Ano    := cValToChar(Year(M->H6_DATAFIN))
+	// Local n_Semana := 0
 	Local c_sigla    := ''
-	Local c_Qry    := ''
-	Local c_Qry2    := ''
+	// Local c_Qry    := ''
+	// Local c_Qry2    := ''
 
 	_cAlias := Alias()
 	_cOrd   := IndexOrd()
@@ -72,36 +72,36 @@ User Function FPCPG001
 		Else   
 
 
-			dbSelectArea("SC2")
-			//dbSetOrder(_cOrd)  
-			//dbGoTo(_nReg)
-			c_Lote:=SC2->C2_FSLOTOP
+			//dbSelectArea("SC2")
+			// //dbSetOrder(_cOrd)  
+			// //dbGoTo(_nReg)
+			// c_Lote:=SC2->C2_FSLOTOP
 
-			IF ALLTRIM(c_Lote)=""
-				c_Qry := f_Qry()                    //Chama a função para selecionar o lote de maior sequencial da OP
-				TCQUERY c_Qry NEW ALIAS QRY
-				dbSelectArea("QRY")
-				dbGoTop()
-				If QRY->(!Eof())
-					n_Semana := QRY->SEMANA
-				Endif		
-				c_Qry2 := f_Qrylot()                    
-				TCQUERY c_Qry2 NEW ALIAS QRY2
-				dbSelectArea("QRY2")
-				dbGoTop()
-				If ALLTRIM(QRY2->A1_FSLT_OP)<>""
-					c_Lote := SUBSTR(M->H6_OP,1,8)+SUBSTR(M->H6_OP,10,2)   // cria o número do lote baseado na OP -----   incluso por Victor em 15/03/20
-				Else
-					c_Lote := StrZero(n_Semana, 2, 0) + SB1->B1_GRUPO + c_Ano
-				Endif
+			// IF ALLTRIM(c_Lote)=""
+			// 	c_Qry := f_Qry()                    //Chama a função para selecionar o lote de maior sequencial da OP
+			// 	TCQUERY c_Qry NEW ALIAS QRY
+			// 	dbSelectArea("QRY")
+			// 	dbGoTop()
+			// 	If QRY->(!Eof())
+			// 		n_Semana := QRY->SEMANA
+			// 	Endif		
+			// 	c_Qry2 := f_Qrylot()                    
+			// 	TCQUERY c_Qry2 NEW ALIAS QRY2
+			// 	dbSelectArea("QRY2")
+			// 	dbGoTop()
+			// 	If ALLTRIM(QRY2->A1_FSLT_OP)<>""
+			 		c_Lote := SUBSTR(M->H6_OP,1,8)+SUBSTR(M->H6_OP,10,2)   // cria o número do lote baseado na OP -----   Alterado por Jonas em 23/08/21
+			// 	Else
+			// 		c_Lote := StrZero(n_Semana, 2, 0) + SB1->B1_GRUPO + c_Ano
+			// 	Endif
 
-				// GRAVA LOTE NA SC2
-				//	RecLock("SC2", .F.)
-				//	SC2->C2_FSLOTOP :=   c_Lote       
-				//	SC2->(MsUnlock())
-				QRY->(dbCloseArea())
-				QRY2->(dbCloseArea())
-			Endif
+			// 	// GRAVA LOTE NA SC2
+			// 	//	RecLock("SC2", .F.)
+			// 	//	SC2->C2_FSLOTOP :=   c_Lote       
+			// 	//	SC2->(MsUnlock())
+			// 	QRY->(dbCloseArea())
+			// 	QRY2->(dbCloseArea())
+			// Endif
 		Endif
 	Endif
 
