@@ -1,6 +1,6 @@
-#INCLUDE "TOPCONN.CH"  
+#INCLUDE "TOPCONN.CH"
 #INCLUDE "PROTHEUS.CH"
-#INCLUDE "TRYEXCEPTION.CH"                                                       
+#INCLUDE "TRYEXCEPTION.CH"
 
 
 /*
@@ -45,7 +45,7 @@ User Function MT650OPPV()
 				c_Cliente := Posicione("SC5", 1, xFilial("SC5") + c_Pedido, "C5_CLIENTE")
 				c_Loja    := Posicione("SC5", 1, xFilial("SC5") + c_Pedido, "C5_LOJACLI")
 
-				dbSelectArea("SA7")			
+				dbSelectArea("SA7")
 				//SA7->(dbGoTop())
 				SA7->(dbSetOrder(2))
 				If SA7->(dbSeek(xFilial("SA7") + c_Produto + c_Cliente + c_Loja))			//Verifica se existe amarração Produto x Cliente
@@ -121,13 +121,13 @@ User Function MT650OPPV()
 								SC2->(dbSkip())
 							End
 						Else
-							SC2->(dbSkip())						
+							SC2->(dbSkip())
 						Endif
 					Endif
 				Else
 					SC2->(dbSkip())
 				Endif
-			End       
+			End
 
 
 			// VALIDADO, MAS AINDA SERÁ AVALIADO SE SERÁ POSTO EM PRODUÇÃO
@@ -167,12 +167,12 @@ User Function MT650OPPV()
 
 
 					MemoWrit("C:\BOMIX\MT650OPPV_1.sql",c_Qry)
-					/*				
+					/*
 					If TcSqlExec(c_Qry) < 0
 					MsgStop("SQL Error: " + TcSqlError())
 					TcSqlExec("ROLLBACK")
 					Else
-					TcSqlExec("COMMIT")	
+					TcSqlExec("COMMIT")
 					Endif
 					*/
 					// TRECHO ALTERADO POR VICTOR SOUSA 28/06/20 O TRATAMENTO ACIMA DE GRAVAÇÃO  ESTAVA GERANDO ERRO NO DBACCESS ATUAL
@@ -194,7 +194,7 @@ User Function MT650OPPV()
 					TcCommit(2,ProcName())    //Commit
 					TcCommit(4)                //End Transaction
 
-					CATCHEXCEPTION   
+					CATCHEXCEPTION
 
 					TcCommit(3) //RollBack
 					TcCommit(4) //End Transaction
@@ -296,7 +296,7 @@ User Function MT650OPPV()
 		DBSelectArea(c_AliasAux)
 		DBSkip()
 	End
-	
+
 	RestArea(a_AreaSC2)
 	RestArea(a_Area)
 Return Nil
