@@ -28,9 +28,9 @@ User Function FFATA004()
         C6.D_E_L_E_T_ <> '*'
         WHERE
         C5.D_E_L_E_T_ <> '*'   AND
-        C6_QTDENT < C6_QTDVEN  AND
+        C6_QTDENT = '0'  AND
         C5_NOTA = '' AND
-        //C6_NUMORC <> '' AND
+        C6_NOTA = '' AND
         C5_LIBEROK <> 'E' AND
         C6_BLQ <> 'R' AND
         C6_FILIAL = '020101'
@@ -79,13 +79,16 @@ User Function FFATA004()
             dbSelectArea('SC6')
             dbSetOrder(1)
             dbSeek(SC5->C5_FILIAL + SC5->C5_NUM )
-                SC5->C5_BXSTATU := 'B'
-                SC5->C5_BLQ     := 'B'
-                SC5->C5_LIBEROK := 'S'
-                While SC6->(!EOF()) .AND. SC6->C6_NUM == SC5->C5_NUM
-                    If SC6->C6_FSGEROP == '1' .AND. EMPTY(SC6->C6_NUMOP)
+                While SC6->(!EOF()) .AND. SC6->C6_NUM == SC5->C5_NUM .AND. EMPTY(SC6->C6_NOTA)
+                    If SC6->C6_FSGEROP == '1' .AND. EMPTY(SC6->C6_NUMOP) 
                         SC5->C5_FSSTBI 	:= 'BLOQUEADO PR'
+                        SC5->C5_BXSTATU := 'B'
+                        SC5->C5_BLQ     := 'B'
+                        SC5->C5_LIBEROK := 'S'
                     Else
+                        SC5->C5_BXSTATU := 'B'
+                        SC5->C5_BLQ     := 'B'
+                        SC5->C5_LIBEROK := 'S'
                         SC5->C5_FSSTBI 	:= 'BLOQUEADO LO'
                     EndIf
                     SC6->(dbSkip())
@@ -95,16 +98,10 @@ User Function FFATA004()
             dbSetOrder(1)
             dbSeek(SC5->C5_FILIAL + SC5->C5_NUM )
                 While SC6->(!EOF()) .AND. SC6->C6_NUM == SC5->C5_NUM
-                    If SC6->C6_QTDENT >0 .AND. SC6->C6_QTDVEN > SC6->C6_QTDENT
-                        SC5->C5_FSSTBI 	:= 'PARCIAL'
-                        SC5->C5_BXSTATU := 'A'
-                        SC5->C5_LIBEROK := ''
-                    Else
-                        SC5->C5_FSSTBI 	:= 'LIBERADO'
-                        SC5->C5_BXSTATU := 'L'
-                        SC5->C5_LIBEROK := 'L'
-                    EndIf
-                SC5->C5_BLQ     := ''
+                    SC5->C5_FSSTBI 	:= 'LIBERADO'
+                    SC5->C5_BXSTATU := 'L'
+                    SC5->C5_LIBEROK := 'L'
+                    SC5->C5_BLQ     := ''
                 SC6->(dbSkip())
                 End
             EndIf

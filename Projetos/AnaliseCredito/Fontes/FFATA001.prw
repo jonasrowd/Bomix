@@ -18,27 +18,22 @@ Endif
 
 BeginSql alias 'C5TEMP'
     SELECT
-
     C5_FILIAL FILIAL,
     C5_NUM NUM
-
     FROM
-
     SC5010 C5
-
     INNER JOIN SC6010 C6 ON
     C5_FILIAL = C6_FILIAL AND
     C5_NUM = C6_NUM AND
     C6.D_E_L_E_T_ <> '*'
-
     WHERE
     C5.D_E_L_E_T_ <> '*'   AND
-    C6_QTDENT < C6_QTDVEN  AND
+    C6_QTDENT = '0' AND
     C5_NOTA = '' AND
+    C6_NOTA = '' AND
     C6_NUMORC <> '' AND
     C5_LIBEROK <> 'E'  AND
     C6_BLQ<>'R'
-
 EndSql
 
 While C5TEMP->(!Eof())
@@ -52,13 +47,9 @@ While C5TEMP->(!Eof())
     Endif
 
     BeginSql alias 'E1TEMP'
-
         SELECT
-
         sum(E1_SALDO) VALOR
-
         FROM %table:SE1% SE1
-
         WHERE
         E1_SALDO > 0 AND
         E1_CLIENTE = %exp:SC5->C5_CLIENTE% AND
@@ -67,11 +58,11 @@ While C5TEMP->(!Eof())
         E1_TIPO = 'NF' AND
         E1_VENCREA >= '20200101' AND
         E1_VENCREA < %exp:DtoS(dDataBase)% AND
-        E1_SALDO <> E1_JUROS
-
+        E1_SALDO <> E1_JUROS AND 
+        E1_FILIAL = '010101'
     EndSql
 
-   lAtualiza := .T.
+    lAtualiza := .T.
     dbSelectArea("Z07")
     dbSetOrder(1)
     If dbSeek(SC5->C5_FILIAL+SC5->C5_NUM)
@@ -89,13 +80,16 @@ While C5TEMP->(!Eof())
             dbSelectArea('SC6')
             dbSetOrder(1)
             dbSeek(SC5->C5_FILIAL + SC5->C5_NUM )
-                SC5->C5_BXSTATU := 'B'
-                SC5->C5_BLQ     := 'B'
-                SC5->C5_LIBEROK := 'S'
-                While SC6->(!EOF()) .AND. SC6->C6_NUM == SC5->C5_NUM
-                    If SC6->C6_FSGEROP == '1' .AND. EMPTY(SC6->C6_NUMOP)
+                While SC6->(!EOF()) .AND. SC6->C6_NUM == SC5->C5_NUM .AND. EMPTY(SC6->C6_NOTA)
+                    If SC6->C6_FSGEROP == '1' .AND. EMPTY(SC6->C6_NUMOP) 
                         SC5->C5_FSSTBI 	:= 'BLOQUEADO PR'
+                        SC5->C5_BXSTATU := 'B'
+                        SC5->C5_BLQ     := 'B'
+                        SC5->C5_LIBEROK := 'S'
                     Else
+                        SC5->C5_BXSTATU := 'B'
+                        SC5->C5_BLQ     := 'B'
+                        SC5->C5_LIBEROK := 'S'
                         SC5->C5_FSSTBI 	:= 'BLOQUEADO LO'
                     EndIf
                     SC6->(dbSkip())
@@ -104,17 +98,11 @@ While C5TEMP->(!Eof())
             dbSelectArea('SC6')
             dbSetOrder(1)
             dbSeek(SC5->C5_FILIAL + SC5->C5_NUM )
-                While SC6->(!EOF()) .AND. SC6->C6_NUM == SC5->C5_NUM
-                    If SC6->C6_QTDENT >0 .AND. SC6->C6_QTDVEN > SC6->C6_QTDENT
-                        SC5->C5_FSSTBI 	:= 'PARCIAL'
-                        SC5->C5_BXSTATU := 'A'
-                        SC5->C5_LIBEROK := ''
-                    Else
-                        SC5->C5_FSSTBI 	:= 'LIBERADO'
-                        SC5->C5_BXSTATU := 'L'
-                        SC5->C5_LIBEROK := 'L'
-                    EndIf
-                SC5->C5_BLQ     := ''
+                While SC6->(!EOF()) .AND. SC6->C6_NUM == SC5->C5_NUM .AND. EMPTY(SC6->C6_NOTA)
+                    SC5->C5_FSSTBI 	:= 'LIBERADO'
+                    SC5->C5_BXSTATU := 'L'
+                    SC5->C5_LIBEROK := 'L'
+                    SC5->C5_BLQ     := ''
                 SC6->(dbSkip())
                 End
             EndIf
