@@ -14,17 +14,17 @@
 ±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
 ±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
 ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
-/*/                    
+/*/
 
 
-User Function FPCPG002     
+User Function FPCPG002
 
-Local n_Ciclo := 0.0
+	Local n_Ciclo := 0.0
 
-DbSelectArea("SG2")
-DbSetOrder(3)
-If (DbSeek(xFilial("SG2")+ M->H6_PRODUTO+m->H6_OPERAC))                                                           
-  	n_Ciclo := SG2->G2_FSCICLO
-//	n_Ciclo := Round(  ((60/ SG2->G2_LOTEPAD)  * 60 )* SG2->G2_FSCAVI,2) 
-EndIf                                          
+	DbSelectArea("SG2")
+	DbSetOrder(3)
+	If (DbSeek(xFilial("SG2")+ M->H6_PRODUTO+m->H6_OPERAC))
+		n_Ciclo := SG2->G2_FSCICLO
+	EndIf
+	
 Return n_Ciclo
