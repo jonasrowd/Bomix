@@ -22,9 +22,9 @@ User Function FPCPG003
 Local n_cavi := 0.00   
 
 
-DbSelectArea("SG2")
-DbSetOrder(3)
-If (DbSeek(xFilial("SG2")+ M->H6_PRODUTO+m->H6_OPERAC))                                                           
-	n_cavi :=  SG2->G2_FSCAVI
-EndIf                                          
+	DbSelectArea("SG2")
+	DbSetOrder(3)
+	If (DbSeek(xFilial("SG2")+ M->H6_PRODUTO+m->H6_OPERAC))                                                           
+		n_cavi :=  SG2->G2_FSCAVI
+	EndIf                                          
 Return n_cavi
