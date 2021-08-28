@@ -10,6 +10,6 @@
 /*/
 User Function AfterLogin()
 
-    SetKey(VK_F8, {|| U_EXECFONTE()})
+    SetKey(VK_F8, {|| U_xFormula()})
 
 Return Nil
