@@ -1,7 +1,7 @@
 #include "topconn.ch"
 
 /*/{Protheus.doc} A250ARD4
-    Responsável pela gravação correta da perda.
+    Não grava perda de itens específicos com base na tabela Z05 campo Z05_NOME = B1_BRTPPR
     @type function
     @version 12.1.25
     @author jonas.machado
@@ -47,7 +47,7 @@ Static Function gravaPerda(_cCod)
     cQry += "                                     AND Z05.D_E_L_E_T_ <> '*'
     cQry += "                                     AND Z05_NOME = B1_BRTPPR
     cQry += " WHERE 
-    cQry += " B1_FILIAL = '"+FWxFilial("SB1")+"' 
+    cQry += " B1_FILIAL = '"+xFilial("SB1")+"' 
     cQry += " AND B1.D_E_L_E_T_ <> '*'
     cQry += " AND B1_BRTPPR <> ''
     cQry += " AND B1_COD = '"+_cCod+"'
