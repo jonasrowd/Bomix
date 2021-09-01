@@ -13,7 +13,7 @@
 User Function M410PVNF
 	Local lOK := .T.
 
-	If FWCodFil() != "030101" .And. C5_BXSTATU $ "B|P"
+	If FWCodFil() != "030101" .And. SC5->C5_BXSTATU $ "B|P"
 		lOK := .F.
 		Help(NIL, NIL, "PED_BLOCKED", NIL, "Pedido com restrições financeiras.",;
 			1, 0, NIL, NIL, NIL, NIL, NIL, {"Solicitar a liberação do setor comercial."})
