@@ -122,7 +122,7 @@ User Function FFATA001()
 					// Posiciona no itens do pedido com base no cabeçalho
 					DBSelectArea("SC6")
 					DBSetOrder(1)
-					DBSeek(SC5->C5_FILIAL + SC5->C5_NUM)
+					DBSeek(SC5->C5_FILIAL + SC5->C5_NUM )
 
 					// Percorre os itens (SC6) com base no pedido (SC5) que não tenham sido faturados
 					While (!EOF() .And. C6_NUM == SC5->C5_NUM .And. Empty(C6_NOTA))
