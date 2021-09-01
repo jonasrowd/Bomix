@@ -15,19 +15,23 @@ User Function M460MARK()
 	Local lRet			:= .T.
 	Local nAtrasados	:= 0
 	Local cNome			:= ""
-	Local _CALIAS    	:= GETAREA()
+	Local cAlias    	:= GETAREA()
+
+	DBSelectArea("SA1")
+	DbSetOrder(1)
+	DbSeek(FWxFilial("SA1")+SC9->C9_CLIENTE + SC9->C9_LOJA)
 
 	If (FWCodFil() != '030101') .AND. cValToChar(DOW(DATE())) $ ('23456')
 		nAtrasados := u_FFATVATR(SA1->A1_COD, SA1->A1_LOJA)
 		cNome := SA1->A1_NOME
 		
-		If nAtrasados != 0 .AND. (!estaLib(SC5->C5_NUM))
+		If nAtrasados > 0 .AND. (!estaLib(SC9->C9_PEDIDO))
 			lRet := .F.
-			Help(NIL, NIL, "CLIENTE_ATRASO", NIL, "O Cliente: " + AllTrim(cNome)  + " Pedido: "+SC5->C5_NUM+", possui restrições financeiras no total de R$ " ;
+			Help(NIL, NIL, "CLIENTE_ATRASO", NIL, "O Cliente: " + AllTrim(cNome)  + " Pedido: "+ SC9->C9_PEDIDO+", possui restrições financeiras no total de R$ " ;
 			+AllTrim(Transform(nAtrasados,"@e 9,999,999,999,999.99"))+".",1, 0, NIL, NIL, NIL, NIL, NIL, {"Solicite a liberação ao departamento comercial."})
 		EndIf
 
-		RestArea(_CALIAS)
+		RestArea(cAlias)
 	EndIf
 	
 Return lRet
@@ -46,11 +50,14 @@ Static Function estaLib(_cPed)
 	Local lOK	  := .F.
 	Default _cPed := ''
 
+	DBSelectArea("SC5")
+	DBSetOrder(1)
+	DBSeek(FwXFilial("SC5") + _cPed)
+
 	DbSelectArea('Z07')
 	DbSetOrder(1)
-
-	If DBSeek(SC5->C5_FILIAL + SC5->C5_NUM)
-		While Z07->(!Eof()) .And. SC5->C5_NUM == Z07->Z07_PEDIDO
+	If DBSeek(FWXFILIAL('Z07') + _cPed)
+		While Z07->(!Eof()) .And. _cPed == Z07->Z07_PEDIDO
 			If 'Venda' $ Z07->Z07_JUSTIF .OR. 'Exped' $ Z07->Z07_JUSTIF
 				lOK := .T.
 			EndIf
