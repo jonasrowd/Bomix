@@ -54,6 +54,7 @@ User Function FFATA004()
 				AND C6_QTDENT   = '0'
 				AND C5_NOTA     = ''
 				AND C6_NOTA     = ''
+				AND C5_TIPO     = 'N'
 				AND C5_LIBEROK <> 'E'
 				AND C6_BLQ     <> 'R'
                 AND C5_FILIAL   = '020101'

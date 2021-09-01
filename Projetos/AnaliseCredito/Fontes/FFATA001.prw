@@ -56,8 +56,11 @@ User Function FFATA001()
 				AND C5_NOTA     = ''
 				AND C6_NOTA     = ''
 				AND C6_NUMORC  <> ''
+                AND C5_TIPO     = 'N'
 				AND C5_LIBEROK <> 'E'
 				AND C6_BLQ     <> 'R'
+                AND C5_FILIAL   = '010101'
+                AND C6_FILIAL   = '010101'
 		ENDSQL
 
 		// Percorre os pedidos em aberto
@@ -78,7 +81,7 @@ User Function FFATA001()
 			// Calcula os débitos do cliente contido no pedido
 			BEGINSQL ALIAS "E1TEMP"
 				SELECT
-					SUM(E1_SALDO) VALOR
+					SUM(E1_SALDO) Saldo
 				FROM
 					%TABLE:SE1% SE1
 				WHERE
@@ -124,7 +127,7 @@ User Function FFATA001()
 					// Percorre os itens (SC6) com base no pedido (SC5) que não tenham sido faturados
 					While (!EOF() .And. C6_NUM == SC5->C5_NUM .And. Empty(C6_NOTA))
 						// Bloqueia o cliente caso tenha saldo em aberto (inadimplente)
-						If (E1TEMP->(VALOR) > 0)
+						If (E1TEMP->(Saldo) > 0)
 							// Monta a mensagem que será escrita na linha do log antes do reclock
 							cText := "[" + FwTimeStamp(2)       + "]"
                             cText += "[" + "CLIENTE: "          + AllTrim(SC5->C5_CLIENT )   + "]"
