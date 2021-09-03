@@ -10,6 +10,7 @@
 	@see https://tdn.totvs.com/display/public/PROT/MT416FIM
 /*/
 User Function MT416FIM
+	Local nX         := 0                                        // 
 	Local aArea      := GetArea()                                // Armazena a área atual
 	Local nAtrasados := U_FFATVATR(M->C5_CLIENTE, M->C5_LOJACLI) // Retorna o valor de títulos em aberto
 
@@ -26,11 +27,15 @@ User Function MT416FIM
 				C5_BLQ     := "B"
 				C5_LIBEROK := "S"
 
-				If aCols[n][GDFIELDPOS("C6_FSGEROP")] = "1"
-					C5_FSSTBI	:= "BLOQUEADO PR" //NÃO PODE BOTAR DATA NO PCP E NÃO GERA OP
-				Else
-					C5_FSSTBI 	:= "BLOQUEADO LO" //PODE BOTAR DATA NO PCP 
-				EndIf
+				// TODO Verificar a chamada deste ponto de entrada e avalidação de apenas uma linha
+				For nX := 1 To Len(aCols)
+					If (GDFieldGet("C6_FSGEROP", nX) == "1")
+						C5_FSSTBI	:= "BLOQUEADO PR" //NÃO PODE BOTAR DATA NO PCP E NÃO GERA OP
+						EXIT
+					Else
+						C5_FSSTBI 	:= "BLOQUEADO LO" //PODE BOTAR DATA NO PCP 
+					EndIf
+				Next nX
 
 				Help(NIL, NIL, "CLIENTE_ATRASO", NIL, "Existem restrições financeiras para este cliente.",;
 					1, 0, NIL, NIL, NIL, NIL, NIL, {"Por favor solicitar liberação ao departamento comercial."})
