@@ -9,49 +9,39 @@
 	@return Variant, retorna o número do lote
 /*/
 User Function FPCPG001()
-	Local c_Lote	:= ''
-	Local c_sigla	:= ''
+	Local cLote	 := ''   // cria o número do lote baseado na OP
+	Local cSigla := ''
 	_cAlias := Alias()
 	_cOrd   := IndexOrd()
 	_nReg   := Recno()
 
-	//Posiciona na Ordem de Produção
-	DBSelectArea("SC2")
-	DBSetOrder(1)
-	DbSeek(xFilial("SC2") + Substring(M->H6_OP,1,6))
-		If (Found()) 
-			RecLock("SC2", .F.)
-				If SC2->C2_QUJE==0
-					SC2->C2_FSSALDO := SC2->C2_QUANT
+	DbSelectArea('SB1')
+	DbSetOrder(1)
+	DbSeek(FwXFilial('SB1') + M->H6_PRODUTO)
+	If SB1->B1_RASTRO == 'L'	//VerIfica se o produto possui rastreabilidade
+		If cFilAnt == "020101"	// VerIfica se a empresa é SOPRO
+			DbSelectArea("SA7")
+			DbGoTop()
+			DbSetOrder(2)
+			DbSeek(xFilial("SA7") + M->H6_PRODUTO)
+			While !EOF()
+				If AllTrim(SA7->A7_FSSIGLA) <>'' .And. AllTrim(M->H6_PRODUTO) == AllTrim(SA7->A7_PRODUTO) .And. AllTrim(SubStr(cFilAnt,1,4)) == AllTrim(SA7->A7_FILIAL)
+					cSigla=AllTrim(SA7->A7_FSSIGLA)
 				EndIf
-			SC2->(MsUnLock())
-		EndIf
-
-	If SB1->B1_RASTRO == 'L'	//Verifica se o produto possui rastreabilidade
-		If cFilAnt == "020101"	// Verifica se a empresa é SOPRO
-			dbSelectArea("SA7")
-			dbGoTop()
-			dbSetOrder(2)
-			dbSeek(xFilial("SA7")+M->H6_PRODUTO)
-			DO WHILE !EOF()
-				IF ALLTRIM(SA7->A7_FSSIGLA)<>'' .AND. ALLTRIM(M->H6_PRODUTO)=ALLTRIM(SA7->A7_PRODUTO) .AND. ALLTRIM(SUBSTR(cFilAnt,1,4))=ALLTRIM(SA7->A7_FILIAL)
-					c_sigla=ALLTRIM(SA7->A7_FSSIGLA)
-					EXIT
-				ENDIF
-				SKIP
-			ENDDO
-			IF c_sigla <> ''
-				c_Lote := SUBSTR(M->H6_OP,1,6)+SUBSTR(M->H6_OP,8,1)+SUBSTR(M->H6_OP,11,1)+ALLTRIM(c_sigla)   // cria a estrutura do número do lote incluindo a SIGLA solicitada pelo Fornecedor
-			else
-				c_Lote := SUBSTR(M->H6_OP,1,8)+SUBSTR(M->H6_OP,10,2)
-			endif
+				DbSkip()
+			End
+			If cSigla <> ''
+				cLote := SubStr(M->H6_OP,1,6) + SubStr(M->H6_OP,8,1) + SubStr(M->H6_OP,11,1) + AllTrim(cSigla)   // cria a estrutura do número do lote incluindo a SIGLA solicitada pelo Fornecedor
+			Else
+				cLote := SubStr(M->H6_OP,1,8) + SubStr(M->H6_OP,10,2)
+			EndIf
 		Else
-			c_Lote := SUBSTR(M->H6_OP,1,8)+SUBSTR(M->H6_OP,10,2)   // cria o número do lote baseado na OP
-		Endif
+			cLote := SubStr(M->H6_OP,1,8)+SubStr(M->H6_OP,10,2)
+		EndIf
 	EndIf
 	
-	dbSelectArea(_cAlias)
-	dbSetOrder(_cOrd)
-	dbGoTo(_nReg)
+	DbSelectArea(_cAlias)
+	DbSetOrder(_cOrd)
+	DbGoTo(_nReg)
 
-Return(c_Lote)
+Return(cLote)
