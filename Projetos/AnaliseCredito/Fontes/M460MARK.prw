@@ -24,7 +24,7 @@ User Function M460MARK()
 	If (FWCodFil() != '030101') .AND. cValToChar(DOW(DATE())) $ ('23456')
 		nAtrasados := u_FFATVATR(SA1->A1_COD, SA1->A1_LOJA)
 		cNome := SA1->A1_NOME
-		
+
 		If nAtrasados > 0 .AND. (!estaLib(SC9->C9_PEDIDO))
 			lRet := .F.
 			Help(NIL, NIL, "CLIENTE_ATRASO", NIL, "O Cliente: " + AllTrim(cNome)  + " Pedido: "+ SC9->C9_PEDIDO+", possui restrições financeiras no total de R$ " ;
