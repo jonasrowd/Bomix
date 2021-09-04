@@ -21,7 +21,7 @@ User Function M460MARK()
 	DbSetOrder(1)
 	DbSeek(FWxFilial("SA1")+SC9->C9_CLIENTE + SC9->C9_LOJA)
 
-	If (FWCodFil() != '030101') .AND. cValToChar(DOW(DATE())) $ ('23456')
+	If (FWCodFil() != '030101') .AND. cValToChar(DOW(DATE())) $ ('3456')
 		nAtrasados := u_FFATVATR(SA1->A1_COD, SA1->A1_LOJA)
 		cNome := SA1->A1_NOME
 

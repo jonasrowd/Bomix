@@ -17,7 +17,7 @@ User Function Ma440VLD()
 	Local cNome			:= ""
 	Local _CALIAS    	:= GETAREA()
 
-	If (FWCodFil() != '030101') .AND. cValToChar(DOW(DATE())) $ ('23456')
+	If (FWCodFil() != '030101') .AND. cValToChar(DOW(DATE())) $ ('3456')
 		nAtrasados := u_FFATVATR(SA1->A1_COD, SA1->A1_LOJA)
 		cNome := SA1->A1_NOME
 		
