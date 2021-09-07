@@ -39,17 +39,15 @@ User Function MT680VAL()
 		DbSelectArea('SB1') //Seleciona a área da SB1 para encontrar o produto do apontamento
 		DbSetOrder(1)
 		DbSeek(FwXFilial('SB1') + M->H6_PRODUTO) //Posiciona no produto correto
-		ConOut('---->>>Achou produto')
 		If SB1->B1_RASTRO == 'L' .AND. !Empty(SB1->B1_PRVALID) //Verifica se o produto controla lote e se o campo de dias para validade está preenchido
 			nCount := SB1->B1_PRVALID	//Armazena a quantidade de dias na variável para cálculo da validade do mesmo
-		ConOut('------>Armazenado a quantidade de dias para cálculo da data de validade!')
 			EndIf
 
 		If Select('SC2TEMP') > 0 //Verifica se o Alias já possui registro
 			SC2TEMP->(DbCloseArea()) //Fecha a tabela se já estiver aberta
 		EndIf
 
-		//SELECIONA OS REGISTROS DA OP
+		//Seleciona os registros da Op
 		BEGINSQL ALIAS 'SC2TEMP' 
 			COLUMN C2_FSDTVLD AS DATE
 
@@ -65,7 +63,7 @@ User Function MT680VAL()
 
 		While SC2TEMP->(!EOF()) //Enquanto não for o final do arquivo procura se já tem uma validade preenchida em qualquer item da Op
 			If !Empty(SC2TEMP->FSDTVLD) //Se não é o primeiro apontamento
-			ProcValid := SC2TEMP->FSDTVLD //Armazena a data de validade da Op
+				ProcValid := SC2TEMP->FSDTVLD //Armazena a data de validade da Op
 			EndIf
 			DbSkip()
 		End
@@ -77,7 +75,6 @@ User Function MT680VAL()
 		DbSeek(FwXFilial('SC2') + SubStr(M->H6_OP,1,6) + SubStr(M->H6_OP,7,2) + SubStr(M->H6_OP,9,3)) //Posiciona no item da Op do apontamento atual
 		RecLock("SC2", .F.)
 			SC2->C2_FSSALDO := (SC2->C2_FSSALDO) - (M->H6_QTDPROD) //Calcula o saldo no campo customizado na tabela de Op
-			ConOut('------>Calculou o saldo')
 		SC2->(MsUnlock())
 
 		If Empty(ProcValid) .And. Empty(SC2->C2_FSLOTOP) //Se não encontrou nenhum apontamento anterior, ou seja, não tem validade do lote ainda.
@@ -86,10 +83,8 @@ User Function MT680VAL()
 				SC2->C2_FSDTVLD := Date() + nCount //Salva a validade do lote na tabela de Ops, pois deve ser a mesma validade para todo o lote independente da datahora do apontamento
 				SC2->C2_FSLOTOP := M->H6_LOTECTL
 			SC2->(MsUnlock())
-			ConOut('------>É o primeiro Apontamento')
 		Else
 			M->H6_DTVALID := ProcValid	//Se encontrou data de validade anterior para o mesmo lote, preenche com o valor correto
-			ConOut('------>Ja tem apontamento!')
 		EndIf
 
 		DbSelectArea('SB8') //Seleciona a área da SB8
@@ -98,7 +93,6 @@ User Function MT680VAL()
 		If Found() .And. Empty(B8_DTVALID)	//Se encontrar o registro e a data de validade estiver vazia
 			RecLock('SB8', .F.)
 				B8_DTVALID := DtoS(M->H6_DTVALID) //Grava a data de validade de acordo com o primeiro apontamento
-				ConOut('------>E o primeiro que grava na SB8')
 			MsUnlock()
 		EndIf
 	EndIf
