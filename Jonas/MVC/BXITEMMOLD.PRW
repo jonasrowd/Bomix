@@ -42,14 +42,16 @@ Return Nil
     @version 12.1.25
     @author Jonas Machado
     @since 02/09/2021
-    @return, oModel, objeto da função mvc meu modelo de dados.
+    @return object, retorna o oModel oModel para ser utilizado em outros programas
     @see https://tdn.totvs.com/display/framework/FWFormStruct
     @see https://tdn.totvs.com/display/public/PROT/FWFormModel
     @see https://tdn.totvs.com/display/public/PROT/MPFormModel
+    @see https://tdn.totvs.com/display/framework/FWLoadModel
+    @see https://tdn.totvs.com/display/framework/FWFormView
 /*/
 Static Function ModelDef()
 
-Local aKey := {"ZN_FILIAL, ZN_ORDEM, ZN_GRUPO, ZN_ITEM"}
+Local aKey := {"ZN_FILIA, ZN_MEDIDA, ZN_GRUPO"}
 Local oModel := NIL //objeto que irá armazenas os métodos da minha modeldef
 Local oStructSzn := FwFormStruct(1,"SZN") //Traz a estrutura da tabela, caracteristicas e campos para o modelo, por isso o parâmetro 1.
 
@@ -71,7 +73,54 @@ oModel:GetModel("FormsSZN"):SetDescription("Modelo de dados utilizado para manip
 Return oModel
 
 Static Function ViewDef()
-Return
 
+Local oView := Nil
+Local oModel := FwLoadModel("BXITEMMOLD") //Função que retorna um objeto de model de determinado fonte ou função.
+Local oStructSzn := FwFormStruct(2,"SZN") //Traz a estrutura da tabela, caracteristicas e campos para a view, por isso o parâmetro 2
+
+//Constrói a visão dos dados
+oView := FwFormView():New()
+
+//Atribuição da estrutura de dados da visão
+oView:AddField("ViewSZN",oStructSzn,"FormsSZN")
+
+//Cria um contâiner de tela
+oView:createHorizontalBox("TelaSzn",100)
+
+oView:EnableTitleView("ViewSZN", "Visualização da Tela.")
+
+//Força o fechamento da janela passando o parâmetro True. É possível adicionar vários blocos de código.
+oView:SetCloseOnOk({||.T.})
+
+oView:SetOwnerView("ViewSZN","TelaSzn")
+
+Return oView
+
+
+/*/{Protheus.doc} MenuDef
+Função que cria as funcionalidades do Menu
+@type function
+@version 12.1.25
+@author Jonas Machado
+@since 03/09/2021
+@return array, aRotina com as opções do Menu.
+/*/
 Static Function MenuDef()
-Return
+
+Local aRotina := {}
+
+    ADD OPTION aRotina TITLE 'Visualizar'   ACTION 'VIEWDEF.BXITEMMOLD' OPERATION 2 ACCESS 0
+    ADD OPTION aRotina TITLE 'Incluir'      ACTION 'VIEWDEF.BXITEMMOLD' OPERATION 3 ACCESS 0
+    ADD OPTION aRotina TITLE 'Alterar'      ACTION 'VIEWDEF.BXITEMMOLD' OPERATION 4 ACCESS 0
+    ADD OPTION aRotina TITLE 'Excluir'      ACTION 'VIEWDEF.BXITEMMOLD' OPERATION 5 ACCESS 0
+
+/*
+1 - PESQUISAR
+2 - VISUALIZAR
+3 - INCLUIR
+4 - ALTERAR
+5 - EXCLUIR
+6 - COPIAR
+*/
+
+Return aRotina
