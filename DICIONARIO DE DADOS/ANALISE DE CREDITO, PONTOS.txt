@@ -1,0 +1,56 @@
+==orçamento==
+Ao incluir um novo orçamento, o primeiro campo a ser preenchido é o CJ_CLIENTE disparando o gatilho FFATG004()
+Após clicar em Salvar entramos no ponto de entrada M415GRV() chama o FFATVATR() dentro dele.
+
+==baixa de orçamentos==
+Após localizar o orçamento em questão, ao clicar em salvar para virar pedido é acionado imediatamente o ponto de entrada MT415EFT()
+Dentro dele é chamado mais uma vez a validação do FFATVATR().
+Após validar ele apresenta a tela do pedido de venda que será gravado, após clicar em Salvar é chamado o ponto de entrada MT416FIM()
+Dentro dele novamente valida no FFATVATR() E realiza a gravação do pedido com os status, ABERTO ou BLOQUEADO PR ou BLOQUEADOLO
+
+Eu alterei a quantidade na confirmação do orçamento na criação do pedido de venda e chamou o PE MAAVCRED() LINHA A LINHA. 
+TENTAR FAZER DE UMA FORMA DE APARECER A MENSAGEM SOMENTE NO ÚLTIMO ITEM
+
+==PEDIDOS DE VENDA==
+Se criar um pedido de venda liberado (Legenda Amarela) ele não grava na Z07 que é o que valida a liberação do pedido e com isso faz-se necessário ainda a liberação manual.
+Neste caso, verificar se vai realizar a liberação manual até para pedidos sem restrição. Senão, vai bloquear no faturamento.
+Caso tente faturar um pedido em aberto e cancele, ele fica com Status Amarelo como se tivesse liberado, mas não está.
+Ao realizar a alteração do pedido e clicando em salvar, chama o ponto de entrada FFATVATR()
+
+== PREP DOC SAÍDA == VIA PEDIDO DE COMPRAS ==
+Ao clicar no Prep doc de saída é chamado o M410PVNF() -> VERIFICAR A REGRA PARA DEIXAR FATURAR DE ACORDO COM O STATUS PERSONALIZADO
+Ao clicar em Alterar pedido de venda e liberar a quantidade a faturar, é chamado o ponto MAAVCRED() VÁRIAS VEZES. VERIFICAR
+
+
+==PELO PEDIDO DE VENDAS
+AO ENTRAR EM UM PEDIDO PARA ALTERAR E NÃO ALTERAR NADA, AO CLICAR EM SALVAR ELE MUDA O STATUS PARA ABERTO LIBEROK VAZIO E BXSTATU A
+SE FOR PREPARAR O DOC DE SAÍDA NESTE CASO, ELE VOLTA A CHAMAR O PONTO MAAVCRED() É BEM RECORRENTE ESSE.
+
+
+PROBLEMAS COM STATUS DO FATURAMENTO.
+se cancelar o doc de saída MUDA O STATUS DE NOVO PARA AMARELO KKKK LIBEROK S E BXSTATU A
+É CONCENSO QUE NO FATURAMENTO A INTERAÇÃO DO CAMPO BXSTATU É COM A LETRA A
+
+SE GERAR C9 MEXENDO NAS QUANTIDADES LIBERADAS ELE MUDA O STATUS PARA LIBERADO COM LIBEROK S E BXSTATU A
+
+entregar para o faturamento uma visão mais clara dos pedidos
+só não bloquear no job quando tiver sido liberado manualmente
+estalib tem que validar para passar quando status estiver $ LEPA
+Entender pq volta pra A quando prepara doc de saída
+
+mark460 RECLOCK NA C9 SEM SENTIDO
+
+PEDIDO QUE NASCEU LIBERADO APÓS ALTERAR A QUANTIDADE LIBERADA, FICA COM STATUS ABERTO LIBEROK VAZIO
+
+Update error - File is in EOF - SC9010 in file 
+D:\bamboo\xml-data\build-dir\TP11-OF19310-TECXWIN64\advpl\advplfile.cpp at line 70 on U_BXMENATR(BXMENATR.PRW) 13/08/2021 15:05:56 line : 90
+
+
+
+U_MT410TOK(MT410TOK.PRW)
+U_FFATV001(FFATV001.PRW) 
+U_MT410ALT(MT410ALT.PRW)
+U_M410LIOK(M410LIOK.PRW)
+U_FFATM002
+U_FFATG001(FFATG001.PRW) 
+
