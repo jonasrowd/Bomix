@@ -1,13 +1,5 @@
 #include "topconn.ch"
 
-/*/{Protheus.doc} A250ARD4
-    Não grava perda de itens específicos com base na tabela Z05 campo Z05_NOME = B1_BRTPPR
-    @type function
-    @version 12.1.25
-    @author jonas.machado
-    @since 19/07/2021
-    @return variant, Retorna os produtos que possuem perda.
-/*/
 user function A250ARD4()
 Local nx := 0 
 aSd4 := PARAMIXB
@@ -26,13 +18,17 @@ EndIF
 Return aSD4
 
 /*/{Protheus.doc} gravaPerda
-    Realiza a gravação da perda dos itens que possuem.
-    @type  Function
-    @author Rômulo Ferreira
+    (long_description)
+    @type  Static Function
+    @author Rmulo Ferreira
     @since 28/05/2021
-    @version 12.1.25    
-    @param _cCod, character, Codigo do Produto
-/*/
+    @version version
+    @param _cCod, c, Codigo do Produto
+    @return lPerda, L, verdadeiro ou falso se grava a perda
+    @example
+    (examples)
+    @see (links_or_references)
+    /*/
 Static Function gravaPerda(_cCod)
     
     If Select("TRB") > 1
@@ -58,4 +54,4 @@ Static Function gravaPerda(_cCod)
         Return TRB->PERDA = 'S' 
     EndIf
 
-Return .T. // Se não achou configuração de Perda, grava perda normalmente
+Return .T. // Se no achou configurao de Perda, grava perda normalmente
