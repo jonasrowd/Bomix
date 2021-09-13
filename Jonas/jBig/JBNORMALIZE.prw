@@ -29,7 +29,7 @@ User Function JBNormalize(cOld)
 	// Percorre cada um dos caracteres
 	For nX := 1 To Len(aChar)
 		// Verifica se trata-se de um alfanumérico
-		If (IsAlpha(aChar[nX]) .Or. IsDigit(aChar[nX]))
+		If (IsAlpha(aChar[nX]) .Or. IsDigit(aChar[nX]) .Or. aChar[nX] == " ")
 			// Adiciona o caractere ao conjunto do novo conteúdo
 			cNew += aChar[nX]
 		EndIf
