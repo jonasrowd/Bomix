@@ -18,7 +18,7 @@ User Function Rpototxt()
     Local cFile       := ""
     Local cFuncao     := ""
     Local cArch       := ""
-    Local cSearch     := "u_*"  // Neste caso, será exibido todos os fontes de usuário, seja fontes feitas por você ou Totvs.
+    Local cSearch     := "U_MARKBLQ1"  // Neste caso, será exibido todos os fontes de usuário, seja fontes feitas por você ou Totvs.
     Local aFunction   := {}     // Para retornar a origem da função: FULL, USER, PARTNER, PATCH, TEMPLATE ou NONE
     Local aType       := {}     // Para retornar o nome do arquivo onde foi declarada a função
     Local aFile       := {}     // Para retornar o número da linha no arquivo onde foi declarada a função

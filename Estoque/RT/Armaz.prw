@@ -2,6 +2,6 @@
 
 User Function Armaz()
 
-Axcadastro("SZ5","Motivos")
+Axcadastro("SZ1","Cadastro de Armazéns.")
 
 Return

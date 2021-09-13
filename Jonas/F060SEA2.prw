@@ -91,13 +91,22 @@ lAdjustToLegacy := .T.
 lDisableSetup  := .T.
 cPathPDF := ""
 
-cNota := SE1->E1_NUM
+//cNota := SE1->E1_NUM
+
+If Empty(SE1->E1_PARCELA)
+   	cNumTit := AllTrim(SE1->E1_NUM)+"-"+"0"
+   	_NumTit := cNumTit
+Else                     
+    cNumTit := AllTrim(SE1->E1_NUM)+"-"+AllTrim(SE1->E1_PARCELA)
+
+Endif
 
 //Instruções iniciais da geração dos boletos
 lAdjustToLegacy := .T.
 lDisableSetup   := .T.
 _cDiretorio  	:= 'c:\temp\' //'\boletos' 
-_cNomeArq 		:= "BOLITAU_"+ALLTRIM(STR(int(SECONDS())))+"Nota_"+cNota + '.pdf'
+//_cNomeArq 		:= "BOLITAU_"+ALLTRIM(STR(int(SECONDS())))+"Nota_"+cNota + '.pdf'
+_cNomeArq 		:= cNumTit + '.pdf'
 
 //Verifica se existe o diretório, caso não existe irá tentar criar, caso negativo irá informar o usuário do problema	
 If !ExistDir(_cDiretorio)
@@ -227,13 +236,6 @@ cNroDoc              ) // Numero do Documento no Contas a Receber
 		       
 dvNN := Alltrim(Str(Modulo10(aDadosBanco[3]+aDadosBanco[4]+aDadosBanco[6]+cNroDoc)))		
 
-If Empty(SE1->E1_PARCELA)
-   	cNumTit := AllTrim(SE1->E1_NUM)
-   	_NumTit := cNumTit
-Else                     
-    cNumTit := AllTrim(SE1->E1_NUM)+"-"+AllTrim(SE1->E1_PARCELA)
-
-Endif
         
 _ChvCli := E1_CLIENTE  
 _ChvLoj := E1_LOJA
@@ -256,17 +258,13 @@ nX := nX + 1
 
 oPrint:print()   
     
-CpyT2S("C:\TEMP\"+_cNomeArq, "\BOLITAU" )   
+CpyT2S("C:\TEMP\"+_cNomeArq, "\BoletoBomix\Itau" )   
 
-DbSelectArea("SEA")
-DBGOTOP() 
-
-If !Empty(SEA->EA_NUMBOR)
- cPath	:= "\BOLITAU"//Caminho onde vai ser gerado o boleto grafico abaixo do System
+ cPath	:= "\BoletoBomix\Itau"//Caminho onde vai ser gerado o boleto grafico abaixo do System
  cNameArq:=cPath+'\'+_cNomeArq
  fEnvMail(cMaiForn,cNameArq,aCB_RN_NN[1],cNumTit)
  FERASE("C:\TEMP\"+_cNomeArq)
-EndIf
+
    
 /*If MSGBOX("Deseja Enviar este boleto para o e-mail do Cliente?","Atenção","YESNO")  
    fEnvMail(cMaiForn,cNameArq,aCB_RN_NN[1],cNumTit)
