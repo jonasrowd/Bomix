@@ -1,0 +1,59 @@
+UPDATE TMPRD.CQ0010
+   SET D_E_L_E_T_ = '*',
+       R_E_C_D_E_L_ = R_E_C_N_O_
+ WHERE CQ0_DATA <= '20201231'
+   AND D_E_L_E_T_ = ' ';
+
+UPDATE TMPRD.CQ1010
+   SET D_E_L_E_T_ = '*',
+       R_E_C_D_E_L_ = R_E_C_N_O_
+ WHERE CQ1_DATA <= '20201231'
+   AND D_E_L_E_T_ = ' ';
+   
+UPDATE TMPRD.CQ2010
+   SET D_E_L_E_T_ = '*',
+       R_E_C_D_E_L_ = R_E_C_N_O_
+ WHERE CQ2_DATA <= '20201231'
+   AND D_E_L_E_T_ = ' ';
+
+UPDATE TMPRD.CQ3010
+   SET D_E_L_E_T_ = '*',
+       R_E_C_D_E_L_ = R_E_C_N_O_
+ WHERE CQ3_DATA <= '20201231'
+   AND D_E_L_E_T_ = ' ';   
+
+UPDATE TMPRD.CQ4010
+   SET D_E_L_E_T_ = '*',
+       R_E_C_D_E_L_ = R_E_C_N_O_
+ WHERE CQ4_DATA <= '20201231'
+   AND D_E_L_E_T_ = ' ';
+
+UPDATE TMPRD.CQ5010
+   SET D_E_L_E_T_ = '*',
+       R_E_C_D_E_L_ = R_E_C_N_O_
+ WHERE CQ5_DATA <= '20201231'
+   AND D_E_L_E_T_ = ' ';
+
+UPDATE TMPRD.CQ6010
+   SET D_E_L_E_T_ = '*',
+       R_E_C_D_E_L_ = R_E_C_N_O_
+ WHERE CQ6_DATA <= '20201231'
+   AND D_E_L_E_T_ = ' ';
+
+UPDATE TMPRD.CQ7010
+   SET D_E_L_E_T_ = '*',
+       R_E_C_D_E_L_ = R_E_C_N_O_
+ WHERE CQ7_DATA <= '20201231'
+   AND D_E_L_E_T_ = ' ';
+
+UPDATE TMPRD.CQ8010
+   SET D_E_L_E_T_ = '*',
+       R_E_C_D_E_L_ = R_E_C_N_O_
+ WHERE CQ8_DATA <= '20201231'
+   AND D_E_L_E_T_ = ' ';
+
+UPDATE TMPRD.CQ9010
+   SET D_E_L_E_T_ = '*',
+       R_E_C_D_E_L_ = R_E_C_N_O_
+ WHERE CQ9_DATA <= '20201231'
+   AND D_E_L_E_T_ = ' ';   

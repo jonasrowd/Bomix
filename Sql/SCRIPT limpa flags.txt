@@ -1,0 +1,189 @@
+----------------------------------------------Limpa Flag SE2-----------------------------------
+DECLARE
+CURSOR TEMP IS
+
+  SELECT SE2.E2_LA, SE2.R_E_C_N_O_ SE2RECNO 
+    FROM TMPRD.SE2010 SE2
+   WHERE SE2.E2_FILIAL
+      IN (SELECT X5_CHAVE FROM TMPRD.SX5010
+           WHERE X5_FILIAL = ' '
+             AND X5_TABELA = 'Z4'
+             AND D_E_L_E_T_ = ' ')
+     AND SE2.E2_LA = 'S'
+     AND (SE2.E2_EMISSAO BETWEEN '20210201' AND '20210231' 
+      OR  SE2.E2_BAIXA BETWEEN '20210201' AND '20210231' 
+      OR  SE2.E2_VENCTO BETWEEN '20210201' AND '20210231')
+     AND SE2.D_E_L_E_T_ = ' ';
+
+BEGIN
+
+   FOR TP IN TEMP LOOP
+
+    UPDATE TMPRD.SE2010
+       SET E2_LA = 'N'
+    WHERE R_E_C_N_O_ = TP.SE2RECNO;
+    
+    COMMIT;
+  END LOOP;
+END;
+----------------------------------------------Limpa Flag SE2-----------------------------------
+
+----------------------------------------------Limpa Flag SF2-----------------------------------
+DECLARE
+CURSOR TEMP IS
+
+  SELECT SF2.F2_DTLANC, SF2.R_E_C_N_O_ SF2RECNO
+    FROM TMPRD.SF2010 SF2
+   WHERE SF2.F2_FILIAL
+      IN (SELECT ZX5.ZX5_CHAVE FROM TMPRD.ZX5010 ZX5
+           WHERE ZX5.ZX5_TABELA = 'FIL'
+             AND ZX5.D_E_L_E_T_ = ' ')
+     AND SF2.F2_DTLANC <> ' '
+     AND SF2.F2_EMISSAO BETWEEN '20201001' AND '20201031'
+     AND SF2.D_E_L_E_T_ = ' ';
+  
+BEGIN
+
+   FOR TP IN TEMP LOOP
+
+    UPDATE TMPRD.SF2010
+       SET F2_DTLANC = '        '
+    WHERE R_E_C_N_O_ = TP.SF2RECNO;
+    
+    COMMIT;
+  END LOOP;
+END;
+----------------------------------------------Limpa Flag SF2-----------------------------------
+
+----------------------------------------------Limpa CT2----------------------------------------
+DECLARE
+CURSOR TEMP IS
+
+  SELECT CT2.D_E_L_E_T_ CT2DELET, CT2.R_E_C_N_O_ CT2RECNO, CT2.R_E_C_D_E_L_ CT2RECDEL
+    FROM TMPRD.CT2010 CT2
+   WHERE CT2.CT2_DATA BETWEEN '20210201' AND '20210231'
+     AND CT2.CT2_LOTE = '008850'
+     AND CT2.D_E_L_E_T_ = ' ';
+   
+BEGIN
+
+   FOR TP IN TEMP LOOP
+
+    UPDATE TMPRD.CT2010 
+       SET D_E_L_E_T_ = '*',
+           R_E_C_D_E_L_ = TP.CT2RECDEL
+    WHERE R_E_C_N_O_ = TP.CT2RECNO;
+    
+    COMMIT;
+  END LOOP;
+END;
+----------------------------------------------Limpa CT2----------------------------------------
+
+----------------------------------------------Limpa Flag SF1-----------------------------------
+DECLARE
+CURSOR TEMP IS
+
+  SELECT SF1.F1_DTLANC, SF1.R_E_C_N_O_ SF1RECNO
+    FROM TMPRD.SF1010 SF1
+   WHERE SF1.F1_FILIAL
+      IN (SELECT ZX5.ZX5_CHAVE FROM TMPRD.ZX5010 ZX5
+           WHERE ZX5.ZX5_TABELA = 'FIL'
+             AND ZX5.D_E_L_E_T_ = ' ')
+     AND SF1.F1_DTLANC <> ' '
+     AND SF1.F1_DTDIGIT BETWEEN '20200801' AND '20200931'
+     AND SF1.D_E_L_E_T_ = ' ';
+  
+BEGIN
+
+   FOR TP IN TEMP LOOP
+
+    UPDATE TMPRD.SF1010
+       SET F1_DTLANC = '        '
+    WHERE R_E_C_N_O_ = TP.SF1RECNO;
+    
+    COMMIT;
+  END LOOP;
+END;
+----------------------------------------------Limpa Flag SF1-----------------------------------
+
+----------------------------------------------Limpa Flag SE5-----------------------------------
+DECLARE
+CURSOR TEMP IS
+
+SELECT SE5.E5_LA, SE5.R_E_C_N_O_ SE5RECNO 
+  FROM TMPRD.SE5010 SE5
+ WHERE SE5.E5_FILIAL
+    IN (SELECT X5_CHAVE FROM TMPRD.SX5010
+           WHERE X5_FILIAL = ' '
+             AND X5_TABELA = 'Z4'
+             AND D_E_L_E_T_ = ' ')
+   AND SE5.E5_DATA BETWEEN '20210201' AND '20210231'
+   AND SE5.E5_LA = 'S'
+   AND SE5.D_E_L_E_T_ = ' ';
+
+BEGIN
+
+   FOR TP IN TEMP LOOP
+
+    UPDATE TMPRD.SE5010
+       SET E5_LA = 'N'
+    WHERE R_E_C_N_O_ = TP.SE5RECNO;
+    
+    COMMIT;
+  END LOOP;
+END;
+----------------------------------------------Limpa Flag SE5-----------------------------------
+
+----------------------------------------------Limpa Flag SE1-----------------------------------
+DECLARE
+CURSOR TEMP IS
+
+SELECT SE1.E1_LA, SE1.R_E_C_N_O_ SE1RECNO 
+  FROM TMPRD.SE1010 SE1
+ WHERE SE1.E1_FILIAL
+    IN (SELECT X5_CHAVE FROM TMPRD.SX5010
+           WHERE X5_FILIAL = ' '
+             AND X5_TABELA = 'Z4'
+             AND D_E_L_E_T_ = ' ')
+   AND SE1.E1_LA = 'S'
+   AND (SE1.E1_EMISSAO BETWEEN '20210201' AND '20210231' 
+    OR  SE1.E1_BAIXA BETWEEN '20210201' AND '20210231' 
+    OR  SE1.E1_VENCTO BETWEEN '20210201' AND '20210231')
+   AND SE1.D_E_L_E_T_ = ' ';
+
+BEGIN
+
+   FOR TP IN TEMP LOOP
+
+    UPDATE TMPRD.SE1010
+       SET E1_LA = 'N'
+    WHERE R_E_C_N_O_ = TP.SE1RECNO;
+    
+    COMMIT;
+  END LOOP;
+END;
+----------------------------------------------Limpa Flag SE1-----------------------------------
+
+----------------------------------------------Limpa Flag SD3-----------------------------------
+
+DECLARE
+CURSOR TEMP IS
+
+  SELECT SD3.D3_DTLANC, SD3.R_E_C_N_O_ SD3RECNO FROM TMPRD.SD3010 SD3
+   WHERE SD3.D_E_L_E_T_ = ' '
+     AND SD3.D3_DTLANC <> ' '
+     AND SD3.D3_EMISSAO BETWEEN '20210101' AND '20210131';
+   
+BEGIN
+
+   FOR TP IN TEMP LOOP
+
+    UPDATE TMPRD.SD3010
+       SET D3_DTLANC = '        '
+    WHERE R_E_C_N_O_ = TP.SD3RECNO;
+    
+    COMMIT;
+  END LOOP;
+END;
+
+----------------------------------------------Limpa Flag SD3-----------------------------------

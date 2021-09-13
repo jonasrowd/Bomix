@@ -1,0 +1,85 @@
+/*
+UPDATE 
+CT2010
+SET
+CT2_HIST= 
+RTRIM(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+REPLACE(
+CT2_HIST,                   'á', 'a'),  -- acento agudo
+                            'é', 'e'),
+                            'í', 'i'),
+                            'ó', 'o'),
+                            'ú', 'u'),
+                            'Á', 'A'),
+                            'É', 'E'),
+                            'Í', 'I'),
+                            'Ó', 'O'),
+                            'Ú', 'U'),
+                            'à', 'a'),  -- crase
+                            'À', 'A'),
+                            'ã', 'a'),  -- til
+                            'õ', 'o'),
+                            'Ã', 'A'),  
+                            'Õ', 'O'),
+                            'â', 'a'),  -- acento circunflexo
+                            'ê', 'e'),
+                            'ô', 'o'),
+                            'Â', 'A'),
+                            'Ê', 'E'),
+                            'Ô', 'O'),
+                            'ç', 'c'),  
+                            'Ç', 'c'),
+							':', ''),
+							'@', ''),
+							'#', ''),
+							'$', ''),
+							'%', ''),
+							'¨', ''),
+							'&', ''),
+							'*', ''),
+							'/', ''),
+							'.', ''),
+							'+', ''),
+							'  ', ''),
+							char(10),''),
+							char(13),''))
+WHERE CT2_DATA BETWEEN '20200101' AND '20201231' AND CT2_ROTINA='FINA370' AND CT2_LP='530'
+*/
+
