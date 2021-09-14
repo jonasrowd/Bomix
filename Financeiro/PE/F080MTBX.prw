@@ -5,7 +5,7 @@
 /* Data     : 30/11/2015                                                                               */
 /* Descrição: Bloquar o motivo de Baixa Dação para alguns usuários e liberar para outros			   */
 /* Autor    : TBA001 -XXX												                       */ 
-/*O ponto de entrada FA070MDB sera executado na validacao do GET do motivo da baixa do contas a receber*/
+/*O ponto de entrada F080MTBX sera executado na validacao do GET do motivo da baixa do contas a receber*/
 /*,na tela de baixa de titulos.																		   */	
 /*******************************************************************************************************/
 User Function F080MTBX()   

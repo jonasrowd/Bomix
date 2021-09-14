@@ -4,7 +4,7 @@
 #INCLUDE 'COLORS.CH'
 #INCLUDE 'TOPCONN.CH'
 
-/*/{Protheus.doc} FFATA001
+/*/{Protheus.doc} PFATA460
 //Rotina para importar o XML Ct-e/NFe-S.
 @author 
 @since 05/05/2017

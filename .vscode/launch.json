@@ -147,7 +147,30 @@
 		{
 			"label": "U_FFATA",
 			"description": "<nil>"
+		},
+		{
+			"args": [
+				"Function FFATA001"
+			],
+			"label": "U_User",
+			"description": "Function FFATA001"
+		},
+		{
+			"label": "sigaddv",
+			"description": "<nil>"
+		},
+		{
+			"label": "u_getrpo",
+			"description": "<nil>"
+		},
+		{
+			"label": "u_RREPORT",
+			"description": "<nil>"
+		},
+		{
+			"label": "u_rpototxt",
+			"description": "<nil>"
 		}
 	],
-	"lastProgramExecuted": "SIGAFAT"
+	"lastProgramExecuted": "u_rpototxt"
 }
