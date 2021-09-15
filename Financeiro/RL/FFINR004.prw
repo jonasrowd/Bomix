@@ -35,12 +35,12 @@ User Function FFINR004()
 	Private nLimite      := 240
 	Private nMpcc		 := 0.00
 	Private cWnrel       := "FFINR004" // Nome do arquivo gerado pelo programa
-	Private cPerg        := "FFINR005" // Coloque aqui o nome do arquivo usado para impressao em disco
+	Private cPerg        := "FFINR004" // Coloque aqui o nome do arquivo usado para impressao em disco
 	Private cNomeProg    := "FFINR004" // Coloque aqui o nome do programa para impressao no cabecalho
 	Private aReturn      := { "Zebrado", 1, "Administracao", 2, 2, 1, "", 1}
 
 	// Cria instância do objeto
-	oSX1 := CreateSX1():New("FFINR005")
+	oSX1 := CreateSX1():New("FFINR004")
 	// Adiciona novos itens da SX1
 	oSX1:NewItem({01, "Cliente de?"		,	"MV_CH1", "C", 06, 00, "G", "SA1"})
 	oSX1:NewItem({02, "Cliente até?"	,	"MV_CH2", "C", 06, 00, "G", "SA1"})
@@ -53,7 +53,7 @@ User Function FFINR004()
 	oSX1:NewItem({09, "Saldo Inicial?"	,	"MV_CH9", "N", TamSX3("E1_VALOR")[1],TamSX3("E1_VALOR")[2], "G", Nil})
 
 	oSX1:Commit()
-	
+
 	Pergunte(cPerg,.F.) //Mostra a janela de parâmetros
 
 	cWnrel := SetPrint(cString,cNomeProg,cPerg,@cTitulo,cDesc1,cDesc2,cDesc3,.T.,aOrd,.T.,cTamanho,,.T.)
