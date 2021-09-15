@@ -1,28 +1,20 @@
-#INCLUDE "rwmake.ch"
-#include "rwmake.ch"
-#INCLUDE "topconn.ch"
-#INCLUDE "SHELL.CH"
-#INCLUDE "Protheus.ch"                                
-#INCLUDE "TBICONN.CH"
-#INCLUDE "FWPrintSetup.ch"   
-#INCLUDE "RPTDEF.CH"    
-                      
+#Include "Totvs.ch"
+#Include "Topconn.ch"
+#Include "Tbiconn.ch"
+
 #DEFINE IMP_SPOOL 2
 #DEFINE __cCarteira "109"
 #DEFINE __cMoeda    "9"
 
-/*{Protheus.doc} F060SEA2
-Ponto de Entrada para envio dos Boletos(SEA) por e-mai aos cliente, gerados pelo Borderô SE1
-@author Elmer Farias
-@since 28/09/20
-@version 1.0
-	@example
-	u_F060SEA2()
+/*/{Protheus.doc} F060SEA2
+	Ponto de entrada na geração do Borderô para gerar os boletos em Pdf e Enviar por E-mail
+	@type Function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 15/09/2021
 /*/
-
-
 User Function F060SEA2()
-                                                        
+
 Private lExec    := .F.
 Private cIndexName := ''
 Private cIndexKey  := ''
@@ -34,15 +26,15 @@ cAlias  := Alias()
 cOrd    := IndexOrd()
 cReg    := Recno()
 
-IF SE1->E1_PORTADO <> "CX1"    
-   //-- Enviar cada boleto por e-mail  
-   MontaRel(SEA->EA_PORTADO, SEA->EA_AGEDEP, SEA->EA_NUMCON)   
-Endif 
+IF SE1->E1_PORTADO <> "CX1"
+   //-- Enviar cada boleto por e-mail
+   MontaRel(SEA->EA_PORTADO, SEA->EA_AGEDEP, SEA->EA_NUMCON)
+Endif
 
 Dbselectarea(cAlias)
-Dbsetorder(cOrd)  
+Dbsetorder(cOrd)
 Dbgoto(cReg)
-	
+
 Return Nil
 
 
@@ -61,7 +53,7 @@ Local aDadosEmp    := {	SM0->M0_NOMECOM                                    ,;   
 						Subs(SM0->M0_CGC,13,2)                                                    ,; //[6]CGC
 						"I.E.: "+Subs(SM0->M0_INSC,1,3)+"."+Subs(SM0->M0_INSC,4,3)+"."+            ; //[7]
 						Subs(SM0->M0_INSC,7,3)+"."+Subs(SM0->M0_INSC,10,3)                        }  //[7]I.E
-						
+
 Local aDadosTit   := {}
 Local aDadosBanco := {}
 Local aDatSacado  := {}
@@ -70,14 +62,14 @@ Local aBolText    := {"APÓS O VENCIMENTO COBRAR JUROS DE R$", "PROTESTAR APÓS 3 
 //Local nI          := 1
 Local aCB_RN_NN   := {}
 Local nVlrAbat	  := 0
-//Local lPreview    := .F.   
-Local cMaiForn    := ''    
+//Local lPreview    := .F.
+Local cMaiForn    := ''
 
 Private cStartPath       := GetSrvProfString("Startpath","")
 
 Tamanho  := "M"
-titulo   := "Impressao de Boleto com Codigo de Barras"
-cDesc1   := "Este programa destina-se a impressao do Boleto com Codigo de Barras."
+titulo   := "Impressão de Boleto com Código de Barras"
+cDesc1   := "Este programa destina-se a impressão do Boleto com Código de Barras."
 cDesc2   := ""
 cDesc3   := ""
 cString  := "SE1"
@@ -87,32 +79,38 @@ cPerg     := Padr("BLTITAU",10)
 aReturn  := {"Zebrado", 1,"Administracao", 2, 2, 1, "",1 }
 aFile	 := {}
 nLastKey := 0
-lAdjustToLegacy := .T. 
+lAdjustToLegacy := .T.
 lDisableSetup  := .T.
 cPathPDF := ""
 
-cNota := SE1->E1_NUM
+	If Empty(SE1->E1_PARCELA)
+		cNota := AllTrim(SE1->E1_NUM) + "-" + 1
+	Else
+		cNota := AllTrim(SE1->E1_NUM) + "-" + AllTrim(SE1->E1_PARCELA)
+	EndIf
 
 //Instruções iniciais da geração dos boletos
 lAdjustToLegacy := .T.
 lDisableSetup   := .T.
-_cDiretorio  	:= 'c:\temp\' //'\boletos' 
-_cNomeArq 		:= "BOLITAU_"+ALLTRIM(STR(int(SECONDS())))+"Nota_"+cNota + '.pdf'
+_cDiretorio  	:= 'c:\temp\' //'\boletos'
+_cNomeArq 		:= cNota + '.pdf'
 
-//Verifica se existe o diretório, caso não existe irá tentar criar, caso negativo irá informar o usuário do problema	
+//Verifica se existe o diretório, caso não existe irá tentar criar, caso negativo irá informar o usuário do problema
 If !ExistDir(_cDiretorio)
 	If MakeDir(_cDiretorio) <> 0
-		MsgAlert("O diretório " + Alltrim(_cDiretorio) + " não foi encontrado, contacte o departamento de TI!")
+		MsgAlert("O diretório " + Alltrim(_cDiretorio) + " não foi encontrado, contate o departamento de TI!")
 		Return Self
 	EndIf
 EndIf
 
-oPrint := FWMSPrinter():New(_cNomeArq,IMP_PDF,lAdjustToLegacy,_cDiretorio,lDisableSetup)
+	If cNota <>''
+		oPrint := FWMSPrinter():New(_cNomeArq,IMP_PDF,lAdjustToLegacy,_cDiretorio,lDisableSetup)
+	EndIf
 
 oPrint:SetPortrait()
 oPrint:SetResolution(72)
-oPrint:SetPaperSize(DMPAPER_A4) 
-oPrint:SetMargin(1,6,6,6) // nEsquerda, nSuperior, nDireita, nInferior 
+oPrint:SetPaperSize(DMPAPER_A4)
+oPrint:SetMargin(1,6,6,6) // nEsquerda, nSuperior, nDireita, nInferior
 oPrint:cPathPDF := _cDiretorio
 oPrint:lInJob   := .T.
 oPrint:lViewPDF := .F.
@@ -134,32 +132,31 @@ IF SF2->(DBSEEK(XFILIAL("SF2") + SE1->(E1_NUM + E1_SERIE + E1_CLIENTE + E1_LOJA)
     ENDIF
 ENDIF
 
-DbSelectArea("SA6")
-DbSetOrder(1)
-If DbSeek(xFilial("SA6")+_xBco+_xAgencia+_xConta) == .F.
-	ShowHelpDlg(SM0->M0_NOME,;
-	{"Banco/Agência/Conta inválido."},5,;
-	{"Verifique se os parâmetros estão preenchidos corretamente."},5)
-	Return
-Endif			
+		DbSelectArea("SA6")
+		DbSetOrder(1)
+		//DbSeek(xFilial("SA6")+MV_PAR19+MV_PAR20+MV_PAR21)
+		If DbSeek(xFilial("SA6")+SE1->(E1_PORTADO+E1_AGEDEP+E1_CONTA)) == .F.
+			Help(NIL, NIL, "ERROR_BANK", NIL, "Parâmetros de Banco do Banco/Agência/Conta/Sub-Conta inválidos",;
+				1, 0, NIL, NIL, NIL, NIL, NIL, {"Verifique se os parâmetros estão preenchidos corretamente."})
+			Return
+		EndIf
+		//Posiciona na Arq de Parametros CNAB
+		DbSelectArea("SEE")
+		DbSetOrder(1)
+		//DbSeek(xFilial("SEE")+MV_PAR19+MV_PAR20+MV_PAR21)
+		If DbSeek(xFilial("SEE")+SE1->(E1_PORTADO+E1_AGEDEP+E1_CONTA)) == .F.
+			Help(NIL, NIL, "ERROR_BANK", NIL, "Parâmetros de Banco do Banco/Agência/Conta/Sub-Conta inválidos",;
+				1, 0, NIL, NIL, NIL, NIL, NIL, {"Verifique se os parâmetros estão preenchidos corretamente."})
+			Return
+		EndIf
 
-//Posiciona na Arq de Parametros CNAB
-DbSelectArea("SEE")
-DbSetOrder(1)
-If DbSeek(xFilial("SEE")+_xBco+_xAgencia+_xConta) == .F.
-	ShowHelpDlg(SM0->M0_NOME,;
-	{"Parâmetros de Banco do Banco/Agência/Conta/Sub-Conta inválido."},5,;
-	{"Verifique se os parâmetros estão preenchidos corretamente."},5)
-	Return
-Endif
-		
-                
+
 //posiciona no pedido
 DbSelectArea("SC5")
 DbSetOrder(1)
 DbSeek(xFilial("SC5")+SE1->E1_PEDIDO,.T.)
-		
-If !empty(SC5->C5_CLIENTE+SC5->C5_LOJACLI).and.(SC5->C5_FILIAL+SC5->C5_NUM==SE1->E1_FILIAL+SE1->E1_PEDIDO)        
+
+If !empty(SC5->C5_CLIENTE+SC5->C5_LOJACLI).and.(SC5->C5_FILIAL+SC5->C5_NUM==SE1->E1_FILIAL+SE1->E1_PEDIDO)
 	DbSelectArea("SA1")
 	DbSetOrder(1)
 	DbSeek(xFilial("SA1")+SC5->C5_CLIENTE+SC5->C5_LOJACLI,.T.)
@@ -168,9 +165,9 @@ Else
 	DbSelectArea("SA1")
 	DbSetOrder(1)
 	DbSeek(xFilial("SA1")+SE1->E1_CLIENTE+SE1->E1_LOJA,.T.)
-Endif                          
-		
-		
+Endif
+
+
 aAdd(aDadosBanco, Alltrim(SA6->A6_COD))     // [1]Numero do Banco
 aAdd(aDadosBanco, Alltrim(SA6->A6_NOME))    // [2]Nome do Banco
 aAdd(aDadosBanco, Alltrim(SA6->A6_AGENCIA)) // [3]Agência
@@ -180,9 +177,9 @@ aAdd(aDadosBanco, Alltrim(__cCarteira))     // [6]Codigo da Carteira
 
 
 _Nome1 := AllTrim(SA1->A1_NOME)
-_CGCCl := Subs(SA1->A1_CGC,1,2)+"."+Subs(SA1->A1_CGC,3,3)+"."+Subs(SA1->A1_CGC,6,3)+" / "+Subs(SA1->A1_CGC,9,4)+" - "+Subs(SA1->A1_CGC,13,2) 
+_CGCCl := Subs(SA1->A1_CGC,1,2)+"."+Subs(SA1->A1_CGC,3,3)+"."+Subs(SA1->A1_CGC,6,3)+" / "+Subs(SA1->A1_CGC,9,4)+" - "+Subs(SA1->A1_CGC,13,2)
 
-		
+
 If Empty(SA1->A1_ENDCOB)
 	aDatSacado   := {AllTrim(SA1->A1_NOME)           ,;      	// [1]Razão Social
 	AllTrim(SA1->A1_COD )+"-"+SA1->A1_LOJA           ,;      	// [2]Código
@@ -209,38 +206,38 @@ cNroDoc	:= StrZero(	Val(Alltrim(SE1->E1_NUM)+Alltrim(SE1->E1_PARCELA)),8)
 
 DbSelectArea("SE1")
 RecLock("SE1",.F.)
-SE1->E1_NUMBCO 	:=	cNroDoc   // Nosso número (Ver fórmula para calculo) 
+SE1->E1_NUMBCO 	:=	cNroDoc   // Nosso número (Ver fórmula para calculo)
 SE1->E1_PORTADO :=	aDadosBanco[1]
 SE1->E1_AGEDEP  :=	aDadosBanco[3]
 SE1->E1_CONTA   :=	aDadosBanco[4]
 MsUnlock()
-		
+
 aCB_RN_NN := fLinhaDig(aDadosBanco[1]      ,; // Numero do Banco
 __cMoeda            ,; // Codigo da Moeda
 aDadosBanco[6]      ,; // Codigo da Carteira
 aDadosBanco[3]      ,; // Codigo da Agencia
 aDadosBanco[4]      ,; // Codigo da Conta
 aDadosBanco[5]      ,; // DV da Conta
-(E1_VALOR-nVlrAbat) ,; // Valor do Titulo		
+(E1_VALOR-nVlrAbat) ,; // Valor do Titulo
 E1_VENCTO           ,; // Data de Vencimento do Titulo
 cNroDoc              ) // Numero do Documento no Contas a Receber
-		       
-dvNN := Alltrim(Str(Modulo10(aDadosBanco[3]+aDadosBanco[4]+aDadosBanco[6]+cNroDoc)))		
+
+dvNN := Alltrim(Str(Modulo10(aDadosBanco[3]+aDadosBanco[4]+aDadosBanco[6]+cNroDoc)))
 
 If Empty(SE1->E1_PARCELA)
-   	cNumTit := AllTrim(SE1->E1_NUM)
-   	_NumTit := cNumTit
-Else                     
+	cNumTit := AllTrim(SE1->E1_NUM) + "-" + 1
+	_NumTit := cNumTit
+Else
     cNumTit := AllTrim(SE1->E1_NUM)+"-"+AllTrim(SE1->E1_PARCELA)
 
 Endif
-        
-_ChvCli := E1_CLIENTE  
+
+_ChvCli := E1_CLIENTE
 _ChvLoj := E1_LOJA
-_ChvNum := E1_NUM    
+_ChvNum := E1_NUM
 _ChvSer := E1_PREFIXO
-_ChvPar := E1_PARCELA   
-           
+_ChvPar := E1_PARCELA
+
 aDadosTit	:= {cNumTit				,;  // [1] Número do título
 E1_EMISSAO                          ,;  // [2] Data da emissão do título
 dDataBase                    		,;  // [3] Data da emissão do boleto
@@ -248,18 +245,18 @@ E1_VENCTO                           ,;  // [4] Data do vencimento
 (E1_SALDO - nVlrAbat)               ,;  // [5] Valor do título
 aCB_RN_NN[3]                        ,;  // [6] Nosso número (Ver fórmula para calculo)
 E1_PREFIXO                          ,;  // [7] Prefixo da NF
-E1_TIPO	                           	}  // [8] Tipo do Titulo
+E1_TIPO	                           	}  	// [8] Tipo do Titulo
 
 
 ImpressB(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolText,aCB_RN_NN,dvNN)
 nX := nX + 1
 
-oPrint:print()   
-    
-CpyT2S("C:\TEMP\"+_cNomeArq, "\BOLITAU" )   
+oPrint:print()
+
+CpyT2S("C:\TEMP\"+_cNomeArq, "\BOLITAU" )
 
 DbSelectArea("SEA")
-DBGOTOP() 
+DBGOTOP()
 
 If !Empty(SEA->EA_NUMBOR)
  cPath	:= "\BOLITAU"//Caminho onde vai ser gerado o boleto grafico abaixo do System
@@ -267,14 +264,14 @@ If !Empty(SEA->EA_NUMBOR)
  fEnvMail(cMaiForn,cNameArq,aCB_RN_NN[1],cNumTit)
  FERASE("C:\TEMP\"+_cNomeArq)
 EndIf
-   
-/*If MSGBOX("Deseja Enviar este boleto para o e-mail do Cliente?","Atenção","YESNO")  
+
+/*If MSGBOX("Deseja Enviar este boleto para o e-mail do Cliente?","Atenção","YESNO")
    fEnvMail(cMaiForn,cNameArq,aCB_RN_NN[1],cNumTit)
-   FERASE("C:\TEMP\"+_cNomeArq)   
+   FERASE("C:\TEMP\"+_cNomeArq)
 EndIf */
 
 
-	
+
 Return Nil
 
 
@@ -408,12 +405,12 @@ oPrint:Say  (nRow2+0615,513,aDadosBanco[1]+"-7",oFont20 )	// [1]Numero do Banco
 oPrint:Say  (nRow2+0614,1800,"Recibo do Pagador",oFont10)
 
 oPrint:Line (nRow2+0710,100,nRow2+0710,2300 )
-oPrint:Line (nRow2+0830,100,nRow2+0830,2300 ) 
+oPrint:Line (nRow2+0830,100,nRow2+0830,2300 )
 oPrint:Line (nRow2+0920,100,nRow2+0920,2300 )
 oPrint:Line (nRow2+1010,100,nRow2+1010,2300 )
 
 oPrint:Line (nRow2+0830,500,nRow2+1010,500)// linha vertical
-oPrint:Line (nRow2+0920,750,nRow2+1010,750)// linha vertical 
+oPrint:Line (nRow2+0920,750,nRow2+1010,750)// linha vertical
 oPrint:Line (nRow2+0830,1000,nRow2+1010,1000)// linha vertical
 oPrint:Line (nRow2+0830,1300,nRow2+0920,1300)// linha vertical ultimoxxxxxxxxxxxxxxxxxx
 oPrint:Line (nRow2+0830,1480,nRow2+1010,1480)// linha vertical
@@ -487,7 +484,7 @@ oPrint:Say  (nRow2+1120,1810,"(-)Outras Deduções"                             ,o
 oPrint:Say  (nRow2+1190,1810,"(+)Mora/Multa"                                  ,oFont8)
 oPrint:Say  (nRow2+1260,1810,"(+)Outros Acréscimos"                           ,oFont8)
 oPrint:Say  (nRow2+1330,1810,"(=)Valor Cobrado"                               ,oFont8)
-            
+
 oPrint:Say  (nRow2+1430,100 ,"Pagador"                                         ,oFont8)
 oPrint:Say  (nRow2+1460,400 ,aDatSacado[1]+" ("+aDatSacado[2]+")"             ,oFont10)
 oPrint:Say  (nRow2+1513,400 ,aDatSacado[3]                                    ,oFont10)
@@ -554,7 +551,7 @@ oPrint:Say  (nRow3+2100,100 ,"Beneficiário",oFont8)
 oPrint:Say  (nRow3+2150,100 ,aDadosEmp[1]+"                  - "+aDadosEmp[6]	,oFont10) //Nome + CNPJ
 
 oPrint:Say  (nRow3+2100,1810,"Agência/Código Beneficiário",oFont8)
-cString := Alltrim(aDadosBanco[3]+"/"+aDadosBanco[4]+"-"+aDadosBanco[5]) 
+cString := Alltrim(aDadosBanco[3]+"/"+aDadosBanco[4]+"-"+aDadosBanco[5])
 nCol 	 := 1810+(374-(len(cString)*22))
 oPrint:Say  (nRow3+2150,nCol,cString ,oFont11c)
 
@@ -735,7 +732,7 @@ Y = DAC que amarra o campo, calculado pelo Modulo 10 da String do campo
 */
 cTemp	:= Substr(Right(AllTrim(SE1->E1_NUMBCO),8),3) + cDvNN + Substr(cAgencia,1,3)
 cDV		:= Alltrim(Str(Modulo10(cTemp)))
-cCampo2 := Substr(cTemp,1,5) + '.' + Substr(cTemp,6) + cDV + Space(3) 
+cCampo2 := Substr(cTemp,1,5) + '.' + Substr(cTemp,6) + cDV + Space(3)
 /*
 CAMPO 3:
 F = Restante do numero que identifica a agencia
@@ -864,48 +861,48 @@ ENDIF
 	cQ  += " AND E1_PARCELA = '"+_ChvPar+"'
 	cQ  += " AND E1_CLIENTE = '"+_ChvCli+"'
 	cQ  += " AND E1_LOJA = '"+_ChvLoj+"'
-	cQ  += " ORDER BY E1_EMISSAO "  
+	cQ  += " ORDER BY E1_EMISSAO "
 
-	TCQUERY cQ New Alias "TABTR" 
-	
+	TCQUERY cQ New Alias "TABTR"
+
 	DBSELECTAREA("TABTR")
-	DBGOTOP() 
-				
+	DBGOTOP()
+
 
 //IF _cMsg == NIL
-WHILE TABTR->(!EOF()) 
+WHILE TABTR->(!EOF())
 
-	_cMsg := '<html>' 
-	_cMsg += '<body>' 
-	_cMsg += '<font face="arial" size="2"><p><b>Prezado Cliente</b><br>' 
-	_cMsg += '<font face="arial" size="2"><p><b>Razão Social: </b>'+ _Nome1+'<br>' 
-	_cMsg += '<font face="arial" size="2"><p><b>CNPJ/CPF: </b>'+ _CGCCl+'<br>' 
-	_cMsg += '<font face="arial" size="2"><p> <br>' 
+	_cMsg := '<html>'
+	_cMsg += '<body>'
+	_cMsg += '<font face="arial" size="2"><p><b>Prezado Cliente</b><br>'
+	_cMsg += '<font face="arial" size="2"><p><b>Razão Social: </b>'+ _Nome1+'<br>'
+	_cMsg += '<font face="arial" size="2"><p><b>CNPJ/CPF: </b>'+ _CGCCl+'<br>'
+	_cMsg += '<font face="arial" size="2"><p> <br>'
 	_cMsg += '<b>Segue em anexo o boleto do titulo abaixo:</b><br>'
 	_cMsg += '<TABLE cellSpacing=0 cellPadding=0 width="100%" bgColor=#F0FFFF background="" '
     _cMsg += 'border=1>'
 	_cMsg += '<TBODY>'
     _cMsg +=  "<TR><TD style=text-align:center; bgcolor=#FF7F50><B>"+'Data Emissão'+"</B></TD><TD style=text-align:center; bgcolor=#FF7F50><B>"+'Nota Fiscal'+"</B></TD><TD style=text-align:center; bgcolor=#FF7F50><B>"+'Parcela'+"</B></TD><TD style=text-align:center; bgcolor=#FF7F50><B>"+'Vencimento'+"</B></TD><TD style=text-align:center; bgcolor=#FF7F50><B>"+'Valor'+"</B></TD>"
-    _cMsg +=  "<TR><TD style=text-align:center>"+AllTrim(TABTR->EMISSAO)+"</TD><TD style=text-align:center>"+AllTrim(TABTR->NOTA)+"</TD><TD style=text-align:center>"+AllTrim(TABTR->PARCELA)+"</TD><TD style=text-align:center>"+AllTrim(TABTR->VENCIMENTO)+"</TD><TD style=text-align:center>"+TRANSFORM(TABTR->VALOR, "@E 99,999,999.99")+"</TD>"     
+    _cMsg +=  "<TR><TD style=text-align:center>"+AllTrim(TABTR->EMISSAO)+"</TD><TD style=text-align:center>"+AllTrim(TABTR->NOTA)+"</TD><TD style=text-align:center>"+AllTrim(TABTR->PARCELA)+"</TD><TD style=text-align:center>"+AllTrim(TABTR->VENCIMENTO)+"</TD><TD style=text-align:center>"+TRANSFORM(TABTR->VALOR, "@E 99,999,999.99")+"</TD>"
 	_cMsg += '</TBODY></TABLE>'
-	_cMsg += '<font face="arial" size="2"><p> <br>' 
-	_cMsg += '<font face="arial" size="2"><p> <br>' 
-	_cMsg += '<b>ATENÇÃO - Este e-mail foi disparado automaticamente pelo nosso sistema, favor não responder.</b><br>' 
-	_cMsg += 'Caso não tenha recebido o boleto bancário, favor entrar em contato, através do e-mail creditocobranca@bomix.com.br, ou através do telefone abaixo:<br>' 
-    _cMsg += '+55 (71) 3215-8600 - Falar com Setor Financeiro<br>' 
-	_cMsg += '<font face="arial" size="2"><p> <br>' 
-	_cMsg += 'Atenciosamente,<br>' 
-	_cMsg += '<font face="arial" size="2"><p><b>'+alltrim(SM0->M0_NOMECOM)+'</b><br>' 
-	_cMsg += '<font face="arial" size="2"><p><b>CNPJ: '+Subs(SM0->M0_CGC,1,2)+"."+Subs(SM0->M0_CGC,3,3)+"."+Subs(SM0->M0_CGC,6,3)+" / "+Subs(SM0->M0_CGC,9,4)+" - "+Subs(SM0->M0_CGC,13,2)+'</b><br>'	
-	_cMsg += '</font>' 
-	_cMsg += '</body></html>' 
-	
+	_cMsg += '<font face="arial" size="2"><p> <br>'
+	_cMsg += '<font face="arial" size="2"><p> <br>'
+	_cMsg += '<b>ATENÇÃO - Este e-mail foi disparado automaticamente pelo nosso sistema, favor não responder.</b><br>'
+	_cMsg += 'Caso não tenha recebido o boleto bancário, favor entrar em contato, através do e-mail creditocobranca@bomix.com.br, ou através do telefone abaixo:<br>'
+    _cMsg += '+55 (71) 3215-8600 - Falar com Setor Financeiro<br>'
+	_cMsg += '<font face="arial" size="2"><p> <br>'
+	_cMsg += 'Atenciosamente,<br>'
+	_cMsg += '<font face="arial" size="2"><p><b>'+alltrim(SM0->M0_NOMECOM)+'</b><br>'
+	_cMsg += '<font face="arial" size="2"><p><b>CNPJ: '+Subs(SM0->M0_CGC,1,2)+"."+Subs(SM0->M0_CGC,3,3)+"."+Subs(SM0->M0_CGC,6,3)+" / "+Subs(SM0->M0_CGC,9,4)+" - "+Subs(SM0->M0_CGC,13,2)+'</b><br>'
+	_cMsg += '</font>'
+	_cMsg += '</body></html>'
+
 //ENDIF
 
    TABTR->(dbSkip())
-			
+
 ENDDO
-	
+
 	TABTR->(DBCLOSEAREA())
 
 //DBSELECTAREA("TABTR")
