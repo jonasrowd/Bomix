@@ -18,13 +18,13 @@
 ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 */
 
-User Function MTDGPERD
+User Function MTDGPERD()
 	Local a_Area  := GetArea()
 	Local c_Prod  := PARAMIXB[1]
-	Local c_OP    := PARAMIXB[2]
+//	Local c_OP    := PARAMIXB[2]
 	Local n_Qtd   := PARAMIXB[3]
 //	Local c_Local := Posicione("SC2", 1, xFilial("SC2") + c_OP, "C2_LOCAL")
-	Local c_Local := M->H6_LOCAL
+//	Local c_Local := M->H6_LOCAL
 
 	If 	Len(aCols) >0
 		aCols[Len(aCols)][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_PRODUTO'})] := c_Prod
@@ -42,6 +42,7 @@ User Function FPCPV002
 	Local n_QtdApt := M->BC_QUANT
 	Local a_Area   := GetArea()
 	Local l_Ret    := .T.
+	Local j		   := 0
 
 	If Type("M->H6_QTDPERD") <> "U" .And. Upper(AllTrim(FunName())) == "MATA681"
 		n_QtdPer := M->H6_QTDPERD
@@ -63,10 +64,11 @@ Return l_Ret
 
 
 
-User Function DIGPEROK
+User Function DIGPEROK()
 	Local a_Area := GetArea()
 	Local l_Ret  := .T.
 	Local c_OP   := M->H6_OP
+	Local i		 := 0
 
 	If cFilAnt == "010101"   // --- Validação na inclusao do Apontamento de Perda
 		c_LocalSC2 := Posicione("SC2", 1, xFilial("SC2") + c_OP, "C2_LOCAL")
@@ -162,8 +164,8 @@ User Function DIGPEROK
 						l_Ret := .T.
 					Else
 						ShowHelpDlg(SM0->M0_NOME, {"O campo Prd. Destino do item " + StrZero(i, 2) + " está preenchido incorretamente"},5,;
-                                 			  {"Preencha o campo Prd. Destino com o Código do Produto Classe C do Produto " + AllTrim(cCodProd)},5)
-//                                 			  {"Preencha o campo Prd. Destino com o Código do Produto Classe C ou Classe D do Produto " + AllTrim(cCodProd)},5)
+												{"Preencha o campo Prd. Destino com o Código do Produto Classe C do Produto " + AllTrim(cCodProd)},5)
+//												{"Preencha o campo Prd. Destino com o Código do Produto Classe C ou Classe D do Produto " + AllTrim(cCodProd)},5)
 						l_Ret := .F.
 						Exit
 					Endif
@@ -177,10 +179,10 @@ User Function DIGPEROK
 
 				n_QtdVal := 0
 
- 				If c_Um == c_UmDest
- 					n_QtdVal := n_QtdPer
- 				Elseif c_Um $ "UN/PC" .And. c_UmDest $ "UN/PC"
- 					n_QtdVal := n_QtdPer
+				If c_Um == c_UmDest
+					n_QtdVal := n_QtdPer
+				Elseif c_Um $ "UN/PC" .And. c_UmDest $ "UN/PC"
+					n_QtdVal := n_QtdPer
 				Elseif c_Um $ "UN/PC" .And. c_UmDest == "KG"
 					dbSelectArea("SBM")
 					SBM->(dbSetOrder(1))
@@ -201,7 +203,7 @@ User Function DIGPEROK
 
 				If n_QtdDest <> n_QtdVal
 					ShowHelpDlg(SM0->M0_NOME, {"O campo Qtd Destino do item " + StrZero(i, 2) + " está preenchido incorretamente"},5,;
-                                 			  {"Verifique se o cálculo para preencher o campo Qtd Destino foi realizado corretamente"},5)
+												{"Verifique se o cálculo para preencher o campo Qtd Destino foi realizado corretamente"},5)
 					l_Ret := .F.
 					Exit
 				Endif

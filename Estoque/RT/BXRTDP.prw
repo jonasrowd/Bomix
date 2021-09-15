@@ -2,7 +2,7 @@
 #Include 'Topconn.ch'
 
 /*/{Protheus.doc} BXRTDP
-	Cadastro de Produtos Bomix
+	Cadastro de Item/Molde 
 	@type Function
 	@version 12.1.25
 	@author Jonas Machado
