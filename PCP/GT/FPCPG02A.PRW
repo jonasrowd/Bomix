@@ -14,26 +14,26 @@
 ±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
 ±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
 ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
-/*/                    
+/*/
 
 
-User Function FPCPG02A     
+User Function FPCPG02A
 
-Local MOPE := M->H6_OPERAC
+//Local MOPE := M->H6_OPERAC
 Local MREC := M->H6_RECURSO
-Local FERRAM := M->H6_FERRAM
+//Local FERRAM := M->H6_FERRAM
 
 DbSelectArea("SC2")
 DbSetOrder(6)
-If (DbSeek(xFilial("SC2")+ SUBSTR(M->H6_OP,1,6) + SUBSTR(M->H6_OP,7,2) + SUBSTR(M->H6_OP,9,3)))                                                         
-  	MROT  = SC2->C2_ROTEIRO 
-  	MPROD = SC2->C2_PRODUTO     
+If (DbSeek(xFilial("SC2")+ SUBSTR(M->H6_OP,1,6) + SUBSTR(M->H6_OP,7,2) + SUBSTR(M->H6_OP,9,3)))
+  	MROT  = SC2->C2_ROTEIRO
+  	MPROD = SC2->C2_PRODUTO
   	DbSelectArea("SG2")
     DbSetOrder(1)
   	If (DbSeek(xFilial("SG2")+ MPROD + MROT))
   	    MREC = SG2->G2_RECURSO
-   	ENDIF    
-  	
-EndIf    
-                                      
+   	ENDIF
+
+EndIf
+
 Return MREC
