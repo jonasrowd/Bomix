@@ -18,17 +18,17 @@
 ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 */
 
-User Function MTDGPERD()
+User Function MTDGPERD
 	Local a_Area  := GetArea()
 	Local c_Prod  := PARAMIXB[1]
-//	Local c_OP    := PARAMIXB[2]
+	//Local c_OP    := PARAMIXB[2]
 	Local n_Qtd   := PARAMIXB[3]
-//	Local c_Local := Posicione("SC2", 1, xFilial("SC2") + c_OP, "C2_LOCAL")
-//	Local c_Local := M->H6_LOCAL
+	//	Local c_Local := Posicione("SC2", 1, xFilial("SC2") + c_OP, "C2_LOCAL")
+	//Local c_Local := M->H6_LOCAL
 
 	If 	Len(aCols) >0
 		aCols[Len(aCols)][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_PRODUTO'})] := c_Prod
-	//	aCols[Len(aCols)][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_LOCORIG'})] := c_Local
+		//	aCols[Len(aCols)][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_LOCORIG'})] := c_Local
 		aCols[Len(aCols)][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})]   := n_Qtd
 	EndIf	
 
@@ -42,7 +42,7 @@ User Function FPCPV002
 	Local n_QtdApt := M->BC_QUANT
 	Local a_Area   := GetArea()
 	Local l_Ret    := .T.
-	Local j		   := 0
+	Local j
 
 	If Type("M->H6_QTDPERD") <> "U" .And. Upper(AllTrim(FunName())) == "MATA681"
 		n_QtdPer := M->H6_QTDPERD
@@ -64,18 +64,20 @@ Return l_Ret
 
 
 
-User Function DIGPEROK()
+User Function DIGPEROK
 	Local a_Area := GetArea()
 	Local l_Ret  := .T.
 	Local c_OP   := M->H6_OP
-	Local i		 := 0
-
+	Local i
+	
 	If cFilAnt == "010101"   // --- Validação na inclusao do Apontamento de Perda
+
 		c_LocalSC2 := Posicione("SC2", 1, xFilial("SC2") + c_OP, "C2_LOCAL")
 		c_ProdSH6  := M->H6_PRODUTO
 		c_LocalSH6 := M->H6_LOCAL
 		n_QtdSH6   := M->H6_QTDPERD
 		n_QtdApt   := 0
+
 
 		For i:=1 To Len(aCols)
 			If aCols[i][Len(aHeader) + 1] == .F.
@@ -95,60 +97,33 @@ User Function DIGPEROK()
 
 				If Empty(cCodProd) .Or. Empty(c_LocOrig) .Or. Empty(cCodDest) .Or. Empty(c_Local)
 					ShowHelpDlg(SM0->M0_NOME,;
-						{"Um ou alguns campos obrigatórios do item " + StrZero(i, 2) + " não foram preenchidos"},5,;
-						{"Preencha os campos Produto, Armazem Orig, Prd. Destino e Armazem Dest antes de prosseguir"},5)
+					{"Um ou alguns campos obrigatórios do item " + StrZero(i, 2) + " não foram preenchidos"},5,;
+					{"Preencha os campos Produto, Armazem Orig, Prd. Destino e Armazem Dest antes de prosseguir"},5)
 					l_Ret := .F.
 					Exit
 				Endif
 
 				If cCodProd <> c_ProdSH6
 					ShowHelpDlg(SM0->M0_NOME,;
-						{"O campo Produto do item " + StrZero(i, 2) + " da Classificação da Perda está divergente do valor informado no campo Produto da Produção PCP Mod2"},5,;
-						{"Verifique se o valor do campo Produto da Classificação da Perda foi digitado corretamente"},5)
+					{"O campo Produto do item " + StrZero(i, 2) + " da Classificação da Perda está divergente do valor informado no campo Produto da Produção PCP Mod2"},5,;
+					{"Verifique se o valor do campo Produto da Classificação da Perda foi digitado corretamente"},5)
 					l_Ret := .F.
 					Exit
 				Endif
-/*
-				If c_LocOrig <> c_LocalSH6
-					ShowHelpDlg(SM0->M0_NOME,;
-						{"O campo Armazem Orig do item " + StrZero(i, 2) + " da Classificação da Perda está divergente do valor informado no campo Armazem da Produção PCP Mod2"},5,;
-						{"Verifique se o valor do campo Armazem Orig da Classificação da Perda foi digitado corretamente"},5)
-					l_Ret := .F.
-					Exit
-				Endif
-
-				dbSelectArea("SZ7")
-				dbSetOrder(1)
-				If dbSeek(xFilial("SZ7") + __CUSERID + c_LocOrig)
-					If Z7_TPMOV == 'E'
-						ShowHelpDlg(SM0->M0_NOME,;
-							{"O seu usuário não possui permissão para efetuar saídas no armazém " + c_LocOrig + "."},5,;
-							{"Contacte o administrador do sistema."},5)
-						l_Ret := .F.
-						Exit						
-					Endif
-				Else
-					ShowHelpDlg(SM0->M0_NOME,;
-						{"O seu usuário não possui permissão para efetuar saídas no armazém " + c_LocOrig + "."},5,;
-						{"Contacte o administrador do sistema."},5)
-					l_Ret := .F.
-					Exit
-				Endif
-*/
 				dbSelectArea("SZ7")
 				dbSetOrder(1)
 				If dbSeek(xFilial("SZ7") + __CUSERID + c_Local)
 					If Z7_TPMOV == 'S'
 						ShowHelpDlg(SM0->M0_NOME,;
-							{"O seu usuário não possui permissão para efetuar entradas no armazém " + c_Local + "."},5,;
-							{"Contacte o administrador do sistema."},5)
+						{"O seu usuário não possui permissão para efetuar entradas no armazém " + c_Local + "."},5,;
+						{"Contacte o administrador do sistema."},5)
 						l_Ret := .F.
 						Exit
 					Endif
 				Else
 					ShowHelpDlg(SM0->M0_NOME,;
-						{"O seu usuário não possui permissão para efetuar entradas no armazém " + c_Local + "."},5,;
-						{"Contacte o administrador do sistema."},5)
+					{"O seu usuário não possui permissão para efetuar entradas no armazém " + c_Local + "."},5,;
+					{"Contacte o administrador do sistema."},5)
 					l_Ret := .F.
 					Exit
 				Endif
@@ -159,13 +134,13 @@ User Function DIGPEROK()
 					c_Um   := SB1->B1_UM
 					c_Grupo  := SB1->B1_GRUPO
 
-//					If cCodDest == SB1->B1_FSPRODC .Or. cCodDest == SB1->B1_FSPRODD
+					//					If cCodDest == SB1->B1_FSPRODC .Or. cCodDest == SB1->B1_FSPRODD
 					If cCodDest == SB1->B1_FSPRODC
 						l_Ret := .T.
 					Else
 						ShowHelpDlg(SM0->M0_NOME, {"O campo Prd. Destino do item " + StrZero(i, 2) + " está preenchido incorretamente"},5,;
-												{"Preencha o campo Prd. Destino com o Código do Produto Classe C do Produto " + AllTrim(cCodProd)},5)
-//												{"Preencha o campo Prd. Destino com o Código do Produto Classe C ou Classe D do Produto " + AllTrim(cCodProd)},5)
+						{"Preencha o campo Prd. Destino com o Código do Produto Classe C do Produto " + AllTrim(cCodProd)},5)
+						//                                 			  {"Preencha o campo Prd. Destino com o Código do Produto Classe C ou Classe D do Produto " + AllTrim(cCodProd)},5)
 						l_Ret := .F.
 						Exit
 					Endif
@@ -203,7 +178,7 @@ User Function DIGPEROK()
 
 				If n_QtdDest <> n_QtdVal
 					ShowHelpDlg(SM0->M0_NOME, {"O campo Qtd Destino do item " + StrZero(i, 2) + " está preenchido incorretamente"},5,;
-												{"Verifique se o cálculo para preencher o campo Qtd Destino foi realizado corretamente"},5)
+					{"Verifique se o cálculo para preencher o campo Qtd Destino foi realizado corretamente"},5)
 					l_Ret := .F.
 					Exit
 				Endif

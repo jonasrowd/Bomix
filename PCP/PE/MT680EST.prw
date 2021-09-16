@@ -11,7 +11,7 @@
 ±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
 ±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
 ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
-/*/              
+/*/
 
 
 User Function MT680EST
@@ -19,7 +19,7 @@ User Function MT680EST
 	Local n_Acao    := PARAMIXB[1]
 	Local a_Area    := GetArea()
 	Local l_Ret     := .T.
-	
+
 	If n_Acao == 2 		//Operador confirmou estorno
 		dbSelectArea("SD3")
 		SD3->(dbSetOrder(15))
@@ -33,7 +33,7 @@ User Function MT680EST
                     l_Ret := .F.
 		        	Exit
 		        Endif
-	
+
 				SZW->(dbSkip())
 			End
 	    Endif

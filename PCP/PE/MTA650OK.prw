@@ -1,16 +1,30 @@
-#Include 'Totvs.ch'
-
-/*/{Protheus.doc} MTA650OK
-	Ponto de entrada antes de gerar as Op's intermediárias e Sc's. É utilizado para inibir o diálogo confirmando a criação dessas Op's e Sc's.
-	@type Function
-	@version 12.1.25
-	@author Jonas Machado
-	@since 30/08/2021
-	@return logical, Gera Op's Intermediárias e Sc's.
-	@see https://tdn.totvs.com/pages/releaseview.action?pageId=6089305
 /*/
-User Function MTA650OK()
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  MTA650OK      º Autor ³ AP6 IDE            º Data ³  23/10/19º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDescricao ³                                                            º±±
+±±º          ³                                                            º±±
+±±º          ³                                                            º±±
+±±º          ³                                                            º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³ AP6 IDE                                                    º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+/*/
 
-Conout("MTA650OK PASSOU AQUI.")
+User Function MTA650OK( )
+	Local l_Ret    := .T.
+	Local a_Area   := GetArea()
 
-Return .T.
+	IF SC2->C2_SEQUEN # ("001","002") .AND. !EOF()
+		RECLOCK("SC2",.F.)
+		dbSelectArea("SC2")
+		SC2->C2_FSSALDO:=SC2->C2_QUANT
+		MSUNLOCK()
+	ENDIF
+
+	RestArea(a_Area)
+Return l_Ret
