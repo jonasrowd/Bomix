@@ -384,9 +384,8 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oFont14n := TFont():New("Arial",9,14,.T.,.F.,5,.T.,5,.T.,.F.,.F.)
 	oFont24  := TFont():New("Arial",9,24,.T.,.T.,5,.T.,5,.T.,.F.,.F.)
 	oPrint:StartPage()   // Inicia uma nova página
-	/******************/
-	/* PRIMEIRA PARTE */
-	/******************/
+	
+	// PRIMEIRA PARTE
 	nRow1 := 20
 	oPrint:Line (0150,500,0070,500)
 	oPrint:Line (0150,710,0070,710)
@@ -430,9 +429,8 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oPrint:Say  (nRow1+0405,1910,"(  )Desconhecido"                            	,oFont8)
 	oPrint:Say  (nRow1+0445,1910,"(  )Falecido"                                 ,oFont8)
 	oPrint:Say  (nRow1+0485,1910,"(  )Outros(anotar no verso)"                  ,oFont8)
-	/*****************/
-	/* SEGUNDA PARTE */
-	/*****************/
+
+	//SEGUNDA PARTE
 	nRow2 := 20
 	//Pontilhado separador
 	/*
@@ -456,7 +454,6 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oPrint:Line (0910,1300,0980,1300)
 	oPrint:Line (0910,1480,1050,1480)
 	oPrint:Say  (nRow2+0710,100 ,"Local de Pagamento",oFont8)
-	//oPrint:Say (nRow2+0725,400 ,"ATE O VENCIMENTO PAGUE PREFERENCIALMENTE NO ITAU",oFont10)
 	oPrint:Say  (nRow2+0765,100 ,"APÓS O VENCIMENTO PAGUE SOMENTE NO ITAU",oFont10)
 	oPrint:Say  (nRow2+0710,1810,"Vencimento"                                     ,oFont8)
 	cString	:= StrZero(Day(aDadosTit[4]),2) +"/"+ StrZero(Month(aDadosTit[4]),2) +"/"+ Right(Str(Year(aDadosTit[4])),4)
@@ -470,9 +467,7 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oPrint:Say  (nRow2+0850,nCol,cString,oFont11c)
 	oPrint:Say  (nRow2+0910,100 ,"Data do Documento"                              ,oFont8)
 	oPrint:Say  (nRow2+0940,100, StrZero(Day(dDataBase),2) +"/"+ StrZero(Month(dDataBase),2) +"/"+ Right(Str(Year(dDataBase)),4),oFont10)
-	//oPrint:Say  (nRow2+0940,100, StrZero(Day(aDadosTit[2]),2) +"/"+ StrZero(Month(aDadosTit[2]),2) +"/"+ Right(Str(Year(aDadosTit[2])),4),oFont10)
 	oPrint:Say  (nRow2+0910,505 ,"Nro.Documento"                                  ,oFont8)
-	//oPrint:Say  (nRow2+0940,605 ,aDadosTit[7]+aDadosTit[1]						,oFont10) //Prefixo +Numero+Parcela
 	oPrint:Say  (nRow2+0940,605 ,aDadosTit[1]						,oFont10) //Numero do Titulo
 	oPrint:Say  (nRow2+0910,1005,"Espécie Doc."                                   ,oFont8)
 	oPrint:Say  (nRow2+0940,1050,aDadosTit[8]										,oFont10) //Tipo do Titulo
@@ -497,9 +492,7 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oPrint:Say  (nRow2+1010,nCol,cString ,oFont11c)
 	oPrint:Say  (nRow2+1050,100 ,"Instruções (Todas informações deste bloqueto são de exclusiva responsabilidade do beneficiário)",oFont8)
 	oPrint:Say  (nRow2+1150,100 ,aBolText[1]+" "+AllTrim(Transform(((aDadosTit[5]*0.09)/30),"@E 99,999.99"))+" AO DIA"       ,oFont10)
-	//oPrint:Say  (nRow2+1150,100 ,aBolText[1],oFont10)+" "+AllTrim(Transform(((aDadosTit[5]*(10/30))/100),"@E 99,999.99"))+" AO DIA"  ,oFont10)
 	oPrint:Say  (nRow2+1200,100 ,aBolText[2]   ,oFont10)
-	//oPrint:Say  (nRow2+1250,100 ,aBolText[3]                                        ,oFont10)
 	oPrint:Say  (nRow2+1250,100,"INSTRUÇÕES DE RESPONSABILIDADE DO BENEFICIÁRIO. QUALQUER"                        ,oFont10)
 	oPrint:Say  (nRow2+1300,100,"DÚVIDA SOBRE ESTE BOLETO, CONTATE O BENEFICIÁRIO."                               ,oFont10)
 	oPrint:Say  (nRow2+1050,1810,"(-)Desconto/Abatimento"                         ,oFont8)
@@ -507,14 +500,11 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oPrint:Say  (nRow2+1190,1810,"(+)Mora/Multa"                                  ,oFont8)
 	oPrint:Say  (nRow2+1260,1810,"(+)Outros Acréscimos"                           ,oFont8)
 	oPrint:Say  (nRow2+1330,1810,"(=)Valor Cobrado"                               ,oFont8)
-
-	//Temp
-	//oPrint:Say  (nRow2+1350,100,"APOS VCTO ACESSE WWW.ITAU.COM.BR/BOLETOS PARA ATUALIZAR SEU BOLETO"                               ,oFont10)
-	oPrint:Say  (nRow2+1400,100 ,"Pagador"                                         ,oFont8)
+	oPrint:Say  (nRow2+1400,100 ,"Pagador"                                        ,oFont8)
 	oPrint:Say  (nRow2+1430,400 ,aDatSacado[1]+" ("+aDatSacado[2]+")"             ,oFont10)
 	oPrint:Say  (nRow2+1483,400 ,aDatSacado[3]                                    ,oFont10)
 	oPrint:Say  (nRow2+1536,400 ,aDatSacado[6]+"    "+aDatSacado[4]+" - "+aDatSacado[5],oFont10) // CEP+Cidade+Estado
-	if aDatSacado[8] = "J"
+	If aDatSacado[8] = "J"
 		oPrint:Say  (nRow2+1430,1750 ,"CNPJ: "+TRANSFORM(aDatSacado[7],"@R 99.999.999/9999-99"),oFont10) // CGC
 	Else
 		oPrint:Say  (nRow2+1430,1750 ,"CPF: "+TRANSFORM(aDatSacado[7],"@R 999.999.999-99"),oFont10) 	// CPF
@@ -522,16 +512,15 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oPrint:Say  (nRow2+1589,1850,Substr(aDadosTit[6],1,3)+Substr(aDadosTit[6],4)  ,oFont10)
 	oPrint:Say  (nRow2+1605,100 ,"Sacador/Avalista",oFont8)
 	oPrint:Say  (nRow2+1645,1500,"Autenticação Mecânica",oFont8)
-	oPrint:Line (0710,1800,1400,1800 )
-	oPrint:Line (1120,1800,1120,2300 )
-	oPrint:Line (1190,1800,1190,2300 )
-	oPrint:Line (1260,1800,1260,2300 )
-	oPrint:Line (1330,1800,1330,2300 )
-	oPrint:Line (1400,100,1400,2300  )
-	oPrint:Line (1640,100,1640,2300  )
-	/******************/
-	/* TERCEIRA PARTE */
-	/******************/
+	oPrint:Line (0710,1800,1400,1800)
+	oPrint:Line (1120,1800,1120,2300)
+	oPrint:Line (1190,1800,1190,2300)
+	oPrint:Line (1260,1800,1260,2300)
+	oPrint:Line (1330,1800,1330,2300)
+	oPrint:Line (1400,100,1400,2300 )
+	oPrint:Line (1640,100,1640,2300 )
+
+	//TERCEIRA PARTE
 	nRow3 := 20
 	nRecuo := 100
 	For nI := 100 to 2300 step 50
@@ -553,7 +542,6 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oPrint:Line (2200-nRecuo,1300,2270-nRecuo,1300)
 	oPrint:Line (2200-nRecuo,1480,2340-nRecuo,1480)
 	oPrint:Say  (nRow3+2000-nRecuo,100 ,"Local de Pagamento",oFont8)
-	//oPrint:Say  (nRow3+2015,400 ,"ATE O VENCIMENTO PAGUE PREFERENCIALMENTE NO ITAU",oFont10)
 	oPrint:Say  (nRow3+2055-nRecuo,100 ,"APÓS O VENCIMENTO PAGUE SOMENTE NO ITAU",oFont10)
 	oPrint:Say  (nRow3+2000-nRecuo,1810,"Vencimento",oFont8)
 	cString 	 := StrZero(Day(aDadosTit[4]),2) +"/"+ StrZero(Month(aDadosTit[4]),2) +"/"+ Right(Str(Year(aDadosTit[4])),4)
@@ -568,7 +556,6 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oPrint:Say  (nRow3+2200-nRecuo,100 ,"Data do Documento"                             ,oFont8)
 	oPrint:Say  (nRow3+2230-nRecuo,100, StrZero(Day(dDataBase),2) +"/"+ StrZero(Month(dDataBase),2) +"/"+ Right(Str(Year(dDataBase)),4), oFont10)
 	oPrint:Say  (nRow3+2200-nRecuo,505 ,"Nro.Documento"                                 ,oFont8)
-	//oPrint:Say (nRow3+2230,605 ,aDadosTit[7]+aDadosTit[1]						,oFont10) //Prefixo +Numero+Parcela
 	oPrint:Say  (nRow3+2230-nRecuo,605 ,aDadosTit[1]						,oFont10) //Numero do Titulo
 	oPrint:Say  (nRow3+2200-nRecuo,1005,"Espécie Doc."                                  ,oFont8)
 	oPrint:Say  (nRow3+2230-nRecuo,1050,aDadosTit[8]									,oFont10) //Tipo do Titulo
@@ -593,9 +580,6 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oPrint:Say  (nRow3+2300-nRecuo,nCol,cString,oFont11c)
 	oPrint:Say  (nRow3+2340-nRecuo,100 ,"Instruções (Todas informações deste bloqueto são de exclusiva responsabilidade do beneficiário)",oFont8)
 	oPrint:Say  (nRow3+2440-nRecuo,100 ,aBolText[1]+" "+AllTrim(Transform(((aDadosTit[5]*0.09)/30),"@E 99,999.99"))+" AO DIA"      ,oFont10)
-	//oPrint:Say  (nRow3+2490,100 ,aBolText[2]+" "+AllTrim(Transform(((aDadosTit[5]*0.01)/30),"@E 99,999.99"))  ,oFont10)
-	//oPrint:Say  (nRow3+2540,100 ,aBolText[3]                                    ,oFont10)
-	//oPrint:Say  (nRow3+2440,100 ,aBolText[1]+" "+AllTrim(Transform(((aDadosTit[5]*(10/30))/100),"@E 99,999.99"))+" AO DIA"  ,oFont10)
 	oPrint:Say  (nRow3+2490-nRecuo,100 ,aBolText[2]   ,oFont10)
 	oPrint:Say  (nRow3+2540-nRecuo,100,"INSTRUÇÕES DE RESPONSABILIDADE DO BENEFICIÁRIO. QUALQUER"                        ,oFont10)
 	oPrint:Say  (nRow3+2590-nRecuo,100,"DÚVIDA SOBRE ESTE BOLETO, CONTATE O BENEFICIÁRIO."                               ,oFont10)
@@ -604,11 +588,9 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oPrint:Say  (nRow3+2480-nRecuo,1810,"(+)Mora/Multa"                                ,oFont8)
 	oPrint:Say  (nRow3+2550-nRecuo,1810,"(+)Outros Acréscimos"                         ,oFont8)
 	oPrint:Say  (nRow3+2620-nRecuo,1810,"(=)Valor Cobrado"                             ,oFont8)
-	// TEMP
-	//oPrint:Say  (nRow2+2640,100,"APOS VCTO ACESSE WWW.ITAU.COM.BR/BOLETOS PARA ATUALIZAR SEU BOLETO"                               ,oFont10)
-	oPrint:Say  (nRow3+2690-nRecuo,100 ,"Pagador"                                       ,oFont8)
+	oPrint:Say  (nRow3+2690-nRecuo,100 ,"Pagador"                                      ,oFont8)
 	oPrint:Say  (nRow3+2700-nRecuo,400 ,aDatSacado[1]+" ("+aDatSacado[2]+")"           ,oFont10)
-	if aDatSacado[8] = "J"
+	If aDatSacado[8] = "J"
 		oPrint:Say  (nRow3+2700-nRecuo,1750,"CNPJ: "+TRANSFORM(aDatSacado[7],"@R 99.999.999/9999-99"),oFont10) // CGC
 	Else
 		oPrint:Say  (nRow3+2700-nRecuo,1750,"CPF: "+TRANSFORM(aDatSacado[7],"@R 999.999.999-99"),oFont10) 	// CPF
@@ -625,14 +607,7 @@ Static Function Impress(oPrint,aDadosEmp,aDadosTit,aDadosBanco,aDatSacado,aBolTe
 	oPrint:Line (2620-nRecuo,1800,2620-nRecuo,2300 )
 	oPrint:Line (2690-nRecuo,100,2690-nRecuo,2300  )
 	oPrint:Line (2850-nRecuo,100,2850-nRecuo,2300  )
-	//Utilizando MSBAR()
-	//MSBAR("INT25",25.5,1,StrTran(StrTran(aCB_RN_NN[2],oPrint,.F.,Nil,Nil,0.1,4,Nil,Nil,"A",.F.)
-	//Código de barras utilizando FWMsBar()
 	oPrint:FwMsBar("INT25",65.5,2,StrTran(StrTran(aCB_RN_NN[2], ".", ""), " ", ""),oPrint,.F.,Nil,Nil,0.0225,1,Nil,Nil,"A",.F.)
-	//DbSelectArea("SE1")
-		//RecLock("SE1",.f.)
-		//SE1->E1_NUMBCO 	:=	aCB_RN_NN[3]   // Nosso número (Ver fórmula para calculo)
-	//MsUnlock()
 	oPrint:EndPage() // Finaliza a página
 	oPrint:Print()
 Return Nil
@@ -666,11 +641,8 @@ Static Function fLinhaDig (cCodBanco, 	; // Codigo do Banco (341)
 	Local cNossoNum 	:= Right(AllTrim(SE1->E1_NUMBCO),8) // Nosso numero
 	Local cDV			:= "" // Digito verificador dos campos
 	Local cLinDig		:= ""
-	/*
-	-------------------------
-	Definicao do NOSSO NUMERO
-	-------------------------
-	*/
+
+	//Definicao do NOSSO NUMERO
 	If At("-",cConta) > 0
 		cDig   := Right(AllTrim(cConta),1)
 		cConta := AllTrim(Str(Val(Left(cConta,At('-',cConta)-1) + cDig)))
@@ -679,16 +651,10 @@ Static Function fLinhaDig (cCodBanco, 	; // Codigo do Banco (341)
 	EndIf
 	cConta = StrZero(cConta,5)
 	cNossoNum   := Alltrim(cAgencia) + Left(Alltrim(cConta),5) + cCarteira + Right(AllTrim(SE1->E1_NUMBCO),8) //cNroDoc
-	//cNossoNum   := Alltrim(cAgencia) + Left(Alltrim(cConta),5) + Right(alltrim(cConta),1) + cCarteira + Right(AllTrim(SE1->E1_NUMBCO),8) //cNroDoc
 	cDvNN 		:= Alltrim(Str(Modulo10(cNossoNum)))
 	cNossoNum   := cCarteira + cNroDoc + cDvNN
-	//cNossoNum   := cCarteira + cNroDoc + '-' + cDvNN
-	/*
-	-----------------------------
-	Definicao do CODIGO DE BARRAS
-	-----------------------------
-	*/
-	//Alltrim(cNroDoc)            			+ ; // 23 a 30
+
+	//Definicao do CODIGO DE BARRAS
 	cTemp := Alltrim(cCodBanco)   			+ ; // 01 a 03
 	Alltrim(cCodMoeda)            			+ ; // 04 a 04
 	Alltrim(cFator)               			+ ; // 06 a 09
@@ -751,6 +717,7 @@ Static Function fLinhaDig (cCodBanco, 	; // Codigo do Banco (341)
 	cCampo5 := cFator + StrZero(int(nValor * 100),14 - Len(cFator))
 	cLinDig := cCampo1 + cCampo2 + cCampo3 + cCampo4 + cCampo5
 Return {cCodBar, cLinDig, cNossoNum}
+
 /*/{Protheus.doc} Modulo10
 	Cálculo do Modulo 10 para obtenção do DV dos campos do
 	@type function
@@ -764,27 +731,24 @@ Static Function Modulo10(cData)
 	L := Len(cData)
 	B := .T.
 	D := 0
-
 	While L > 0
 		P := Val(SubStr(cData, L, 1))
-
 			If (B)
 				P := P * 2
 					If P > 9
 						P := P - 9
 				End
 			End
-
 		D := D + P
 		L := L - 1
 		B := !B
 	End
-
 	D := 10 - (Mod(D,10))
 		If D = 10
 			D := 0
 		End
 Return D
+
 /*/{Protheus.doc} Modulo11
 	Calculo do Modulo 11 para obtencao do DV do Codigo de Barras
 	@type function
