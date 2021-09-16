@@ -127,7 +127,8 @@ User Function SD3250I()
 		SC2->C2_FSSALDO := SC2->C2_FSSALDO-SH6->H6_QTDPROD
 		MsUnlock()
 
-		U_ATUAD3D5()
+		// U_ATUAD3D5()
+		
 	Endif
 	RestArea(aArea1)
 	RestArea(aAreaB2)
@@ -135,7 +136,6 @@ User Function SD3250I()
 	RestArea(aAreaH6)
 
 Return l_Ret
-
 
 /*--------------------------------------------------------------------------
 FUNÇÃO ABAIXO CORRIGE AS TABELAS:
@@ -159,7 +159,7 @@ User Function ATUAD3D5()
 	Local n_Quantd5:=0
 	Local n_qtdori :=0
 	Local n_QD3	   :=0
-	Local cLote    := ""
+	//Local cLote    := ""
 	c_prodh6 := SH6->H6_PRODUTO
 
 	//	dbSelectArea("SC2")
@@ -174,8 +174,6 @@ User Function ATUAD3D5()
 	c_ident := SH6->H6_IDENT
 	c_parctot := SH6->H6_PT
 
-
-	 
 	dbSelectArea("SB1")
 	SB1->(dbSetOrder(1))
 	SB1->(dbSeek(xFilial("SB1") + SC2->C2_PRODUTO))
@@ -246,9 +244,6 @@ User Function ATUAD3D5()
 
 								TCQuery cQry New Alias "QRYQTD5"
 								*/
-
-
-
 								cQry:="SELECT SD4.D4_QTDEORI-SUM(SD3.D3_QUANT) AS QUANT, SUM(SD3.D3_QUANT) AS QUANTD3       "+ c_CRLF
 								cQry+="FROM "+RetSqlName("SD3")+ " SD3 WITH (NOLOCK)          "+ c_CRLF
 								cQry+="INNER JOIN "+RetSqlName("SD4")+ " SD4 WITH (NOLOCK) ON "+ c_CRLF
@@ -274,30 +269,17 @@ User Function ATUAD3D5()
 								QRYQUANT->(DbCloseArea())
 
 								c_Qry := ""
-
-
-
-
-
 							Else
 								n_Quant2:=0
 								n_QD3 :=0
 								//	n_qtdd4:=n_qtdori-QRYQUANT->QUANT
-
-
 								//EndIf c_parctot="T"
-
-
 								//	n_qtdd4:=n_qtdori-QRYQUANT->QUANT
-
-
-
 								/*--------------------------------------------------------------------------------------------
 
 								VERIFICA SE OCORRERAM PERDAS NO APONTAMENTO E EVITA PRODUTOS INTEIROS FICAREM FRACIONADOS
 
 								---------------------------------------------------------------------------------------------*/
-
 
 								If Lperda="N"
 									If (( SG1->G1_QUANT-INT(SG1->G1_QUANT)) <> 0 ) //SG1->G1_QUANT/n_quantbase<>1
@@ -334,27 +316,18 @@ User Function ATUAD3D5()
 									SD3->(MsUnlock())
 
 									//DBSetIndex("T1INDEX1")
-
 									//	Endif
-
-
 									//// VERIFICAR
-
-
 									dbSelectArea("SD5")
 									SD5->(dbSetOrder(3))
 									SD5->(dbSeek(xFilial("SD5") + c_numseq + c_Produto+c_Local ))
 									If Found()
-
-
-
 										/*							
 										c_Produto := SD5->D5_PRODUTO
 										c_Local   := SD5->D5_LOCAL
 										c_Op      := SD5->D5_OP
 										d_Data    := SD5->D5_DATA
 										*/
-
 
 										RecLock("SD5", .F.)
 										//SD5->D5_PRODUTO := c_Produto
@@ -363,10 +336,9 @@ User Function ATUAD3D5()
 										//SD5->D5_DATA	:=   d_Data	    
 
 										// CORRIGE A QUANTIDADE DO INSUMO NA TABELA SD5 - MOVIMENTOS INTERNOS POR LOTE
-
 										//						SD5->D5_QUANT :=   n_Quant       
-
 										/////////////////////////////////////////////
+
 										//n_quantd5:=0
 										If Lperda="N"
 											If (( SG1->G1_QUANT-INT(SG1->G1_QUANT)) <> 0 )
@@ -375,7 +347,6 @@ User Function ATUAD3D5()
 												n_Quantd5   := ROUND((SG1->G1_QUANT/n_quantbase*n_perda),0) //ROUND(SD3->D3_QUANT,0)  //SD3->D3_QTDEORI - n_qtdprod //+ (SG1->G1_QUANT * n_Perc)							
 											Endif	
 
-											//									n_Quantd5=n_perda //n_Quant
 											While SD5->(!EoF()) .And. SD5->D5_PRODUTO==c_Produto .And. SD5->D5_NUMSEQ=c_numseq //LOCAL = c_Local .And. SD5->D5_OP    := c_Op
 
 												IF n_quantd5<=SD5->D5_QUANT
@@ -390,7 +361,6 @@ User Function ATUAD3D5()
 											End
 
 											/*
-
 											Else
 											If (( SG1->G1_QUANT-INT(SG1->G1_QUANT)) <> 0 )
 											n_Quantd5   := (SG1->G1_QUANT/n_quantbase*n_perda)  //SD3->D3_QTDEORI - n_qtdprod //+ (SG1->G1_QUANT * n_Perc)							
@@ -398,9 +368,6 @@ User Function ATUAD3D5()
 											n_Quantd5   := ROUND((SG1->G1_QUANT/n_quantbase*n_perda),0) //ROUND(SD3->D3_QUANT,0)  //SD3->D3_QTDEORI - n_qtdprod //+ (SG1->G1_QUANT * n_Perc)							
 											Endif	
 											//Endif
-
-
-
 											cQry:="SELECT                                                    "+ c_CRLF           
 											cQry+="	SB8.B8_PRODUTO                                           "+ c_CRLF
 											cQry+="  , SB8.B8_SALDO                                          "+ c_CRLF
@@ -434,7 +401,6 @@ User Function ATUAD3D5()
 											cQry+="	B8_PRODUTO                                               "+ c_CRLF
 											cQry+="  , B8_DTVALID                                            "+ c_CRLF
 
-
 											MemoWrit("C:\BOMIX\SALDO_LOTE.SQL",cQry)
 											TCQuery cQry New Alias "QRYLOTE"										
 											dbSelectArea("QRYLOTE")
@@ -451,9 +417,6 @@ User Function ATUAD3D5()
 
 											//	IF n_quantd5<=SD5->D5_QUANT
 
-
-
-
 											SD5->D5_QUANT :=   SD5->D5_QUANT+n_quantd5 
 											n_quantd5:=0
 											//		Else
@@ -466,24 +429,16 @@ User Function ATUAD3D5()
 											QRYLOTE->(dbSkip())
 											End
 											QRYLOTE->(DbCloseArea())
-
 											*/											
 
 										Endif
 										//Endif
 										SD5->(MsUnlock())
-
 									Endif
 									///// verificar
-
-
 								Endif
-
 							Endif
 						Endif
-
-
-
 						//						If Lperda="N"
 						cQry:=""
 
@@ -504,18 +459,13 @@ User Function ATUAD3D5()
 						MemoWrit("C:\BOMIX\SALDO_REST2.SQL",cQry)
 
 						TCQuery cQry New Alias "QRYQT2"
-
-
 						n_qtdd4:=QRYQT2->QUANT
-
 						dbSelectArea("SD4")
 						RecLock("SD4", .F.)
 						SD4->D4_QUANT :=   n_qtdd4
 						SD4->(MsUnlock())
 						QRYQT2->(DbCloseArea())
-
 						//						Endif
-
 					Endif
 
 					// RODA A ROTINA DE SALDO ATUAL
@@ -526,7 +476,6 @@ User Function ATUAD3D5()
 					mv_par02 := mv_p02 
 					mv_par03 := mv_p03 	
 					mv_par04 := mv_p04 						
-
 				EndIf
 				SG1->(dbSkip())
 			End
@@ -587,7 +536,6 @@ User Function zAtuPerg(cPerg, cParAux, xConteud)
 
 	//Se não tiver pergunta, ou não tiver ordem
 
-
 	If Empty(cPerg) .Or. Empty(cParAux)
 		Return
 	EndIf
@@ -624,9 +572,6 @@ Return
 
 
 
-
-
-
 /*
 ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
 ±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
@@ -641,7 +586,6 @@ Return
 ±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
 ±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
 ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß        
-
 */        
 
 
