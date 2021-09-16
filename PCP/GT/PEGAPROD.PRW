@@ -18,14 +18,14 @@ User Function PEGAPROD
 	a_Area   := GetArea()
 	c_Codigo := M->H6_PRODUTO
 	dbSelectArea("SB1")
-	DBGOTOP() 
+	DBGOTOP()
 	dbSetOrder(1)
 	If dbSeek(xFilial("SB1")+c_CODIGO)
        c_desc := SB1->B1_DESC
     ELSE
        c_desc := "  "
-    ENDIF    	
-		
-	RestArea(a_Area)       
-	
+    ENDIF
+
+	RestArea(a_Area)
+
 Return c_desc
