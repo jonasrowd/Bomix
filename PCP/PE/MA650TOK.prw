@@ -19,30 +19,28 @@ User Function MA650TOK()
 
 Return lRet
 
-user function FPCPG005()
+User Function FPCPG005()
 	Local c_pedido
 	Local c_itemped
-	Local lRet:=.T.
+	Local lRet := .T.
 
 	c_pedido:="0"+SUBST(M->C2_NUM,2,5)
 	c_itemped:=M->C2_ITEM
 
 	If cFilAnt == "010101"
-
-		dbSelectArea("SC6")
-		dbGoTop()
-		dbSetOrder(1)
-		dbSeek(xFilial("SC6")+c_pedido+c_itemped+M->C2_PRODUTO)
+		DbSelectArea("SC6")
+		DbGoTop()
+		DbSetOrder(1)
+		DbSeek(FWXFilial("SC6")+c_pedido+c_itemped+M->C2_PRODUTO)
 		If !EOF()
 			M->C2_PEDIDO:=SC6->C6_NUM
 			M->C2_ITEMPV:=SC6->C6_ITEM
 			M->C2_QUANT:=SC6->C6_QTDVEN
-			RecLock("SC6", .F.)
-			SC6->C6_NUMOP :=   M->C2_NUM+M->C2_ITEM+M->C2_SEQUEN
-			SC6->C6_ITEMOP := M->C2_ITEM
+			RecLock("SC6",.F.)
+				SC6->C6_NUMOP	:=   M->C2_NUM+M->C2_ITEM+M->C2_SEQUEN
+				SC6->C6_ITEMOP	:= M->C2_ITEM
 			MsUnlock()
 		Else
-
 			If MsgBox("Não existe um pedido de venda que relacione com esta OP. Confirma?", "Pedido Inexistente", "YESNO")
 				M->C2_PEDIDO:=""
 				M->C2_ITEMPV:=""
@@ -57,8 +55,8 @@ user function FPCPG005()
 				M->C2_QUANT:=0
 				lRet:= .F.
 
-			Endif
-		Endif
-	Endif
-return lRet
+			EndIf
+		EndIf
+	EndIf
+Return lRet
 

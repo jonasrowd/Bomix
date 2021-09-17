@@ -87,7 +87,7 @@ Static Function ValidaSA7(cProduto)
 	Local cLoja    := ""  // Código da loja
 
 	// Verifica se está executando em qualquer outra filial que não seja a 030101
-	If (FwCodFil() != "030101")
+	If (FwCodFil() != "030101") .AND. M->C5_TIPO=='N'
 		// Captura o código do cliente e loja
 		If (FwIsInCallStack("MATA410")) 
 			cCliente := M->C5_CLIENTE
