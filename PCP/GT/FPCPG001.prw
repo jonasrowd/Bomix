@@ -33,7 +33,7 @@ User Function FPCPG001()
 			If cSigla <> ''
 				cLote := SubStr(M->H6_OP,1,6) + SubStr(M->H6_OP,8,1) + SubStr(M->H6_OP,11,1) + AllTrim(cSigla)   // cria a estrutura do número do lote incluindo a SIGLA solicitada pelo Fornecedor
 			Else
-				cLote := SubStr(M->H6_OP,1,8) + SubStr(M->H6_OP,10,2)
+				cLote := SubStr(M->H6_OP,1,8)
 			EndIf
 		Else
 			cLote := SubStr(M->H6_OP,1,8)+SubStr(M->H6_OP,10,2)
