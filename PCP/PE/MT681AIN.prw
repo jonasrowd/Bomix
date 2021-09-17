@@ -55,12 +55,12 @@ User Function MT681AIN
 						c_Trt     := SD4->D4_TRT
 
 						a_Vetor:={  {"D4_COD"     ,c_Produto		,Nil},; //COM O TAMANHO EXATO DO CAMPO
-						            {"D4_LOCAL"   ,c_Local          ,Nil},;
-						            {"D4_OP"      ,c_Op  			,Nil},;
-						            {"D4_DATA"    ,d_Data	        ,Nil},;
-						            {"D4_QTDEORI" ,n_QtdOri         ,Nil},;
-						            {"D4_QUANT"   ,n_Quant          ,Nil},;
-						            {"D4_TRT"     ,c_Trt            ,Nil}}
+							{"D4_LOCAL"   ,c_Local          ,Nil},;
+							{"D4_OP"      ,c_Op  			,Nil},;
+							{"D4_DATA"    ,d_Data	        ,Nil},;
+							{"D4_QTDEORI" ,n_QtdOri         ,Nil},;
+							{"D4_QUANT"   ,n_Quant          ,Nil},;
+							{"D4_TRT"     ,c_Trt            ,Nil}}
 
 						f_Mata380(a_Vetor)
 					Endif

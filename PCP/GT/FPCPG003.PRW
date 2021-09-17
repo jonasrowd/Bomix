@@ -19,7 +19,7 @@
 
 User Function FPCPG003    
 
-Local n_cavi := 0.00   
+		Local n_cavi := 0.00   
 
 
 	DbSelectArea("SG2")
