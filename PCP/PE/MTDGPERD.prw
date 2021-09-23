@@ -1,88 +1,91 @@
-/*
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
-±±ºPrograma  ³ MTDGPERD/DIGPEROK  ºAutor  ³ Christian Rocha    º    ³     º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºDesc.     ³ MDDGPERD - Ponto de entrada para preencher campos da	  	  º±±
-±±º          ³ Classificação da Perda na Produção PCP Mod2				  º±±
-±±ºDesc.     ³ DIGPEROK - Ponto de entrada para validar as informações da º±±
-±±º          ³ Classificação da Perda na Produção PCP Mod2				  º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºUso       ³ SIGAPCP													  º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºData      ºProgramador       ºAlteracoes                               º±±
-±±º          º                  º                                         º±±
-±±ÈÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
-*/
-
+/*/{Protheus.doc} MTDGPERD
+	Ponto de entrada para preencher campos da Classificação da Perda na Produção PCP Mod2
+	@type Function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 22/09/2021
+/*/
 User Function MTDGPERD
-	Local a_Area  := FwGetArea() // 
-	Local c_Prod  := PARAMIXB[1] // 
-	Local c_OP    := PARAMIXB[2] // 
-	Local n_Size  := 0           // 
-	Local n_Count := 0
+	Local a_Area  := FwGetArea() //
+	Local c_Prod  := PARAMIXB[1] //
+	Local c_OP    := PARAMIXB[2] //
+	Local n_Qtd   := PARAMIXB[3] //
+	Local n_Size  := 0           //
+	// Local n_Count := 0
 
-	// Carrega as informações de perda da master
-	Table01Def(c_OP)
+	If cFilAnt == '020101'
+		// Carrega as informações de perda da MASTER
+		fMasRes(c_OP)
 
-	// Percorre os itens da master
-	While (!MASTER->(EOF()))
-		// Incrementa o contador
-		n_Count++
+		// Percorre os itens da MASTER
+		//While (!MASTER->(EOF()))
+			// Incrementa o contador
+//			n_Count++
 
-		// Adiciona nova linha no aCols
-		If (n_Count > 1)
-			AddNewLine()
-		EndIf
-
-		// Preenche os campos da primeira linha
-		n_Size := Len(aCols)
-		GDFieldPut("BC_PRODUTO", c_Prod, n_Size)
-		GDFieldPut("BC_CODDEST", MASTER->B1_FSPRODC, n_Size)
-		GDFieldPut("BC_DTVALID", dDatabase, n_Size)
-
-		// Carrega as informações de perda da resina
-		Table02Def(MASTER->B1COR, MASTER->B1_SERIE)
-
-		// Percorre os itens da resina
-		While (!ESPEC->(EOF()))
-			// Adiciona uma nova linha no aCols
-			AddNewLine()
-			n_Size := Len(aCols)
+			// Adiciona nova linha no aCols
+			// If (n_Count > 1)
+			// 	AddNewLine()
+			// EndIf
 
 			// Preenche os campos da primeira linha
+			n_Size := Len(aCols)
 			GDFieldPut("BC_PRODUTO", c_Prod, n_Size)
-			GDFieldPut("BC_CODDEST", ESPEC->B1_COD, n_Size)
+			GDFieldPut("BC_CODDEST", MASTER->Borra_ID, n_Size)
 			GDFieldPut("BC_DTVALID", dDatabase, n_Size)
+			GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+MASTER->Borra_ID, "B1_DESC"), n_Size)
+			GDFieldPut("BC_LOCAL", MASTER->BorraArmazem, n_Size)
+			GDFieldPut("BC_QUANT", 0, n_Size)
 
-			// Salta para o próximo registro de resina
-			ESPEC->(DBSkip())
-		End
 
-		// Salta para o próximo registro da master
-		MASTER->(DBSkip())
-	End
+			// Carrega as informações de perda da resina
+			// fSerCor(MASTER->MasterCor, MASTER->ResinaSerie)
+			// Percorre os itens da resina
+			// While (!ESPEC->(EOF()))
+				// Adiciona uma nova linha no aCols
+			AddNewLine()
+			// n_Size := Len(aCols)
+			// Preenche os campos da primeira linha
+			GDFieldPut("BC_PRODUTO", c_Prod, n_Size)
+			GDFieldPut("BC_CODDEST", MASTER->MaterialReprovado_ID, n_Size)
+			GDFieldPut("BC_DTVALID", dDatabase, n_Size)
+			GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+MASTER->MaterialReprovado_ID, "B1_DESC"), n_Size)
+			GDFieldPut("BC_LOCAL", MASTER->MaterialReprovadoArmazem, n_Size)
+			GDFieldPut("BC_QUANT", 0, n_Size)
 
-	// Fecha o alias do produto móido
-	If (Select("ESPEC") > 0)
-		DBSelectArea("ESPEC")
-		DBCloseArea()
-	EndIf
+				// Salta para o próximo registro de resina
+				// ESPEC->(DBSkip())
+			// End
 
-		// Fecha o alias da master
-	If (Select("MASTER") > 0)
-		DBSelectArea("MASTER")
-		DBCloseArea()
+			// Salta para o próximo registro da MASTER
+//			MASTER->(DBSkip())
+//		End
+
+		// Fecha o alias do produto móido
+		// If (Select("ESPEC") > 0)
+		// 	DBSelectArea("ESPEC")
+		// 	DBCloseArea()
+		// EndIf
+
+			// Fecha o alias da MASTER
+		If (Select("MASTER") > 0)
+			DBSelectArea("MASTER")
+			DBCloseArea()
+		EndIf
+	ElseIf cFilAnt == '010101' //Para filial Bomix continua carregando a quantidade da perda
+
+		n_Size := Len(aCols)
+
+		If Len(aCols) >0
+			GDFieldPut('BC_PRODUTO', c_Prod, n_Size)
+			GDFieldPut('BC_QUANT', n_Qtd, n_Size)
+		EndIf
 	EndIf
 
 	// Restaura a área de trabalho anterior
 	FwRestArea(a_Area)
 Return (NIL)
 
-/*/{Protheus.doc} Table01Def
+/*/{Protheus.doc} fMasRes
 	Monta tabela temporária que trás o produto de perda (MASTER e RESINA)
 	@type Function
 	@version 12.1.25
@@ -90,7 +93,7 @@ Return (NIL)
 	@since 21/09/2021
 	@param c_OP, Character, Número da OP
 /*/
-Static Function Table01Def(c_OP)
+Static Function fMasRes(c_OP)
 	Local aArea := FwGetArea() // Armazena a área corrente
 
 	// Fecha o alias se ele já estiver em uso
@@ -101,70 +104,103 @@ Static Function Table01Def(c_OP)
 
 	// Realiza a consulta SQL
 	BEGINSQL ALIAS "MASTER"
-		SELECT TOP 100
-			C2_NUM + C2_ITEM + C2_SEQUEN AS OP,
-			C2_PRODUTO,
-			B12.B1_FSPRODC,
-			B12.B1_PESO,
-			D4.D4_FSTP AS D4RESINA,
-			B1.B1_DESC AS B1DESCRICAORESINA,
-			D4.D4_COD,
-			B1.B1_SERIE,
-			D4_MASTER.D4_FSTP AS D4TIPOMASTER,
-			D4_MASTER.D4_COD AS B1MASTER_ID,
-			D4_MASTER.D4_FSDSC AS D4MASTER,
-			B1_MASTER.B1_SERIE AS B1COR
+
+		SELECT 
+			Top 100 C2_NUM + C2_ITEM + C2_SEQUEN as OP, 
+			C2_PRODUTO as ProdutoOP, 
+			ProdutoOP.B1_PESO as Peso, 
+			ProdutoOP.B1_LOCPAD as Armazem, 
+			D4.D4_COD as Resina_ID, 
+			B1.B1_DESC as Resina, 
+			B1.B1_SERIE as ResinaSerie,
+			D4_MASTER.D4_COD as Master_ID, 
+			D4_MASTER.D4_FSDSC as Master, 
+			B1_MASTER.B1_BRCORG as MasterCor,
+			MaterialReprovado_ID, 
+			MaterialReprovado, 
+			B1_MASTER.B1_LOCPAD as MaterialReprovadoArmazem, 
+			B1_MASTER.B1_UM as MaterialReprovadoUM, 
+			B1_MASTER.B1_SEGUM as MaterialReprovadoUM2,
+			ProdutoOP.B1_FSPRODC as Borra_ID, 
+			Borra.B1_DESC as Borra, 
+			Borra.B1_LOCPAD as BorraArmazem,
+			Borra.B1_UM as BorraUM, 
+			Borra.B1_SEGUM as BorraUM2
 		FROM
 			%TABLE:SC2% C2 (NOLOCK)
 			INNER JOIN
-				%TABLE:SB1% B12 (NOLOCK)
-				ON B12.B1_FILIAL = %XFILIAL:SB1%
-				AND B12.B1_COD   = C2_PRODUTO
-				AND B12.%NOTDEL%
+			%TABLE:SB1% ProdutoOP (NOLOCK)
+			ON ProdutoOP.B1_FILIAL = %XFILIAL:SB1%
+			AND ProdutoOP.%NOTDEL%
+			AND ProdutoOP.B1_COD = C2_PRODUTO
 			INNER JOIN
-				%TABLE:SD4% D4 (NOLOCK)
-				ON D4_FILIAL = %XFILIAL:SD4%
-				AND D4_OP    = C2_NUM + C2_ITEM + C2_SEQUEN
-				AND D4_FSTP  = 'RESINA'
-				AND D4.%NOTDEL%
+			%TABLE:SB1% Borra (NOLOCK)
+			ON Borra.B1_FILIAL = %XFILIAL:SB1%
+			AND Borra.%NOTDEL%
+			AND Borra.B1_COD = ProdutoOP.B1_FSPRODC
 			INNER JOIN
-				%TABLE:SB1% B1 (NOLOCK)
-				ON B1.B1_FILIAL = %XFILIAL:SB1%
-				AND B1.B1_COD   = D4.D4_COD
-				AND B1.%NOTDEL%
+			%TABLE:SD4% D4 (NOLOCK)
+			ON D4.D4_FILIAL = %XFILIAL:SD4%
+			AND D4.%NOTDEL%
+			AND D4.D4_OP = %EXP:AllTrim(c_OP)%
+			AND D4.D4_FSTP = 'RESINA'
+			INNER JOIN
+			%TABLE:SB1% B1 (NOLOCK)
+			ON B1.B1_FILIAL = %XFILIAL:SB1%
+			AND B1.%NOTDEL%
+			AND B1.B1_COD = D4.D4_COD
 			LEFT JOIN
-				%TABLE:SD4% D4_MASTER (NOLOCK)
-				ON D4_MASTER.D4_FILIAL = %XFILIAL:SD4%
-				AND D4_MASTER.D4_OP    = C2_NUM + C2_ITEM + C2_SEQUEN
-				AND D4_MASTER.D4_FSTP  = 'MASTER'
-				AND D4_MASTER.%NOTDEL%
+			%TABLE:SD4% D4_MASTER (NOLOCK)
+			ON D4_MASTER.D4_FILIAL = %XFILIAL:SD4%
+			AND D4_MASTER.%NOTDEL%
+			AND D4_MASTER.D4_OP = %EXP:AllTrim(c_OP)%
+			AND D4_MASTER.D4_FSTP = 'MASTER'
 			LEFT JOIN
-				%TABLE:SB1% B1_MASTER (NOLOCK)
-				ON B1_MASTER.B1_FILIAL = %XFILIAL:SB1%
-				AND B1_MASTER.B1_COD   = D4_MASTER.D4_COD
-				AND B1_MASTER.%NOTDEL%
+			%TABLE:SB1% B1_MASTER (NOLOCK)
+			ON B1_MASTER.B1_FILIAL = %XFILIAL:SB1%
+			AND B1_MASTER.%NOTDEL%
+			AND B1_MASTER.B1_COD = D4_MASTER.D4_COD
+			LEFT JOIN
+			(
+				SELECT
+					B1_COD AS MaterialReprovado_ID,
+					B1_DESC AS MaterialReprovado,
+					B1_SERIE AS MaterialReprovadoSerie,
+					B1_BRCORG AS MaterialReprovadoCor,
+					B1_UM AS MaterialMedida,
+					B1_SEGUM AS MaterialMedida2
+				FROM
+					%TABLE:SB1% (NOLOCK)
+				WHERE
+					B1_FILIAL = %XFILIAL:SB1%
+					AND %NOTDEL%
+					AND B1_MSBLQL	<> 1
+					AND B1_BRTPPR	= 'MATERIAL REPROVADO'
+			)
+			MaterialReprovado
+			ON MaterialReprovado.MaterialReprovadoSerie = B1.B1_SERIE
+			AND MaterialReprovado.MaterialReprovadoCor = B1_MASTER.B1_BRCORG
 		WHERE
-			C2_FILIAL                        = %XFILIAL:SC2%
-			AND C2_NUM + C2_ITEM + C2_SEQUEN = %EXP:AllTrim(c_OP)%
-			AND C2.%NOTDEL%
-		ORDER BY
-			C2.R_E_C_N_O_ DESC
+			C2_FILIAL = %XFILIAL:SC2% AND
+			C2.%NOTDEL% AND
+			C2_NUM + C2_ITEM + C2_SEQUEN = %EXP:AllTrim(c_OP)%
 	ENDSQL
 
 	// Restaura a área anterior
 	FwRestArea(aArea)
 Return (NIL)
 
-/*/{Protheus.doc} Table02Def
+/*/{Protheus.doc} fSerCor
 	Monta tabela temporária que trás o material moído da perda
 	@type Function
 	@version 12.1.25
 	@author Jonas Machado
 	@since 21/09/2021
 	@param c_Serie, Character, Série da resina
-	@param c_Cor, Character, Cor da master
+	@param c_Cor, Character, Cor da MASTER
 /*/
-Static Function Table02Def(c_Serie, c_Cor)
+/*
+Static Function fSerCor(c_Serie, c_Cor)
 	Local aArea := FwGetArea() // Armazena a área corrente
 
 	// Prepara os valores para inserção na query
@@ -183,11 +219,12 @@ Static Function Table02Def(c_Serie, c_Cor)
 			B1_COD,
 			B1_DESC,
 			B1_SERIE,
-			B1_MSBLQL
+			B1_MSBLQL,
+			B1_COD
 		FROM
 			%TABLE:SB1%
 		WHERE
-			B1_BRTPPR   LIKE 'MATERIAL MOIDO'
+			B1_BRTPPR   LIKE 'MATERIAL REPROVADO'
 			AND B1_DESC LIKE %EXP:c_Serie%
 			AND B1_DESC LIKE %EXP:c_Cor%
 	ENDSQL
@@ -195,7 +232,7 @@ Static Function Table02Def(c_Serie, c_Cor)
 	// Restaura a área anterior
 	FwRestArea(aArea)
 Return (NIL)
-
+*/
 /*/{Protheus.doc} AddNewLine
 	Adiciona uma nova linha no aCols segundo a estrutura de aHeader
 	@type Function
@@ -226,6 +263,14 @@ Static Function AddNewLine()
 	AAdd(aCols[nSize], .F.)
 Return (NIL)
 
+/*/{Protheus.doc} FPCPV002
+	Gatilho para verificar se a quantidade de perda digitada é maior que a quantidade apontada.
+	@type function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 22/09/2021
+	@return logical, Se verdadeiro, deixa seguir a rotina
+/*/
 User Function FPCPV002
 	Local n_QtdPer := 0
 	Local n_QtdApt := M->BC_QUANT
@@ -251,8 +296,14 @@ User Function FPCPV002
 	RestArea(a_Area)
 Return l_Ret
 
-
-
+/*/{Protheus.doc} DIGPEROK
+	Ponto de entrada para validar as informações da classificação da Perda na Produção PCP Mod2
+	@type Function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 22/09/2021
+	@return logical, Se verdadeiro, grava a SBC
+/*/
 User Function DIGPEROK
 	Local a_Area := GetArea()
 	Local l_Ret  := .T.
@@ -323,7 +374,7 @@ User Function DIGPEROK
 					c_Um   := SB1->B1_UM
 					c_Grupo  := SB1->B1_GRUPO
 
-					//					If cCodDest == SB1->B1_FSPRODC .Or. cCodDest == SB1->B1_FSPRODD
+					//If cCodDest == SB1->B1_FSPRODC .Or. cCodDest == SB1->B1_FSPRODD
 					If cCodDest == SB1->B1_FSPRODC
 						l_Ret := .T.
 					Else
@@ -378,6 +429,9 @@ User Function DIGPEROK
 			ShowHelpDlg(SM0->M0_NOME, {"O somatório do valor do campo Qtd Perda da Classificação da Perda está divergente em relação ao valor informado no campo Qtd. Perda da Produção PCP Mod2"}, 5, {"Verifique se o valor do campo Qtd Perda da Classificação da Perda foi digitado corretamente"},5)
 			l_Ret := .F.
 		Endif
+	EndIf
+
+	If cFilAnt == '020101'
 	EndIf
 
 	RestArea(a_Area)
