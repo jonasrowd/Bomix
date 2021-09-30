@@ -1,31 +1,16 @@
-#INCLUDE "TOPCONN.CH"
-#INCLUDE "PROTHEUS.CH"
-#INCLUDE "TRYEXCEPTION.CH"
+#Include "Totvs.CH"
+#Include "Topconn.CH"
+#Include "TryException.CH"
 
-
-/*
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
-±±ºPrograma  ³ MT650OPPV  ºAutor  ³ Christian Rocha    º      ³           º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºDesc.     ³ Ponto de entrada geração de Ordens de Produção a partir de º±±
-±±º          ³ pedidos selecionados, logo após o término da geração de OPsº±±
-±±º          ³ por Venda (fora da transação).                             º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºUso       ³ SIGAEST - Estoque/Custos, SIGAPCP - Planej. Contr. Prod.   º±±
-±±Ì          ³ Este ponto de entrada está sendo utilizado para alterar o  ¹±±
-±±º          ³ tipo das Ordens de Produção geradas associadas a um Pedido º±±
-±±º          ³ de Venda quando o produto possui arte e a situação da arte º±±
-±±º          ³ no item do PV é nova ou alterada. 						  º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºData      ºProgramador       ºAlteracoes                               º±±
-±±º          º                  º                                         º±±
-±±ÈÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
-*/
-
+/*/{Protheus.doc} MT650OPPV
+	Ponto de entrada geração de Ordens de Produção a partir de pedidos selecionados, logo após o término da geração de OPs
+	por Venda (fora da transação). SIGAEST - Estoque/Custos, SIGAPCP - Planej. Contr. Prod. Este ponto de entrada está sendo utilizado para alterar
+	o tipo das Ordens de Produção geradas associadas a um Pedido de Venda quando o produto possui arte e a situação da arte no item do PV é nova ou alterada.
+	@type Function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 30/09/2021
+/*/
 User Function MT650OPPV()
 	Local a_OPsPV   := PARAMIXB[2]			//Array com as ordens de produção, itens e sequencia geradas
 	Local c_C6Arte  := ''					//Situação da arte do produto no pedido de venda
@@ -35,7 +20,6 @@ User Function MT650OPPV()
 
 	For i:=1 To Len(a_OPsPV)
 		dbSelectArea("SC2")
-		//SC2->(dbGoTop())
 		SC2->(dbSetOrder(1))
 		If SC2->(dbSeek(xFilial("SC2") + a_OPsPV[i][1] + a_OPsPV[i][2]))
 			c_Pedido := SC2->C2_PEDIDO
@@ -46,33 +30,30 @@ User Function MT650OPPV()
 				c_Loja    := Posicione("SC5", 1, xFilial("SC5") + c_Pedido, "C5_LOJACLI")
 
 				dbSelectArea("SA7")
-				//SA7->(dbGoTop())
 				SA7->(dbSetOrder(2))
 				If SA7->(dbSeek(xFilial("SA7") + c_Produto + c_Cliente + c_Loja))			//Verifica se existe amarração Produto x Cliente
-					If SA7->A7_FSQTDPE > 0  		//Se for maior que zero o valor do campo de Qtd p/ Emb.
+					If SA7->A7_FSQTDPE > 0		//Se for maior que zero o valor do campo de Qtd p/ Emb.
 						RecLock("SC2", .F.)
-						SC2->C2_FSQTDPE := SA7->A7_FSQTDPE     						//Altera o valor do campo Qtd p/ Emb. da OP
+							SC2->C2_FSQTDPE := SA7->A7_FSQTDPE     						//Altera o valor do campo Qtd p/ Emb. da OP
 						MsUnlock()
 					Else
 						dbSelectArea("SB5")				//Se não existe amarração Produto x Cliente, verifica o valor do Qtd Embalag1 da SB5
-						//SB5->(dbGoTop())
 						SB5->(dbSetOrder(1))
 						If SB5->(dbSeek(xFilial("SB5") + c_Produto))
 							If SB5->B5_QE1 > 0                        //Se for maior que zero o valor do campo Qtd Embalag1
 								RecLock("SC2", .F.)
-								SC2->C2_FSQTDPE := SB5->B5_QE1        //Altera o valor do campo Qtd p/ Emb. da OP
+									SC2->C2_FSQTDPE := SB5->B5_QE1        //Altera o valor do campo Qtd p/ Emb. da OP
 								MsUnlock()
 							Endif
 						Endif
 					Endif
 				Else
 					dbSelectArea("SB5")				//Se não existe amarração Produto x Cliente, verifica o valor do Qtd Embalag1 da SB5
-					//SB5->(dbGoTop())
 					SB5->(dbSetOrder(1))
 					If SB5->(dbSeek(xFilial("SB5") + c_Produto))
 						If SB5->B5_QE1 > 0                        //Se for maior que zero o valor do campo Qtd Embalag1
 							RecLock("SC2", .F.)
-							SC2->C2_FSQTDPE := SB5->B5_QE1        //Altera o valor do campo Qtd p/ Emb. da OP
+								SC2->C2_FSQTDPE := SB5->B5_QE1        //Altera o valor do campo Qtd p/ Emb. da OP
 							MsUnlock()
 						Endif
 					Endif
@@ -91,21 +72,20 @@ User Function MT650OPPV()
 						//Trecho que altera o tipo da ordem de produção do PA e dos PIs para prevista e define que a OP é de arte
 						While SC2->(!Eof()) .And. SC2->C2_NUM == c_OP .And. SC2->C2_ITEM == c_Item
 							RecLock("SC2", .F.)
-							SC2->C2_TPOP   := 'P'
-							SC2->C2_FSARTE := '1'
+								SC2->C2_TPOP   := 'P'
+								SC2->C2_FSARTE := '1'
 							MsUnlock()
 							SC2->(dbSkip())
 						End
 					Else
 						//Trecho que altera o tipo da ordem de produção do PA para prevista e dos PIs para firme e define que a OP é de arte
 						c_BlqArte := Posicione("SZ2", 1, xFilial("SZ2") + c_Arte, "Z2_BLOQ")
-
 						If (c_BlqArte == '1') .Or. (c_BlqArte == '2') //Arte Nova ou Bloqueada
 							//Trecho que altera o tipo da ordem de produção do PA e dos PIs para prevista e define que a OP é de arte
 							While SC2->(!Eof()) .And. SC2->C2_NUM == c_OP .And. SC2->C2_ITEM == c_Item
 								RecLock("SC2", .F.)
-								SC2->C2_TPOP   := 'P'
-								SC2->C2_FSARTE := '1'
+									SC2->C2_TPOP   := 'P'
+									SC2->C2_FSARTE := '1'
 								MsUnlock()
 								SC2->(dbSkip())
 							End
@@ -129,12 +109,6 @@ User Function MT650OPPV()
 				Endif
 			End
 
-
-			// VALIDADO, MAS AINDA SERÁ AVALIADO SE SERÁ POSTO EM PRODUÇÃO
-
-
-			//IDENTIFICAÇÃO DO ERRO GERADO - INICIO
-
 			If !Empty(c_Pedido)
 				c_CRLF  := chr(13) + chr(10)
 				c_NumOp := "P" + SubStr(c_Pedido, 2, 5)
@@ -142,7 +116,6 @@ User Function MT650OPPV()
 				dbSelectArea("SC2")
 				SC2->(dbSetOrder(1))
 				If SC2->(dbSeek(xFilial("SC2") + c_NumOp)) == .F.
-					//					c_Qry   := " BEGIN TRANSACTION " + c_CRLF
 
 					// Atualiza as Ordens de Produção
 					c_Qry := " UPDATE " + RetSqlName("SC2") + " SET C2_NUM = '" + c_NumOp + "' " + c_CRLF
@@ -164,63 +137,32 @@ User Function MT650OPPV()
 					c_Qry += " UPDATE " + RetSqlName("SGJ") + " SET GJ_NUMOP = '" + c_NumOp + "' " + c_CRLF
 					c_Qry += " WHERE D_E_L_E_T_<>'*' AND GJ_FILIAL = '" + xFilial("SGJ") + "' AND GJ_NUMOP = '" + a_OPsPV[i][1] + "' " + c_CRLF
 
-
-
 					MemoWrit("C:\BOMIX\MT650OPPV_1.sql",c_Qry)
-					/*
-					If TcSqlExec(c_Qry) < 0
-					MsgStop("SQL Error: " + TcSqlError())
-					TcSqlExec("ROLLBACK")
-					Else
-					TcSqlExec("COMMIT")
-					Endif
-					*/
-					// TRECHO ALTERADO POR VICTOR SOUSA 28/06/20 O TRATAMENTO ACIMA DE GRAVAÇÃO  ESTAVA GERANDO ERRO NO DBACCESS ATUAL
+
 					TRYEXCEPTION
-
-					TcCommit(1,ProcName())    //Begin Transaction
-
-					IF ( TcSqlExec( c_Qry ) < 0 )
-						cTCSqlError := TCSQLError()
-						ConOut( cMsgOut += ( "[ProcName: " + ProcName() + "]" ) )
-						cMsgOut += cCRLF
-						ConOut( cMsgOut += ( "[ProcLine:" + Str(ProcLine()) + "]" ) )
-						cMsgOut += cCRLF
-						ConOut( cMsgOut += ( "[TcSqlError:" + cTCSqlError + "]" ) )
-						cMsgOut += cCRLF
-						UserException( cMsgOut )
-					EndIF
-
-					TcCommit(2,ProcName())    //Commit
-					TcCommit(4)                //End Transaction
-
+						TcCommit(1,ProcName())    //Begin Transaction
+						IF ( TcSqlExec( c_Qry ) < 0 )
+							cTCSqlError := TCSQLError()
+							ConOut( cMsgOut += ( "[ProcName: " + ProcName() + "]" ) )
+							cMsgOut += cCRLF
+							ConOut( cMsgOut += ( "[ProcLine:" + Str(ProcLine()) + "]" ) )
+							cMsgOut += cCRLF
+							ConOut( cMsgOut += ( "[TcSqlError:" + cTCSqlError + "]" ) )
+							cMsgOut += cCRLF
+							UserException( cMsgOut )
+						EndIF
+						TcCommit(2,ProcName())	//Commit
+						TcCommit(4)	//End Transaction
 					CATCHEXCEPTION
-
-					TcCommit(3) //RollBack
-					TcCommit(4) //End Transaction
-
+						TcCommit(3)	//RollBack
+						TcCommit(4)	//End Transaction
 					ENDEXCEPTION
-
-					// FIM TRECHO ALTERADO POR VICTOR SOUSA 28/06/20 O TRATAMENTO ANTERIOR DE GTRAVAÇÃO ESTAVA GERANDO ERRO NO DBACCESS ATUAL
-
-					/*
-					1 Begin Transaction
-					2 End Transaction
-					3 RollBack
-					4 Commit
-					5 Especifico para AS/400?
-
-					Read more: http://www.blacktdn.com.br/2012/03/blacktdn-funcao-nao-documentada.html#ixzz6QVFqdfpB
-					*/
 				Endif
-				//				f_Mata410(c_Pedido)
+				//f_Mata410(c_Pedido)
 			Endif
-			//IDENTIFICAÇÃO DO ERRO GERADO - FIM
 		Endif
 	Next i
 
-
-	//ATUALIZAÇÃO REALIZADA PARA O MES --JONAS-- 20/08/2021
 	// Gera um novo alias para a tabela temporária
 	c_AliasAux := GetNextAlias()
 
@@ -283,7 +225,6 @@ User Function MT650OPPV()
 		DBSelectArea("SC2")
 		DBSetOrder(1)
 		DBSeek(c_Key)
-
 		// Realiza deleção virtual de Ordem de Produção
 		If (Found())
 			RecLock("SC2", .F.)
@@ -301,6 +242,14 @@ User Function MT650OPPV()
 	RestArea(a_Area)
 Return Nil
 
+/*/{Protheus.doc} f_SitArte
+	Função para verificar se é item de arte ou não.
+	@type function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 30/09/2021
+	@return character, Retorna o tipo de item
+/*/
 Static Function f_SitArte
 	Local c_SitArte := ''
 
