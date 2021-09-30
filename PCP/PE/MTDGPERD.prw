@@ -16,74 +16,65 @@ User Function MTDGPERD
 	If cFilAnt == '020101'
 		// Carrega as informações de perda da MASTER
 		fMasRes(c_OP)
-		n_Size := Len(aCols)
-		GDFieldPut("BC_PRODUTO", c_Prod, n_Size)
-		GDFieldPut("BC_CODDEST", MASTER->Borra_ID, n_Size)
-		GDFieldPut("BC_DTVALID", dDatabase, n_Size)
-		GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+MASTER->Borra_ID, "B1_DESC"), n_Size)
-		GDFieldPut("BC_LOCAL", MASTER->BorraArmazem, n_Size)
-		GDFieldPut("BC_QUANT", 0, n_Size)
 
-		If !(EMPTY(MASTER->MaterialReprovado_ID))
-			AddNewLine()
+		// Carrega as informações de perda da resina
+		fSerCor(MASTER->ResinaSerie, MASTER->MasterCor)
+
+		// Percorre os itens da MASTER
+		// While (!MASTER->(EOF()))
+			// Incrementa o contador
+			// n_Count++
+
+			// Adiciona nova linha no aCols
+			// If (n_Count > 1)
+			// 	AddNewLine()
+			// EndIf
+
+			// Preenche os campos da primeira linha
+			n_Size := Len(aCols)
 			GDFieldPut("BC_PRODUTO", c_Prod, n_Size)
-			GDFieldPut("BC_CODDEST", MASTER->MaterialReprovado_ID, n_Size)
+			GDFieldPut("BC_CODDEST", ESPEC->B1_FSPRODC, n_Size)
 			GDFieldPut("BC_DTVALID", dDatabase, n_Size)
-			GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+MASTER->MaterialReprovado_ID, "B1_DESC"), n_Size)
-			GDFieldPut("BC_LOCAL", MASTER->MaterialReprovadoArmazem, n_Size)
+			GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+ESPEC->B1_FSPRODC, "B1_DESC"), n_Size)
+			GDFieldPut("BC_LOCAL", POSICIONE("SB1", 1, XFILIAL("SB1")+ESPEC->B1_FSPRODC, "B1_LOCPAD"), n_Size)
 			GDFieldPut("BC_QUANT", 0, n_Size)
-		EndIf
 
-		If !(EMPTY(MASTER->MaterialReprovado_ID1))
+			// Percorre os itens da resina
+			// While (!ESPEC->(EOF()))
+			// Adiciona uma nova linha no aCols
 			AddNewLine()
+			n_Size := Len(aCols)
+			// Preenche os campos da primeira linha
 			GDFieldPut("BC_PRODUTO", c_Prod, n_Size)
-			GDFieldPut("BC_CODDEST", MASTER->MaterialReprovado_ID1, n_Size)
+			GDFieldPut("BC_CODDEST", ESPEC->B1_COD, n_Size)
 			GDFieldPut("BC_DTVALID", dDatabase, n_Size)
-			GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+MASTER->MaterialReprovado_ID1, "B1_DESC"), n_Size)
-			GDFieldPut("BC_LOCAL", MASTER->MaterialReprovadoArmazem1, n_Size)
-			GDFieldPut("BC_QUANT", 0, n_Size)
-			If !(EMPTY(MASTER->MaterialReprovado_ID2))
-				AddNewLine()
-				GDFieldPut("BC_PRODUTO", c_Prod, n_Size)
-				GDFieldPut("BC_CODDEST", MASTER->MaterialReprovado_ID2, n_Size)
-				GDFieldPut("BC_DTVALID", dDatabase, n_Size)
-				GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+MASTER->MaterialReprovado_ID2, "B1_DESC"), n_Size)
-				GDFieldPut("BC_LOCAL", MASTER->MaterialReprovadoArmazem2, n_Size)
-				GDFieldPut("BC_QUANT", 0, n_Size)
-				If !(EMPTY(MASTER->MaterialReprovado_ID3))
-					AddNewLine()
-					GDFieldPut("BC_PRODUTO", c_Prod, n_Size)
-					GDFieldPut("BC_CODDEST", MASTER->MaterialReprovado_ID3, n_Size)
-					GDFieldPut("BC_DTVALID", dDatabase, n_Size)
-					GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+MASTER->MaterialReprovado_ID3, "B1_DESC"), n_Size)
-					GDFieldPut("BC_LOCAL", MASTER->MaterialReprovadoArmazem3, n_Size)
-					GDFieldPut("BC_QUANT", 0, n_Size)
-					If !(EMPTY(MASTER->MaterialReprovado_ID4))
-						AddNewLine()
-						GDFieldPut("BC_PRODUTO", c_Prod, n_Size)
-						GDFieldPut("BC_CODDEST", MASTER->MaterialReprovado_ID4, n_Size)
-						GDFieldPut("BC_DTVALID", dDatabase, n_Size)
-						GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+MASTER->MaterialReprovado_ID4, "B1_DESC"), n_Size)
-						GDFieldPut("BC_LOCAL", MASTER->MaterialReprovadoArmazem4, n_Size)
-						GDFieldPut("BC_QUANT", 0, n_Size)
-						If !(EMPTY(MASTER->MaterialReprovado_ID5))
-							AddNewLine()
-							GDFieldPut("BC_PRODUTO", c_Prod, n_Size)
-							GDFieldPut("BC_CODDEST", MASTER->MaterialReprovado_ID5, n_Size)
-							GDFieldPut("BC_DTVALID", dDatabase, n_Size)
-							GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+MASTER->MaterialReprovado_ID5, "B1_DESC"), n_Size)
-							GDFieldPut("BC_LOCAL", MASTER->MaterialReprovadoArmazem5, n_Size)
-							GDFieldPut("BC_QUANT", 0, n_Size)
-						EndIf
-					EndIf
-				EndIf
-			EndIf
-		EndIf
+			GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+ESPEC->B1_COD, "B1_DESC"), n_Size)
+			GDFieldPut("BC_LOCAL", ESPEC->B1_LOCPAD,n_Size)
+			GDFieldPut("BC_QUANT", n_Qtd, n_Size)
+			n_QtdSegUm := n_Qtd * (MASTER->Peso)
+			GDFieldPut("BC_QTSEGUM", n_QtdSegUm, n_Size)
+			GDFieldPut("BC_QTDDEST", n_Qtd, n_Size)
+			GDFieldPut("BC_QTDDES2", n_QtdSegUm, n_Size)
 
-		If (Select("MASTER") > 0)
-			DBSelectArea("MASTER")
-			DBCloseArea()
-		EndIf
+				// Salta para o próximo registro de resina
+				// ESPEC->(DBSkip())
+			// End
+
+		// 	// Salta para o próximo registro da MASTER
+			// MASTER->(DBSkip())
+		// End
+
+		// Fecha o alias do produto móido
+		// If (Select("ESPEC") > 0)
+		// 	DBSelectArea("ESPEC")
+		// 	DBCloseArea()
+		// EndIf
+
+			// Fecha o alias da MASTER
+		// If (Select("MASTER") > 0)
+		// 	DBSelectArea("MASTER")
+		// 	DBCloseArea()
+		// EndIf
 	ElseIf cFilAnt == '010101' //Para filial Bomix continua carregando a quantidade da perda
 
 		n_Size := Len(aCols)
@@ -119,7 +110,7 @@ Static Function fMasRes(c_OP)
 	BEGINSQL ALIAS "MASTER"
 
 		SELECT 
-			Top 100 C2_NUM + C2_ITEM + C2_SEQUEN as OP, 
+			Top 1 C2_NUM + C2_ITEM + C2_SEQUEN as OP, 
 			C2_PRODUTO as ProdutoOP, 
 			ProdutoOP.B1_PESO as Peso, 
 			ProdutoOP.B1_LOCPAD as Armazem, 
@@ -128,9 +119,7 @@ Static Function fMasRes(c_OP)
 			B1.B1_SERIE as ResinaSerie,
 			D4_MASTER.D4_COD as Master_ID, 
 			D4_MASTER.D4_FSDSC as Master, 
-			B1_MASTER.B1_BRCORG as MasterCor,
-			MaterialReprovado_ID, 
-			MaterialReprovado, 
+			ISNULL(B1_MASTER.B1_BRCORG,"NATURAL") as MasterCor,
 			B1_MASTER.B1_LOCPAD as MaterialReprovadoArmazem, 
 			B1_MASTER.B1_UM as MaterialReprovadoUM, 
 			B1_MASTER.B1_SEGUM as MaterialReprovadoUM2,
@@ -156,7 +145,7 @@ Static Function fMasRes(c_OP)
 			ON D4.D4_FILIAL = %XFILIAL:SD4%
 			AND D4.%NOTDEL%
 			AND D4.D4_OP = %EXP:AllTrim(c_OP)%
-			AND D4.D4_FSTP = 'RESINA'
+			AND D4.D4_FSTP = "RESINA"
 			INNER JOIN
 			%TABLE:SB1% B1 (NOLOCK)
 			ON B1.B1_FILIAL = %XFILIAL:SB1%
@@ -167,36 +156,62 @@ Static Function fMasRes(c_OP)
 			ON D4_MASTER.D4_FILIAL = %XFILIAL:SD4%
 			AND D4_MASTER.%NOTDEL%
 			AND D4_MASTER.D4_OP = %EXP:AllTrim(c_OP)%
-			AND D4_MASTER.D4_FSTP = 'MASTER'
+			AND D4_MASTER.D4_FSTP = "MASTER"
 			LEFT JOIN
 			%TABLE:SB1% B1_MASTER (NOLOCK)
 			ON B1_MASTER.B1_FILIAL = %XFILIAL:SB1%
 			AND B1_MASTER.%NOTDEL%
 			AND B1_MASTER.B1_COD = D4_MASTER.D4_COD
-			LEFT JOIN
-			(
-				SELECT
-					B1_COD AS MaterialReprovado_ID,
-					B1_DESC AS MaterialReprovado,
-					B1_SERIE AS MaterialReprovadoSerie,
-					B1_BRCORG AS MaterialReprovadoCor,
-					B1_UM AS MaterialMedida,
-					B1_SEGUM AS MaterialMedida2
-				FROM
-					%TABLE:SB1% (NOLOCK)
-				WHERE
-					B1_FILIAL = %XFILIAL:SB1%
-					AND %NOTDEL%
-					AND B1_MSBLQL	<> 1
-					AND B1_BRTPPR	= 'MATERIAL REPROVADO'
-			)
-			MaterialReprovado
-			ON MaterialReprovado.MaterialReprovadoSerie = B1.B1_SERIE
-			AND MaterialReprovado.MaterialReprovadoCor = B1_MASTER.B1_BRCORG
 		WHERE
 			C2_FILIAL = %XFILIAL:SC2% AND
 			C2.%NOTDEL% AND
 			C2_NUM + C2_ITEM + C2_SEQUEN = %EXP:AllTrim(c_OP)%
+	ENDSQL
+
+	// Restaura a área anterior
+	FwRestArea(aArea)
+Return (NIL)
+
+/*/{Protheus.doc} fSerCor
+	Monta tabela temporária que trás o material moído da perda
+	@type Function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 21/09/2021
+	@param c_Serie, Character, Série da resina
+	@param c_Cor, Character, Cor da MASTER
+/*/
+
+Static Function fSerCor(c_Serie, c_Cor)
+	Local aArea := FwGetArea() // Armazena a área corrente
+
+	// Prepara os valores para inserção na query
+	//c_Serie := "%'%" + AllTrim(c_Serie) + "%'%"
+	//c_Cor   := "%'%" + AllTrim(c_Cor) + "%'%"
+
+	// Fecha o alias se ele já estiver em uso
+	If (Select("ESPEC") > 0)
+		DBSelectArea("ESPEC")
+		DBCloseArea()
+	EndIf
+
+	// Realiza a consulta SQL
+	BEGINSQL ALIAS "ESPEC"
+		SELECT
+			B1_COD,
+			B1_DESC,
+			B1_SERIE,
+			B1_MSBLQL,
+			B1_COD,
+			B1_FSPRODC,
+			B1_LOCPAD
+		FROM
+			%TABLE:SB1%
+		WHERE
+			B1_MSBLQL <> '1'
+			AND B1_SERIE	= %EXP:AllTrim(c_Serie)%
+			AND B1_BRTPPR	= 'MATERIAL REPROVADO'
+			AND B1_BRCORG	= %EXP:AllTrim(c_Cor)%
 	ENDSQL
 
 	// Restaura a área anterior
@@ -402,6 +417,10 @@ User Function DIGPEROK
 	EndIf
 
 	If cFilAnt == '020101'
+	EndIf
+
+	If l_Ret
+		M->H6_QTDPROD := 0
 	EndIf
 
 	RestArea(a_Area)
