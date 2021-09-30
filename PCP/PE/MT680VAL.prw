@@ -15,6 +15,9 @@ User Function MT680VAL()
 	Local nOp	:= SubStr(M->H6_OP,1,6)
 	Local nCount	:= ""
 	Local ProcValid	:= ""
+	Local ProcLote	:= ""
+	Local cPesoi	:= ""
+	Local cPeso		:= ""
 
 	If lRet .And. l681 //Variável Private para verificar qual o programa está chamando o ponto de entrada
 		DbSelectArea("SZ7") //Seleciona a área da tabela customizada que controla as movimentações de estoque para o wms
@@ -25,8 +28,8 @@ User Function MT680VAL()
 				lRet := .F.	//Não permite o apontamento e exibe o Help do bloqueio.
 				Help(NIL, NIL, "MOV_ARM", NIL, "O seu usuário não possui permissão para efetuar este tipo de movimentação no armazém " + M->H6_LOCAL + ".",;
 					1, 0, NIL, NIL, NIL, NIL, NIL, {"Contacte o administrador do sistema."})
-			ElseIf M->H6_QTDPERDA > 0 .And. lSavePerda == .F. .And. M->H6_PT == "T"
-				//Identifica se é apontamento de perda pela quantidade apontada no campo H6_QTDPERDA.
+			ElseIf (M->H6_QTDPERD > 0 .And. lSavePerda == .F. .And. M->H6_PT == "T")
+				//Identifica se é apontamento de perda pela quantidade apontada no campo H6_QTDPERD.
 				//lSavePerda é variável privada da rotina de apontamento de perda que verifica se foi preenchida corretamente.
 				//Verifica também que o apontamento de perda não pode ser Total, ou seja, não pode encerrar OP com Perda.
 				//Caso não, bloqueia a gravação do apontamento de perda e exibe o Help do bloqueio.
@@ -37,9 +40,18 @@ User Function MT680VAL()
 			EndIf
 		EndIf
 
+		If (M->H6_QTDPROD > 0 .And. M->H6_QTDPERD > 0)
+			lRet := .F.
+			M->H6_QTDPERD	:= 0
+			M->H6_QTDPROD	:= 0
+			M->H6_PT := "P"
+			Help(NIL, NIL, "ERR_APPO", NIL, "Apontamento preenchido incorretamente. Verifique os dados do apontamento.",;
+				1, 0, NIL, NIL, NIL, NIL, NIL, {"Lembre-se que não pode encerrar a Op com Perda e não pode apontar perda e produção ao mesmo tempo. Vou resetar os apontamentos para te ajudar."})
+		EndIf
+
 		DbSelectArea("SB1") //Seleciona a área da SB1 para encontrar o produto do apontamento
 		DbSetOrder(1)
-		DbSeek(FwXFilial("SB1") + M->H6_PRODUTO) //Posiciona no produto correto
+		DbSeek(FwXFilial("SB1") + M->H6_PRODUTO)	//Posiciona no produto correto
 		If SB1->B1_RASTRO == "L"	//VerIfica se o produto possui rastreabilidade
 			If cFilAnt == "020101"	// VerIfica se a empresa é SOPRO
 				DbSelectArea("SA7")
@@ -47,7 +59,7 @@ User Function MT680VAL()
 				DbSetOrder(2)
 				DbSeek(xFilial("SA7") + M->H6_PRODUTO)
 				While !EOF()
-					If AllTrim(SA7->A7_FSSIGLA) <>"" .And. AllTrim(M->H6_PRODUTO) == AllTrim(SA7->A7_PRODUTO) .And. AllTrim(SubStr(cFilAnt,1,4)) == AllTrim(SA7->A7_FILIAL)
+					If (AllTrim(SA7->A7_FSSIGLA) <>"" .And. AllTrim(M->H6_PRODUTO) == AllTrim(SA7->A7_PRODUTO) .And. AllTrim(SubStr(cFilAnt,1,4)) == AllTrim(SA7->A7_FILIAL))
 						cSigla=AllTrim(SA7->A7_FSSIGLA) //Para clientes que necessitam de númeração de Op especial
 					EndIf
 					DbSkip()
@@ -65,6 +77,11 @@ User Function MT680VAL()
 				nCount := SB1->B1_PRVALID	//Armazena a quantidade de dias na variável para cálculo da validade do mesmo
 			EndIf
 		EndIf
+
+		//Inclui a descrição do produto da OP
+		M->H6_FSPRODU := SB1->B1_DESC
+		cPesoi := Round((SB1->B1_PESO - SB1->B1_BRPEAL),2)
+		cPeso := CValToChar(Round((M->H6_QTDPROD + M->H6_QTDPERD) * (SB1->B1_PESO - SB1->B1_BRPEAL),4))
 		
 		If Select("SC2TEMP") > 0 //Verifica se o Alias já possui registro
 			SC2TEMP->(DbCloseArea()) //Fecha a tabela se já estiver aberta
@@ -75,7 +92,8 @@ User Function MT680VAL()
 			COLUMN C2_FSDTVLD AS DATE
 
 			SELECT
-				C2.C2_FSDTVLD FSDTVLD
+				C2.C2_FSDTVLD FSDTVLD,
+				C2.C2_FSLOTOP FSLOTOP
 			FROM
 				%TABLE:SC2% C2
 			WHERE
@@ -86,44 +104,90 @@ User Function MT680VAL()
 
 		While SC2TEMP->(!EOF()) //Enquanto não for o final do arquivo procura se já tem uma validade preenchida em qualquer item da Op
 			If !Empty(SC2TEMP->FSDTVLD) //Se não é o primeiro apontamento
-				ProcValid := SC2TEMP->FSDTVLD //Armazena a data de validade da Op
+				ProcValid := STOD(SC2TEMP->FSDTVLD) //Armazena a data de validade da Op
+				ProcLote  := SC2TEMP->FSLOTOP
 			EndIf
 			DbSkip()
 		End
 
 		SC2TEMP->(DbCloseArea())
 
+		If Empty(ProcValid)
+			If Select("SH6TEMP") > 0 //Verifica se o Alias já possui registro
+				SH6TEMP->(DbCloseArea()) //Fecha a tabela se já estiver aberta
+			EndIf
+
+			//SELECIONA OS REGISTROS DA OP
+			BEGINSQL ALIAS "SH6TEMP" 
+				COLUMN H6_DTVALID AS DATE
+
+				SELECT
+					TOP 1
+					H6.H6_DTVALID FSDTVLD
+				FROM
+					%TABLE:SH6% H6
+				WHERE
+					H6.H6_FILIAL = %XFILIAL:SH6% AND
+					H6.H6_OP = %EXP:M->H6_OP% AND
+					H6.%NOTDEL%
+				ORDER BY H6.H6_DTVALID DESC
+			ENDSQL
+
+			While SH6TEMP->(!EOF()) //Enquanto não for o final do arquivo procura se já tem uma validade preenchida em qualquer item da Op
+				If !Empty(SH6TEMP->FSDTVLD) //Se não é o primeiro apontamento
+					ProcValid := STOD(SH6TEMP->FSDTVLD) //Armazena a data de validade da Op
+				EndIf
+				DbSkip()
+			End
+
+			SH6TEMP->(DbCloseArea())
+		EndIf
+
 		DbSelectArea("SC2") //Seleciona a área da SC2
 		DbSetOrder(1) //Ordena a tabela de acordo com a minha busca
 		DbSeek(FwXFilial("SC2") + SubStr(M->H6_OP,1,6) + SubStr(M->H6_OP,7,2) + SubStr(M->H6_OP,9,3)) //Posiciona no item da Op do apontamento atual
 		RecLock("SC2", .F.)
-			SC2->C2_FSSALDO := (SC2->C2_FSSALDO) - (M->H6_QTDPROD) //Calcula o saldo no campo customizado na tabela de Op
+			//Se o lote na SC2 for diferente do que está sendo apontado, atualiza o lote na SC2
+			If M->H6_LOTECTL <> ProcLote
+				SC2->C2_FSLOTOP := M->H6_LOTECTL
+			EndIf
+			If Empty(SC2->C2_FSSALDO)
+				SC2->C2_FSSALDO := SC2->C2_QUANT - SC2->C2_QUJE
+			Else
+				SC2->C2_FSSALDO := (SC2->C2_FSSALDO) - (M->H6_QTDPROD) //Calcula o saldo no campo customizado na tabela de Op
+			EndIf
+
 		SC2->(MsUnlock())
 
-		If Empty(ProcValid) .And. Empty(SC2->C2_FSLOTOP) //Se não encontrou nenhum apontamento anterior, ou seja, não tem validade do lote ainda.
+		If Empty(ProcValid)	//Se não encontrou nenhum apontamento anterior, ou seja, não tem validade do lote ainda.
 			M->H6_DTVALID := Date() + nCount //Calcula a data de validade pro lote
 			RecLock("SC2",.F.)
-				SC2->C2_FSDTVLD := Date() + nCount //Salva a validade do lote na tabela de Ops, pois deve ser a mesma validade para todo o lote independente da datahora do apontamento
-				SC2->C2_FSLOTOP := M->H6_LOTECTL
+				SC2->C2_FSDTVLD := M->H6_DTVALID //Salva a validade do lote na tabela de Ops, pois deve ser a mesma validade para todo o lote independente da datahora do apontamento
 			SC2->(MsUnlock())
 		Else
 			M->H6_DTVALID := ProcValid	//Se encontrou data de validade anterior para o mesmo lote, preenche com o valor correto
 		EndIf
 
+		IF SC2->C2_FSSALDO < M->H6_QTDPROD
+			MsgInfo("Excede o saldo em: " + STR(SC2->C2_FSSALDO))
+		EndIf
+
+		IF SC2->C2_FSSALDO == M->H6_QTDPROD
+			M->H6_PT := "T"
+		Else 
+			M->H6_PT := "P"
+		EndIf
+
 		DbSelectArea("SB8") //Necessidade de manter a mesma validade para o lote independente de qual armazem ele esteja
 		DbSetOrder(5)
 		DbSeek(FwXFilial("SB8") + M->H6_PRODUTO + M->H6_LOTECTL ) //Busca o registro atual
-		While !(EOF())
+		While (!(EOF()) .And. SB8->B8_PRODUTO == M->H6_PRODUTO .And. SB8->B8_LOTECTL == M->H6_LOTECTL)
 			If Empty(SB8->B8_DTVALID)	//Se encontrar o registro e a data de validade estiver vazia
 				RecLock("SB8", .F.)
-					SB8->B8_DTVALID := STOD(M->H6_DTVALID) //Grava a data de validade de acordo com o primeiro apontamento
-				MsUnlock()
-			Else
-				RecLock("SB8", .F.)
-					SB8->B8_DTVALID := STOD(ProcValid) //Grava a data de validade de acordo com o primeiro apontamento
+					SB8->B8_DTVALID := M->H6_DTVALID //Grava a data de validade de acordo com o primeiro apontamento
 				MsUnlock()
 			EndIf
-			DbSkip()
+			SB8->(DbSkip())
 		End
 
 		DbSelectArea("SG2") //Seleciona a área da SG2 para preencher o apontamento com informações da estrutura do produto
@@ -135,6 +199,9 @@ User Function MT680VAL()
 			M->H6_CICLOPD := SG2->G2_FSCICLO //Preenche o ciclo padrão
 		EndIf
 	EndIf
+
+	M->H6_FSPESOI := cPesoi
+	M->H6_FSPESO := cPeso
 
 	RestArea(aArea)
 
