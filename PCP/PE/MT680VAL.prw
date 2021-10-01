@@ -13,11 +13,9 @@ User Function MT680VAL()
 	Local lRet	:= .T. //Variável para controle da gravação da rotina
 	Local aArea	:= GetArea() //Armazena a área do ponto de entrada
 	Local nOp	:= SubStr(M->H6_OP,1,6)
-	Local nCount	:= ""
+	Local nCount	:= 0
 	Local ProcValid	:= ""
 	Local ProcLote	:= ""
-	Local cPesoi	:= ""
-	Local cPeso		:= ""
 
 	If lRet .And. l681 //Variável Private para verificar qual o programa está chamando o ponto de entrada
 		DbSelectArea("SZ7") //Seleciona a área da tabela customizada que controla as movimentações de estoque para o wms
@@ -52,37 +50,10 @@ User Function MT680VAL()
 		DbSelectArea("SB1") //Seleciona a área da SB1 para encontrar o produto do apontamento
 		DbSetOrder(1)
 		DbSeek(FwXFilial("SB1") + M->H6_PRODUTO)	//Posiciona no produto correto
-		If SB1->B1_RASTRO == "L"	//VerIfica se o produto possui rastreabilidade
-			If cFilAnt == "020101"	// VerIfica se a empresa é SOPRO
-				DbSelectArea("SA7")
-				DbGoTop()
-				DbSetOrder(2)
-				DbSeek(xFilial("SA7") + M->H6_PRODUTO)
-				While !EOF()
-					If (AllTrim(SA7->A7_FSSIGLA) <>"" .And. AllTrim(M->H6_PRODUTO) == AllTrim(SA7->A7_PRODUTO) .And. AllTrim(SubStr(cFilAnt,1,4)) == AllTrim(SA7->A7_FILIAL))
-						cSigla=AllTrim(SA7->A7_FSSIGLA) //Para clientes que necessitam de númeração de Op especial
-					EndIf
-					DbSkip()
-				End
-				If cSigla <> ""
-					M->H6_LOTECTL := SubStr(M->H6_OP,1,6) + SubStr(M->H6_OP,8,1) + SubStr(M->H6_OP,11,1) + AllTrim(cSigla)   // cria a estrutura do número do lote incluindo a SIGLA solicitada pelo Fornecedor
-				Else
-					M->H6_LOTECTL := SubStr(M->H6_OP,1,8) //Preenche o número do lote sopro
-				EndIf
-			Else
-				M->H6_LOTECTL := SubStr(M->H6_OP,1,8)+SubStr(M->H6_OP,10,2) //Preenche o número do lote automaticamente
-			EndIf
-
-			If !Empty(SB1->B1_PRVALID) //Verifica se o produto controla lote e se o campo de dias para validade está preenchido
-				nCount := SB1->B1_PRVALID	//Armazena a quantidade de dias na variável para cálculo da validade do mesmo
-			EndIf
+		If !Empty(SB1->B1_PRVALID) //Verifica se o produto controla lote e se o campo de dias para validade está preenchido
+			nCount := SB1->B1_PRVALID	//Armazena a quantidade de dias na variável para cálculo da validade do mesmo
 		EndIf
 
-		//Inclui a descrição do produto da OP
-		M->H6_FSPRODU := SB1->B1_DESC
-		cPesoi := Round((SB1->B1_PESO - SB1->B1_BRPEAL),2)
-		cPeso := CValToChar(Round((M->H6_QTDPROD + M->H6_QTDPERD) * (SB1->B1_PESO - SB1->B1_BRPEAL),4))
-		
 		If Select("SC2TEMP") > 0 //Verifica se o Alias já possui registro
 			SC2TEMP->(DbCloseArea()) //Fecha a tabela se já estiver aberta
 		EndIf
@@ -172,7 +143,7 @@ User Function MT680VAL()
 			MsgInfo("Excede o saldo em: " + STR(SC2->C2_FSSALDO))
 		EndIf
 
-		IF SC2->C2_FSSALDO == M->H6_QTDPROD
+		IF SC2->C2_FSSALDO <= M->H6_QTDPROD
 			M->H6_PT := "T"
 		Else 
 			M->H6_PT := "P"
@@ -199,9 +170,6 @@ User Function MT680VAL()
 			M->H6_CICLOPD := SG2->G2_FSCICLO //Preenche o ciclo padrão
 		EndIf
 	EndIf
-
-	M->H6_FSPESOI := cPesoi
-	M->H6_FSPESO := cPeso
 
 	RestArea(aArea)
 

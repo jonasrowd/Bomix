@@ -17,31 +17,31 @@ User Function EMP650
 
 	c_Qry := " SELECT H1_FSLOCAL FROM " + RetSqlName("SC2") + " SC2 " + chr(13) + chr(10)
 	c_Qry += " INNER JOIN " + RetSqlName("SG2") + " SG2 " + chr(13) + chr(10)
-	c_Qry += " 		ON  G2_FILIAL = '" + xFilial("SG2") + "' " + chr(13) + chr(10)	
-	c_Qry += "		AND G2_PRODUTO = C2_PRODUTO " + chr(13) + chr(10)              
-	c_Qry += "      AND G2_CODIGO = C2_ROTEIRO " + chr(13) + chr(10)               
-	c_Qry += " 		AND SG2.D_E_L_E_T_ <> '*' " + chr(13) + chr(10)		
+	c_Qry += " 		ON  G2_FILIAL = '" + xFilial("SG2") + "' " + chr(13) + chr(10)
+	c_Qry += "		AND G2_PRODUTO = C2_PRODUTO " + chr(13) + chr(10)
+	c_Qry += "      AND G2_CODIGO = C2_ROTEIRO " + chr(13) + chr(10)
+	c_Qry += " 		AND SG2.D_E_L_E_T_ <> '*' " + chr(13) + chr(10)
 	c_Qry += " INNER JOIN " + RetSqlName("SH1") + " SH1 " + chr(13) + chr(10)
-	c_Qry += " 		ON  H1_FILIAL = '" + xFilial("SH1") + "' " + chr(13) + chr(10)	
-	c_Qry += " 		AND H1_CODIGO = G2_RECURSO " + chr(13) + chr(10)	
-	c_Qry += " 		AND SH1.D_E_L_E_T_ <> '*' " + chr(13) + chr(10)	
-	c_Qry += " WHERE SC2.D_E_L_E_T_ <> '*' AND C2_NUM = '" + SC2->C2_NUM + "' " + chr(13) + chr(10)	
+	c_Qry += " 		ON  H1_FILIAL = '" + xFilial("SH1") + "' " + chr(13) + chr(10)
+	c_Qry += " 		AND H1_CODIGO = G2_RECURSO " + chr(13) + chr(10)
+	c_Qry += " 		AND SH1.D_E_L_E_T_ <> '*' " + chr(13) + chr(10)
+	c_Qry += " WHERE SC2.D_E_L_E_T_ <> '*' AND C2_NUM = '" + SC2->C2_NUM + "' " + chr(13) + chr(10)
 	c_Qry += " 		AND C2_FILIAL = '" + xFilial("SC2") + "' " + chr(13) + chr(10)
 	c_Qry += " 		AND C2_PRODUTO = '" + SC2->C2_PRODUTO + "' " + chr(13) + chr(10)
 	c_Qry += " 		AND C2_ITEM = '" + SC2->C2_ITEM + "' " + chr(13) + chr(10)
 	c_Qry += " 		AND C2_SEQUEN = '" + SC2->C2_SEQUEN + "' "
-	
+
 	TCQUERY c_Qry NEW ALIAS "QRY"
 
 	dbSelectArea("QRY")
 	Count To n_RecTot
 	QRY->(dbGoTop())
-	
+
 	If n_RecTot > 0
 		c_Local := QRY->H1_FSLOCAL
 	EndIf
 
-	QRY->(dbCloseArea())   
+	QRY->(dbCloseArea())
 
 	If !Empty(c_Local)
 		For i:=1 To Len(aCols)
@@ -55,13 +55,13 @@ User Function EMP650
 					SB2->B2_COD    := aCols[i][1]
 					SB2->B2_LOCAL  := c_Local
 				MsUnlock()
-				aCols[i][3] := c_Local            	
+				aCols[i][3] := c_Local
 			EndIf
 		Next
 	EndIf
 
 	RestArea(a_Area)
-Return Nil
+Return
 
 /*/
 ‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹
@@ -88,32 +88,32 @@ User Function A650LEMP
 
 	c_Qry := " SELECT H1_FSLOCAL FROM " + RetSqlName("SC2") + " SC2 " + chr(13) + chr(10)
 	c_Qry += " INNER JOIN " + RetSqlName("SG2") + " SG2 " + chr(13) + chr(10)
-	c_Qry += " 		ON  G2_FILIAL = '" + xFilial("SG2") + "' " + chr(13) + chr(10)	
-	c_Qry += "		AND G2_PRODUTO = C2_PRODUTO " + chr(13) + chr(10)              
-	c_Qry += "      AND G2_CODIGO = C2_ROTEIRO " + chr(13) + chr(10)               
-	c_Qry += " 		AND SG2.D_E_L_E_T_ <> '*' " + chr(13) + chr(10)		
+	c_Qry += " 		ON  G2_FILIAL = '" + xFilial("SG2") + "' " + chr(13) + chr(10)
+	c_Qry += "		AND G2_PRODUTO = C2_PRODUTO " + chr(13) + chr(10)
+	c_Qry += "      AND G2_CODIGO = C2_ROTEIRO " + chr(13) + chr(10)
+	c_Qry += " 		AND SG2.D_E_L_E_T_ <> '*' " + chr(13) + chr(10)
 	c_Qry += " INNER JOIN " + RetSqlName("SH1") + " SH1 " + chr(13) + chr(10)
-	c_Qry += " 		ON  H1_FILIAL = '" + xFilial("SH1") + "' " + chr(13) + chr(10)	
-	c_Qry += " 		AND H1_CODIGO = G2_RECURSO " + chr(13) + chr(10)	
-	c_Qry += " 		AND SH1.D_E_L_E_T_ <> '*' " + chr(13) + chr(10)	
-	c_Qry += " WHERE SC2.D_E_L_E_T_ <> '*' AND C2_NUM = '" + SC2->C2_NUM + "' " + chr(13) + chr(10)	
+	c_Qry += " 		ON  H1_FILIAL = '" + xFilial("SH1") + "' " + chr(13) + chr(10)
+	c_Qry += " 		AND H1_CODIGO = G2_RECURSO " + chr(13) + chr(10)
+	c_Qry += " 		AND SH1.D_E_L_E_T_ <> '*' " + chr(13) + chr(10)
+	c_Qry += " WHERE SC2.D_E_L_E_T_ <> '*' AND C2_NUM = '" + SC2->C2_NUM + "' " + chr(13) + chr(10)
 	c_Qry += " 		AND C2_PRODUTO = '" + SC2->C2_PRODUTO + "' " + chr(13) + chr(10)
 	c_Qry += " 		AND C2_ITEM = '" + SC2->C2_ITEM + "' " + chr(13) + chr(10)
 	c_Qry += " 		AND C2_SEQUEN = '" + SC2->C2_SEQUEN + "' "
-	
+
 	TCQUERY c_Qry NEW ALIAS "QRY"
 
 	dbSelectArea("QRY")
 	Count To n_RecTot
 	QRY->(dbGoTop())
-	
+
 	If n_RecTot > 0
 		If !Empty(QRY->H1_FSLOCAL)
 			c_Local := QRY->H1_FSLOCAL
 		EndIf
 	EndIf
 
-	QRY->(dbCloseArea())   
+	QRY->(dbCloseArea())
 
 Return c_Local
 */

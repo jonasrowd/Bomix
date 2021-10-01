@@ -110,7 +110,8 @@ Static Function fMasRes(c_OP)
 	BEGINSQL ALIAS "MASTER"
 
 		SELECT 
-			Top 1 C2_NUM + C2_ITEM + C2_SEQUEN as OP, 
+			Top 1 
+			C2_NUM + C2_ITEM + C2_SEQUEN as OP, 
 			C2_PRODUTO as ProdutoOP, 
 			ProdutoOP.B1_PESO as Peso, 
 			ProdutoOP.B1_LOCPAD as Armazem, 
@@ -119,22 +120,9 @@ Static Function fMasRes(c_OP)
 			B1.B1_SERIE as ResinaSerie,
 			D4_MASTER.D4_COD as Master_ID, 
 			D4_MASTER.D4_FSDSC as Master, 
-			ISNULL(B1_MASTER.B1_BRCORG,"NATURAL") as MasterCor,
-			B1_MASTER.B1_LOCPAD as MaterialReprovadoArmazem, 
-			B1_MASTER.B1_UM as MaterialReprovadoUM, 
-			B1_MASTER.B1_SEGUM as MaterialReprovadoUM2,
-			ProdutoOP.B1_FSPRODC as Borra_ID, 
-			Borra.B1_DESC as Borra, 
-			Borra.B1_LOCPAD as BorraArmazem,
-			Borra.B1_UM as BorraUM, 
-			Borra.B1_SEGUM as BorraUM2
+			ISNULL(B1_MASTER.B1_BRCORG,'NATURAL') as MasterCor
 		FROM
 			%TABLE:SC2% C2 (NOLOCK)
-			INNER JOIN
-			%TABLE:SB1% ProdutoOP (NOLOCK)
-			ON ProdutoOP.B1_FILIAL = %XFILIAL:SB1%
-			AND ProdutoOP.%NOTDEL%
-			AND ProdutoOP.B1_COD = C2_PRODUTO
 			INNER JOIN
 			%TABLE:SB1% Borra (NOLOCK)
 			ON Borra.B1_FILIAL = %XFILIAL:SB1%
