@@ -7,12 +7,12 @@
 	@version 12.1.25
 	@author Jonas Machado
 	@since 29/09/2021
-	@return Logical, l_Ret
+	@return Logical, lLiber, se verdadeiro, permite o faturamento dos pedidos selecionados.
 	@see https://tdn.totvs.com/pages/releaseview.action?pageId=6784189
 /*/
 User Function M460MARK()
 
-	Local lRet		:= .T.
+	Local lLiber		:= .T.
     Local aArea		:= GetArea()
 	Local aAreaSc5	:= SC5->(GetArea("SC5"))
 	Local aAreaSc6	:= SC6->(GetArea("SC6"))
@@ -24,7 +24,7 @@ User Function M460MARK()
 		//Verifica se o alias está aberto e o fecha caso esteja
 		If Select("QRYSC9") > 0 
 			DbSelectArea("QRYSC9")
-			DbCloseArea()
+			QRYSC9->(DbCloseArea())
 		EndIf
 		
 		//Seleciona os pedidos de venda com a Marca do ParamIxb[1]
@@ -42,18 +42,29 @@ User Function M460MARK()
 				C9_FILIAL = %XFILIAL:SC9%
 		ENDSQL
 
-		//Percorre os pedidos encontrados na Sc9 e verifica se é de cliente com títulos em aberto (FFATVATR) ou se ele já foi liberado anteriormente
-		While !QRYSC9->(EOF())
-			nAtrasados := u_FFATVATR(QRYSC9->CLIENTE, QRYSC9->LOJA)
-			If (nAtrasados > 0 .Or. (!estaLib(QRYSC9->PEDIDO)))
-				lRet := .F.
-				Help(NIL, NIL, "CLIENTE_ATRASO", NIL, "O Pedido: "+ QRYSC9->PEDIDO+" possui restrições financeiras no total de R$ " ;
-					+AllTrim(Transform(nAtrasados,"@e 9,999,999,999,999.99"))+".",1, 0, NIL, NIL, NIL, NIL, NIL, {"Solicite a liberação ao departamento comercial."})
-			Else
+		If lLiber
+			While !QRYSC9->(EOF())
+				//Verifica títulos em aberto ou se ouve liberação manual do pedido
+				nAtrasados := u_FFATVATR(QRYSC9->CLIENTE, QRYSC9->LOJA)
+				If (nAtrasados > 0 .Or. (!estaLib(QRYSC9->PEDIDO)))
+					//Caso a condição seja .T. exibe mensagem com o número do pedido bloqueado e não permite o faturamento.
+					lLiber := .F.
+					Help(NIL, NIL, "CLIENTE_ATRASO", NIL, "O Pedido: "+ QRYSC9->PEDIDO+" possui restrições financeiras no total de R$ " ;
+						+AllTrim(Transform(nAtrasados,"@e 9,999,999,999,999.99"))+".",1, 0, NIL, NIL, NIL, NIL, NIL, {"Solicite a liberação ao departamento comercial."})
+				EndIf
+				QRYSC9->(DbSkip())
+			End
+			QRYSC9->(dbCloseArea())
+		EndIf
+
+		//Atualiza o status do pedido se, e somente se, a liberação passe verdadeira
+		If lLiber
+			//Percorre os pedidos encontrados na Sc9 e verifica se é de cliente com títulos em aberto (FFATVATR) ou se ele já foi liberado anteriormente
+			While !QRYSC9->(EOF())
 				//Verifica se o alias está aberto e o fecha caso esteja
 				If Select("cAliasSc6") > 0
 					DbSelectArea("cAliasSc6")
-					DbCloseArea()
+					cAliasSc6->(DbCloseArea())
 				EndIf
 
 				//Percorre os itens da Sc6 para verificar com qual status irá salvar na Sc5
@@ -66,15 +77,14 @@ User Function M460MARK()
 					FROM
 						%TABLE:SC6% C6
 					WHERE
-						C6_BLQ	<> 'R'
-						AND C6_FILIAL	= %XFILIAL:SC6%
-						AND C6_NUM	= %EXP:QRYSC9->PEDIDO%
-						AND %NOTDEL%
+						C6_BLQ	<> 'R' AND 
+						C6_FILIAL	= %XFILIAL:SC6% AND 
+						C6_NUM	= %EXP:QRYSC9->PEDIDO% AND 
+						%NOTDEL%
 				ENDSQL
 
 				//Percorre os itens do pedido de venda
 				While !cAliasSc6->(EOF())
-					
 					//Se a quantidade de venda for exatamente igual ao faturado o pedido fica encerrado
 					If cAliasSc6->VEN == cAliasSc6->ENT .And. cAliasSc6->ITEM6 == cAliasSc6->ITEM6
 						DbSelectArea("SC5")
@@ -88,15 +98,8 @@ User Function M460MARK()
 								SC5->C5_LIBEROK := 'E'
 							MsUnlock()
 						EndIf
-					EndIf
-					//Próximo item da Sc6
-					cAliasSc6->(DbSkip())
-				End
-				
-				cAliasSc6->(DbGoTop())
-				//Fiz este While redundante para evitar utilizar o Exit no parcial e testar se ele procurando duas vezes, ele grava correto.
-				While !cAliasSc6->(EOF())
-					If (cAliasSc6->VEN > cAliasSc6->ENT .And. cAliasSc6->ENT > 0)
+					 //Se a quantidade de venda for maior que a entregue e a entregue for maior que 0, pedido fica parcial
+					ElseIf (cAliasSc6->VEN > cAliasSc6->ENT .And. cAliasSc6->ENT > 0)
 						DbSelectArea("SC5")
 						DbSetOrder(1)
 						DbSeek(FwXFilial("SC5") + cAliasSc6->PEDC6)
@@ -106,16 +109,21 @@ User Function M460MARK()
 								SC5->C5_BLQ     := ''
 								SC5->C5_BXSTATU := 'A'
 								SC5->C5_LIBEROK := ''
+								EXIT
 							MsUnlock()
 						EndIf
 					EndIf
 					//Próximo item da Sc6
 					cAliasSc6->(DbSkip())
 				End
-			EndIf
-			QRYSC9->(DbSkip())
-		End
-		QRYSC9->(dbCloseArea())
+				//Fecha a área cAliasSc6
+				cAliasSc6->(DbCloseArea())
+				//Vai para o próximo registro da QRYSC9
+				QRYSC9->(DbSkip())
+			End
+			//Fecha a área da QRYSC9
+			QRYSC9->(dbCloseArea())
+		EndIf
 	EndIf
 
 	RestArea(aArea)
@@ -123,7 +131,7 @@ User Function M460MARK()
 	RestArea(aAreaSc6)
 	RestArea(aAreaSc9)
 
-Return lRet
+Return lLiber
 
 /*/{Protheus.doc} estaLib
 	Verifica se o pedido já foi liberado anteriormente.
