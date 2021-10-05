@@ -111,7 +111,7 @@ User Function MT680GREST
 	DbSetOrder(1)
 	If DbSeek(FwXFilial("SC2") + SubStr(M->H6_OP,1,6) + SubStr(M->H6_OP,7,2) + SubStr(M->H6_OP,9,3))
 		RecLock("SC2", .F.)
-			If SC2->C2_FSSALDO == 0 //SC2->C2_QUANT == SC2->C2_QUJE
+			If SC2->C2_FSSALDO == 0
 				SC2->C2_FSSALDO := SH6->H6_QTDPROD
 			ElseIf (SC2->C2_FSSALDO > 0 .And. SC2->C2_FSSALDO + SH6->H6_QTDPROD < SC2->C2_QUANT)
 				SC2->C2_FSSALDO := SC2->C2_FSSALDO + SH6->H6_QTDPROD

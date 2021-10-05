@@ -151,11 +151,8 @@ User Function MT680VAL()
 			M->H6_DTVALID := ProcValid	//Se encontrou data de validade anterior para o mesmo lote, preenche com o valor correto
 		EndIf
 
-		IF SC2->C2_FSSALDO < M->H6_QTDPROD
-			MsgInfo("Excede o saldo em: " + STR(SC2->C2_FSSALDO))
-		EndIf
-
-		IF SC2->C2_FSSALDO <= M->H6_QTDPROD
+		IF M->H6_QTGANHO > 0
+			MsgYesNo("Excede a produção em: " + STR(M->H6_QTGANHO), "Excedente")
 			M->H6_PT := "T"
 		Else 
 			M->H6_PT := "P"
