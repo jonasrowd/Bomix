@@ -1,0 +1,366 @@
+Objetivos básicos de um departamento de compras:
+- Obter um fluxo contínuo de suprimentos a fim de a produção.
+- Comprar materiais e insumos, obedecendo aos padrões de quantidade e qualidade pré-definidos.
+
+Necessidades Reguladoras de Estoque
+- Consumo Médio;
+- Ponto Pedido;
+- Projeção de Estoques Futuros;
+
+
+Poderá haver movimentações entre os almoxarifados, devendo ser identificado o fato migratório entre armazéns.
+itens poderão ser substituídos dentro do armazém de acordo com o fato de ser o mesmo produto, porém com origens distintas. 
+O consumo não produtivo deverá ser registrado no Kardex identificando qual área é responsável pela sua utilização.
+Havendo divergência entre o sistema eletrônico e o físico real deverá ser tratado como Inventário e todos os procedimentos de analise e correção de quantidades e custos deverão estar identificados em relatórios específicos para analises dos mesmos com a finalidade de justificar na contabilidade a divergência com o custo total identificado em balancete.
+
+1.1 COMPRAS
+Recebimento de mercadoria deve se dar através de uma preliminar analise de quantidade, valores unitários e totais, devendo a escrituração fiscal e contábil assim como a atualização de saldos e custos e financeiro a cargo da equipe de Controladoria
+
+1.2 ENGENHARIA
+Durante o processo produtivo necessita-se que a formulação para a produção deverá ser transcrito para o sistema de acordo com a ficha técnica do produto de venda assim como seus componentes.
+
+1.3 PRODUÇÃO
+As necessidades produtivas devem estar identificadas a cada movimento e acompanhadas através de registro de livro Kardex e conjunto o sua variação nos valores aplicados dentro da produção.
+A produção deverá ter documentos com referencia ao produto, data de inicio, quantidade, total consumido, total produzido, quantidade de perda de consumo de matéria prima, assim como, o total perdido no processo produtivo que deverá fazer parte do custo final da produção.
+
+1.4 REGRAS COMERCIAIS PARA O PRODUTO
+Saídas para clientes podendo ser classificadas como Demonstração, Vendas, Consignação ou para Fornecedores classificados como Beneficiamento, Devolução de Compras, Remessa para conserto e as Entradas de Fornecedores Demonstração, Compras, Consignação ou Clientes classificadas como Beneficiamento, Devolução de Vendas, Remessa para conserto. Temos outras situações que não se apresentam como negócios mas, fazem parte do processo tais como a Impostos sendo para Entrada o Complemento de ICMS/IPI/ISS/PIS/COFINS, Frete, Despesas e para Saída também teremos o Complemento de ICMS/IPI/ISS/PIS/COFINS, Frete e Despesas.
+
+1.5 PROJEÇÃO DE ESTOQUE >>
+SALDOS INICIAIS - O cadastro Saldos iniciais permite informar a posição inicial do estoque de um produto.
+os três tipos de saldo que podem ser consultados no Sistema:
+- Saldo Inicial - é o saldo no início do período (normalmente do mês), utilizado para reprocessamentos do recálculo do custo médio e no acerto do saldo atual.
+- No processo de fechamento e virada de saldos, é criado um novo registro de saldo inicial com base no saldo final do período.
+- Saldo Final - é o saldo final do período (normalmente do mês), utilizado para emissão dos relatórios de fechamento. É atualizado pelo recálculo do custo médio ou pela rotina -Saldo atual-, adequada para quem utiliza o custo médio on-line.
+
+*** É atualizado com os valores calculados no último processamento de virada de saldos. Essa informação é gravada nos campos B2_QFIM (quantidade final em estoque) e B2_VFIM1 a B2_VFIM5 (valor final em estoque das moedas 1 a 5).
+
+- Saldo Atual - é o saldo on-line que pode, também, ser recalculado pelo programa de Saldo Atual, que processa todos os movimentos cadastrados na base de dados, independe da data. Ele é gravado nos campos B2_QATU (quantidade atual em estoque) e B2_VATU1 a B2_VATU5 (valor atual em estoque das moedas 1 a 5).
+
+SALDOS EM ESTOQUE
+Trabalha como uma consulta aos saldos físicos e financeiros dos itens que tiveram movimentação de estoque, dados sobre empenhos, data do último inventário, endereçamento e saldo para endereçar. Permite incluir ou alterar o custo médio da mão-de-obra. Permite alterar o status do saldo de um produto em um armazém, bloqueando ou desbloqueando este saldo.
+
+SALDO FIFO >>>
+
+Endereços
+O cadastro de endereços trata da organização dos produtos dentro dos armazéns, determinando o lugar exato onde o produto é armazenado.
+O endereçamento permite um controle de estoque mais detalhado possibilitando ao usuário saber em qual box, fila ou qualquer outra denominação que queira, encontrasse o produto.
+
+SOLICITAÇÃO DE COMPRAS
+Documento que inicia o processo de compra, com info p/ executar a cotação e análise como: a quantidade, o prazo e local de entrega.
+Pode ser gerada: Manualmente, Pelo controle de lote econômico e ponto de pedido, Por necessidade da ordem de produção, Pela requisição de produtos ao armazém, Compra Centralizada através de outras Empresas ou filiais
+Opções da SC: Cópia, Impressão, Aprovação
+Cabeçalho: Número, Data de Emissão, Unid. Requis, Cód. Comprador, Filial de Entrega
+Itens: Produto, Quantidade, Necessidade, Armazém
+
+*Solicitações Automáticas de Compra
+Para a adequação das solicitações de compras geradas a partir dos pedidos de vendas vinculados a uma Ordem de Produção, na tabela de dados “SC6 – Itens dos Pedidos de Vendas”, foram criados os campos “Solicit. Compras” (C6_NUMSC) e “Item Solicit.”, (C6_ITEMSC) que serão preenchidos automaticamente pelo sistema.
+- Inclusão de um Pedido de Venda
+- Inclusão de uma Ordem de Produção
+- Solicitação por ponto de pedido
+***Ponto de Pedido é o ponto de reposição do material no estoque; ou seja, uma vez atingida a quantidade em estoque queinicia o processo de compras, pode-se efetuar a solicitação de compra.
+
+Solicitação de Compras/Autorizações de Entregas Prevista
+São geradas por ordens de produção previstas.A principal diferença entre a solicitação de compra prevista da solicitação de compra firme está no fato de que somente a firme pode
+iniciar o processo de compra; ou seja, o Sistema trata a prevista como uma solicitação bloqueada.
+
+Geração de Cotação de Preço
+Essa rotina permite gerar cotações com base nas solicitações de compras cadastradas.
+
+PEDIDO DE COMPRA
+Compras: Aceite de Condições Comerciais >> Financeiro: Apresentação do Desembolso / Fluxo de Caixa >> Estoque: Quantidade prevista para entrar
+O pedido de compra pode ser gerado manualmente, relacionado a uma solicitação de compras previamente cadastrada ou automaticamente, por meio da análise da melhor cotação. No entanto, a existência de uma solicitação para a inclusão do pedido de compra não é obrigatória e depende da parametrização inicial.
+Um pedido de compra pode ser alterado até a entrega do material, seja para celebrar uma nova condição ou para cancelar o pedido de compra.
+
+
+TIPOS DE ENTRADA E SAÍDAS
+Calcular os tributos pertinentes ao documento registrado, Controlar a entrada e saída de produtos/valores no estoque, Incluir automaticamente títulos na carteira a receber, Registrar automaticamente os ativos imobilizados, Registrar a amarração “Cliente x Produto/Equipamentos” quando saída de um documento fiscal, Agregar despesas ao custo do projeto ou as receitas recebidas no projeto. 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Faixa de 000 a 500 Entradas de Materiais ou Serviços
+Faixa de 501 a 999 Saídas de Materiais ou Serviços
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+REGRAS DE NEGÓCIO
+SAÍDAS
+- CLIENTES: Demonstração, Vendas, Consignação
+- FORNECEDORES : Beneficiação, Devolução de Compras, Remessa para Conserto
+ENTRADAS
+- CLIENTES: Demonstração, Vendas, Consignação
+- FORNECEDORES : Beneficiação, Devolução de Compras, Remessa para Conserto
+
+1.6 COMERCIALIZAÇÃO
+As vendas serão caracterizadas apenas pela emissão do documento fiscal que acompanhará a mercadoria até a sua entrega no cliente, dai se tornando parte integrante de seu ativo
+
+1.7 ENCERRAMENTO
+Será analisado o Custo final da mercadoria vendida em contra partida a quantidade adquirida no período e saldo inicial dos mesmos, devendo não haver divergências.
+
+2 ORGANIZAÇÃO DE COMPRAS
+- Autoridade para compra.
+- Registro de compras.
+- Registro de preços.
+- Registro de estoques e consumo.
+- Registro de fornecedores.
+- Arquivos e especificações.
+- Arquivos e catálogos.
+
+P.C.P: a relação existente entre compras e o P.C.P. é inerentemente tão estreita e fundamental que ambos encontram-se combinados em mais da metade das organizações industriais. Do ponto de vista funcional, o efeito almejado por esta estreita colaboração é estender a responsabilidade pelos materiais, desde o momento da aquisição até ao de entrega e utilização.
+
+OPERAÇÃO DOS SISTEMAS DE COMPRAS
+Documentação: anexada ao pedido, além de possibilitar o exame de cada fase de negociação no ato da segunda assinatura, permite sua revisão, estando sempre disponível junto ao processo de compra para esclarecer qualquer dúvida posterior.
+
+GESTÃO DE COMPRAS
+- Solicitação de compras: documento que autoriza o comprador a executar uma compra. É por meio desse documento que se inicia o processo de compra, tanto para materiais produtivos como para improdutivos. Esse documento possui diversas origens, entre elas destacam-se o P.C.P., um novo projeto em desenvolvimento etc. A solicitação de compra informa o que deve ser comprado, a quantidade, o prazo e local de entrega e, em alguns casos especiais, os prováveis fornecedores.
+
+- Cotação: registro do preço obtido a partir da oferta de diversos fornecedores sobre o material cuja compra foi solicitada. Deverá conter preço, quantidade e data do recebimento no departamento de compras.
+
+- Pedido de compra: contrato formal entre o estabelecimento e o fornecedor, que deve conter fielmente todas as condições e características da compra. Os pedidos de compra devem ser remetidos ao fornecedor por intermédio de um protocolo para o qual se farão registros e controles.
+
+PROCESSO DE COMPRA -> SOLICITAÇÃO DE COMPRA > COTAÇÃO > PEDIDO DE COMPRA > APROVAÇÃO DE COMPRAS > RECEBIMENTO
+
+SOLICITAÇÃO AO ARMAZÉM  -> EMPENHO À SOLICITAÇÃO > GERA PRÉ-REQUISITO > ANALISA ESTOQUE > SOLICITA COMPRA
+PEDIDO DE VENDAS        -> SALDO PREVISTO A SAIR > ORDEM DE PRODUÇÃO COM PV > EMPENHOS DE ESTRUTURA > SOLICITAÇÃO DE COMPRA
+PROJEÇÃO DE ESTOQUE MRP -> PREVISÃO DE VENDAS / PLANO MESTRE DE PRODUÇÃO > ANÁLISE DE SALDO NA ESTRUTURA > IDENTIFICAÇÃO DE FALTAS > SOLICITAÇÃO DE COMPRAS
+
+
+3. FLUXO OPERACIONAL
+
+
+4. FORMAÇÃO DE MATERIAIS
+
+4.1 PRODUTO
+4.1.1 PASTAS CADASTRAIS
+B1_COD – Identificador único do produto, B1_DESC – Descrição do produto, B1_UM Unidade de medida principal do produto, B1_LOCPAD É o armazém padrão para armazenagem do produto, B1_TIPO – Tipo do produto. Característica do produto que utiliza tabela do Sistema. Alguns tipos de produto pré- cadastrados são:
+* PA (Produto acabado)
+* PI (Produto intermediário)
+* MC (Matéria de consumo)
+* BN (Beneficiamento)
+*** o tipo de produto “TIPO BN” não gera empenho para Op
+B1_APROPRI Tipo de apropriação do produto. O produto pode ser de apropriação direta ou indireta. Os produtos de apropriação indireta são produtos de difícil controle e contagem, sendo requisitados normalmente em quantidade maior do que a necessária para um armazém de processo. À medida que os consumos ocorrem, esse saldo em processo é requisitado.
+
+4.1.2 PASTA MRP/SUPRIMENTOS/PCP
+B1_QE Quantidade por embalagem, B1_EMIN Ponto de pedido do produto, B1_ESTSEG Estoque de segurança, B1_ESTFOR Fórmula do estoque de segurança, B1_PE Prazo de entrega do produto, B1_FORPRZ Fórmula do prazo de entrega, B1_LE Lote econômico do produto, B1_LM Lote mínimo do produto, B1_EMAX Estoque máximo do produto.
+
+4.1.3 PASTA CADASTRAIS
+B1_UPRC Último preço de compra, B1_CUSTD Custo Standard do produto. Informação do custo de reposição, calculado ou informado para o produto.Para obter esses dados o campo da “TES”, “F4_UPRC , os campos da TES que podem influenciar nesse calculo são: F4_CREDICM e F4_CREDIPI, B1_UCOM Data da última compra.
+
+4.2 PRODUTOS
+MATÉRIA PRIMA -> TRANSFORMAÇÃO  |   INSUMOS -> AGREGADO À PRODUÇÃO  |   CONSUMO -> AGREGADOS AOS PROCESSOS PRODUTIVOS, CONSUMÍVEIS PARA ADMINISTRAÇÃO   |   SEMIACABADOS -> PARTE DO PROCESSO, CONJUNTOS, INTERMEDIÁRIO, A BENEFICIAR   | BENEFICIADOS -> MATÉRIA PRIMA, SEMIACABADOS ENVIADOS A FORNECEDORES PARA TRATAMENTO, MONTAGEM QUE SERÃO AGREGADOS AOS CUSTOS DE SERVIÇOS    |   PRODUTO ACABADO -> PRODUTO PRONTO PARA COMERCIALIZAÇÃO    |   MÃO DE OBRA DIRETA -> CUSTO DE PRODUÇÃO E OU MANIPULAÇÃO MANUAL
+
+ESTRUTURA
+O cadastro de Estruturas, lista de materiais ou BILL OF MATERIALS, é utilizado para cálculo de necessidades, explosão dessas necessidades e detalhamento da composição dos produtos.
+ESTRUTURAS: Relacionamento entre componentes    |   COMPOSIÇÃO: Quantidades, Indíces de perda, Data de Utilização, Observações, Opcionais   |   REVISÃO DE ESTRUTURA: Data de validade, Data de Utilização
+INFORMAÇÕES DO CADASTRO DE ESTRUTURAS
+Código, Unidade, Revisão, Estrutura Similar, Quantidade
+
+Pré-Estrutura
+Permite simular a criação de estruturas de produtos que a empresa deseja fabricar, sem causar nenhum tipo de interferência nas outras rotinas módulos causando necessidade. Pode ser utilizada para simulação da formação de preços do produto
+
+5. ORDEM DE PRODUÇÃO
+Relaciona todos os componentes e as etapas de fabricação determinadas pela sua estrutura. A ordem de produção pode ser incluída:
+- Manualmente.
+- por meio da rotina de geração de OPs por pedidos de venda.
+- Por meio da rotina de geração de OPs por ponto de pedido.
+- Por meio do MRP.
+Ao abrir a OP, é lida a estrutura do produto e são empenhados os componentes necessários para sua fabricação.
+Os produtos intermediários que não possuem saldo disponível terão ordens de produção geradas e as matérias-primas que não possuem saldo terão solicitações de compra ou autorizações de entrega geradas.
+Os empenhos gerados podem ser alterados em relação à quantidade, ao local, ao lote etc. Eles são baixados no momentoda produção, automaticamente, ou podem ser requisitados, manualmente, para a OP.
+Para identificar se um produto é comprado (matéria-prima) ou fabricado (produto intermediário), o Sistema verifica o arquivo de estruturas: o item que possui estrutura cadastrada é fabricado e os itens que não possuem estrutura são comprados.
+A ordem de produção é a entidade do Sistema que agrega o custo de vários insumos e transfere para outro.
+O custeio de uma ordem de produção nada mais é que a soma por nível dos custos dos componentes até chegarmos ao produto PAI.
+
+Tipo da ordem de produção:
+OP Firme – Ordem de produção que pode ser iniciada e ter seus itens empenhados, requisitados, comprados e/ou produzidos. É a ordem oficializada para produção.
+OP Prevista – É apenas uma ordem com previsão para produção. Deverá ser confirmada em uma rotina específica para essa finalidade e tornar-se uma ordem firme. Pode ter sido criada somente para simulação e não ser efetivamente produzida. Enquanto a OP estiver classificada como prevista, todos os empenhos, solicitações e pedidos serão considerados também  como previstos. Ao firmar a OP, todos os itens relacionados a ela serão firmados.
+
+Modelos de Ordem de Produção
+- Ordem de Produção Manual: Independente, Firme ou Revista, Empenhos
+- Ordem de Produção Por Pedido de Venda: Baseada em Necessidade, Firme, Empenhos
+- Ordem de Produção por MRP: Análise de todos os mapas de necessidade, Ponto pedido, Lote economico, Estoque de segurança, Prazo de entrega, Firme ou prevista, Empenhos
+
+Geração de Ordem Produção Por Vendas
+- Pedido de Venda utilizando TES que atualiza o estoque;
+- Produto no pedido de vendas
+
+Geração de Solicitação de Compras Por Ordem de Produção
+Observar os seguintes pontos:
+- Produto faz parte da estrutura de um produto
+- Produto não tem outros itens em sua estrutura inferior
+- A data de Inicio e fim na estrutura estão dentro dos limites de inicio e final da ordem de produção superior
+- Não haver saldo em estoque
+Somente serão gerados os documentos acima de forma automática se houver a geração de empenhos para toda a estrutura
+
+EMPENHO
+É a necessidade apresentada durante a geração de uma ordem de produção, demonstrando a falta de mercadorias confrontada com o saldo disponível atual ou calculada para uma determinada data.
+Ordem de Produção >> Saída por Estrutura >> Pré-Requisito >> Pedido de Venda >> MRP
+
+Os empenhos podem ser incluídos no Sistema de duas maneiras:
+Automaticamente – Através da inclusão de ordens de produção
+Manualmente – Rotina - Ajuste de Empenho
+
+MOVIMENTO DE MATERIAIS
+Processo de entrada de materiais no estoque
+-> Pré-Nota: Relaciona o pedido de compra, Quantidade a classificar   -> Documento de Entrada: Baixa de pré-nota, Baixa saldo de pedido de compras, Gera título no contas a pagar, Atualiza saldos disponíveis, Gera registros fiscais    -> Contabilização do Documento Fiscal de Entrada: Atualiza saldos do centro de custo quado há consumo, Atualiza registro de saldos nas contas de patrimonio
+
+Pré Nota de Entrada
+O Pré-nota de entrada ou (Pré-documento de entrada) consiste na informação de dados básicos para o recebimento de mercadorias, tais como: número da nota, fornecedor, produto, quantidade, valor unitário e total. O principal objetivo é permitir o registro da entrada do documento sem a necessidade da classificação do mesmo.
+Dessa forma, não é gerado nenhum lançamento fiscal, contábil ou financeiro, sendo apenas atualizado o estoque de produtos indisponível (quantidade não classificada).
+
+DOCUMENTO DE ENTRADA
+Essa rotina permite o registro de qualquer movimento de entrada de mercadorias, na empresa. A entrada das mercadorias inicia um processo de atualização on-line de dados financeiros, contábeis e de estoques e custos.
+Além disso, a rotina permite que os materiais recebidos pelo cadastro Recebimento de materiais sejam classificados e os devidos lançamentos efetuados.
+
+6. TIPOS DE MOVIMENTOS
+Como ocorrem os movimentos de materiais no estoque
+MOVIMENTOS INTERNOS 
+- Requisição      -> De consumo, Ordem de Produção, Material de apropriação indireto, Acerto de custo, Inventário >>>
+- Transferências  -> Entre armazéns, entre produtos >>>
+- Devolução       -> Consumo, Ordem de produção, Material indireto, Acerto de custos, Inventário >>>
+- Produção        -> Manual, Automático, PCP1, PCP2
+
+Movimentações Internas de Entrada de Material em Estoque
+0 a 500             D – Devolução Registra uma entrada de saldo, “devolvendo” um saldo anteriormente requisitado ou simplesmente uma entrada de saldo sem justificativa formal.(499 é reservado)   P – Produção Registra uma entrada de saldo por apontamento de produção.
+
+Movimentações Internas de Saída de Material em Estoque
+501 a 999           R – Requisição Registra uma saída de saldo por requisição e consequente consumo de saldo.
+(999 é reservado)
+
+REQUISIÇÕES
+CONSUMO   ->  Manual na produção, Manual centro de custos, Manual perdas
+PRODUÇÃO  ->  Manual direta, Automática indireta, Automática direta
+ACERTO    ->  Automática de inventário, Manual de custos
+
+Esse movimento tem por finalidade remover o saldo em estoque e transferir o custo para a produção ou para o centro de custo de consumo dos departamentos. Exemplo: Material de limpeza, manutenção de maquinas, material de escritório ou outro tipo qualquer de consumo.
+
+Requisição Manual para Consumo - Movimentação de material que tenha como finalidade o consumo e não interferindo diretamente no custo produtivo
+
+Requisição Manual para Ordem de Produção - Toda e qualquer de matéria prima, insumo ou material de consumo destinado a confecção, montagem, desenvolvimento
+
+Requisição Manual de Consumo Indireto Para Produção - Com a dificuldade de administrar produtos volateis ou de dificil quantificação durante o processo produtivo, denominamos que existe um movimento de requisição manual (RE3) para produção, ou seja, retira-se o produto de seu almoxarifado padrão e envia-se para a produção mesmo sem saber em qual ordem de produção ou até mesmo quando será consumida.
+
+Requisição Manual de Consumo Indireto - Quando o produto de consumo é de dificil quantifação e será utilizado para uso distinto dentro da empresa e que não seja utilizado para a produção.
+
+Requisição Automática de Consumo na Produção - Baseada na quantidade informada na estrutura do produto, a mesma foi empenhada para o local de produção/Processo (MV_LOCPROC) e foi empenhado manualmente ou automaticamente para a ordem de produção, dessa maneira ao executar o apontamento da ordem de produção o sistema irá executar de forma automática independente ao operador a requisição (RE2) do material de consumo de apropriação indireta (SB1->B1_APROPRI=”I”).
+
+Requisição Automáticas de Produção - Baseia se na requisição automática MV_REQAUT os empenhos (SD4) e no movimento de produção proporcional MV_BXPROP
+
+Requisição Automática Para Produção ou Projeto - Esse modelo de requisição (RE5) é utilizado quando se necessita atrelar o custo real de entrada a um documento seja ele de produção ou projeto, havendo a informação de numero de ordem de produção, item e sequencia de produção ou informa o projeto, EDT e tarefa. Esse modelo é muito adotado para transferência direta de beneficiamento tratando assim a devolução de controle de poder de terceiros.
+
+DEVOLUÇÕES
+CONSUMO   ->  Manual na produção, Manual centro de custos
+PRODUÇÃO  ->  Manual direta
+ACERTO    ->  Automática de inventário, Manual de custos
+
+Devolução Manual Consumo - É a movimentação de entrada (DE3) no almoxarifado do material que tenha como finalidade o consumo e não utilizada diretamente no custo produtivo, devendo ser informado o centro de custo para apropriação do valor no custo contábil.
+
+Devolução Manual para Ordem de Produção - É Devolução (DE0) de toda e qualquer de matéria prima, insumo ou material de consumo a se destinada ao almoxarifado destino sabendo se que não foi utilizada na confecção, montagem, desenvolvimento ou seja, toda transformação em que o produto sofrerá durante o processo de produção.
+Essa movimentação dá-se ao finalizar uma produção total ou parcial e identificar que há produtos que não foram utilizados parcial/total, podendo assim ser armazenado para uma proxima produção. Dessa forma reduzindo o custo apropriado a ordem de produção.
+
+Devolução Manual de Consumo Indireto Para Produção - Com a dificuldade de administrar produtos volateis ou de dificil quantificação durante o processo produtivo, denominamos que existe um movimento de devolução manual (DE3) da produção, ou seja, retira-se o produto da produção e enviado ao seu almoxarifado padrão.
+
+Devolução Manual de Consumo Indireto - Essa devolução manual (DE0) dá-se quando o produto de consumo tem seu saldo corrigido manualmente com a entrada
+do mesmo através ajustes.
+
+PRODUÇÃO 
+Produções
+MANUAL      ->    Com empenho, Sem empenho, Com custo, Sem custo
+AUTOMÁTICA  ->    Produto Intermediário
+
+Produção Manual - Produção manual dá-se quando ao apontar a produção, indica-se apenas a quantidade produzida para o documento informado, sem haver nenhum tipo de execução secundária pelas rotinas internas apenas identificando o custo gravado na ordem de produção (SC2) e apropriando esses custos das requisições diretamente ao produto produzido, já tendo os empenhos sidos transferidos anteriormente pelos movimentos de requisição para o valor disponível para valorização dos produtos.
+
+Produção Automatica - 
+
+Desmontagem de Produtos - Esta rotina possibilita a realização das transferências múltiplas, ou seja, transferências de um único produto para vários produtos. É utilizada constantemente na desmontagem de produtos acabados. Será gerada uma requisição do Produto Origem (RE7) e diversas devoluções para os Produtos Destinos (DE7).
+
+7. Planejamento de Materiais - (Material Requirements Planning - calculo da necessidade dos materiais)
+- Ponto Pedido ou Ponto de Resuprimento de estoque
+- Lote Econômico
+- Lote Mínimo
+- Estoque de Segurança ou estoque de cobertura
+- Prazo de entrega ou Lead-time
+- MRP
+
+MRP I - Material Requirements Planning, ou Planejamento das Necessidades de Materiais
+o MRP I está relacionado à compra de materiais para indústrias, uma espécie de automação da reposição de estoque. Ele se baseia na demanda pelos produtos para elaborar essa lista.
+MRP II - Manufacturing Resource Planning ou Planejamento dos Recursos de Manufatura.
+O MRP II, por outro lado, vai além: permite antecipar exigências futuras com base no histórico de compras da organização. Ou seja, esse sistema não apenas automatiza as aquisições como gera sugestões de listas posteriores.
+Entretanto, apenas o MRP II conta com funções vinculadas como planejamento de vendas, negócios, operações, requisitos e capacidade de estoque.
+
+Objetivo do MRP
+- Rotatividade de estoque – Análise de Custo Médio/FIFO, Custo indireto de manutenção e armazenagem e o custo de perda por obsolescência ou vencimento;
+- Atendimento aos prazos – Reduzir faltas de material e horas de improdutividade, evitar reprogramação acarretando ineficiência nos prazos, eliminação de custos diretos não previstos como horas extras e retrabalho;
+- Produtividade – Analise do ciclo produtivo de equipamentos e da produção da organização ou perdas por ineficiência de equipamentos ou processos;
+- Utilização da capacidade – identificação de limites produtivos
+- Custo de material – Analise de custos de entrada, beneficiamento, produção e da mercadoria vendida.
+
+Níveis de Estoque - Os níveis de estoque são aqueles que determinam as ações de reposição ou de cautelas a serem tomadas quanto as quantidades armazenadas
+
+MRP - Saldos em estoque, Pedido de Vendas, Ordem de Produção, Solicitação de Compra, Empenho, Estoque de segurança, Previsão de vendas, Plano mestre de produção
+
+Como o Sistema calcula o MRP
+Saldo Anterior Estoque (Abatendo Estoque de Segurança) + Entradas Previstas (Ordens de Produção, Solicitações de Compra, Pedidos de Compra em Aberto etc.) - Saídas Previstas
+(Empenhos, Previsões de Venda, Pedidos de Vendas etc.) = Saldo
+Caso o saldo se torne negativo, haverá necessidade. Deve-se considerar para cálculo de necessidade, os campos
+Lote Econômico e Lote Mínimo.
+
+MRP - Parâmetros iniciais - Períodos, Tipo de material, Considerar pedidos em carteira
+
+MRP – Botão Parâmetros - 
+Processamento do MRP? Define o que será considerado para o processamento do MRP, sendo que:
+- Pelo PMP, considera PMP (Plano Mestre de Produção) e produz para estoque.
+- Pela PV (Previsão de Venda), produzirá para suprir a previsão de venda. Neste caso, se a quantidade em estoque for suficiente para atender a Previsão de Venda, não será criada OP/SC.
+
+Geração das SC's? Se selecionado pela necessidade: As SCs serão aglutinadas pelo total calculado;
+Por OP: As SCs serão geradas de acordo com a necessidade, porém para cada Ordem de Produção.
+
+Geração das OPs Prod. Interme.? Se selecionado pela necessidade: As OPs serão aglutinadas pelo total calculado;
+Por OP: As OPs serão geradas de acordo com a necessidade, porém para cada Ordem de Produção.
+
+Data Inicial / Final PMP / Prev. De Vendas?
+Intervalo de data a ser considerado nos respectivos cadastros.
+
+
+Plano de Mestre de Produção - Por meio da rotina de “MRP”, parametrizada para considerar o plano mestre de produção, o Sistema gera as ordens de produção
+Sistema consultará o estoque naquele momento e mandará produzir apenas o necessário, enquanto o plano mestre de produção gerará ordens de produção na data em que se encontra tal dado, na quantidade exata expressa no plano.
+
+
+Carga Maquina - Este processo tem como objetivo a alocação das operações de cada ordem de produção nos recursos disponíveis, considerando as informações dos calendários, bloqueios de recursos, exceções aos calendários, utilização de ferramentas, entre outras informações. MV_TPHR MV_PRECISA
+Essa alocação poderá servir de base para orientação do trabalho de utilização dos recursos no chão de fábrica, permitindo o planejamento da ocupação das máquinas.
+A rotina de carga máquina sequenciará cada operação das ordens de produção consideradas e demonstrar, graficamente, como foi feita a ocupação de cada recurso.
+
+
+Carga acumulativa - Esta rotina gera uma carga cumulativa das ordens de produção por centro de trabalho (conforme roteiro de operações), mostrando, posteriormente, por meio da consulta ao histograma, o total do número de horas utilizadas pelos recursos e o total do número de horas da capacidade de um centro de trabalho em um determinado período desejado.
+
+Sacramento de Ops - Esta rotina permite que as ordens de produção alocadas pela rotina de carga máquina sejam sacramentadas.
+Uma ordem de produção sacramentada é uma ordem de produção com alocação “travada”; ou seja, nenhum tipo de alteração de prioridade interferirá na alocação da ordem. Uma ordem de produção sacramentada tem as operações em horários definidos e não alterados.
+
+
+Beneficiamento -> Nosso em poder de terceiros -> De terceiro em nosso poder
+
+Em poder de terceiros, temos dois casos básicos:
+Com Movimentação de Estoque, Sem Movimentação de Estoque
+
+Ao se enviar um produto para beneficiamento, executa-se as seguintes tarefas:
+1.Cadastra-se na estrutura, um código para beneficiamento;
+2.Emite-se a nota da matéria-prima referente à remessa para beneficiamento. Esta nota será gravada no arquivo de saldo em poder de terceiros, para o seu controle, nota a nota;
+3.Abre-se uma OP referente ao produto que será resultado do beneficiamento;
+4.Ao receber o material pela nota fiscal de entrada, informar o código do produto do beneficiamento e o número da OP anterior, será gerada a requisição do mesmo produto para a OP em referência.
+
+Operação Triangular - consiste em uma transação que envolve mais de 2 empresas para um processo de beneficiamento.
+
+Beneficiamento com Ordem de Produção - O beneficiamento de produtos de terceiro deverá ser tratado da como apenas agregar insumos, material de consumo e mão de obra a ordem de produção através de empenho manual.
+
+Beneficiar Produto de Terceiro - Esse recebimento se dará através de um documento de entrada simples, podendo haver um pedido de compra de beneficiamento, deverá se utilizar todos os recursos anteriormente informados.
+
+Enviar Produto para Beneficiar em Terceiro - Esse envio se dará através de um documento de entrada simples, podendo haver uma ordem de produção em que um dos componentes seja de beneficiamento, deverá se utilizar todos os recursos anteriormente informados.
+
+Apontamento da Produção - A produção de materiais consiste na informação ao Sistema da execução parcial ou total de uma OP. Caso seja parcial, a OP não é encerrada, permanece em aberto. Esse apontamento de produção não necessita de informação específica vinda do PCP. É o programa mais simples para indicar quantidade produzida.
+Atualiza saldos em estoque, empenhos e o cadastro de Ordens de Produção MV_REQAUT
+
+PRODUÇÃO PCP MODELO I
+Este programa de apontamento de produção atualiza a produção de maneira diferente da produção normal: precisa ser apontado operação por operação e, além dos dados da produção padrão (programa MATA250), atualiza os dados de PCP, como recurso utilizado, hora início e hora fim de utilização da máquina, operador, seqüência de desdobramento etc. Essas informações são validadas com base nos dados gerados pela alocação da carga-máquina.
+
+Produção PCP Modelo II
+Este programa de apontamento de produção atualiza a produção de maneira diferente da produção normal: precisa ser apontado operação por operação e, além dos dados da produção padrão (programa MATA250), atualiza os dados de PCP, como recurso utilizado, hora início e hora fim de utilização da máquina, operador, seqüência de desdobramento etc. Essas informações são validadas com base nos dados preenchidos no roteiro de operações.
+
+
+https://lucid.app/lucidchart/invitations/accept/inv_aab1ac30-1b9a-47ce-973f-ef94dd01e4b4?viewport_loc=-1770%2C-656%2C1899%2C1068%2C0_0
+
