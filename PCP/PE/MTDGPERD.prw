@@ -38,6 +38,8 @@ User Function MTDGPERD
 			GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+ESPEC->B1_FSPRODC, "B1_DESC"), n_Size)
 			GDFieldPut("BC_LOCAL", POSICIONE("SB1", 1, XFILIAL("SB1")+ESPEC->B1_FSPRODC, "B1_LOCPAD"), n_Size)
 			GDFieldPut("BC_QUANT", 0, n_Size)
+//			GDFieldPut("BC_LOTECTL", M->H6_LOTECTL, n_Size)
+
 
 			// Percorre os itens da resina
 			// While (!ESPEC->(EOF()))
@@ -55,6 +57,7 @@ User Function MTDGPERD
 			GDFieldPut("BC_QTSEGUM", n_QtdSegUm, n_Size)
 			GDFieldPut("BC_QTDDEST", n_Qtd, n_Size)
 			GDFieldPut("BC_QTDDES2", n_QtdSegUm, n_Size)
+//			GDFieldPut("BC_LOTECTL", M->H6_LOTECTL, n_Size)
 
 				// Salta para o próximo registro de resina
 				// ESPEC->(DBSkip())
@@ -409,6 +412,7 @@ User Function DIGPEROK
 
 	If l_Ret
 		M->H6_QTDPROD := 0
+		M->H6_PT := "P"
 	EndIf
 
 	RestArea(a_Area)
