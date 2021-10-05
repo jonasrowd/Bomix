@@ -45,6 +45,13 @@ User Function MT680VAL()
 			M->H6_PT := "P"
 			Help(NIL, NIL, "ERR_APPO", NIL, "Apontamento preenchido incorretamente. Verifique os dados do apontamento.",;
 				1, 0, NIL, NIL, NIL, NIL, NIL, {"Lembre-se que não pode encerrar a Op com Perda e não pode apontar perda e produção ao mesmo tempo. Vou resetar os apontamentos para te ajudar."})
+		ElseIf (M->H6_QTDPERD > 0 .And. M->H6_PT == "T")
+			lRet := .F.
+			M->H6_QTDPERD	:= 0
+			M->H6_QTDPROD	:= 0
+			M->H6_PT := "P"
+			Help(NIL, NIL, "ERR_APPO", NIL, "Apontamento preenchido incorretamente. Verifique os dados do apontamento.",;
+				1, 0, NIL, NIL, NIL, NIL, NIL, {"Lembre-se que não pode totalizar a Op com Perda e não apontar perda e produção ao mesmo tempo. Vou resetar os apontamentos para te ajudar."})
 		EndIf
 
 		DbSelectArea("SB1") //Seleciona a área da SB1 para encontrar o produto do apontamento
@@ -77,13 +84,14 @@ User Function MT680VAL()
 			If !Empty(SC2TEMP->FSDTVLD) //Se não é o primeiro apontamento
 				ProcValid := STOD(SC2TEMP->FSDTVLD) //Armazena a data de validade da Op
 				ProcLote  := SC2TEMP->FSLOTOP
+				EXIT
 			EndIf
 			DbSkip()
 		End
 
 		SC2TEMP->(DbCloseArea())
 
-		If Empty(ProcValid)
+		If (Empty(ProcValid) .Or. Empty(ProcLote))
 			If Select("SH6TEMP") > 0 //Verifica se o Alias já possui registro
 				SH6TEMP->(DbCloseArea()) //Fecha a tabela se já estiver aberta
 			EndIf
@@ -94,12 +102,13 @@ User Function MT680VAL()
 
 				SELECT
 					TOP 1
-					H6.H6_DTVALID FSDTVLD
+					H6.H6_DTVALID AS FSDTVLD,
+					H6.H6_LOTECTL AS H6LOTECTL
 				FROM
 					%TABLE:SH6% H6
 				WHERE
 					H6.H6_FILIAL = %XFILIAL:SH6% AND
-					H6.H6_OP = %EXP:M->H6_OP% AND
+					SubString(H6.H6_OP,1,6) = %EXP:nOp% AND
 					H6.%NOTDEL%
 				ORDER BY H6.H6_DTVALID DESC
 			ENDSQL
@@ -107,6 +116,7 @@ User Function MT680VAL()
 			While SH6TEMP->(!EOF()) //Enquanto não for o final do arquivo procura se já tem uma validade preenchida em qualquer item da Op
 				If !Empty(SH6TEMP->FSDTVLD) //Se não é o primeiro apontamento
 					ProcValid := STOD(SH6TEMP->FSDTVLD) //Armazena a data de validade da Op
+					ProcLote  := SH6TEMP->H6LOTECTL
 				EndIf
 				DbSkip()
 			End
@@ -119,13 +129,15 @@ User Function MT680VAL()
 		DbSeek(FwXFilial("SC2") + SubStr(M->H6_OP,1,6) + SubStr(M->H6_OP,7,2) + SubStr(M->H6_OP,9,3)) //Posiciona no item da Op do apontamento atual
 		RecLock("SC2", .F.)
 			//Se o lote na SC2 for diferente do que está sendo apontado, atualiza o lote na SC2
-			If M->H6_LOTECTL <> ProcLote
+			If (M->H6_LOTECTL <> ProcLote .Or. M->H6_DTVALID <> ProcValid)
 				SC2->C2_FSLOTOP := M->H6_LOTECTL
+				SC2->C2_FSDTVLD := M->H6_DTVALID
 			EndIf
+
 			If Empty(SC2->C2_FSSALDO)
 				SC2->C2_FSSALDO := SC2->C2_QUANT - SC2->C2_QUJE
 			Else
-				SC2->C2_FSSALDO := (SC2->C2_FSSALDO) - (M->H6_QTDPROD) //Calcula o saldo no campo customizado na tabela de Op
+				SC2->C2_FSSALDO := (SC2->C2_QUANT - SC2->C2_QUJE) - (M->H6_QTDPROD) //Calcula o saldo no campo customizado na tabela de Op
 			EndIf
 
 		SC2->(MsUnlock())
@@ -153,7 +165,7 @@ User Function MT680VAL()
 		DbSetOrder(5)
 		DbSeek(FwXFilial("SB8") + M->H6_PRODUTO + M->H6_LOTECTL ) //Busca o registro atual
 		While (!(EOF()) .And. SB8->B8_PRODUTO == M->H6_PRODUTO .And. SB8->B8_LOTECTL == M->H6_LOTECTL)
-			If Empty(SB8->B8_DTVALID)	//Se encontrar o registro e a data de validade estiver vazia
+			If (Empty(SB8->B8_DTVALID) .Or. SB8->B8_DTVALID <> M->H6_DTVALID) 	//Se encontrar o registro e a data de validade estiver vazia
 				RecLock("SB8", .F.)
 					SB8->B8_DTVALID := M->H6_DTVALID //Grava a data de validade de acordo com o primeiro apontamento
 				MsUnlock()

@@ -28,15 +28,15 @@ User Function MT680EST
 			SZW->(dbSetOrder(1))
 			SZW->(dbSeek(xFilial("SZW") + SH6->(H6_OP + H6_PRODUTO + H6_LOCAL + H6_LOTECTL)))
 			While SZW->(!EoF()) .AND. SZW->(ZW_FILIAL + ZW_OP + ZW_PRODUTO + ZW_LOCORIG + ZW_LOTECTL) == xFilial("SZW") + SH6->(H6_OP + H6_PRODUTO + H6_LOCAL + H6_LOTECTL)
-		        If SZW->ZW_SEQORIG == SD3->D3_NUMSEQ
+				If SZW->ZW_SEQORIG == SD3->D3_NUMSEQ
 					ShowHelpDlg(SM0->M0_NOME, {"Este apontamento já foi transferido para o armazém " + SZW->ZW_LOCDEST + " e não pode ser estornado"}, 5, {"Utilize esta operação somente com apontamentos que não foram transferidos"},5)
-                    l_Ret := .F.
-		        	Exit
-		        Endif
+					l_Ret := .F.
+					Exit
+				Endif
 
 				SZW->(dbSkip())
 			End
-	    Endif
+		Endif
 	Endif
 
 	RestArea(a_AreaSD3)

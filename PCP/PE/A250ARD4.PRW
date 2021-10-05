@@ -81,12 +81,12 @@ Return .T. // Se não achou configuração de Perda, grava perda normalmente
     @since 27/09/2021
     @param cProd, character, Código do produto
     @param cOp, character, Número da Op
-    @return logical, Retorna verdadeiro falso para consumir e verdadeiro não consome.
+    @return logical, Retorna falso para consumir e verdadeiro não consome.
 /*/
 Static Function fConsumo(cProd,cOp)
 
     Local lRet  := .T.
-    Local nCounter := 0
+    //Local nCounter := 0
 
     If Select("CONSU") > 0
         CONSU->(dbCloseArea())
@@ -117,13 +117,14 @@ Static Function fConsumo(cProd,cOp)
     ENDSQL
 
     If CONSU->PERDA  == 'N'
-        If CONSU->ENTREGUE <> 0
-            nCounter := Int(CONSU->ENTREGUE / CONSU->QUANTBAS)
-        EndIf
+        // If CONSU->ENTREGUE <> 0
+        //     nCounter := Int(CONSU->ENTREGUE / CONSU->QUANTBAS)
+        // EndIf
 
-        If Int(((CONSU->ENTREGUE + SH6->H6_QTDPROD) / CONSU->QUANTBAS)) == nCounter
-            lRet := .F.
-        EndIf
+        // If Int(((CONSU->ENTREGUE + SH6->H6_QTDPROD) / CONSU->QUANTBAS)) == nCounter
+        //     lRet := .F.
+        // EndIf
+        lRet := .F.
     EndIf
 
 Return lRet
