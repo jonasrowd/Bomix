@@ -8,13 +8,17 @@ USER FUNCTION MA650EMP()
     Local i				:= 0
 	Local aMATA650		:= {} //-Array com os campos
     Local DDATABASE		:= DATE()
+    Local nOpc 			:= 5
+	Private c_Email  := 'ti@bomix.com.br'
+	Private l_Email  := .T.
+	Private c_Titulo := "OP: " + SD4->D4_OP + " Notificação de erro na exclusão automática do MATA650."
+	Private c_Corpo  := c_Titulo + chr(13) + chr(10) + "Verifique com o usuário " + UsrRetName(__CUSERID) +" o que foi que aconteceu."
 
     //ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
     //³ 3 - Inclusao ³
     //³ 4 - Alteracao ³
     //³ 5 - Exclusao ³
     //ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
-    Local nOpc 			:= 5
     Private lMsErroAuto := .F.
 
     For i:=1 To Len(aCols)
@@ -85,9 +89,7 @@ USER FUNCTION MA650EMP()
 			AND C2.%NOTDEL%
 	ENDSQL
 
-
-
-	// Percorre os registros trazido pela query
+	//Execauto para excluir as op's e empenhos 
 	While (!EOF())
 			aMATA650 := {;
                 {'C2_FILIAL'    , CFILAUX   ,NIL},;
@@ -102,27 +104,22 @@ USER FUNCTION MA650EMP()
                 {'AUTEXPLODE'   , "S"       ,NIL};
                 }
 
-
-    ConOut("Inicio : "+Time())
-
-    //ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-    //³ Se alteracao ou exclusao, deve-se posicionar no registro ³
-    //³ da SC2 antes de executar a rotina automatica ³
-    //ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+    // Se alteracao ou exclusao, deve-se posicionar no registro da SC2 antes de executar a rotina automática
     If nOpc == 4 .Or. nOpc == 5
         SC2->(DbSetOrder(1))//FILIAL + NUM + ITEM + SEQUEN + ITEMGRD
         SC2->(DbSeek(xFilial("SC2")+aMATA650[2][2]+aMATA650[3][2]+aMATA650[4][2]))
     EndIf
 
     msExecAuto({|x,Y| Mata650(x,Y)},aMata650,nOpc)
-    If !lMsErroAuto
-        ConOut("Sucesso! ")
-    Else
-        ConOut("Erro!")
+
+	//Se Erro, apresenta mensagem para que o usuário possa nos informar
+    If lMsErroAuto
+		U_TBSEndMAIL(c_Email, c_Corpo, c_Titulo, .T.)
+		Help(NIL, NIL, 'ERR_OP', NIL, 'Erro no ajuste de Empenho e Op.',;
+			1, 0, NIL, NIL, NIL, NIL, NIL, {'Encaminhe esta Op ao time de TI para acompanhar o processo.'})
         MostraErro()
     EndIf
 
-    ConOut("Fim : "+Time())
 	DBSkip()
 	End
 
