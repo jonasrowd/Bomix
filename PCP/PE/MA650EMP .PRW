@@ -4,8 +4,18 @@
 #INCLUDE "RWMAKE.CH"
 
 USER FUNCTION MA650EMP()
-    Local cOp    := SD4->D4_OP //SD4 está posicionada na ultima op gerada
-    Local i := 0
+    Local cOp			:= SD4->D4_OP //SD4 está posicionada na ultima op gerada
+    Local i				:= 0
+	Local aMATA650		:= {} //-Array com os campos
+    Local DDATABASE		:= DATE()
+
+    //ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+    //³ 3 - Inclusao ³
+    //³ 4 - Alteracao ³
+    //³ 5 - Exclusao ³
+    //ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+    Local nOpc 			:= 5
+    Private lMsErroAuto := .F.
 
     For i:=1 To Len(aCols)
 
@@ -75,47 +85,45 @@ USER FUNCTION MA650EMP()
 			AND C2.%NOTDEL%
 	ENDSQL
 
+
+
 	// Percorre os registros trazido pela query
 	While (!EOF())
-		// Monta a chave de busca da SD4
-		c_Key := CFILAUX + CNUMAUX + CITEMAUX + CSEQAUX
+			aMATA650 := {;
+                {'C2_FILIAL'    , CFILAUX   ,NIL},;
+                {'C2_NUM'       , CNUMAUX   ,NIL},; 
+                {'C2_ITEM'      , CITEMAUX  ,NIL},; 
+                {'C2_SEQUEN'    , CSEQAUX   ,NIL},;
+                {'C2_PRODUTO'   , CPRODAUX  ,NIL},;
+                {'C2_LOCAL'     , CLOCALAUX ,NIL},;
+                {'C2_QUANT'     , CQUANTAUX ,NIL},;
+                {'C2_DATPRI'    , DDATABASE ,NIL},;
+                {'C2_DATPRF'    , DDATABASE ,NIL},;
+                {'AUTEXPLODE'   , "S"       ,NIL};
+                }
 
-		// Posiciona no Empenho
-		DBSelectArea("SD4")
-		DBSetOrder(2)
-		DBSeek(c_Key)
 
-		// Percorre os Empenhos da OP
-		While (!EOF()) .AND. (AllTrim(D4_OP) == (c_AliasAux)->(CNUMAUX + CITEMAUX + CSEQAUX))
-			// Realiza deleção virtual do Empenho
-				RecLock("SD4", .F.)
-					DBDelete()
-				MsUnlock()
-			// Salta para o próximo item do Empenho
-			DBSkip()
-		End
+    ConOut("Inicio : "+Time())
 
-		// Reposiciona na tabela temporária para montagem
-		// da chave de pesquisa do Empenho
-		DBSelectArea(c_AliasAux)
+    //ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+    //³ Se alteracao ou exclusao, deve-se posicionar no registro ³
+    //³ da SC2 antes de executar a rotina automatica ³
+    //ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+    If nOpc == 4 .Or. nOpc == 5
+        SC2->(DbSetOrder(1))//FILIAL + NUM + ITEM + SEQUEN + ITEMGRD
+        SC2->(DbSeek(xFilial("SC2")+aMATA650[2][2]+aMATA650[3][2]+aMATA650[4][2]))
+    EndIf
 
-		c_Key := CFILAUX + CNUMAUX + CITEMAUX + CSEQAUX
+    msExecAuto({|x,Y| Mata650(x,Y)},aMata650,nOpc)
+    If !lMsErroAuto
+        ConOut("Sucesso! ")
+    Else
+        ConOut("Erro!")
+        MostraErro()
+    EndIf
 
-		// Posiciona na Ordem de Produção
-		DBSelectArea("SC2")
-		DBSetOrder(1)
-		DBSeek(c_Key)
-		// Realiza deleção virtual de Ordem de Produção
-		If (Found())
-			RecLock("SC2", .F.)
-				DBDelete()
-			MsUnlock()
-		EndIf
-
-		// Reposiciona na tabela temporária
-		// para saltar para o registro
-		DBSelectArea(c_AliasAux)
-		DBSkip()
+    ConOut("Fim : "+Time())
+	DBSkip()
 	End
 
 Return
