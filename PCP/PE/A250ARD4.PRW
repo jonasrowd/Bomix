@@ -12,7 +12,6 @@ User Function A250ARD4()
     Local nX := 0
     aSd4  := PARAMIXB
 
-
     If SH6->H6_QTDPERD > 0
         For nX := 1 to Len(aSd4[1])
             DbSelectArea("SB1")
