@@ -24,17 +24,15 @@ User Function A250ARD4()
         Next
     EndIf
 
-    If FwXFilial() == '020101' 
-        If SH6->H6_QTDPROD > 0
-            For nX := 1 to Len(aSd4[1])
-                DbSelectArea("SB1")
-                DbSetOrder(1)
-                DbSeek(FwXFilial("SB1") + aSd4[1][nX][3])
-                If !fConsumo(aSd4[1][nX][3],aSd4[1][nX][11])
-                    aSd4[1][nX][2] := 0
-                EndIf
-            Next
-        EndIf
+    If SH6->H6_QTDPROD > 0
+        For nX := 1 to Len(aSd4[1])
+            DbSelectArea("SB1")
+            DbSetOrder(1)
+            DbSeek(FwXFilial("SB1") + aSd4[1][nX][3])
+            If !fConsumo(aSd4[1][nX][3],aSd4[1][nX][11])
+                aSd4[1][nX][2] := 0
+            EndIf
+        Next
     EndIf
 
 Return aSD4
@@ -98,7 +96,7 @@ Static Function fConsumo(cProd,cOp)
         C2.C2_QUANT - C2_QUJE AS SALDO,
         C2.C2_QUANT / B1_QB AS PALET,
         B1.B1_QB as QUANTBAS, 
-        Z05.Z05_PERDA AS PERDA,
+        Z05.Z05_CARRO AS CONSUMO,
         C2.C2_QUJE AS ENTREGUE,
         D4.D4_QUANT AS EMPENHO
     FROM %TABLE:SC2% C2 (NoLock)
@@ -117,7 +115,7 @@ Static Function fConsumo(cProd,cOp)
         AND D4.D4_COD = %Exp:cProd%
     ENDSQL
 
-    If CONSU->PERDA  == 'N'
+    If CONSU->CONSUMO  == 'N'
         // If CONSU->ENTREGUE <> 0
         //     nCounter := Int(CONSU->ENTREGUE / CONSU->QUANTBAS)
         // EndIf
