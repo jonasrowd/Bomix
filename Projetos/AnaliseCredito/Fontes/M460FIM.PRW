@@ -16,28 +16,18 @@ User Function M460FIM()
         // Atualiza a SC5
         SC5->(RecLock("SC5", .F.))
             // Posiciona no itens do pedido com base no cabeçalho
-            DBSelectArea("SC6")
-            DBSetOrder(1)
-            DBSeek(SC5->C5_FILIAL + SC5->C5_NUM)
-
-            // Percorre os itens (SC6) com base no pedido (SC5)
-            While (!EOF() .And. C6_NUM == SC5->C5_NUM)
-                If (SC6->C6_QTDVEN == SC6->C6_QTDENT) .AND. SC5->C5_BXSTATU $ 'L|A|E'
-                    SC5->C5_FSSTBI := 'ENCERRADO'
-                    SC5->C5_BLQ     := ''
-                    SC5->C5_BXSTATU := ''
-                    SC5->C5_LIBEROK := 'E'
-                ElseIf (SC6->C6_QTDVEN > SC6->C6_QTDENT) .AND. SC5->C5_BXSTATU $ 'L|A|E'
-                    SC5->C5_FSSTBI := 'PARCIAL'
-                    SC5->C5_BLQ     := ''
-                    SC5->C5_BXSTATU := 'A'
-                    SC5->C5_LIBEROK := ''
-                    EXIT
-                EndIf
-
-                DBSkip()
-            End
-    SC5->(MsUnlock())
+            If (!EMPTY(SC5->C5_NOTA))
+                SC5->C5_FSSTBI := 'ENCERRADO'
+                SC5->C5_BLQ     := ''
+                SC5->C5_BXSTATU := ''
+                SC5->C5_LIBEROK := 'E'
+            Else
+                SC5->C5_FSSTBI := 'PARCIAL'
+                SC5->C5_BLQ     := ''
+                SC5->C5_BXSTATU := 'A'
+                SC5->C5_LIBEROK := ''
+            EndIf
+        SC5->(MsUnlock())
     EndIf
 
     // //Atualiza o status do pedido se, e somente se, a liberação passe verdadeira

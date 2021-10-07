@@ -43,11 +43,14 @@ User Function M460MARK()
 			While QRYSC9->(!EOF())
 				//Verifica títulos em aberto ou se ouve liberação manual do pedido
 				nAtrasados := u_FFATVATR(QRYSC9->CLIENTE, QRYSC9->LOJA)
-				If (nAtrasados > 0 .And. (!estaLib(QRYSC9->PEDIDO)))
-					//Caso a condição seja .T. exibe mensagem com o número do pedido bloqueado e não permite o faturamento.
-					lLiber := .F.
-					Help(NIL, NIL, "CLIENTE_ATRASO", NIL, "O Pedido: "+ QRYSC9->PEDIDO+" possui restrições financeiras no total de R$ " ;
-						+AllTrim(Transform(nAtrasados,"@e 9,999,999,999,999.99"))+".",1, 0, NIL, NIL, NIL, NIL, NIL, {"Solicite a liberação ao departamento comercial."})
+				If nAtrasados > 0 
+					//Se há títulos em atraso verifica a liberação.
+					If !estaLib(QRYSC9->PEDIDO)
+						//Caso retorne .T. exibe mensagem com o número do pedido bloqueado e não permite o faturamento.
+						lLiber := .F.
+						Help(NIL, NIL, "CLIENTE_ATRASO", NIL, "O Pedido: "+ QRYSC9->PEDIDO+" possui restrições financeiras no total de R$ " ;
+							+AllTrim(Transform(nAtrasados,"@e 9,999,999,999,999.99"))+".",1, 0, NIL, NIL, NIL, NIL, NIL, {"Solicite a liberação ao departamento comercial."})
+					EndIf
 				EndIf
 				QRYSC9->(DbSkip())
 			End
