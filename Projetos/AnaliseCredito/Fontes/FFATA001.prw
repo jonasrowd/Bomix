@@ -25,9 +25,26 @@ User Function FFATA001()
 	Local cPath     := ""  // Caminho de gravação do arquivo de logs
 	Local oFile     := NIL // Arquivo de logs do job
 	Local lAtualiza := .T. // Controle de atualização do pedido
+	Local xtabela	:= "63"
+	Local cFeriado	:= 'N'
 
 	// Efetua a abertura do ambiente apenas a empresa BOMIX
 	RPCSetEnv("01", "010101")
+
+	DbSelectArea("SX5")
+	DbSetOrder(1)
+	DbSeek(FWXFILIAL("SX5") + xtabela)
+	DbGoTop()
+
+	//Se encontrar um feriado na tabela genérica exatamente igual ao dia não executa.
+	While !(EOF()) .And. SX5->X5_TABELA == '63'
+		If MESDIA(CTOD(SUBSTR(X5_DESCRI,1,5) + "/" + Year2Str(YEAR(DATE())))) == MESDIA(DATE())
+			cFeriado := 'S'
+		EndIf
+		DbSkip()
+	End
+	
+	If (cValToChar(DOW(DATE())) $ ('2|3|4|5|6') .AND. cFeriado == 'N')
 		cPath := SLASH + "DIRDOC" + SLASH
 		oFile := FwFileWriter():New(cPath + cFilAnt + "_" + FwTimeStamp() + ".txt", .T.)
 		oFile:Create()
@@ -197,11 +214,12 @@ User Function FFATA001()
 			DBSelectArea("C5TEMP")
 			DBSkip()
 		End
+	EndIf
 
-		// Fecha o arquivo após o uso
-		oFile:Close()
-		oFile := NIL
-		FreeObj(oFile)
+	// Fecha o arquivo após o uso
+	oFile:Close()
+	oFile := NIL
+	FreeObj(oFile)
 	RPCClearEnv() // Encerra as variáveis do ambiente
 Return (NIL)
 
