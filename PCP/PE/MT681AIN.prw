@@ -1,6 +1,4 @@
 #Include "Totvs.ch"
-#Include "RwMake.ch"
-#Include "Tbiconn.ch"
 
 /*/{Protheus.doc} MT681AIN
 	Ponto de entrada desenvolvido para alterar os empenhos da ordem de produção em caso de produção a maior ou produção com perda durante o processo.

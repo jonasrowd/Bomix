@@ -1,25 +1,18 @@
-/*/
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
-±±ºPrograma  ³MT680EST		  º 			            º     ³  		  º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºDescricao ³ Ponto de entrada para validar se o estorno do apontamento  º±±
-±±º          ³ pode ser realizado										  º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºUso       ³ AP6 IDE                                                    º±±
-±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
-/*/
+#Include "Totvs.ch"
 
-
+/*/{Protheus.doc} MT680EST
+	Ponto de entrada para validar se o estorno pode ser realizado.
+	@type function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 07/10/2021
+	@return logical, l_Ret
+/*/
 User Function MT680EST
 	Local a_AreaSD3 := SD3->(GetArea())
 	Local n_Acao    := PARAMIXB[1]
 	Local a_Area    := GetArea()
 	Local l_Ret     := .T.
-
 	If n_Acao == 2 		//Operador confirmou estorno
 		dbSelectArea("SD3")
 		SD3->(dbSetOrder(15))
@@ -33,12 +26,10 @@ User Function MT680EST
 					l_Ret := .F.
 					Exit
 				Endif
-
 				SZW->(dbSkip())
 			End
 		Endif
 	Endif
-
 	RestArea(a_AreaSD3)
 	RestArea(a_Area)
 Return l_Ret

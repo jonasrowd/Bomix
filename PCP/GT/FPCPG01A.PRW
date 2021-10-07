@@ -10,7 +10,7 @@
 /*/
 User Function FPCPG01A()
 
-Local FERRAM := M->H6_FERRAM
+	Local FERRAM := M->H6_FERRAM
 
 	DbSelectArea("SC2")
 	DbSetOrder(6)

@@ -460,11 +460,7 @@ local cIndIntermed	:= ""
 local nRecSD1		:= 0
 local lProdRur		:= .F.
 local lMV_NFSEPCC	:= SuperGetMV("MV_NFSEPCC",,.F.)
-local cDesc99		:= "" //Descrição da forma de pagamento quando 99 - outros faturamento
-Local cDscIcms 		:= SuperGetMv("MV_DSCICMS",, .F.,"")
-Local cTpNf 		:= ""
-Local nValIcmsC 	:= 0 
-
+local cDesc99		:= "" //Descrição da forma de pagamento quando 99 - outros faturamento 
 
 
 //Declaração de Arrays
@@ -1042,7 +1038,7 @@ If cTipo == "1"
 							aadd(aRetirada,Alltrim(SA1->A1_CEP))
 							aadd(aRetirada,IIF(Empty(SA1->A1_PAIS),"1058"  ,Posicione("SYA",1,xFilial("SYA")+SA1->A1_PAIS,"YA_SISEXP")))
 							aadd(aRetirada,IIF(Empty(SA1->A1_PAIS),"BRASIL",Posicione("SYA",1,xFilial("SYA")+SA1->A1_PAIS,"YA_DESCR" )))
-							aadd(aRetirada,FormatTel(Alltrim(AllTrim(SA1->A1_DDD)+SA1->A1_TEL)))
+							aadd(aRetirada,Alltrim(AllTrim(SA1->A1_DDD)+SA1->A1_TEL))
 							aadd(aRetirada,Alltrim(SA1->A1_EMAIL))	
 						EndIf
 					
@@ -1085,7 +1081,7 @@ If cTipo == "1"
 							aadd(aEntrega,Alltrim(SA1->A1_CEP))
 							aadd(aEntrega,IIF(Empty(SA1->A1_PAIS),"1058"  ,Posicione("SYA",1,xFilial("SYA")+SA1->A1_PAIS,"YA_SISEXP")))
 							aadd(aEntrega,IIF(Empty(SA1->A1_PAIS),"BRASIL",Posicione("SYA",1,xFilial("SYA")+SA1->A1_PAIS,"YA_DESCR" )))
-							aadd(aEntrega,FormatTel(Alltrim(AllTrim(SA1->A1_DDD)+SA1->A1_TEL))) 
+							aadd(aEntrega,Alltrim(AllTrim(SA1->A1_DDD)+SA1->A1_TEL)) 
 							aadd(aEntrega,Alltrim(SA1->A1_EMAIL))
 						EndIF
 					EndIf
@@ -1213,7 +1209,7 @@ If cTipo == "1"
 							aadd(aRetirada,Alltrim(SA1->A1_CEP))
 							aadd(aRetirada,IIF(Empty(SA1->A1_PAIS),"1058"  ,Posicione("SYA",1,xFilial("SYA")+SA1->A1_PAIS,"YA_SISEXP")))
 							aadd(aRetirada,IIF(Empty(SA1->A1_PAIS),"BRASIL",Posicione("SYA",1,xFilial("SYA")+SA1->A1_PAIS,"YA_DESCR" )))
-							aadd(aRetirada,FormatTel(Alltrim(AllTrim(SA1->A1_DDD)+SA1->A1_TEL)))
+							aadd(aRetirada,Alltrim(AllTrim(SA1->A1_DDD)+SA1->A1_TEL))
 							aadd(aRetirada,Alltrim(SA1->A1_EMAIL))	
 						EndIf
 					EndIf
@@ -3396,7 +3392,7 @@ If cTipo == "1"
 									EndIf								
 									
 								Case AllTrim(CD2->CD2_IMP) == "IPI"
-									If !lConsig .or. lIpiOutr .or. ( cTPNota == "4" .and. lIpiDev ) //para alimentar vIPI na devolução
+									//If !lConsig
 										aTail(aIPI) := {SB1->B1_SELOEN,;
 										SB1->B1_CLASSE,;
 										0,;
@@ -3426,7 +3422,7 @@ If cTipo == "1"
 											EndIf 
 										EndIf
 										
-									EndIf
+									//EndIf
 								/*Chamado TTVZJG - Grupo impostoDevol - informar o percentual e valor do IPI devolvido, em notas de devolução (finNFe =4)
 								Incluida a verificação do campo F4_PODER3=D para os casos de retorno de beneficiamento*/
 								If ((cAliasSD2)->D2_TIPO == "D" .or. SF4->F4_PODER3 == "D") .and. ((CD2->(FieldPos("CD2_PDEVOL")) > 0 .and. !Empty(CD2->CD2_PDEVOL) .Or. (SF4->F4_QTDZERO == "1")) .And. cTPNota == "4")
@@ -3944,7 +3940,7 @@ Else
 						aadd(aRetirada,Alltrim(SA1->A1_CEP))
 						aadd(aRetirada,IIF(Empty(SA1->A1_PAIS),"1058"  ,Posicione("SYA",1,xFilial("SYA")+SA1->A1_PAIS,"YA_SISEXP")))
 						aadd(aRetirada,IIF(Empty(SA1->A1_PAIS),"BRASIL",Posicione("SYA",1,xFilial("SYA")+SA1->A1_PAIS,"YA_DESCR" )))
-						aadd(aRetirada,FormatTel(Alltrim(AllTrim(SA1->A1_DDD)+SA1->A1_TEL)))
+						aadd(aRetirada,Alltrim(AllTrim(SA1->A1_DDD)+SA1->A1_TEL))
 						aadd(aRetirada,Alltrim(SA1->A1_EMAIL))	
 					EndIf
 				EndIf
@@ -3966,7 +3962,7 @@ Else
 						aadd(aEntrega,Alltrim(SA1->A1_CEP))
 						aadd(aEntrega,IIF(Empty(SA1->A1_PAIS),"1058"  ,Posicione("SYA",1,xFilial("SYA")+SA1->A1_PAIS,"YA_SISEXP")))
 						aadd(aEntrega,IIF(Empty(SA1->A1_PAIS),"BRASIL",Posicione("SYA",1,xFilial("SYA")+SA1->A1_PAIS,"YA_DESCR" )))
-						aadd(aEntrega,FormatTel(Alltrim(AllTrim(SA1->A1_DDD)+SA1->A1_TEL))) 
+						aadd(aEntrega,Alltrim(AllTrim(SA1->A1_DDD)+SA1->A1_TEL)) 
 						aadd(aEntrega,Alltrim(SA1->A1_EMAIL))
 					Endif
 				EndIf
@@ -5188,16 +5184,9 @@ Else
 				//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ  
 				
 				
-				cCodProd	:= (cAliasSD1)->D1_COD
-				cTpNf		:= (cAliasSD1)->D1_TIPO
-				nValIcmsC	:= (cAliasSD1)->D1_VALICM
-
-				if !empty(cDscIcms) .AND.  alltrim(cTpNf) == "I" .AND. nValIcmsC <> 0
-					cDescProd := cDscIcms
-				else
-					cDescProd := SB1->B1_DESC 
-				endif
-
+				cCodProd  := (cAliasSD1)->D1_COD	            
+				cDescProd := SB1->B1_DESC 
+					 
 				If !Empty((cAliasSD1)->D1_IDENTB6) .And. lNFPTER  
 					If (cAliasSD1)->D1_TIPO == "N" 
 						//--A5_FILIAL + A5_FORNECE + A5_LOJA + A5_PRODUTO
@@ -5339,8 +5328,8 @@ Else
 				EndIf
 				
 				//Outras despesas + PISST + COFINSST  (Inclusão do valor de PIS ST e COFINS ST na tag vOutros - NT 2011/004).
-				nValOutr  := 0 
-				If (((cAliasSD1)->D1_TIPO == "D" .And. (!lEipiDev .Or. lEIPIOutro)) .Or. lConsig .Or. ((cAliasSD1)->D1_TIPO == "B" .and. lIpiBenef)) 
+				nValOutr  := 0
+				If (((cAliasSD1)->D1_TIPO == "D" .And. (!lEipiDev .Or. lEIPIOutro)) .Or. ((cAliasSD1)->D1_TIPO == "B" .and. lIpiBenef)) 
 
 				    If ((cAliasSD1)->D1_TIPO == "D" .and.  lEIPIOutro ) .or. ((cAliasSD1)->D1_TIPO == "B" .and. lIPIOutB)
 						lIpiOutr:= .T.				
@@ -5900,32 +5889,20 @@ Else
 									IIf(SFT->(ColumnPos("FT_MOTICMS")) > 0,IIF(SF1->(F1_STATUS) == 'C',SF4->F4_MOTICMS ,SFT->FT_MOTICMS),"")}
 								EndIf
 							EndIf
+					   
 							
 						Case AllTrim(CD2->CD2_IMP) == "IPI"
-							if !lConsig .or. lIpiOutr .or. ( cTPNota == "4" .and. lEipiDev )
-								aTail(aIPI) := {SB1->B1_SELOEN,;
-								SB1->B1_CLASSE,;
-								0,;
-								IIf(CD2->(FieldPos("CD2_GRPCST")) > 0 .and. !Empty(CD2->CD2_GRPCST),CD2->CD2_GRPCST,"999"),;
-								CD2->CD2_CST,;
-								CD2->CD2_BC,;
-								CD2->CD2_QTRIB,;
-								CD2->CD2_PAUTA,;
-								CD2->CD2_ALIQ,;
-								CD2->CD2_VLTRIB,;
-								CD2->CD2_MODBC,;
-								CD2->CD2_PREDBC }
-								
-								nValIPI := CD2->CD2_VLTRIB
-								
-								If (((cAliasSD1)->D1_TIPO == "D" .and. !lEipiDev))  .Or. ((cAliasSD1)->D1_TIPO == "B" .And. lIpiBenef .and. !Empty(nValIPI)) .Or. lEIPIOutro .Or. lIPIOutB
-									If ((cAliasSD1)->D1_TIPO == "B" .And. lIpiBenef .and. !Empty(nValIPI)) .or. lIPIOutB
-										nValIpiBene += nValIPI  // Quando lIpiBenef = T leva IPI em vOutro e Inf. Adic.
-									EndIf
-									
-									aTail(aIPI) := {SB1->B1_SELOEN,SB1->B1_CLASSE,0,IIf(CD2->(FieldPos("CD2_GRPCST")) > 0 .and. !Empty(CD2->CD2_GRPCST),CD2->CD2_GRPCST,"999"),CD2->CD2_CST,0,CD2->CD2_QTRIB,CD2->CD2_PAUTA,0,0,CD2->CD2_MODBC,CD2->CD2_PREDBC}						
+							aTail(aIPI) := {SB1->B1_SELOEN,SB1->B1_CLASSE,0,IIf(CD2->(FieldPos("CD2_GRPCST")) > 0 .and. !Empty(CD2->CD2_GRPCST),CD2->CD2_GRPCST,"999"),CD2->CD2_CST,CD2->CD2_BC,CD2->CD2_QTRIB,CD2->CD2_PAUTA,CD2->CD2_ALIQ,CD2->CD2_VLTRIB,CD2->CD2_MODBC,CD2->CD2_PREDBC}
+							
+							nValIPI := CD2->CD2_VLTRIB
+							
+							If (((cAliasSD1)->D1_TIPO == "D" .and. !lEipiDev))  .Or. ((cAliasSD1)->D1_TIPO == "B" .And. lIpiBenef .and. !Empty(nValIPI)) .Or. lEIPIOutro .Or. lIPIOutB
+				   				If ((cAliasSD1)->D1_TIPO == "B" .And. lIpiBenef .and. !Empty(nValIPI)) .or. lIPIOutB
+				   					nValIpiBene += nValIPI  // Quando lIpiBenef = T leva IPI em vOutro e Inf. Adic.
 								EndIf
-							endIf							
+								 
+								aTail(aIPI) := {SB1->B1_SELOEN,SB1->B1_CLASSE,0,IIf(CD2->(FieldPos("CD2_GRPCST")) > 0 .and. !Empty(CD2->CD2_GRPCST),CD2->CD2_GRPCST,"999"),CD2->CD2_CST,0,CD2->CD2_QTRIB,CD2->CD2_PAUTA,0,0,CD2->CD2_MODBC,CD2->CD2_PREDBC}						
+							EndIf							
 							
 							/*Chamado TTVZJG - Grupo impostoDevol - informar o percentual e valor do IPI devolvido, em notas de devolução (finNFe =4)
 							Incluida a verificação do campo F4_PODER3=D para os casos de retorno de beneficiamento*/
@@ -7174,12 +7151,7 @@ IF cVeramb >= "4.00"
 
 EndIf
 
-If LEN(aDi) >= 41
-   cString += NfeTag('<EXTIPI>',ConvType(aDi[41][03]))
-else
-   cString += NfeTag('<EXTIPI>',ConvType(aProd[06]))	
-ENDiF 
-
+cString += NfeTag('<EXTIPI>',ConvType(aProd[06]))
 cString += '<CFOP>'+ConvType(aProd[07])+'</CFOP>'
 cString += '<uCom>'+ConvType(aProd[08])+'</uCom>'
 cString += '<qCom>'+ConvType(aProd[09],15,4)+'</qCom>'
@@ -7200,8 +7172,6 @@ If Len(aICMSZFM) > 0 .And. Len(aCST) > 0 .And. !Empty(aICMSZFM[1])
 	Else	
 		cString += NfeTag('<vDesc>' ,ConvType(aProd[15],15,2))
 	Endif
-Else
-	cString += NfeTag('<vDesc>' ,ConvType((aProd[15]),15,2))
 EndIf
 
 cString += NfeTag('<vOutro>' ,ConvType(aProd[49]+aProd[21]+Iif(aAgrPis[01],aAgrPis[02],0)+Iif(aAgrCofins[01],aAgrCofins[02],0),15,2))

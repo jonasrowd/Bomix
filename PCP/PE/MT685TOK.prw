@@ -1,20 +1,20 @@
 #Include "Totvs.ch"
 
 /*/{Protheus.doc} MT685TOK
-Ponto de entrada para validar os dados do Apontamento de perda.
-@type function
-@version 12.1.25
-@author Jonas Machado
-@since 04/10/2021
-@return logical, l_Ret
+	Ponto de entrada para validar os dados do Apontamento de perda.
+	@type function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 04/10/2021
+	@return logical, l_Ret
 /*/
 User Function MT685TOK()
 	Local lInc       := PARAMIXB[1]
 	Local l_Ret      := .T.
 	Local aArea      := GetArea()
-	Local c_ProdSC2  := Posicione("SC2", 1, xFilial("SC2") + cOrdemP, "C2_PRODUTO")  
+	Local c_ProdSC2  := Posicione("SC2", 1, xFilial("SC2") + cOrdemP, "C2_PRODUTO")
 	Local i := 0
-	
+
 	If lInc .And. cFilAnt == "010101"   // --- Validação na inclusao do Apontamento da Perda
 		For i:=1 To Len(aCols)
 			If aCols[i][Len(aHeader) + 1] == .F.
@@ -53,7 +53,7 @@ User Function MT685TOK()
 							{"O seu usuário não possui permissão para efetuar entradas no armazém " + c_Local + "."},5,;
 							{"Contacte o administrador do sistema."},5)
 						l_Ret := .F.
-						Exit						
+						Exit
 					Endif
 				Else
 					ShowHelpDlg(SM0->M0_NOME,;

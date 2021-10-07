@@ -15,10 +15,9 @@ User Function MA650TOK()
 	Local lRet := .T.
 
 	M->C2_FSSALDO:=M->C2_QUANT //Salva o Saldo na coluna customizada.
-	Conout("MA650TOK PASSOU AQUI.")
 
 Return lRet
-
+/*
 User Function FPCPG005()
 	Local c_pedido
 	Local c_itemped
@@ -59,4 +58,4 @@ User Function FPCPG005()
 		EndIf
 	EndIf
 Return lRet
-
+*/

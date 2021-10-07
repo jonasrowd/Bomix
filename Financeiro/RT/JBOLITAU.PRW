@@ -5,14 +5,14 @@
 #DEFINE __cCarteira "109"
 #DEFINE __cMoeda    "9"
 
-/*/{Protheus.doc} BLTITAU
+/*/{Protheus.doc} JBolitau
 	Impressão de boletos
 	@type Function
 	@version 12.1.25
 	@author Jonas Machado
 	@since 15/09/2021
 /*/
-User Function BLTITAU(cNota)
+User Function JBolitau(cNota)
 	Local	oSX1 		:= NIL
 	Private lExec    	:= .T.
 	Private cIndexName 	:= ''
@@ -29,12 +29,12 @@ User Function BLTITAU(cNota)
 	cString  	:= "SE1"
 	wnrel    	:= "BOLETO"
 	lEnd     	:= .F.
-	cPerg    	:= Padr("BLTITAU",10)
+	cPerg    	:= Padr("JBolitau",10)
 	aReturn  	:= {"Zebrado", 1,"Administracao", 2, 2, 1, "",1 }
 	nLastKey 	:= 0
 	cNF			:= cNota
 
-	oSX1 := CreateSX1():New("BLTITAU")
+	oSX1 := CreateSX1():New("JBolitau")
 	oSX1:NewItem({01, "De Prefixo",     "MV_CH1", "C", 03, 00, "G", NIL})
 	oSX1:NewItem({02, "Ate Prefixo",    "MV_CH2", "C", 03, 00, "G", NIL})
 	oSX1:NewItem({03, "De Numero",      "MV_CH3", "C", 09, 00, "G", "SE1"})

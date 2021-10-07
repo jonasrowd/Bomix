@@ -1,10 +1,8 @@
 #Include 'Totvs.ch'
-#Include 'Protheus.ch'
-#Include 'Parmtype.ch'
-#Include "RwMake.ch"
 
+#Define CRLF	chr(10) + chr(13)
 /*/{Protheus.doc} MA650EMP
-	Ponto de entrada desenvolvido para preencher campos personalizados na SD4 
+	Ponto de entrada desenvolvido para preencher campos personalizados na SD4
 	e excluir as Op's e Empenhos que não querem que gere.
 	@type function
 	@version 12.1.25
@@ -12,6 +10,7 @@
 	@since 05/10/2021
 /*/
 User Function MA650EMP()
+
     Local i				:= 0
     Local nOpc 			:= 5 //3 - Inclusao, 4 - Alteracao, 5 - Exclusao
     Local cOp			:= SD4->D4_OP //SD4 está posicionada na ultima op gerada
@@ -21,7 +20,7 @@ User Function MA650EMP()
     Private lMsErroAuto := .F.
 	Private c_Email		:= 'ti@bomix.com.br'
 	Private c_Titulo	:= "OP: " + SD4->D4_OP + " Notificação de erro na exclusão automática do MATA650."
-	Private c_Corpo		:= c_Titulo + chr(13) + chr(10) + "Verifique com o usuário " + UsrRetName(__CUSERID) +" o que foi que aconteceu."
+	Private c_Corpo		:= c_Titulo + CRLF + "Acionamento Key User para verificar com o usuário " + UsrRetName(__CUSERID) +" o ocorrido."
 
     For i:=1 To Len(aCols)
 

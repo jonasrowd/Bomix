@@ -1,7 +1,8 @@
-#include "topconn.ch"
+#Include "Totvs.ch"
+#Include "Topconn.ch"
 
 /*/{Protheus.doc} A250ARD4
-    Não grava perda de itens específicos com base na tabela Z05 campo Z05_NOME = B1_BRTPPR
+    Ponto de entrada para controlar a gravação da perda e consumo na d3.
     @type function
     @version 12.1.25
     @author Jonas Machado
@@ -85,7 +86,7 @@ Return .T. // Se não achou configuração de Perda, grava perda normalmente
 Static Function fConsumo(cProd,cOp)
 
     Local lRet  := .T.
-    //Local nCounter := 0
+    //Local nCounter := 0 //Ativar quando quiserem consumir pelo pallet fechado.
 
     If Select("CONSU") > 0
         CONSU->(dbCloseArea())
@@ -115,7 +116,8 @@ Static Function fConsumo(cProd,cOp)
         AND D4.D4_COD = %Exp:cProd%
     ENDSQL
 
-    If CONSU->CONSUMO  == 'N'
+    If CONSU->CONSUMO  == 'N' 
+        //Ativar o trecho abaixo quando quiserem consumir por pallet fechado.
         // If CONSU->ENTREGUE <> 0
         //     nCounter := Int(CONSU->ENTREGUE / CONSU->QUANTBAS)
         // EndIf

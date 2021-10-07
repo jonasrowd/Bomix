@@ -47,7 +47,7 @@ User Function FPCPG001()
 	
 	If !("TOTVSMES" $ M->H6_OBSERVA)
 
-		M->H6_OPERADO := CUSERNAME + __CUSERID
+		M->H6_OPERADO := CUSERNAME
 
 	EndIf
 
