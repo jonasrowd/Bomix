@@ -13,7 +13,6 @@ User Function A250ARD4()
     Local nX := 0
     aSd4  := PARAMIXB
 
-
     If SH6->H6_QTDPERD > 0
         For nX := 1 to Len(aSd4[1])
             DbSelectArea("SB1")
@@ -96,34 +95,33 @@ Static Function fConsumo(cProd,cOp)
     EndIf
 
     BEGINSQL ALIAS "CONSU"
-    SELECT 
-        C2.C2_QUANT - C2_QUJE AS SALDO,
-        C2.C2_QUANT / B1_QB AS PALET,
-        B1.B1_QB as QUANTBAS, 
-        Z05.Z05_CARRO AS CONSUMO,
-        C2.C2_QUJE AS ENTREGUE,
-        D4.D4_QUANT AS EMPENHO
-    FROM %TABLE:SC2% C2 (NoLock)
-        INNER JOIN %TABLE:SB1% B1 (NoLock) ON B1.B1_FILIAL = %XFILIAL:SB1%
-        AND B1.%NOTDEL%
-        AND B1.B1_COD = C2.C2_PRODUTO
-        INNER JOIN %TABLE:SD4% D4 (NoLock) ON D4.D4_FILIAL = %XFILIAL:SD4%
-        AND D4.%NOTDEL%
-        AND D4.D4_OP = %Exp:cOp%
-        INNER JOIN %TABLE:Z05% Z05 (NoLock) ON Z05.Z05_FILIAL = %XFILIAL:Z05%
-        AND Z05.%NOTDEL%
-        AND Z05.Z05_NOME = D4.D4_FSTP 
-    WHERE C2.C2_FILIAL = %XFilial:SC2%
-        AND C2.%NOTDEL%
-        AND C2.C2_NUM + C2.C2_ITEM + C2.C2_SEQUEN = %Exp:cOp%
-        AND D4.D4_COD = %Exp:cProd%
+        SELECT 
+            C2.C2_QUANT - C2_QUJE AS SALDO,
+            C2.C2_QUANT / B1_QB AS PALET,
+            B1.B1_QB as QUANTBAS, 
+            Z05.Z05_CARRO AS CONSUMO,
+            C2.C2_QUJE AS ENTREGUE,
+            D4.D4_QUANT AS EMPENHO
+        FROM %TABLE:SC2% C2 (NoLock)
+            INNER JOIN %TABLE:SB1% B1 (NoLock) ON B1.B1_FILIAL = %XFILIAL:SB1%
+            AND B1.%NOTDEL%
+            AND B1.B1_COD = C2.C2_PRODUTO
+            INNER JOIN %TABLE:SD4% D4 (NoLock) ON D4.D4_FILIAL = %XFILIAL:SD4%
+            AND D4.%NOTDEL%
+            AND D4.D4_OP = %Exp:cOp%
+            INNER JOIN %TABLE:Z05% Z05 (NoLock) ON Z05.Z05_FILIAL = %XFILIAL:Z05%
+            AND Z05.%NOTDEL%
+            AND Z05.Z05_NOME = D4.D4_FSTP 
+        WHERE C2.C2_FILIAL = %XFilial:SC2%
+            AND C2.%NOTDEL%
+            AND C2.C2_NUM + C2.C2_ITEM + C2.C2_SEQUEN = %Exp:cOp%
+            AND D4.D4_COD = %Exp:cProd%
     ENDSQL
 
     If CONSU->CONSUMO  == 'N'
         If CONSU->ENTREGUE <> 0
             nCounter := Int(CONSU->ENTREGUE / CONSU->QUANTBAS)
         EndIf
-
         If Int(((CONSU->ENTREGUE + SH6->H6_QTDPROD) / CONSU->QUANTBAS)) == nCounter
             lRet := .F.
         EndIf

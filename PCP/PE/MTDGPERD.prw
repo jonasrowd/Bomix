@@ -13,7 +13,7 @@ User Function MTDGPERD
 	Local n_Size  := 0           //
 	// Local n_Count := 0
 
-	If cFilAnt == '020101'
+	If cFilAnt == '999999'
 		// Carrega as informações de perda da MASTER
 		fMasRes(c_OP)
 

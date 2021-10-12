@@ -10,30 +10,27 @@
 /*/
 User Function M460FIM()
     Local aArea := GetArea() // Armazena a área atual
-
 	// Processa apenas se não for a filial 030101
     If (FwCodFil() != '030101')
         DbSelectArea("SC5")
         DbSeek(FwXFilial("SC5") + SC9->C9_PEDIDO)
         If Found()
-            // Atualiza a SC5
-            If EMPTY(SC5->C5_NOTA)
-                RecLock("SC5", .F.)
-                    SC5->C5_FSSTBI := 'PARCIAL'
+            RecLock("SC5",.F.)
+                If EMPTY(SC5->C5_NOTA)
                     SC5->C5_BLQ     := ''
-                    SC5->C5_BXSTATU := 'A'
                     SC5->C5_LIBEROK := ''
-                MsUnlock()
-            Else
-                RecLock("SC5",.F.)
-                    SC5->C5_FSSTBI := 'ENCERRADO'
+                    SC5->C5_BXSTATU := 'A'
+                    SC5->C5_FSSTBI := 'PARCIAL'
+                Else
                     SC5->C5_BLQ     := ''
                     SC5->C5_BXSTATU := ''
                     SC5->C5_LIBEROK := 'E'
-                MsUnlock()
-            EndIf
+                    SC5->C5_FSSTBI := 'ENCERRADO'
+                EndIf
+            MsUnlock()
         EndIf
-        SC5->(DbcloseArea())
+        DbcloseArea()
+        RestArea(aArea)
     EndIf
 
     // //Atualiza o status do pedido se, e somente se, a liberação passe verdadeira

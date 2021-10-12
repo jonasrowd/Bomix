@@ -43,14 +43,14 @@ User Function MT680VAL()
 			M->H6_QTDPERD	:= 0
 			M->H6_QTDPROD	:= 0
 			M->H6_PT := "P"
-			Help(NIL, NIL, "ERR_APPO", NIL, "Apontamento preenchido incorretamente. Verifique os dados do apontamento.",;
+			Help(NIL, NIL, "ERR_APPO", NIL, "Apontamento preenchido incorretamente. Verifique os dados e tente novamente.",;
 				1, 0, NIL, NIL, NIL, NIL, NIL, {"Lembre-se que não pode encerrar a Op com Perda e não pode apontar perda e produção ao mesmo tempo. Vou resetar os apontamentos para te ajudar."})
 		ElseIf (M->H6_QTDPERD > 0 .And. M->H6_PT == "T")
 			lRet := .F.
 			M->H6_QTDPERD	:= 0
 			M->H6_QTDPROD	:= 0
 			M->H6_PT := "P"
-			Help(NIL, NIL, "ERR_APPO", NIL, "Apontamento preenchido incorretamente. Verifique os dados do apontamento.",;
+			Help(NIL, NIL, "ERR_APPO", NIL, "Apontamento preenchido incorretamente. Verifique os dados e tente novamente.",;
 				1, 0, NIL, NIL, NIL, NIL, NIL, {"Lembre-se que não pode totalizar a Op com Perda e não apontar perda e produção ao mesmo tempo. Vou resetar os apontamentos para te ajudar."})
 		EndIf
 
