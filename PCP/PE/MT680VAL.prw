@@ -172,7 +172,7 @@ User Function MT680VAL()
 
 		DbSelectArea("SG2") //Seleciona a área da SG2 para preencher o apontamento com informações da estrutura do produto
 		DbSetOrder(3)
-		If (DbSeek(FwXFilial("SG2")+ M->H6_PRODUTO+M->H6_OPERAC))
+		If (DbSeek(FwXFilial("SG2")+ M->H6_PRODUTO + M->H6_OPERAC))
 			M->H6_FERRAM  := SG2->G2_FERRAM //Preenche a ferramenta
 			M->H6_FSCAVI  := SG2->G2_FSCAVI //Preenche a cavidade
 			M->H6_FSSETOR := SG2->G2_DESCRI //Preenche a descrição do setor

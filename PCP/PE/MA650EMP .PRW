@@ -1,6 +1,6 @@
 #Include 'Totvs.ch'
+#Include 'Ap5mail.ch'
 
-#Define CRLF	chr(10) + chr(13)
 /*/{Protheus.doc} MA650EMP
 	Ponto de entrada desenvolvido para preencher campos personalizados na SD4
 	e excluir as Op's e Empenhos que não querem que gere.
@@ -115,7 +115,7 @@ User Function MA650EMP()
 
 	//Se Erro, apresenta mensagem para que o usuário possa nos informar
     If lMsErroAuto
-		U_TBSEndMAIL(c_Email, c_Corpo, c_Titulo, .T.)
+		jEnvMail()
 		Help(NIL, NIL, 'ERR_OP', NIL, 'Erro no ajuste de Empenho e Op.',;
 			1, 0, NIL, NIL, NIL, NIL, NIL, {'Encaminhe esta Op ao time de TI para acompanhar o processo.'})
         MostraErro()
@@ -125,3 +125,48 @@ User Function MA650EMP()
 	End
 
 Return (Nil)
+
+/*/{Protheus.doc} jEnvMail
+	Envia email se erro
+	@type function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 08/10/2021
+	@return logical, .T.
+/*/
+Static Function jEnvMail()
+	Local _cServer   	:= Alltrim(GETMV("MV_RELSERV"))	//Servidor smtp
+	Local _cAccount  	:= Alltrim(GETMV("BM_BOLMAIL"))	//Conta de e-mail
+	Local _cPassword	:= Alltrim(GETMV("BM_BOLSNH"))	//Senha da conta de e-mail
+	Local _cEnvia    	:= Alltrim(GETMV("BM_BOLMAIL"))	//Endereco de e-mail
+	Local _cTo			:= "jonas.machado@bomix.com.br"// _Par1+";"+ALLTRIM(UsrRetMail(__cUserID))			//Destinatario
+	Local _cMsg			:= "Erro na geração das op x pedidos de venda."			//Corpo da Mensagem
+	Local _cSubj		:= OemToAnsi('BOMIX - Geração de Op ') //Assunto
+
+	//Conecta ao servidor de SMTP
+	CONNECT SMTP SERVER _cServer ACCOUNT _cAccount PASSWORD _cPassword Result lConectou
+	//Caso o servidor SMTP do cliente necessite de autenticacao
+	//sera necessario habilitar o parametro MV_RELAUTH.
+	If GETMV("MV_RELAUTH")
+		If !MailAuth( _cAccount, _cPassword )
+			DISCONNECT SMTP SERVER RESULT lDisConectou
+			Return (.F.)
+		EndIf
+	EndIf
+	//Verifica se houve conexao com o servidor SMTP
+	If !lConectou
+		Return (.F.)
+	EndIf
+	//Envia o e-mail
+	SEND MAIL FROM _cEnvia TO Alltrim(_cTo) SUBJECT _cSubj BODY _cMsg RESULT lEnviado
+	//Verifica possiveis erros durante o envio do e-mail
+	If lEnviado
+		Return (.T.)
+	Else
+		_cMsg := ""
+		GET MAIL ERROR _cMsg
+		Return (.F.)
+	EndIf
+	//Desconecta o servidor de SMTP
+	DISCONNECT SMTP SERVER Result lDisConectou
+Return (.T.)

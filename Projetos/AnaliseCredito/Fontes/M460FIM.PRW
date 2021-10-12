@@ -13,21 +13,27 @@ User Function M460FIM()
 
 	// Processa apenas se não for a filial 030101
     If (FwCodFil() != '030101')
-        // Atualiza a SC5
-        SC5->(RecLock("SC5", .F.))
-            // Posiciona no itens do pedido com base no cabeçalho
-            If (!EMPTY(SC5->C5_NOTA))
-                SC5->C5_FSSTBI := 'ENCERRADO'
-                SC5->C5_BLQ     := ''
-                SC5->C5_BXSTATU := ''
-                SC5->C5_LIBEROK := 'E'
+        DbSelectArea("SC5")
+        DbSeek(FwXFilial("SC5") + SC9->C9_PEDIDO)
+        If Found()
+            // Atualiza a SC5
+            If EMPTY(SC5->C5_NOTA)
+                RecLock("SC5", .F.)
+                    SC5->C5_FSSTBI := 'PARCIAL'
+                    SC5->C5_BLQ     := ''
+                    SC5->C5_BXSTATU := 'A'
+                    SC5->C5_LIBEROK := ''
+                MsUnlock()
             Else
-                SC5->C5_FSSTBI := 'PARCIAL'
-                SC5->C5_BLQ     := ''
-                SC5->C5_BXSTATU := 'A'
-                SC5->C5_LIBEROK := ''
+                RecLock("SC5",.F.)
+                    SC5->C5_FSSTBI := 'ENCERRADO'
+                    SC5->C5_BLQ     := ''
+                    SC5->C5_BXSTATU := ''
+                    SC5->C5_LIBEROK := 'E'
+                MsUnlock()
             EndIf
-        SC5->(MsUnlock())
+        EndIf
+        SC5->(DbcloseArea())
     EndIf
 
     // //Atualiza o status do pedido se, e somente se, a liberação passe verdadeira

@@ -2,7 +2,7 @@
 #Include "Topconn.ch"
 
 /*/{Protheus.doc} A250ARD4
-    Ponto de entrada para controlar a gravação da perda e consumo na d3.
+    Não grava perda de itens específicos com base na tabela Z05 campo Z05_NOME = B1_BRTPPR
     @type function
     @version 12.1.25
     @author Jonas Machado
@@ -12,6 +12,7 @@
 User Function A250ARD4()
     Local nX := 0
     aSd4  := PARAMIXB
+
 
     If SH6->H6_QTDPERD > 0
         For nX := 1 to Len(aSd4[1])
@@ -25,15 +26,17 @@ User Function A250ARD4()
         Next
     EndIf
 
-    If SH6->H6_QTDPROD > 0
-        For nX := 1 to Len(aSd4[1])
-            DbSelectArea("SB1")
-            DbSetOrder(1)
-            DbSeek(FwXFilial("SB1") + aSd4[1][nX][3])
-            If !fConsumo(aSd4[1][nX][3],aSd4[1][nX][11])
-                aSd4[1][nX][2] := 0
-            EndIf
-        Next
+    If cFilAnt == "010101"
+        If SH6->H6_QTDPROD > 0
+            For nX := 1 to Len(aSd4[1])
+                DbSelectArea("SB1")
+                DbSetOrder(1)
+                DbSeek(FwXFilial("SB1") + aSd4[1][nX][3])
+                If !fConsumo(aSd4[1][nX][3],aSd4[1][nX][11])
+                    aSd4[1][nX][2] := 0
+                EndIf
+            Next
+        EndIf
     EndIf
 
 Return aSD4
@@ -81,12 +84,12 @@ Return .T. // Se não achou configuração de Perda, grava perda normalmente
     @since 27/09/2021
     @param cProd, character, Código do produto
     @param cOp, character, Número da Op
-    @return logical, Retorna falso para consumir e verdadeiro não consome.
+    @return logical, Retorna verdadeiro falso para consumir e verdadeiro não consome.
 /*/
 Static Function fConsumo(cProd,cOp)
 
     Local lRet  := .T.
-    //Local nCounter := 0 //Ativar quando quiserem consumir pelo pallet fechado.
+    Local nCounter := 0
 
     If Select("CONSU") > 0
         CONSU->(dbCloseArea())
@@ -116,16 +119,14 @@ Static Function fConsumo(cProd,cOp)
         AND D4.D4_COD = %Exp:cProd%
     ENDSQL
 
-    If CONSU->CONSUMO  == 'N' 
-        //Ativar o trecho abaixo quando quiserem consumir por pallet fechado.
-        // If CONSU->ENTREGUE <> 0
-        //     nCounter := Int(CONSU->ENTREGUE / CONSU->QUANTBAS)
-        // EndIf
+    If CONSU->CONSUMO  == 'N'
+        If CONSU->ENTREGUE <> 0
+            nCounter := Int(CONSU->ENTREGUE / CONSU->QUANTBAS)
+        EndIf
 
-        // If Int(((CONSU->ENTREGUE + SH6->H6_QTDPROD) / CONSU->QUANTBAS)) == nCounter
-        //     lRet := .F.
-        // EndIf
-        lRet := .F.
+        If Int(((CONSU->ENTREGUE + SH6->H6_QTDPROD) / CONSU->QUANTBAS)) == nCounter
+            lRet := .F.
+        EndIf
     EndIf
 
 Return lRet
