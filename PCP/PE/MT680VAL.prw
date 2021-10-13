@@ -151,12 +151,12 @@ User Function MT680VAL()
 			M->H6_DTVALID := ProcValid	//Se encontrou data de validade anterior para o mesmo lote, preenche com o valor correto
 		EndIf
 
-		IF M->H6_QTGANHO > 0
-			MsgYesNo("Excede a produção em: " + STR(M->H6_QTGANHO), "Excedente")
-			M->H6_PT := "T"
-		Else 
-			M->H6_PT := "P"
-		EndIf
+		// IF M->H6_QTGANHO > 0
+		// 	MsgYesNo("Excede a produção em: " + STR(M->H6_QTGANHO), "Excedente")
+		// 	M->H6_PT := "T"
+		// Else 
+		// 	M->H6_PT := "P"
+		// EndIf
 
 		DbSelectArea("SB8") //Necessidade de manter a mesma validade para o lote independente de qual armazem ele esteja
 		DbSetOrder(5)

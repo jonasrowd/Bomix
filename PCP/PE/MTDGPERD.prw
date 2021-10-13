@@ -79,25 +79,25 @@ User Function MTDGPERD
 		// EndIf
 	ElseIf cFilAnt == '010101' //Para filial Bomix continua carregando a quantidade da perda
 
-		DbSelectArea("SB1")
-		DbSetOrder(1)
-		DbSeek(FwXFilial("SB1")+c_Prod)
-		If Found()
-			n_Peso := SB1->B1_PESO
-			n_Size := Len(aCols)
-			If Len(aCols) >0
-				GDFieldPut('BC_PRODUTO', c_Prod, n_Size)
-				GDFieldPut("BC_CODDEST", SB1->B1_FSPRODC, n_Size)
-				GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+SB1->B1_FSPRODC, "B1_DESC"), n_Size)
-				GDFieldPut('BC_QUANT', n_Qtd, n_Size)
-				GDFieldPut("BC_QTDDEST", n_Qtd, n_Size)
-				n_QtdSegUm := n_Qtd * n_Peso
-				GDFieldPut("BC_QTSEGUM", n_QtdSegUm, n_Size)
-				GDFieldPut("BC_QTDDES2", n_QtdSegUm, n_Size)
-				GDFieldPut("BC_LOTECTL", M->H6_LOTECTL, n_Size)
-				GDFieldPut("BC_DTVALID", dDatabase, n_Size)
-			EndIf
-		EndIf
+		// DbSelectArea("SB1")
+		// DbSetOrder(1)
+		// DbSeek(FwXFilial("SB1")+c_Prod)
+		// If Found()
+		// 	n_Peso := SB1->B1_PESO
+		// 	n_Size := Len(aCols)
+		// 	If Len(aCols) >0
+		// 		GDFieldPut('BC_PRODUTO', c_Prod, n_Size)
+		// 		GDFieldPut("BC_CODDEST", SB1->B1_FSPRODC, n_Size)
+		// 		GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+SB1->B1_FSPRODC, "B1_DESC"), n_Size)
+		// 		GDFieldPut('BC_QUANT', n_Qtd, n_Size)
+		// 		GDFieldPut("BC_QTDDEST", n_Qtd, n_Size)
+		// 		n_QtdSegUm := n_Qtd * n_Peso
+		// 		GDFieldPut("BC_QTSEGUM", n_QtdSegUm, n_Size)
+		// 		GDFieldPut("BC_QTDDES2", n_QtdSegUm, n_Size)
+		// 		GDFieldPut("BC_LOTECTL", M->H6_LOTECTL, n_Size)
+		// 		GDFieldPut("BC_DTVALID", dDatabase, n_Size)
+		// 	EndIf
+		// EndIf
 	EndIf
 
 	// Restaura a área de trabalho anterior
@@ -295,137 +295,137 @@ Return l_Ret
 User Function DIGPEROK
 	Local a_Area := GetArea()
 	Local l_Ret  := .T.
-	Local c_OP   := M->H6_OP
-	Local i
+	// Local c_OP   := M->H6_OP
+	// Local i
 
 	If cFilAnt == "010101"   // --- Validação na inclusao do Apontamento de Perda
 
-		c_LocalSC2 := Posicione("SC2", 1, xFilial("SC2") + c_OP, "C2_LOCAL")
-		c_ProdSH6  := M->H6_PRODUTO
-		c_LocalSH6 := M->H6_LOCAL
-		n_QtdSH6   := M->H6_QTDPERD
-		n_QtdApt   := 0
+		// c_LocalSC2 := Posicione("SC2", 1, xFilial("SC2") + c_OP, "C2_LOCAL")
+		// c_ProdSH6  := M->H6_PRODUTO
+		// c_LocalSH6 := M->H6_LOCAL
+		// n_QtdSH6   := M->H6_QTDPERD
+		// n_QtdApt   := 0
 
 
-		For i:=1 To Len(aCols)
-			If aCols[i][Len(aHeader) + 1] == .F.
-				n_QtdApt += aCols[i][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})]
+		// For i:=1 To Len(aCols)
+		// 	If aCols[i][Len(aHeader) + 1] == .F.
+		// 		n_QtdApt += aCols[i][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})]
 
-				cCodProd  := aCols[i][AScan(aHeader, { |x| Alltrim(x[2]) == 'BC_PRODUTO'})]
-				c_LocOrig := aCols[i][AScan(aHeader, { |x| Alltrim(x[2]) == 'BC_LOCORIG'})]
-				n_QtdPer  := aCols[i][AScan(aHeader, { |x| Alltrim(x[2]) == 'BC_QUANT'})]
-				c_Um      := ""
-				n_Peso    := 0
-				c_Grupo   := ""
+		// 		cCodProd  := aCols[i][AScan(aHeader, { |x| Alltrim(x[2]) == 'BC_PRODUTO'})]
+		// 		c_LocOrig := aCols[i][AScan(aHeader, { |x| Alltrim(x[2]) == 'BC_LOCORIG'})]
+		// 		n_QtdPer  := aCols[i][AScan(aHeader, { |x| Alltrim(x[2]) == 'BC_QUANT'})]
+		// 		c_Um      := ""
+		// 		n_Peso    := 0
+		// 		c_Grupo   := ""
 
-				cCodDest  := aCols[i][AScan(aHeader, { |x| Alltrim(x[2]) == 'BC_CODDEST'})]
-				c_Local   := aCols[i][AScan(aHeader, { |x| Alltrim(x[2]) == 'BC_LOCAL'})]
-				n_QtdDest := aCols[i][AScan(aHeader, { |x| Alltrim(x[2]) == 'BC_QTDDEST'})]
-				c_UmDest  := ""
+		// 		cCodDest  := aCols[i][AScan(aHeader, { |x| Alltrim(x[2]) == 'BC_CODDEST'})]
+		// 		c_Local   := aCols[i][AScan(aHeader, { |x| Alltrim(x[2]) == 'BC_LOCAL'})]
+		// 		n_QtdDest := aCols[i][AScan(aHeader, { |x| Alltrim(x[2]) == 'BC_QTDDEST'})]
+		// 		c_UmDest  := ""
 
-				If Empty(cCodProd) .Or. Empty(c_LocOrig) .Or. Empty(cCodDest) .Or. Empty(c_Local)
-					ShowHelpDlg(SM0->M0_NOME,;
-					{"Um ou alguns campos obrigatórios do item " + StrZero(i, 2) + " não foram preenchidos"},5,;
-					{"Preencha os campos Produto, Armazem Orig, Prd. Destino e Armazem Dest antes de prosseguir"},5)
-					l_Ret := .F.
-					Exit
-				Endif
+		// 		If Empty(cCodProd) .Or. Empty(c_LocOrig) .Or. Empty(cCodDest) .Or. Empty(c_Local)
+		// 			ShowHelpDlg(SM0->M0_NOME,;
+		// 			{"Um ou alguns campos obrigatórios do item " + StrZero(i, 2) + " não foram preenchidos"},5,;
+		// 			{"Preencha os campos Produto, Armazem Orig, Prd. Destino e Armazem Dest antes de prosseguir"},5)
+		// 			l_Ret := .F.
+		// 			Exit
+		// 		Endif
 
-				If cCodProd <> c_ProdSH6
-					ShowHelpDlg(SM0->M0_NOME,;
-					{"O campo Produto do item " + StrZero(i, 2) + " da Classificação da Perda está divergente do valor informado no campo Produto da Produção PCP Mod2"},5,;
-					{"Verifique se o valor do campo Produto da Classificação da Perda foi digitado corretamente"},5)
-					l_Ret := .F.
-					Exit
-				Endif
-				dbSelectArea("SZ7")
-				dbSetOrder(1)
-				If dbSeek(xFilial("SZ7") + __CUSERID + c_Local)
-					If Z7_TPMOV == 'S'
-						ShowHelpDlg(SM0->M0_NOME,;
-						{"O seu usuário não possui permissão para efetuar entradas no armazém " + c_Local + "."},5,;
-						{"Contacte o administrador do sistema."},5)
-						l_Ret := .F.
-						Exit
-					Endif
-				Else
-					ShowHelpDlg(SM0->M0_NOME,;
-					{"O seu usuário não possui permissão para efetuar entradas no armazém " + c_Local + "."},5,;
-					{"Contacte o administrador do sistema."},5)
-					l_Ret := .F.
-					Exit
-				Endif
+		// 		If cCodProd <> c_ProdSH6
+		// 			ShowHelpDlg(SM0->M0_NOME,;
+		// 			{"O campo Produto do item " + StrZero(i, 2) + " da Classificação da Perda está divergente do valor informado no campo Produto da Produção PCP Mod2"},5,;
+		// 			{"Verifique se o valor do campo Produto da Classificação da Perda foi digitado corretamente"},5)
+		// 			l_Ret := .F.
+		// 			Exit
+		// 		Endif
+		// 		dbSelectArea("SZ7")
+		// 		dbSetOrder(1)
+		// 		If dbSeek(xFilial("SZ7") + __CUSERID + c_Local)
+		// 			If Z7_TPMOV == 'S'
+		// 				ShowHelpDlg(SM0->M0_NOME,;
+		// 				{"O seu usuário não possui permissão para efetuar entradas no armazém " + c_Local + "."},5,;
+		// 				{"Contacte o administrador do sistema."},5)
+		// 				l_Ret := .F.
+		// 				Exit
+		// 			Endif
+		// 		Else
+		// 			ShowHelpDlg(SM0->M0_NOME,;
+		// 			{"O seu usuário não possui permissão para efetuar entradas no armazém " + c_Local + "."},5,;
+		// 			{"Contacte o administrador do sistema."},5)
+		// 			l_Ret := .F.
+		// 			Exit
+		// 		Endif
 
-				dbSelectArea("SB1")
-				dbSetOrder(1)
-				If dbSeek(xFilial("SB1") + cCodProd)
-					c_Um   := SB1->B1_UM
-					c_Grupo  := SB1->B1_GRUPO
+		// 		dbSelectArea("SB1")
+		// 		dbSetOrder(1)
+		// 		If dbSeek(xFilial("SB1") + cCodProd)
+		// 			c_Um   := SB1->B1_UM
+		// 			c_Grupo  := SB1->B1_GRUPO
 
-					//If cCodDest == SB1->B1_FSPRODC .Or. cCodDest == SB1->B1_FSPRODD
-					If cCodDest == SB1->B1_FSPRODC
-						l_Ret := .T.
-					Else
-						ShowHelpDlg(SM0->M0_NOME, {"O campo Prd. Destino do item " + StrZero(i, 2) + " está preenchido incorretamente"},5,;
-						{"Preencha o campo Prd. Destino com o Código do Produto Classe C do Produto " + AllTrim(cCodProd)},5)
-						//                                 			  {"Preencha o campo Prd. Destino com o Código do Produto Classe C ou Classe D do Produto " + AllTrim(cCodProd)},5)
-						l_Ret := .F.
-						Exit
-					Endif
-				Endif
+		// 			//If cCodDest == SB1->B1_FSPRODC .Or. cCodDest == SB1->B1_FSPRODD
+		// 			If cCodDest == SB1->B1_FSPRODC
+		// 				l_Ret := .T.
+		// 			Else
+		// 				ShowHelpDlg(SM0->M0_NOME, {"O campo Prd. Destino do item " + StrZero(i, 2) + " está preenchido incorretamente"},5,;
+		// 				{"Preencha o campo Prd. Destino com o Código do Produto Classe C do Produto " + AllTrim(cCodProd)},5)
+		// 				//                                 			  {"Preencha o campo Prd. Destino com o Código do Produto Classe C ou Classe D do Produto " + AllTrim(cCodProd)},5)
+		// 				l_Ret := .F.
+		// 				Exit
+		// 			Endif
+		// 		Endif
 
-				dbSelectArea("SB1")
-				SB1->(dbSetOrder(1))
-				If SB1->(dbSeek(xFilial("SB1") + cCodDest))
-					c_UmDest := SB1->B1_UM
-				Endif
+		// 		dbSelectArea("SB1")
+		// 		SB1->(dbSetOrder(1))
+		// 		If SB1->(dbSeek(xFilial("SB1") + cCodDest))
+		// 			c_UmDest := SB1->B1_UM
+		// 		Endif
 
-				n_QtdVal := 0
+		// 		n_QtdVal := 0
 
-				If c_Um == c_UmDest
-					n_QtdVal := n_QtdPer
-				Elseif c_Um $ "UN/PC" .And. c_UmDest $ "UN/PC"
-					n_QtdVal := n_QtdPer
-				Elseif c_Um $ "UN/PC" .And. c_UmDest == "KG"
-					dbSelectArea("SBM")
-					SBM->(dbSetOrder(1))
-					If SBM->(dbSeek(xFilial("SBM") + c_Grupo))
-						If SubStr(SBM->BM_GRUPO, 1, 1) == "B"
-							n_Peso := SBM->BM_FSPESOB/1000
-						Elseif SubStr(SBM->BM_GRUPO, 1, 1) == "A"
-							n_Peso := SBM->BM_FSPALCA/1000
-						Elseif SubStr(SBM->BM_GRUPO, 1, 1) == "T"
-							n_Peso := SBM->BM_FSPTAMP/1000
-						Endif
-					Endif
+		// 		If c_Um == c_UmDest
+		// 			n_QtdVal := n_QtdPer
+		// 		Elseif c_Um $ "UN/PC" .And. c_UmDest $ "UN/PC"
+		// 			n_QtdVal := n_QtdPer
+		// 		Elseif c_Um $ "UN/PC" .And. c_UmDest == "KG"
+		// 			dbSelectArea("SBM")
+		// 			SBM->(dbSetOrder(1))
+		// 			If SBM->(dbSeek(xFilial("SBM") + c_Grupo))
+		// 				If SubStr(SBM->BM_GRUPO, 1, 1) == "B"
+		// 					n_Peso := SBM->BM_FSPESOB/1000
+		// 				Elseif SubStr(SBM->BM_GRUPO, 1, 1) == "A"
+		// 					n_Peso := SBM->BM_FSPALCA/1000
+		// 				Elseif SubStr(SBM->BM_GRUPO, 1, 1) == "T"
+		// 					n_Peso := SBM->BM_FSPTAMP/1000
+		// 				Endif
+		// 			Endif
 
-					n_QtdVal := n_QtdPer * n_Peso
-				Else
-					n_QtdVal := n_QtdDest
-				Endif
+		// 			n_QtdVal := n_QtdPer * n_Peso
+		// 		Else
+		// 			n_QtdVal := n_QtdDest
+		// 		Endif
 
-				If n_QtdDest <> n_QtdVal
-					ShowHelpDlg(SM0->M0_NOME, {"O campo Qtd Destino do item " + StrZero(i, 2) + " está preenchido incorretamente"},5,;
-					{"Verifique se o cálculo para preencher o campo Qtd Destino foi realizado corretamente"},5)
-					l_Ret := .F.
-					Exit
-				Endif
-			Endif
-		Next
+		// 		If n_QtdDest <> n_QtdVal
+		// 			ShowHelpDlg(SM0->M0_NOME, {"O campo Qtd Destino do item " + StrZero(i, 2) + " está preenchido incorretamente"},5,;
+		// 			{"Verifique se o cálculo para preencher o campo Qtd Destino foi realizado corretamente"},5)
+		// 			l_Ret := .F.
+		// 			Exit
+		// 		Endif
+		// 	Endif
+		// Next
 
-		If (n_QtdApt <> n_QtdSH6) .And. l_Ret
-			ShowHelpDlg(SM0->M0_NOME, {"O somatório do valor do campo Qtd Perda da Classificação da Perda está divergente em relação ao valor informado no campo Qtd. Perda da Produção PCP Mod2"}, 5, {"Verifique se o valor do campo Qtd Perda da Classificação da Perda foi digitado corretamente"},5)
-			l_Ret := .F.
-		Endif
+		// If (n_QtdApt <> n_QtdSH6) .And. l_Ret
+		// 	ShowHelpDlg(SM0->M0_NOME, {"O somatório do valor do campo Qtd Perda da Classificação da Perda está divergente em relação ao valor informado no campo Qtd. Perda da Produção PCP Mod2"}, 5, {"Verifique se o valor do campo Qtd Perda da Classificação da Perda foi digitado corretamente"},5)
+		// 	l_Ret := .F.
+		// Endif
 	EndIf
 
 	If cFilAnt == '020101'
 	EndIf
 
-	If l_Ret
-		M->H6_QTDPROD := 0
-		M->H6_PT := "P"
-	EndIf
+	// If l_Ret
+	// 	M->H6_QTDPROD := 0
+	// 	M->H6_PT := "P"
+	// EndIf
 
 	RestArea(a_Area)
 Return l_Ret

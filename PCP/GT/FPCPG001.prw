@@ -45,11 +45,11 @@ User Function FPCPG001()
 	M->H6_FSPESOI := Round((SB1->B1_PESO - SB1->B1_BRPEAL),2)
 	M->H6_FSPESO  := CValToChar(Round((M->H6_QTDPROD + M->H6_QTDPERD) * (SB1->B1_PESO - SB1->B1_BRPEAL),4))
 	
-	If !("TOTVSMES" $ M->H6_OBSERVA)
+	// If !("TOTVSMES" $ M->H6_OBSERVA)
 
-		M->H6_OPERADO := CUSERNAME
+	// 	M->H6_OPERADO := CUSERNAME
 
-	EndIf
+	// EndIf
 
 	DbSelectArea(_cAlias)
 	DbSetOrder(_cOrd)
