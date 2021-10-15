@@ -95,10 +95,10 @@ Static Function fConsumo(cProd,cOp)
     EndIf
 
     BEGINSQL ALIAS "CONSU"
-        SELECT 
+        SELECT
             C2.C2_QUANT - C2_QUJE AS SALDO,
             C2.C2_QUANT / B1_QB AS PALET,
-            B1.B1_QB as QUANTBAS, 
+            B1.B1_QB as QUANTBAS,
             Z05.Z05_CARRO AS CONSUMO,
             C2.C2_QUJE AS ENTREGUE,
             D4.D4_QUANT AS EMPENHO
@@ -111,7 +111,7 @@ Static Function fConsumo(cProd,cOp)
             AND D4.D4_OP = %Exp:cOp%
             INNER JOIN %TABLE:Z05% Z05 (NoLock) ON Z05.Z05_FILIAL = %XFILIAL:Z05%
             AND Z05.%NOTDEL%
-            AND Z05.Z05_NOME = D4.D4_FSTP 
+            AND Z05.Z05_NOME = D4.D4_FSTP
         WHERE C2.C2_FILIAL = %XFilial:SC2%
             AND C2.%NOTDEL%
             AND C2.C2_NUM + C2.C2_ITEM + C2.C2_SEQUEN = %Exp:cOp%

@@ -24,27 +24,11 @@ User Function FFATA004()
 	Local cPath     := ""  // Caminho de gravação do arquivo de logs
 	Local oFile     := NIL // Arquivo de logs do job
 	Local lAtualiza := .T. // Controle de atualização do pedido
-	Local xtabela	:= "63"
-	Local cFeriado	:= 'N'
 
 	// Efetua a abertura do ambiente apenas a empresa BOMIX
 	RPCSetEnv("01", "020101")
 
-	//Busca se é feriado
-	DbSelectArea("SX5")
-	DbSetOrder(1)
-	DbSeek(FWXFILIAL("SX5") + xtabela)
-	DbGoTop()
-
-	//Se encontrar que o dia é na tabela genérica é feriado ele não executa.
-	While !(EOF()) .And. SX5->X5_TABELA == '63'
-		If MESDIA(CTOD(SUBSTR(X5_DESCRI,1,5) + "/" + Year2Str(YEAR(DATE())))) == MESDIA(DATE())
-			cFeriado := 'S'
-		EndIf
-		DbSkip()
-	End
-	
-	If (cValToChar(DOW(DATE())) $ ('2|3|4|5|6') .AND. cFeriado == 'N')
+	If (cValToChar(DOW(DATE())) $ ('2|3|4|5|6'))
 		cPath := SLASH + "DIRDOC" + SLASH
 		oFile := FwFileWriter():New(cPath + cFilAnt + "_" + FwTimeStamp() + ".txt", .T.)
 		oFile:Create()
@@ -220,6 +204,61 @@ User Function FFATA004()
 	oFile:Close()
 	oFile := NIL
 	FreeObj(oFile)
+
+	cText     := ""  // Auxiliar da montagem da linha do log
+	oFile := FwFileWriter():New(cPath + cFilAnt + "_ENCERRADOS_" + FwTimeStamp() + ".txt", .T.)
+	oFile:Create()
+
+	// Fecha a tabela de pedidos em aberto caso o alias esteja em uso
+	If (Select("MIAUMIAU") > 0)
+		DBSelectArea("MIAUMIAU")
+		DBCloseArea()
+	EndIf
+
+	//VERIFICA OS PEDIDOS QUE NÃO FECHARAM CORRETAMENTE BOMIX
+
+	BEGINSQL ALIAS "MIAUMIAU"
+		SELECT 
+			C5_NUM AS NUME
+		FROM 
+			SC5010 
+		WHERE 
+			C5_NUM IN (
+			SELECT DISTINCT C6_NUM FROM SC6010 WHERE (C6_BLQ='R' OR C6_QTDENT=C6_QTDVEN) AND C6_FILIAL='020101' AND D_E_L_E_T_='')
+			AND C5_FILIAL='020101' 
+			AND D_E_L_E_T_='' 
+			AND C5_NOTA<>'' 
+			AND C5_EMISSAO>'20200101' 
+			AND C5_FSSTBI<>'ENCERRADO' 
+			AND C5_TIPO='N'
+	ENDSQL
+
+	While !EOF()
+		DbSelectArea("SC5")
+		DbSetOrder(1)
+		DbSeek(FwXFilial("SC5") + MIAUMIAU->NUME)
+		If (Found())
+			SC5->(RecLock("SC5",.F.))
+				C5_FSSTBI ='ENCERRADO' 
+				C5_LIBEROK='E' 
+				C5_BXSTATU=''
+				cText := "[" + FwTimeStamp(2)       + "]"
+				cText += "[" + "PEDIDO: "          + AllTrim(MIAUMIAU->NUME)   + "]"
+				// Grava log no arquivo
+				oFile:Write(EncodeUTF8(cText + Chr(10) + (Chr(13))))
+			SC5->(MsUnlock())
+		EndIf
+		SC5->(DbCloseArea())
+		DbSelectArea("MIAUMIAU")
+		DbSkip()
+	End
+
+	MIAUMIAU->(DbCloseArea())
+
+	oFile:Close()
+	oFile := NIL
+	FreeObj(oFile)
+
 	RPCClearEnv() // Encerra as variáveis do ambiente
 Return (NIL)
 
