@@ -1,5 +1,0 @@
-FwIsInCallStack("NOME_FUNCAO") = Verifica se uma determinada função está na pilha de chamadas
-
-ValidaArte() = Testar a função na rotina de Orçamentos e no Pedido de Venda
-• No Orçamento, os tipos 1, 2 e 3 devem exibir Help(), porém NÃO DEVEM impedir a gravação: NOK
-• No Pedido de Venda, os tipos 1, 2 e 3 devem também exibir Help(), porém DEVEM impedir a gravação: NOK
