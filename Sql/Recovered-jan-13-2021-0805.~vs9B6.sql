@@ -1,3 +1,0 @@
-UPDATE Pes_TB_SMP_Usuario SET US_SENHA = '522724dc80411c99e89c1e970e419c8e' WHERE US_LOGIN = 'danielle.costa'
-
-SELECT * FROM Pes_TB_SMP_Usuario

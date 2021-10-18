@@ -1,9 +1,0 @@
-SELECT A1_EMAIL,A1_EMAILCO FROM SA1010 WHERE D_E_L_E_T_ <> '*'
-
-
-
-
-
-
-
-
