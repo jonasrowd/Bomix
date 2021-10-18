@@ -1,8 +1,7 @@
 # Bomix
 
-## Controle de Fontes Protheus.
+## Controle de Fontes Protheus;
 
+### Organização do Ambiente TOTVS Protheus da Bomix;
 
-https://udesenv.com.br/?cCategoria=advpl-protheus-advpl
-https://medium.com/totvsdevelopers/ppo-o-que-que-%C3%A9-isso-2fb0ae4c133c
-https://blog.reitz.dev.br/
+Realizado a identificação e versionamento dos fontes encontrados pelos servidores e pastas da rede.
