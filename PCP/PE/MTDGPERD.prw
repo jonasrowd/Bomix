@@ -13,7 +13,7 @@ User Function MTDGPERD
 	Local n_Size  := 0           //
 	// Local n_Count := 0
 
-	If cFilAnt == '999999'
+	If cFilAnt == '020101'
 		// Carrega as informações de perda da MASTER
 		fMasRes(c_OP)
 
@@ -79,25 +79,31 @@ User Function MTDGPERD
 		// EndIf
 	ElseIf cFilAnt == '010101' //Para filial Bomix continua carregando a quantidade da perda
 
-		// DbSelectArea("SB1")
-		// DbSetOrder(1)
-		// DbSeek(FwXFilial("SB1")+c_Prod)
-		// If Found()
-		// 	n_Peso := SB1->B1_PESO
-		// 	n_Size := Len(aCols)
-		// 	If Len(aCols) >0
-		// 		GDFieldPut('BC_PRODUTO', c_Prod, n_Size)
-		// 		GDFieldPut("BC_CODDEST", SB1->B1_FSPRODC, n_Size)
-		// 		GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+SB1->B1_FSPRODC, "B1_DESC"), n_Size)
-		// 		GDFieldPut('BC_QUANT', n_Qtd, n_Size)
-		// 		GDFieldPut("BC_QTDDEST", n_Qtd, n_Size)
-		// 		n_QtdSegUm := n_Qtd * n_Peso
-		// 		GDFieldPut("BC_QTSEGUM", n_QtdSegUm, n_Size)
-		// 		GDFieldPut("BC_QTDDES2", n_QtdSegUm, n_Size)
-		// 		GDFieldPut("BC_LOTECTL", M->H6_LOTECTL, n_Size)
-		// 		GDFieldPut("BC_DTVALID", dDatabase, n_Size)
-		// 	EndIf
-		// EndIf
+		DbSelectArea("SB1")
+		DbSetOrder(1)
+		DbSeek(FwXFilial("SB1")+c_Prod)
+		If Found()
+			n_Peso := SB1->B1_PESO
+			n_Size := Len(aCols)
+			If Len(aCols) >0
+				GDFieldPut('BC_PRODUTO', c_Prod, n_Size)
+				GDFieldPut("BC_CODDEST", SB1->B1_FSPRODC, n_Size)
+				GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+SB1->B1_FSPRODC, "B1_DESC"), n_Size)
+				GDFieldPut('BC_QUANT', n_Qtd, n_Size)
+				GDFieldPut("BC_QTDDEST", n_Qtd, n_Size)
+				n_QtdSegUm := n_Qtd * n_Peso
+				GDFieldPut("BC_QTSEGUM", n_QtdSegUm, n_Size)
+				GDFieldPut("BC_QTDDES2", n_QtdSegUm, n_Size)
+				GDFieldPut("BC_LOTECTL", M->H6_LOTECTL, n_Size)
+				GDFieldPut("BC_DTVALID", dDatabase, n_Size)
+			EndIf
+		EndIf
+
+		If 	Len(aCols) > 0
+		aCols[Len(aCols)][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_PRODUTO'})] := c_Prod
+		//	aCols[Len(aCols)][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_LOCORIG'})] := c_Local
+		aCols[Len(aCols)][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})]   := n_Qtd
+	EndIf	
 	EndIf
 
 	// Restaura a área de trabalho anterior
