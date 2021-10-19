@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated 20211014 14:42:30 by ADVPL WSDL Server 1.110216 / Protheus 7.00.191205P-20210522 -->
+<definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" 
+xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+xmlns:s="http://www.w3.org/2001/XMLSchema" 
+xmlns:s0="http://192.168.254.94:5996/" 
+xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" 
+xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" 
+xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" 
+targetNamespace="http://192.168.254.94:5996/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://192.168.254.94:5996/">
+      <s:element name="TRANSMOD1">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CEMPRESA" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="CFIL" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="CUSERID" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="O_TRANSMOD1" type="s0:OTRANSMOD1" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TRANSMOD1RESPONSE">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="TRANSMOD1RESULT" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="OTRANSMOD1">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CARMDEST" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CARMORIG" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CDTVALID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CLOTECTL" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="COBSERVA" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CPRODDEST" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CPRODORIG" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="NQUANT" type="s:float" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </types>
+  <message name="TRANSMOD1SOAPIN">
+    <part name="parameters" element="s0:TRANSMOD1" />
+  </message>
+  <message name="TRANSMOD1SOAPOUT">
+    <part name="parameters" element="s0:TRANSMOD1RESPONSE" />
+  </message>
+  <portType name="WSTRANSFERENCIASOAP">
+    <operation name="TRANSMOD1">
+      <input message="s0:TRANSMOD1SOAPIN" />
+      <output message="s0:TRANSMOD1SOAPOUT" />
+    </operation>
+  </portType>
+  <binding name="WSTRANSFERENCIASOAP" type="s0:WSTRANSFERENCIASOAP">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+    <operation name="TRANSMOD1">
+      <soap:operation soapAction="http://192.168.254.94:5996/TRANSMOD1" style="document" />
+      <input><soap:body use="literal" /></input>
+      <output><soap:body use="literal" /></output>
+    </operation>
+  </binding>
+  <service name="WSTRANSFERENCIA">
+    <port name="WSTRANSFERENCIASOAP" binding="s0:WSTRANSFERENCIASOAP">
+      <soap:address location="http://192.168.254.94:5996/WSTRANSFERENCIA.apw" />
+    </port>
+  </service>
+</definitions>
