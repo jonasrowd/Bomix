@@ -23,7 +23,6 @@ User Function MA650EMP()
 	Private c_Corpo		:= c_Titulo + CRLF + "Acionamento Key User para verificar com o usuário " + UsrRetName(__CUSERID) +" o ocorrido."
 
     For i:=1 To Len(aCols)
-
         // Fecha a tabela de pedidos em aberto caso o alias esteja em uso
 		If (Select("PEGALA") > 0)
 			DBSelectArea("PEGALA")
@@ -88,6 +87,7 @@ User Function MA650EMP()
 			C2.C2_NUM + C2.C2_ITEM + C2.C2_SEQUEN = %EXP:AllTrim(cOp)%
 			AND Z05.Z05_GERAOP = 'N'
 			AND C2.%NOTDEL%
+			AND C2.C2_FILIAL= %XFILIAL:SC2%
 	ENDSQL
 
 	//Execauto para excluir as op's e empenhos 
