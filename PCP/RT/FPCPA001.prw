@@ -1,14 +1,14 @@
 //Bibliotecas necessárias
 #Include "TOTVS.CH"
 
-/*/{Protheus.doc} jbimpsg1
+/*/{Protheus.doc} JONAS
 	Importação e alteração de estrutura de produtos a partir de um arquivo csv
 	@type Function
 	@version 12.1.25
 	@author Jonas Machado
 	@since 20/10/2021
 /*/
-User Function jbimpsg1()
+User Function JONAS()
 	Local c_Texto  := "Esta rotina tem a finalidade de atualizar os dados da tabela SG1 - Estruturas de Produtos, a partir do arquivo CSV selecionado  pelo usuário."
 	Local c_Erro   := "É necessário selecionar o arquivo CSV para efetuar essa operação."
 	Private c_File := Space(500)	//Arquivo
@@ -16,7 +16,7 @@ User Function jbimpsg1()
 	SetPrvt("oDlg1","oSay1","oSay2","oGet1","oBtn1","oBtn2","oBtn3","oGrp1")
 
 	//Definicao do Dialog e todos os seus componentes.
-	oDlg1      := MSDialog():New( 090,230,198,670,SM0->M0_NOME,,,.F.,,,,,,.T.,,,.T. )
+	oDlg1      := TDialog():New(90,230,198,670,'Importa Estrutura de Produtos',,,,,,,,,.T.)
 	oSay1      := TSay():New( 006,004,{||"Arquivo:"},oDlg1,,,.F.,.F.,.F.,.T.,CLR_BLACK,CLR_WHITE,040,008)
 	oGet1      := TGet():New( 004,025,{|u| If( Pcount( )>0, c_File := u, u := c_File) },oDlg1,151,010,'',,CLR_BLACK,CLR_WHITE,,,,.T.,"",,,.F.,.F.,,.T.,.F.,"","",,)
 	oBtn1      := TButton():New( 004,180,"&Procurar...",oDlg1,{||c_File:=cGetFile( 'Arquivos CSV |*.csv|' , '', 1, '', .T., nOR( GETF_LOCALHARD, GETF_LOCALFLOPPY, GETF_NETWORKDRIVE),.T., .T. ) },037,12,,,,.T.,,"",,,,.F. )
@@ -37,7 +37,7 @@ Return Nil
 /*/
 Static Function jbbuilder()
 
-	Processa({|| jbimportdata()}, "Aguarde...", "AtualizAndo o cadastro de estruturas...",.F.)
+	Processa({|| jbimportdata()}, "Aguarde...", "Atualizando o cadastro de estruturas...",.F.)
 
 Return Nil
 
@@ -49,13 +49,14 @@ Return Nil
 	@since 20/10/2021
 /*/
 Static Function jbimportdata()
-	Local j		 	:= 0
+	//Local j			 	:= 0
+	Local oJbTemp		:= Nil
 	Private n_QtdInc 	:= 0    //Conta quantas linhas foram importadas
 	Private n_QtdErr 	:= 0    //Conta quantas linhas não foram importadas
 	Private n_QB     	:= 0
 	Private n_Quant  	:= 0
 	Private n_Pos    	:= 1    //Numero da linha do arquivo
-	Private	n_Opcao  	:= 4
+	Private	n_Opcao  	:= 3
 	Private c_Buffer 	:= ""   //Buffer do arquivo
 	Private c_Linha  	:= ""
 	Private c_CodPro 	:= ""
@@ -67,23 +68,21 @@ Static Function jbimportdata()
 	Private a_Bord   	:= {}   //Array da tabela temporária
 	Private a_Campos 	:= {}   //Campos da tabela temporária
 	Private a_Bloqueio	:= {}	//Array caso queira alterar itens bloqueados também
-	Private l_CriaTb	:= .F.  //Controla a criacao da tabela temporaria
+	Private l_CriaTb	:= .T.  //Controla a criacao da tabela temporaria
 	Private oFont		:= TFont():New( "Verdana",0,-11,,.F.,0,,400,.F.,.F.,,,,,, )
 
 	If AVISO(SM0->M0_NOMECOM,"Esta rotina irá atualizar os dados da tabela SG1 - Estruturas de Produto. Deseja realmente continuar?",{"Sim","Não"},2,"Atenção") == 1
-		If !l_CriaTb
-			Aadd(a_Bord,{"TB_POS"  	  ,"N",6,0})
-			Aadd(a_Bord,{"TB_PRODUTO" ,"C",TamSX3("B1_COD")[1],0})
-			Aadd(a_Bord,{"TB_QB"   	  ,"N",TamSX3("B1_QB")[1],TamSX3("B1_QB")[2]})
-			// Aadd(a_Bord,{"TB_MP"   	  ,"C",TamSX3("B1_COD")[1],0})
-			// Aadd(a_Bord,{"TB_QUANT"   ,"N",TamSX3("G1_QUANT")[1],TamSX3("G1_QUANT")[2]})
-			Aadd(a_Bord,{"TB_OBS"     ,"C",150,0})
-
-			c_Bord := CriaTrab(a_Bord,.T.)
-			Use &c_Bord Shared Alias TRC New
-			Index On TB_POS To &c_Bord
-			SET INDEX TO &c_Bord
-			l_CriaTb:= .T.
+		If l_CriaTb
+			Aadd(a_Bord,{"TB_POS"  	  , "N", 6				      , 0					 })
+			Aadd(a_Bord,{"TB_PRODUTO" , "C", TamSX3("B1_COD")[1]  , 0					 })
+			Aadd(a_Bord,{"TB_QB"   	  , "N", TamSX3("B1_QB")[1]   , TamSX3("B1_QB")[2]	 })
+			Aadd(a_Bord,{"TB_MP"   	  , "C", TamSX3("B1_COD")[1]  , 0					 })
+			Aadd(a_Bord,{"TB_QUANT"   , "N", TamSX3("G1_QUANT")[1], TamSX3("G1_QUANT")[2]})
+			Aadd(a_Bord,{"TB_OBS"     , "C", 150				  , 0					 })
+			
+			oJbTemp := FWTemporaryTable():New("TRC", a_Bord)
+			oJbTemp:Create()
+			c_Bord := oJbTemp:GetRealName()
 		EndIf
 
 		If FT_FUSE(ALLTRIM(c_File)) == -1
@@ -117,8 +116,8 @@ Static Function jbimportdata()
 				// EndIf
 			Else
 				n_QtdErr++
-				// c_MatPri := PADR(UPPER(a_Buffer[6]), TAMSX3("B1_COD")[1])
-				// n_Quant  := Val(StrTran(a_Buffer[8], ",", "."))
+				c_MatPri := PADR(UPPER(a_Buffer[6]), TAMSX3("B1_COD")[1])
+				n_Quant  := Val(StrTran(a_Buffer[8], ",", "."))
 				c_Obs    := "Estrutura do Produto " + AllTrim(c_CodPro) + " não foi atualizada pela rotina, porque não está cadastrado no sistema."
 				l_Erro   := .T.
 
@@ -126,8 +125,8 @@ Static Function jbimportdata()
 					TRC->TB_POS     := n_Pos //LINHA DO ARQUIVO
 					TRC->TB_PRODUTO := c_CodPro
 					TRC->TB_QB      := n_QB
-					// TRC->TB_MP      := c_MatPri
-					// TRC->TB_QUANT   := n_Quant
+					TRC->TB_MP      := c_MatPri
+					TRC->TB_QUANT   := n_Quant
 					TRC->TB_OBS     := c_Obs
 				MsUnlock()
 
@@ -138,7 +137,7 @@ Static Function jbimportdata()
 
 					If !FT_FEOF()
 						c_Buffer := FT_FREADLN()
-						a_Buffer := STRTOKARR(c_Buffer,";")
+						a_Buffer := STRTOKARR2(c_Buffer,";",.T.)
 						c_CodAux := PADR(UPPER(a_Buffer[1]), TAMSX3("B1_COD")[1])
 					Else
 						c_CodAux := Space(TAMSX3("B1_COD")[1])
@@ -173,8 +172,8 @@ Static Function jbimportdata()
 						TRC->TB_POS     := n_Pos //LINHA DO ARQUIVO
 						TRC->TB_PRODUTO := c_CodPro
 						TRC->TB_QB      := n_QB
-						// TRC->TB_MP      := c_MatPri
-						// TRC->TB_QUANT   := n_Quant
+						TRC->TB_MP      := c_MatPri
+						TRC->TB_QUANT   := n_Quant
 						TRC->TB_OBS     := c_Obs
 					MsUnlock()
 				EndIf
@@ -185,7 +184,7 @@ Static Function jbimportdata()
 
 				If !FT_FEOF()
 					c_Buffer := FT_FREADLN()
-					a_Buffer := STRTOKARR(c_Buffer,";")
+					a_Buffer := STRTOKARR2(c_Buffer,";",.T.)
 					c_CodAux := PADR(UPPER(a_Buffer[1]), TAMSX3("B1_COD")[1])
 				Else
 					c_CodAux := Space(TAMSX3("B1_COD")[1])
@@ -219,23 +218,23 @@ Static Function jbimportdata()
 					EndIf
 				EndIf
 
-				For j := 1 To Len(a_Bloqueio)
-					DbSelectArea("SB1")
-					DbSetOrder(1)
-					DbSeek(xFilial("SB1") + a_Bloqueio[j])
-					If Found()
-						Reclock("SB1", .F.)
-							SB1->B1_MSBLQL := '1'
-						MsUnlock()
-					EndIf
-				Next
+				// For j := 1 To Len(a_Bloqueio)
+				// 	DbSelectArea("SB1")
+				// 	DbSetOrder(1)
+				// 	DbSeek(xFilial("SB1") + a_Bloqueio[j])
+				// 	If Found()
+				// 		Reclock("SB1", .F.)
+				// 			SB1->B1_MSBLQL := '1'
+				// 		MsUnlock()
+				// 	EndIf
+				// Next
 
 				Reclock("TRC",.T.)
 					TRC->TB_POS     := n_Pos-1 //LINHA DO ARQUIVO
 					TRC->TB_PRODUTO := c_CodPro
 					TRC->TB_QB      := n_QB
-					// TRC->TB_MP      := c_MatPri
-					// TRC->TB_QUANT   := n_Quant
+					TRC->TB_MP      := c_MatPri
+					TRC->TB_QUANT   := n_Quant
 					TRC->TB_OBS     := c_Obs
 				MsUnlock()
 			EndIf
@@ -254,9 +253,9 @@ Static Function jbimportdata()
 
 		Aadd(a_Campos,{"TB_POS"     ,,'Linha'    ,'@!'})
 		Aadd(a_Campos,{"TB_PRODUTO" ,,'Produto'  ,'@!'})
-		Aadd(a_Campos,{"TB_QB"   	,,'Quantidade Base'  ,X3Picture("B1_QB")})
-		// Aadd(a_Campos,{"TB_MP"   	,,'Matéria Prima'  ,'@!'})
-		// Aadd(a_Campos,{"TB_QUANT"   ,,'Quantidade'  ,X3Picture("G1_QUANT")})
+		Aadd(a_Campos,{"TB_QB"   	,,'Qtde Base'  ,X3Picture("B1_QB")})
+		Aadd(a_Campos,{"TB_MP"   	,,'Matéria Prima'  ,'@!'})
+		Aadd(a_Campos,{"TB_QUANT"   ,,'Quantidade'  ,X3Picture("G1_QUANT")})
 		Aadd(a_Campos,{"TB_OBS"     ,,'Observação' ,'@!'})
 
 		o_Dlg	:= MSDialog():New( 091,232,637,1240,"Log de atualização do Cadastro de Estruturas",,,.F.,,,,,,.T.,,,.T. )
@@ -270,6 +269,11 @@ Static Function jbimportdata()
 		DbSelectArea("TRC")
 		TRC->(DbCloseArea())
 	EndIf
+
+	//Após fazer o uso da tabela, as boas práticas pedem que a mesma seja fechada
+	//O método Delete efetuar a exclusão da tabela e também fecha a workarea da mesma
+	oJbTemp:Delete()
+
 
 Return Nil
 
@@ -299,7 +303,7 @@ Static Function jbExpotLog()
 
 	TRC->(DbGoTop())
 	While !(TRC->(EOF()))
-		// c_Linha:= STRZERO(TRC->TB_POS,6)+";"+TRC->TB_PRODUTO+";"+TRANSFORM(TRC->TB_QB, X3Picture("B1_QB"))+";"+TRC->TB_MP+";"+TRANSFORM(TRC->TB_QUANT, X3Picture("G1_QUANT"))+";"+TRC->TB_OBS + CHR(13)+CHR(10)
+		// c_Linha:= STRZERO(TRC->TB_POS,6)+";"+TRC->TB_PRODUTO+";"+TRANSFORM(TRC->TB_QB, X3Picture("B1_QB"))+";"+TRC->TB_MP+";"+TRANSFORM(TRC->TB_QUANT, X3Picture("G1_QUANT"))+";"+TRC->TB_OBS + CRLF
 		c_Linha:= STRZERO(TRC->TB_POS,6)+";"+TRC->TB_PRODUTO+";"+TRANSFORM(TRC->TB_QB, X3Picture("B1_QB"))+";"+TRC->TB_OBS + CRLF
 
 		If FWRITE(c_Destino,c_Linha,LEN(c_Linha)) != LEN(c_Linha)
