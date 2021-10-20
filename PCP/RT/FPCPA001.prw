@@ -1,15 +1,43 @@
 //Bibliotecas necessárias
 #Include "TOTVS.CH"
 
-/*/{Protheus.doc} JONAS
+/*/{Protheus.doc} jbimportsg1
 	Importação e alteração de estrutura de produtos a partir de um arquivo csv
 	@type Function
 	@version 12.1.25
 	@author Jonas Machado
 	@since 20/10/2021
+	@exemple 
+	• ESTRUTURA DO CSV PARA EXPORTACAO
+	B1_COD;;B1_QB;;;G1_COMP;;G1_QUANT
+
+	• CAMPOS DO ARRAY PREENCHIDOS NA ROTINA
+	A_BUFFER[1];;A_BUFFER[3];;;A_BUFFER[6];;A_BUFFER[8]
+	
+	•LINHAS DE EXEMPLO
+	B05C00002;;960;;;A03A00004;;2
+	B05C00002;;960;;;P00A00130;;1,18944
+	B05C00002;;960;;;P00A00338;;168,73056
+	B05C00002;;960;;;P00B00076;;48
+	B05C00002;;960;;;P00B00145;;2
+	B05C00004;;960;;;A03A00009;;2
+	B05C00004;;960;;;P00A00268;;3,3984
+	B05C00004;;960;;;P00A00338;;166,5216
+	B05C00004;;960;;;P00B00076;;48
+	B05C00004;;960;;;P00B00145;;2
+	B05C00007;;960;;;A03A00004;;2
+	B05C00007;;960;;;P00A00160;;0,8496
+	B05C00007;;960;;;P00A00338;;169,0704
+	B05C00007;;960;;;P00B00076;;48
+	B05C00007;;960;;;P00B00145;;2
+	B05C00010;;960;;;A03A00009;;2
+	B05C00010;;960;;;P00A00130;;1,18944
+	B05C00010;;960;;;P00A00338;;168,73056
+	B05C00010;;960;;;P00B00076;;48
+	B05C00010;;960;;;P00B00145;;2
 /*/
-User Function JONAS()
-	Local c_Texto  := "Esta rotina tem a finalidade de atualizar os dados da tabela SG1 - Estruturas de Produtos, a partir do arquivo CSV selecionado  pelo usuário."
+User Function jbimportsg1()
+	Local c_Texto  := "Esta rotina tem a finalidade de atualizar os dados da tabela SG1 - Estrutura de Produtos, a partir do arquivo CSV selecionado  pelo usuário."
 	Local c_Erro   := "É necessário selecionar o arquivo CSV para efetuar essa operação."
 	Private c_File := Space(500)	//Arquivo
 
@@ -79,7 +107,7 @@ Static Function jbimportdata()
 			Aadd(a_Bord,{"TB_MP"   	  , "C", TamSX3("B1_COD")[1]  , 0					 })
 			Aadd(a_Bord,{"TB_QUANT"   , "N", TamSX3("G1_QUANT")[1], TamSX3("G1_QUANT")[2]})
 			Aadd(a_Bord,{"TB_OBS"     , "C", 150				  , 0					 })
-			
+
 			oJbTemp := FWTemporaryTable():New("TRC", a_Bord)
 			oJbTemp:Create()
 			c_Bord := oJbTemp:GetRealName()
@@ -122,12 +150,12 @@ Static Function jbimportdata()
 				l_Erro   := .T.
 
 				Reclock("TRC",.T.)
-					TRC->TB_POS     := n_Pos //LINHA DO ARQUIVO
-					TRC->TB_PRODUTO := c_CodPro
-					TRC->TB_QB      := n_QB
-					TRC->TB_MP      := c_MatPri
-					TRC->TB_QUANT   := n_Quant
-					TRC->TB_OBS     := c_Obs
+				TRC->TB_POS     := n_Pos //LINHA DO ARQUIVO
+				TRC->TB_PRODUTO := c_CodPro
+				TRC->TB_QB      := n_QB
+				TRC->TB_MP      := c_MatPri
+				TRC->TB_QUANT   := n_Quant
+				TRC->TB_OBS     := c_Obs
 				MsUnlock()
 
 				While (!FT_FEOF() .And. c_CodAux == c_CodPro)
@@ -169,12 +197,12 @@ Static Function jbimportdata()
 					c_Obs  := "Estrutura do Produto " + AllTrim(c_CodPro) + " não foi atualizada pela rotina, porque o Produto " + AllTrim(c_MatPri) + " não está cadastrado no sistema."
 					l_Erro := .T.
 					Reclock("TRC",.T.)
-						TRC->TB_POS     := n_Pos //LINHA DO ARQUIVO
-						TRC->TB_PRODUTO := c_CodPro
-						TRC->TB_QB      := n_QB
-						TRC->TB_MP      := c_MatPri
-						TRC->TB_QUANT   := n_Quant
-						TRC->TB_OBS     := c_Obs
+					TRC->TB_POS     := n_Pos //LINHA DO ARQUIVO
+					TRC->TB_PRODUTO := c_CodPro
+					TRC->TB_QB      := n_QB
+					TRC->TB_MP      := c_MatPri
+					TRC->TB_QUANT   := n_Quant
+					TRC->TB_OBS     := c_Obs
 					MsUnlock()
 				EndIf
 
@@ -230,21 +258,21 @@ Static Function jbimportdata()
 				// Next
 
 				Reclock("TRC",.T.)
-					TRC->TB_POS     := n_Pos-1 //LINHA DO ARQUIVO
-					TRC->TB_PRODUTO := c_CodPro
-					TRC->TB_QB      := n_QB
-					TRC->TB_MP      := c_MatPri
-					TRC->TB_QUANT   := n_Quant
-					TRC->TB_OBS     := c_Obs
+				TRC->TB_POS     := n_Pos-1 //LINHA DO ARQUIVO
+				TRC->TB_PRODUTO := c_CodPro
+				TRC->TB_QB      := n_QB
+				TRC->TB_MP      := c_MatPri
+				TRC->TB_QUANT   := n_Quant
+				TRC->TB_OBS     := c_Obs
 				MsUnlock()
 			EndIf
 		End
 
 		FT_FUSE()
-		
+
 		AVISO(SM0->M0_NOME,"O programa processou todo o arquivo com " + ALLTRIM(STR(n_QtdInc+n_QtdErr)) ;
-		+ " registros. Foram atualizados " + ALLTRIM(STR(n_QtdInc)) + " registros e " + ALLTRIM(STR(n_QtdErr)) ;
-		+ " registros não foram atualizados para a Filial " + AllTrim(cFilAnt) + " - " + AllTrim(SM0->M0_FILIAL) + ".",{"OK"},2,"Aviso")
+			+ " registros. Foram atualizados " + ALLTRIM(STR(n_QtdInc)) + " registros e " + ALLTRIM(STR(n_QtdErr)) ;
+			+ " registros não foram atualizados para a Filial " + AllTrim(cFilAnt) + " - " + AllTrim(SM0->M0_FILIAL) + ".",{"OK"},2,"Aviso")
 
 		//SE HOUVE PRODUTOS ATUALIZADOS, MOSTRA NA TELA.
 		DbSelectArea("TRC")
@@ -292,7 +320,7 @@ Static Function jbExpotLog()
 	// TESTA A CRIAÇÃO DO ARQUIVO DE DESTINO
 	If c_Destino == -1
 		MsgStop('Erro ao criar arquivo destino. Erro: '+str(ferror(),4),'Erro')
-	 	Return Nil
+		Return Nil
 	EndIf
 
 	DbSelectArea("TRC")
@@ -350,12 +378,12 @@ Static Function jbmt200()
 	*/
 
 	PARAMIXB1 := {{"G1_COD", c_CodPro, NIL},;
-					{"G1_QUANT", n_QB, NIL},;	// Quantidade base será de 1 Kg	para evitar grAndes distorções nos valores
-					{"G1_TRT", c_Revisao, NIL},;
-					{"NIVALT", "S", NIL}} 	// A variável NIVALT é utilizada pra recalcular ou não a estrutura
+		{"G1_QUANT", n_QB, NIL},;	// Quantidade base será de 1 Kg	para evitar grAndes distorções nos valores
+	{"G1_TRT", c_Revisao, NIL},;
+		{"NIVALT", "S", NIL}} 	// A variável NIVALT é utilizada pra recalcular ou não a estrutura
 
-		// a_Materias[i][1]   	// Código do produto matéria prima
-		// a_Materias[i][2]		// Quantidade utilizada da matéria prima
+	// a_Materias[i][1]   	// Código do produto matéria prima
+	// a_Materias[i][2]		// Quantidade utilizada da matéria prima
 
 	For i:=1 To Len(a_Materias)
 		aGets := {}
@@ -400,9 +428,9 @@ Static Function jbdelmt200()
 	Local l_Ret			:= .F.
 	Private INCLUI		:= .F.
 	Private lMsErroAuto	:= .F.
-	
+
 	PARAMIXB1 :=   {{"G1_COD", c_CodPro , NIL},;
-					{"NIVALT", "S"		, NIL}}
+		{"NIVALT", "S"		, NIL}}
 
 	Begin Transaction
 		MSExecAuto({|x,y,z| mata200(x,y,z)},PARAMIXB1,NIL,5)
@@ -420,6 +448,6 @@ Static Function jbdelmt200()
 				l_Ret := .T.
 			EndIf
 		EndIf
-    End Transaction
+	End Transaction
 
 Return l_Ret
