@@ -12,6 +12,7 @@ User Function MT680VAL
 	Local a_Area    := GetArea()
 	Local l_Ret     := .T.
 	Local n_Op		:= M->H6_OP
+	Local d_DtValid := 	CTOD("  /  /    ")
 
 	If l_Ret .And. l681
 		DbSelectArea("SZ7") //Seleciona a área da tabela customizada que controla as movimentações de estoque para o wms
@@ -63,10 +64,12 @@ User Function MT680VAL
 
 		If !Empty(SH6TEMP->FSDTVLD) //Se não é o primeiro apontamento
 			While SH6TEMP->(!EOF())//Enquanto não for o final do arquivo procura se já tem uma validade preenchida em qualquer item da Op
-				M->H6_DTVALID := SH6TEMP->FSDTVLD //Armazena a data de validade da Op
+				d_DtValid := STOD(SH6TEMP->FSDTVLD) //Armazena a data de validade da Op
 			DbSkip()
 			End
 		EndIf
+
+		M->H6_DTVALID := d_DtValid
 
 		SH6TEMP->(DbCloseArea())
 
