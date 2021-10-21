@@ -48,7 +48,7 @@ User Function jbimportsg1()
 	oSay1      := TSay():New( 006,004,{||"Arquivo:"},oDlg1,,,.F.,.F.,.F.,.T.,CLR_BLACK,CLR_WHITE,040,008)
 	oGet1      := TGet():New( 004,025,{|u| If( Pcount( )>0, c_File := u, u := c_File) },oDlg1,151,010,'',,CLR_BLACK,CLR_WHITE,,,,.T.,"",,,.F.,.F.,,.T.,.F.,"","",,)
 	oBtn1      := TButton():New( 004,180,"&Procurar...",oDlg1,{||c_File:=cGetFile( 'Arquivos CSV |*.csv|' , '', 1, '', .T., nOR( GETF_LOCALHARD, GETF_LOCALFLOPPY, GETF_NETWORKDRIVE),.T., .T. ) },037,12,,,,.T.,,"",,,,.F. )
-	oBtn2      := TButton():New( 021,180,"&Atualizar",oDlg1,{|| iIf(Empty(c_File), ShowHelpDlg("Validação de Arquivo",{c_Erro},5,{"Selecione um arquivo CSV válido."},5), jbbuilder())},037,12,,,,.T.,,"",,,,.F. )
+	oBtn2      := TButton():New( 021,180,"&Atualizar",oDlg1,{|| iIf(Empty(c_File),Help(NIL, NIL, "Validação de Arquivo.", NIL, c_Erro,1, 0,NIL, NIL, NIL, NIL, NIL, {"Selecione um arquivo CSV válido."}), jbbuilder())},037,12,,,,.T.,,"",,,,.F. )
 	oBtn3      := TButton():New( 038,180,"&Sair",oDlg1,{|| oDlg1:End()},037,12,,,,.T.,,"",,,,.F. )
 	oGrp1      := TGroup():New( 018,004,050,176,"Descrição",oDlg1,CLR_BLACK,CLR_WHITE,.T.,.F. )
 	oSay2      := TSay():New( 026,016,{||c_Texto},oGrp1,,,.F.,.F.,.F.,.T.,CLR_BLACK,CLR_WHITE,160,036)
@@ -99,7 +99,7 @@ Static Function jbimportdata()
 	Private l_CriaTb	:= .T.  //Controla a criacao da tabela temporaria
 	Private oFont		:= TFont():New( "Verdana",0,-11,,.F.,0,,400,.F.,.F.,,,,,, )
 
-	If AVISO(SM0->M0_NOMECOM,"Esta rotina irá atualizar os dados da tabela SG1 - Estruturas de Produto. Deseja realmente continuar?",{"Sim","Não"},2,"Atenção") == 1
+	If AVISO("JB Manipulação da tabela SG1","Esta rotina irá atualizar os dados da tabela SG1 - Estruturas de Produto. Deseja realmente continuar?",{"Sim","Não"},2,"Atenção") == 1
 		If l_CriaTb
 			Aadd(a_Bord,{"TB_POS"  	  , "N", 6				      , 0					 })
 			Aadd(a_Bord,{"TB_PRODUTO" , "C", TamSX3("B1_COD")[1]  , 0					 })
@@ -114,9 +114,8 @@ Static Function jbimportdata()
 		EndIf
 
 		If FT_FUSE(ALLTRIM(c_File)) == -1
-			ShowHelpDlg("Validação de Arquivo",;
-				{"O arquivo "+ALLTRIM(c_File)+" não foi encontrado."},5,;
-				{"VerIfique se o caminho está correto ou se o arquivo ainda se encontra no local indicado."},5)
+			Help(NIL, NIL, "Validação de Arquivo.", NIL, "O arquivo "+ALLTRIM(c_File)+" não foi encontrado.",1, 0,;
+				NIL, NIL, NIL, NIL, NIL, {"Verifique se o caminho está correto ou se o arquivo ainda se encontra no local indicado."})
 			Return Nil
 		EndIf
 
@@ -142,6 +141,14 @@ Static Function jbimportdata()
 				// 	MsUnlock()
 				// 	Aadd(a_Bloqueio, c_CodPro)
 				// EndIf
+				// Reclock("TRC",.T.)
+				// 	TRC->TB_POS     := n_Pos //LINHA DO ARQUIVO
+				// 	TRC->TB_PRODUTO := c_CodPro
+				// 	TRC->TB_QB      := n_QB
+				// 	TRC->TB_MP      := c_MatPri
+				// 	TRC->TB_QUANT   := n_Quant
+				// 	TRC->TB_OBS     := c_Obs
+				// MsUnlock()
 			Else
 				n_QtdErr++
 				c_MatPri := PADR(UPPER(a_Buffer[6]), TAMSX3("B1_COD")[1])
@@ -150,12 +157,12 @@ Static Function jbimportdata()
 				l_Erro   := .T.
 
 				Reclock("TRC",.T.)
-				TRC->TB_POS     := n_Pos //LINHA DO ARQUIVO
-				TRC->TB_PRODUTO := c_CodPro
-				TRC->TB_QB      := n_QB
-				TRC->TB_MP      := c_MatPri
-				TRC->TB_QUANT   := n_Quant
-				TRC->TB_OBS     := c_Obs
+					TRC->TB_POS     := n_Pos //LINHA DO ARQUIVO
+					TRC->TB_PRODUTO := c_CodPro
+					TRC->TB_QB      := n_QB
+					TRC->TB_MP      := c_MatPri
+					TRC->TB_QUANT   := n_Quant
+					TRC->TB_OBS     := c_Obs
 				MsUnlock()
 
 				While (!FT_FEOF() .And. c_CodAux == c_CodPro)
@@ -196,13 +203,13 @@ Static Function jbimportdata()
 					n_QtdErr++
 					c_Obs  := "Estrutura do Produto " + AllTrim(c_CodPro) + " não foi atualizada pela rotina, porque o Produto " + AllTrim(c_MatPri) + " não está cadastrado no sistema."
 					l_Erro := .T.
-					Reclock("TRC",.T.)
-					TRC->TB_POS     := n_Pos //LINHA DO ARQUIVO
-					TRC->TB_PRODUTO := c_CodPro
-					TRC->TB_QB      := n_QB
-					TRC->TB_MP      := c_MatPri
-					TRC->TB_QUANT   := n_Quant
-					TRC->TB_OBS     := c_Obs
+						Reclock("TRC",.T.)
+						TRC->TB_POS     := n_Pos //LINHA DO ARQUIVO
+						TRC->TB_PRODUTO := c_CodPro
+						TRC->TB_QB      := n_QB
+						TRC->TB_MP      := c_MatPri
+						TRC->TB_QUANT   := n_Quant
+						TRC->TB_OBS     := c_Obs
 					MsUnlock()
 				EndIf
 
@@ -258,21 +265,21 @@ Static Function jbimportdata()
 				// Next
 
 				Reclock("TRC",.T.)
-				TRC->TB_POS     := n_Pos-1 //LINHA DO ARQUIVO
-				TRC->TB_PRODUTO := c_CodPro
-				TRC->TB_QB      := n_QB
-				TRC->TB_MP      := c_MatPri
-				TRC->TB_QUANT   := n_Quant
-				TRC->TB_OBS     := c_Obs
+					TRC->TB_POS     := n_Pos-1 //LINHA DO ARQUIVO
+					TRC->TB_PRODUTO := c_CodPro
+					TRC->TB_QB      := n_QB
+					TRC->TB_MP      := c_MatPri
+					TRC->TB_QUANT   := n_Quant
+					TRC->TB_OBS     := c_Obs
 				MsUnlock()
 			EndIf
 		End
 
 		FT_FUSE()
 
-		AVISO(SM0->M0_NOME,"O programa processou todo o arquivo com " + ALLTRIM(STR(n_QtdInc+n_QtdErr)) ;
+		AVISO("JB Manipulação da tabela SG1","O programa processou todo o arquivo com " + ALLTRIM(STR(n_QtdInc+n_QtdErr)) ;
 			+ " registros. Foram atualizados " + ALLTRIM(STR(n_QtdInc)) + " registros e " + ALLTRIM(STR(n_QtdErr)) ;
-			+ " registros não foram atualizados para a Filial " + AllTrim(cFilAnt) + " - " + AllTrim(SM0->M0_FILIAL) + ".",{"OK"},2,"Aviso")
+			+ " registros não foram atualizados para a Filial " + AllTrim(cFilAnt) + " - " + "JB Imports" + ".",{"OK"},2,"Aviso")
 
 		//SE HOUVE PRODUTOS ATUALIZADOS, MOSTRA NA TELA.
 		DbSelectArea("TRC")
@@ -294,14 +301,13 @@ Static Function jbimportdata()
 
 		o_Dlg:Activate(,,,.T.)
 
+		//Após fazer o uso da tabela, as boas práticas pedem que a mesma seja fechada
+		//O método Delete efetuar a exclusão da tabela e também fecha a workarea da mesma
 		DbSelectArea("TRC")
 		TRC->(DbCloseArea())
+		oJbTemp:Delete()
+
 	EndIf
-
-	//Após fazer o uso da tabela, as boas práticas pedem que a mesma seja fechada
-	//O método Delete efetuar a exclusão da tabela e também fecha a workarea da mesma
-	oJbTemp:Delete()
-
 
 Return Nil
 
@@ -348,7 +354,7 @@ Static Function jbExpotLog()
 		TRC->(DBSKIP())
 	End
 
-	AVISO(SM0->M0_NOMECOM,"Log gerado para o arquivo " + Lower(c_LogFile), {"Ok"}, 2, "Atenção")
+	AVISO("JB Manipulação da tabela SG1","Log gerado para o arquivo " + Lower(c_LogFile), {"Ok"}, 2, "Atenção")
 	FCLOSE(c_Destino)
 	DbSelectArea("TRC")
 	DbGoTop()
@@ -379,7 +385,7 @@ Static Function jbmt200()
 
 	PARAMIXB1 := {{"G1_COD", c_CodPro, NIL},;
 		{"G1_QUANT", n_QB, NIL},;	// Quantidade base será de 1 Kg	para evitar grAndes distorções nos valores
-	{"G1_TRT", c_Revisao, NIL},;
+		{"G1_TRT", c_Revisao, NIL},;
 		{"NIVALT", "S", NIL}} 	// A variável NIVALT é utilizada pra recalcular ou não a estrutura
 
 	// a_Materias[i][1]   	// Código do produto matéria prima
