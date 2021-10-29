@@ -13,6 +13,7 @@ User Function MT680VAL
 	Local l_Ret     := .T.
 	Local n_Op		:= M->H6_OP
 	Local d_DtValid := 	CTOD("  /  /    ")
+	Local nCount	:= 0
 
 	If l_Ret .And. l681
 		DbSelectArea("SZ7") //Seleciona a área da tabela customizada que controla as movimentações de estoque para o wms
