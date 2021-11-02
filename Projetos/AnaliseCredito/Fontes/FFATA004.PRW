@@ -10,7 +10,7 @@
 	• Found(): Verifica se o último DBSeek() encontrou algo
 */
 
-/*/{Protheus.doc} FFATA001
+/*/{Protheus.doc} FFATA004
 	Job para avaliação de todos os pedido de venda em aberto
 	afim de bloquear ou desbloquear o status do pedido com
 	base nos títulos em aberto do cliente.
