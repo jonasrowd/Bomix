@@ -14,6 +14,7 @@ User Function MTDGPERD
 	// Local n_Count := 0
 
 	If cFilAnt == '020101'
+
 		// Carrega as informações de perda da MASTER
 		fMasRes(c_OP)
 
@@ -31,19 +32,25 @@ User Function MTDGPERD
 			// EndIf
 
 			// Preenche os campos da primeira linha
-			n_Size := Len(aCols)
+			If Len(aCols) > 1
+				n_Size := 1
+			Else 
+				n_Size := Len(aCols)
+			EndIf
 			GDFieldPut("BC_PRODUTO", c_Prod, n_Size)
 			GDFieldPut("BC_CODDEST", ESPEC->B1_FSPRODC, n_Size)
 			GDFieldPut("BC_DTVALID", dDatabase, n_Size)
 			GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+ESPEC->B1_FSPRODC, "B1_DESC"), n_Size)
 			GDFieldPut("BC_LOCAL", POSICIONE("SB1", 1, XFILIAL("SB1")+ESPEC->B1_FSPRODC, "B1_LOCPAD"), n_Size)
 			GDFieldPut("BC_QUANT", 0, n_Size)
-			//GDFieldPut("BC_LOTECTL", M->H6_LOTECTL, n_Size)
+			GDFieldPut("BC_LOTECTL", M->H6_LOTECTL, n_Size)
 
 			// Percorre os itens da resina
 			// While (!ESPEC->(EOF()))
-			// Adiciona uma nova linha no aCols
-			AddNewLine()
+			If len(acols) == 1
+				// Adiciona uma nova linha no aCols
+				AddNewLine()
+			EndIf
 			n_Size := Len(aCols)
 			// Preenche os campos da primeira linha
 			GDFieldPut("BC_PRODUTO", c_Prod, n_Size)
@@ -56,7 +63,7 @@ User Function MTDGPERD
 			GDFieldPut("BC_QTSEGUM", n_QtdSegUm, n_Size)
 			GDFieldPut("BC_QTDDEST", n_Qtd, n_Size)
 			GDFieldPut("BC_QTDDES2", n_QtdSegUm, n_Size)
-			//GDFieldPut("BC_LOTECTL", M->H6_LOTECTL, n_Size)
+			GDFieldPut("BC_LOTECTL", M->H6_LOTECTL, n_Size)
 
 				// Salta para o próximo registro de resina
 				// ESPEC->(DBSkip())
@@ -66,13 +73,13 @@ User Function MTDGPERD
 			// MASTER->(DBSkip())
 		// End
 
-		// Fecha o alias do produto móido
+		// Fecha o alias do produto moido
 		// If (Select("ESPEC") > 0)
-		// 	DBSelectArea("ESPEC")
-		// 	DBCloseArea()
+		// DBSelectArea("ESPEC")
+		// DBCloseArea()
 		// EndIf
 
-			// Fecha o alias da MASTER
+		// Fecha o alias da MASTER
 		// If (Select("MASTER") > 0)
 		// 	DBSelectArea("MASTER")
 		// 	DBCloseArea()
@@ -85,10 +92,10 @@ User Function MTDGPERD
 		If Found()
 			n_Peso := SB1->B1_PESO
 			n_Size := Len(aCols)
-			If Len(aCols) >0
+			If Len(aCols) > 0
 				GDFieldPut('BC_PRODUTO', c_Prod, n_Size)
 				GDFieldPut("BC_CODDEST", SB1->B1_FSPRODC, n_Size)
-				GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+SB1->B1_FSPRODC, "B1_DESC"), n_Size)
+				GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1") + SB1->B1_FSPRODC, "B1_DESC"), n_Size)
 				GDFieldPut('BC_QUANT', n_Qtd, n_Size)
 				GDFieldPut("BC_QTDDEST", n_Qtd, n_Size)
 				n_QtdSegUm := n_Qtd * n_Peso
@@ -100,10 +107,10 @@ User Function MTDGPERD
 		EndIf
 
 		If 	Len(aCols) > 0
-		aCols[Len(aCols)][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_PRODUTO'})] := c_Prod
-		//	aCols[Len(aCols)][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_LOCORIG'})] := c_Local
-		aCols[Len(aCols)][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})]   := n_Qtd
-	EndIf	
+		// aCols[Len(aCols)][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_PRODUTO'})] := c_Prod
+		// aCols[Len(aCols)][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_LOCORIG'})] := c_Local
+		// aCols[Len(aCols)][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})]   := n_Qtd
+		EndIf	
 	EndIf
 
 	// Restaura a área de trabalho anterior
@@ -221,6 +228,7 @@ Static Function fSerCor(c_Serie, c_Cor)
 			AND B1_SERIE	= %EXP:AllTrim(c_Serie)%
 			AND B1_BRTPPR	= 'MATERIAL REPROVADO'
 			AND B1_BRCORG	= %EXP:AllTrim(c_Cor)%
+			AND B1_FILIAL	= %XFILIAL:SB1%
 	ENDSQL
 
 	// Restaura a área anterior
@@ -301,6 +309,8 @@ Return l_Ret
 User Function DIGPEROK
 	Local a_Area := GetArea()
 	Local l_Ret  := .T.
+	// LOCAL I := 0
+    // LOCAL TRANSFUM := 0
 	// Local c_OP   := M->H6_OP
 	// Local i
 
@@ -426,6 +436,17 @@ User Function DIGPEROK
 	EndIf
 
 	If cFilAnt == '020101'
+
+		// FOR I:=1 TO LEN(ACOLS)
+		// 	IF ("BORRA" $ ACOLS[I][4] .AND. ACOLS[I][33]==.F.)
+		// 		TRANSFUM := TRANSFUM + (ACOLS[I][2]/M->H6_FSPESOI)
+		// 	ELSE 
+		// 		TRANSFUM := TRANSFUM + (ACOLS[I][2])
+		// 	ENDIF
+		// NEXT
+
+		// NQNTPERD := TRANSFUM
+		// M->H6_QTDPERD := TRANSFUM
 	EndIf
 
 	// If l_Ret

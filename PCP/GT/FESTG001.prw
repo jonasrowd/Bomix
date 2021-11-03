@@ -37,7 +37,7 @@ User Function FESTG001
 			EndIf
 
 			// VERIfICAÇÃO DA CONDIÇÃO DE UN/PC FRACIONADO INSERIDO POR VICTOR SOUSA 02/12/19
-			If RTRIM(c_Um) $ "UN/PC" .AND.  n_QtdPer%1<>0
+			If RTRIM(c_Um) $ "UN/PC" .AND.  n_QtdPer%1 <> 0
 				MsgInfo("Quantidade fracionada não permitida para este produto. Vou corrigir pra você.", "Nao é assim!") 	
 				aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})]:= M->H6_QTDPERD
 			EndIf
@@ -54,49 +54,58 @@ User Function FESTG001
 			EndIf
 		EndIf
 
-	// ElseIf cFilAnt == '020101'
+	ElseIf cFilAnt == '020101'
 	
-	// 	If aCols[n][Len(aHeader) + 1] == .F.
-	// 		c_Prod	:= aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_PRODUTO'})]
-	// 		If n==1
-	// 			n_QtdPer := aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})]
-	// 			aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QTSEGUM'})] := n_QtdPer
-	// 			n_QtdDest := n_QtdPer
-	// 			aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QTDDES2'})] := n_QtdPer
-	// 		Else
-	// 			c_Dest	:= aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_CODDEST'})]
-	// 			n_QtdPer := M->H6_QTDPERD
-	// 			If aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})] <> M->H6_QTDPERD
-	// 				MsgInfo("A quantidade digitada é diferente da tela anterior. Vou corrigir pra você.", "Divergencia!")
-	// 				aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})] := M->H6_QTDPERD
-	// 			EndIf
+		If aCols[n][Len(aHeader) + 1] == .F.
+			c_Prod	:= aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_PRODUTO'})]
+			If n==1
+				n_QtdPer := aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})]
+				aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QTSEGUM'})] := n_QtdPer
+				n_QtdDest := n_QtdPer
+				aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QTDDES2'})] := n_QtdPer
+				aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QTDDEST'})] := n_QtdDest
+			Else
+				c_Dest	:= aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_CODDEST'})]
+				n_QtdPer := M->H6_QTDPERD
+				If aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})] <> M->H6_QTDPERD
+					// MsgInfo("NÃO PODE APONTAR .", "NÃO PODE!!!!!")
+				EndIf
 
-	// 			dbSelectArea("SB1")
-	// 			SB1->(dbSetOrder(1))
-	// 			If SB1->(dbSeek(xFilial("SB1") + c_Prod))
-	// 				n_Peso	:= SB1->B1_PESO
-	// 			EndIf
+				dbSelectArea("SB1")
+				SB1->(dbSetOrder(1))
+				If SB1->(dbSeek(xFilial("SB1") + c_Prod))
+					c_Um    := SB1->B1_UM
+					n_Peso	:= SB1->B1_PESO
+					c_Grupo := SB1->B1_GRUPO
+				EndIf
 
-	// 			dbSelectArea("SB1")
-	// 			SB1->(dbSetOrder(1))
-	// 			If SB1->(dbSeek(xFilial("SB1") + c_Dest))
-	// 				c_UmDest := SB1->B1_UM
-	// 			EndIf
+				dbSelectArea("SB1")
+				SB1->(dbSetOrder(1))
+				If SB1->(dbSeek(xFilial("SB1") + c_Dest))
+					c_UmDest := SB1->B1_UM
+				EndIf
 
-	// 			If RTRIM(c_Um) $ "UN/PC" .AND.  n_QtdPer%1<>0
-	// 				MsgInfo("Quantidade fracionada não permitida para este produto. Vou corrigir pra você.", "Nao é assim!") 	
-	// 				aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})]:= M->H6_QTDPERD
-	// 			EndIf
+				If RTRIM(c_Um) $ "UN/PC" .AND.  n_QtdPer % 1 <> 0
+					MsgInfo("Quantidade fracionada não permitida para este produto. Vou corrigir pra você.", "Nao é assim!") 	
+					aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})]:= M->H6_QTDPERD
+				EndIf
 
-	// 			If c_Um == c_UmDest
-	// 				n_QtdDest := n_QtdPer
-	// 			ElseIf c_Um $ "UN/PC" .And. c_UmDest $ "UN/PC"
-	// 				n_QtdDest := n_QtdPer
-	// 			ElseIf c_Um $ "UN/PC" .And. AllTrim(c_UmDest) == "KG"
-	// 				n_QtdDest := n_QtdPer * n_Peso
-	// 			EndIf
-	// 		EndIf
-	// 	EndIf
+				If AllTrim(c_Um) == AllTrim(c_UmDest)
+					AllTrim(n_QtdDest) := AllTrim(n_QtdPer)
+				ElseIf AllTrim(c_Um) $ "UN|PC" .And. AllTrim(c_UmDest) $ "UN|PC"
+					AllTrim(n_QtdDest) := AllTrim(n_QtdPer)
+				ElseIf AllTrim(c_Um) $ "UN|PC" .And. AllTrim(c_UmDest) == "KG"
+					n_QtdDest := n_QtdPer * n_Peso
+				EndIf
+
+				aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QTSEGUM'})] := n_QtdDest
+				aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})]	  := M->H6_QTDPERD
+				aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QTDDES2'})] := n_QtdDest
+				aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QTDDEST'})] := M->H6_QTDPERD
+				n_QtdDest := M->H6_QTDPERD
+
+			EndIf
+		EndIf
 	EndIf
 
 	RestArea(a_Area)

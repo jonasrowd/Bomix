@@ -11,11 +11,15 @@
 /*/
 User Function MA650EMP()
 
-    Local i				:= 0
+    Local i,j,k			:= 0
     Local nOpc 			:= 5 //3 - Inclusao, 4 - Alteracao, 5 - Exclusao
     Local cOp			:= SD4->D4_OP //SD4 está posicionada na ultima op gerada
 	Local aMATA650		:= {} //-Array com os campos
     Local DDATABASE		:= DATE()
+    Local nResori := 0   //Quantidade origem da Resina
+    Local nMasori := 0   //Quantidade origem da Master
+    Local nTotal  := 0   //Total Master+Resina
+    Local nPerc   := 0   //Percentual de Master e Resina
 	Private l_Email		:= .T.
     Private lMsErroAuto := .F.
 	Private c_Email		:= 'ti@bomix.com.br'
@@ -55,6 +59,31 @@ User Function MA650EMP()
         EndIf
     Next
 
+    IF (INCLUI)//Se for alteração ou inclusão, realiza o cálculo
+        For j:=1 to Len(Acols)
+            If "RESINA" $ AllTrim(Acols[j][14])
+                nResori := nResori + Acols[j][2] //Soma se tiver mais de uma resina no Acols
+            EndIf
+            If "MASTER" $ Alltrim(Acols[j][14])
+                nMasori := nMasori + Acols[j][2] //Soma caso algum dia tenha mais de uma master
+            EndIf
+        Next j
+
+        nTotal := nResori + nMasori
+
+        For k:=1 to Len(Acols)
+            If ("MASTER" $ Alltrim(Acols[k][14]) .Or. "RESINA" $ Alltrim(Acols[k][14]))
+                nPerc := ((Acols[k][2]) / nTotal) * 100 //Calcula o percentual de cada Master / resina
+                DbSelectArea("SD4")
+                DbSetOrder(1)
+                DbSeek(FwXFilial("SD4") + Acols[k][1] + cOp)
+                RecLock("SD4", .F.)
+                    SD4->D4_FSPM_R := Round(nPerc,2) //Grava no campo específico a proporção de cada item
+                MsUnlock()
+            EndIf
+        Next k
+    ENDIF
+
 	// Gera um novo alias para a tabela temporária
 	c_AliasAux := GetNextAlias()
 
@@ -62,14 +91,14 @@ User Function MA650EMP()
 	// gerar Ordem de Produção
 	BEGINSQL ALIAS c_AliasAux
 		SELECT
-			C2.C2_FILIAL  CFILAUX,
-			C2.C2_NUM     CNUMAUX,
-			C2.C2_ITEM    CITEMAUX,
-			C2.C2_SEQUEN  CSEQAUX,
-			C2.C2_PRODUTO CPRODAUX,
-			B1.B1_BRTPPR  CBRITOAUX,
-			C2.C2_LOCAL	  CLOCALAUX,
-			C2.C2_QUANT	  CQUANTAUX,
+			C2.C2_FILIAL   CFILAUX  ,
+			C2.C2_NUM      CNUMAUX  ,
+			C2.C2_ITEM     CITEMAUX ,
+			C2.C2_SEQUEN   CSEQAUX  ,
+			C2.C2_PRODUTO  CPRODAUX ,
+			B1.B1_BRTPPR   CBRITOAUX,
+			C2.C2_LOCAL	   CLOCALAUX,
+			C2.C2_QUANT	   CQUANTAUX,
 			Z05.Z05_GERAOP CCARROAUX
 		FROM
 			%TABLE:SC2% C2

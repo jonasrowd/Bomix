@@ -1,7 +1,7 @@
 //Bibliotecas necessárias
 #Include "TOTVS.CH"
 
-/*/{Protheus.doc} jbimportsg1
+/*/{Protheus.doc} FPCPA001
 	Importação e alteração de estrutura de produtos a partir de um arquivo csv
 	@type Function
 	@version 12.1.25
@@ -36,7 +36,7 @@
 	B05C00010;;960;;;P00B00076;;48
 	B05C00010;;960;;;P00B00145;;2
 /*/
-User Function jbimportsg1()
+User Function FPCPA001()
 	Local c_Texto  := "Esta rotina tem a finalidade de atualizar os dados da tabela SG1 - Estrutura de Produtos, a partir do arquivo CSV selecionado  pelo usuário."
 	Local c_Erro   := "É necessário selecionar o arquivo CSV para efetuar essa operação."
 	Private c_File := Space(500)	//Arquivo

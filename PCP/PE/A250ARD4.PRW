@@ -11,18 +11,89 @@
 /*/
 User Function A250ARD4()
     Local nX := 0
-    aSd4  := PARAMIXB
+    Local xRotAuto := {}
+    Local aRefugos := {}
+    Private cQtdProd    := 0
+    Private aSd4        := PARAMIXB
+    Private l_Email		:= .T.
+	Private c_Email		:= 'ti@bomix.com.br'
+	Private c_Titulo	:= "Erro no consumo da perda da OP: " + SH6->H6_OP + "."
+	Private c_Corpo		:= c_Titulo + CRLF + "Acionamento: Key User para verificar com o usuário " + UsrRetName(__CUSERID) +" o ocorrido."
+    Private nPerdaborra := 0
+    Private cPt         := SH6->H6_PT
+    Private cOp         := SH6->H6_OP
+    Private cRec        := SH6->H6_RECURSO
+    Private dData       := dDataBase
+    Private cProd       := SH6->H6_PRODUTO
+    Private cDtIni      := SH6->H6_DATAINI
+    Private cHrIni      := SH6->H6_HORAINI
+    Private cDtFim      := SH6->H6_DATAFIN
+    Private cHrFim      := SH6->H6_HORAFIN
+    Private cLocal      := SH6->H6_LOCAL
+    Private cOperac     := SH6->H6_OPERAC
+    Private cQtdPerd    := APERDA[1][2]
+    Private cRfProd     := APERDA[1][10]
+    Private lMsErroAuto := .F.
 
-    If SH6->H6_QTDPERD > 0
-        For nX := 1 to Len(aSd4[1])
-            DbSelectArea("SB1")
-            DbSetOrder(1)
-            If DbSeek(FwXFilial("SB1") + aSd4[1][nX][3])
-                If !gravaPerda(aSd4[1][nX][3])
-                    aSd4[1][nX][2] := 0
+    If cFilAnt == "020101"
+        If SH6->H6_QTDPERD > 0
+            If ("BORRA" $ APERDA[1][4] .AND. APERDA[1][33]==.F.)
+                // DBSELECTAREA("SD4")
+                // DBSETORDER(1)
+                // dbSeek(XFilial("SD4") + cRfProd + cOp)
+                nPerdaborra := (APERDA[1][2] / SH6->H6_FSPESOI)
+                xRotAuto := {;
+                            {"H6_FILIAL"    , FWxFilial("SH6"),Nil},;
+                            {"H6_OP"        , cOp             ,Nil},;
+                            {"H6_PRODUTO"   , cProd           ,Nil},;
+                            {"H6_OPERAC"    , cOperac         ,Nil},;
+                            {"H6_RECURSO"   , cRec            ,Nil},;
+                            {"H6_DATAINI"   , cDtIni          ,Nil},;
+                            {"H6_HORAINI"   , cHrIni          ,Nil},;
+                            {"H6_DATAFIN"   , cDtFim          ,Nil},;
+                            {"H6_HORAFIN"   , cHrFim          ,Nil},;
+                            {"H6_PT"        , cPt             ,Nil},;
+                            {"H6_LOCAL"     , cLocal          ,Nil},;
+                            {"H6_QTDPROD"   , cQtdProd        ,Nil},;
+                            {"H6_QTDPERD"   , nPerdaborra     ,Nil};
+                            }
+                cRfLocOrig      := APERDA[1][12]
+                cRfTipo         := APERDA[1][17]
+                cRfMotivo       := APERDA[1][1]
+                cRfQuant        := APERDA[1][2]
+
+                aAdd(aRefugos, {;
+                            {"BC_PRODUTO"  , cRfProd       ,Nil},;
+                            {"BC_LOCORIG"  , cRfLocOrig    ,Nil},;
+                            {"BC_TIPO"     , cRfTipo       ,Nil},;
+                            {"BC_MOTIVO"   , cRfMotivo     ,Nil},;
+                            {"BC_QUANT"    , cRfQuant      ,Nil};
+                            })
+
+                If Len(aRefugos) > 0
+                    aAdd(xRotAuto, {"AUTREFUGO", aRefugos, Nil})
                 EndIf
+
+                msExecAuto({|x,y| MATA681(x,y)},xRotAuto,3)
+
+                If lMsErroAuto
+                    jEnvMail()
+                    Help(NIL, NIL, 'ERR_OP', NIL, 'Erro no ajuste de Empenho e Op.',;
+                        1, 0, NIL, NIL, NIL, NIL, NIL, {'Encaminhe esta Op ao time de TI para acompanhar o processo.'})
+                    MostraErro()
+                Endif
             EndIf
-        Next
+
+            For nX := 1 to Len(aSd4[1])
+                DbSelectArea("SB1")
+                DbSetOrder(1)
+                If DbSeek(FwXFilial("SB1") + aSd4[1][nX][3])
+                    If !gravaPerda(aSd4[1][nX][3])
+                        aSd4[1][nX][2] := 0
+                    EndIf
+                EndIf
+            Next
+        EndIf
     EndIf
 
     If cFilAnt == "010101"
@@ -33,6 +104,17 @@ User Function A250ARD4()
                 DbSeek(FwXFilial("SB1") + aSd4[1][nX][3])
                 If !fConsumo(aSd4[1][nX][3],aSd4[1][nX][11])
                     aSd4[1][nX][2] := 0
+                EndIf
+            Next
+        EndIf
+        If SH6->H6_QTDPERD > 0
+            For nX := 1 to Len(aSd4[1])
+                DbSelectArea("SB1")
+                DbSetOrder(1)
+                If DbSeek(FwXFilial("SB1") + aSd4[1][nX][3])
+                    If !gravaPerda(aSd4[1][nX][3])
+                        aSd4[1][nX][2] := 0
+                    EndIf
                 EndIf
             Next
         EndIf
