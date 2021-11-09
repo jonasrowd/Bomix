@@ -12,79 +12,16 @@ User Function MTDGPERD
 	Local n_Qtd   := PARAMIXB[3] //
 	Local n_Size  := 0           //
 	// Local n_Count := 0
+	Local oSayTela
+	Local oBtnCancel
+	Local oBtnMater
+	Local oBtnBorra
+	Local cRet 			:= ""
+	Local xLinha 		:= 10
+	Local cMensagem	:= ""
+	Public oDlg
 
-	If cFilAnt == '020101'
-
-		// Carrega as informações de perda da MASTER
-		fMasRes(c_OP)
-
-		// Carrega as informações de perda da resina
-		fSerCor(MASTER->ResinaSerie, MASTER->MasterCor)
-
-		// Percorre os itens da MASTER
-		// While (!MASTER->(EOF()))
-			// Incrementa o contador
-			// n_Count++
-
-			// Adiciona nova linha no aCols
-			// If (n_Count > 1)
-			// 	AddNewLine()
-			// EndIf
-
-			// Preenche os campos da primeira linha
-			If Len(aCols) > 1
-				n_Size := 1
-			Else 
-				n_Size := Len(aCols)
-			EndIf
-			GDFieldPut("BC_PRODUTO", c_Prod, n_Size)
-			GDFieldPut("BC_CODDEST", ESPEC->B1_FSPRODC, n_Size)
-			GDFieldPut("BC_DTVALID", dDatabase, n_Size)
-			GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+ESPEC->B1_FSPRODC, "B1_DESC"), n_Size)
-			GDFieldPut("BC_LOCAL", POSICIONE("SB1", 1, XFILIAL("SB1")+ESPEC->B1_FSPRODC, "B1_LOCPAD"), n_Size)
-			GDFieldPut("BC_QUANT", 0, n_Size)
-			GDFieldPut("BC_LOTECTL", M->H6_LOTECTL, n_Size)
-
-			// Percorre os itens da resina
-			// While (!ESPEC->(EOF()))
-			If len(acols) == 1
-				// Adiciona uma nova linha no aCols
-				AddNewLine()
-			EndIf
-			n_Size := Len(aCols)
-			// Preenche os campos da primeira linha
-			GDFieldPut("BC_PRODUTO", c_Prod, n_Size)
-			GDFieldPut("BC_CODDEST", ESPEC->B1_COD, n_Size)
-			GDFieldPut("BC_DTVALID", dDatabase, n_Size)
-			GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+ESPEC->B1_COD, "B1_DESC"), n_Size)
-			GDFieldPut("BC_LOCAL", ESPEC->B1_LOCPAD,n_Size)
-			GDFieldPut("BC_QUANT", n_Qtd, n_Size)
-			n_QtdSegUm := n_Qtd * (MASTER->Peso)
-			GDFieldPut("BC_QTSEGUM", n_QtdSegUm, n_Size)
-			GDFieldPut("BC_QTDDEST", n_Qtd, n_Size)
-			GDFieldPut("BC_QTDDES2", n_QtdSegUm, n_Size)
-			GDFieldPut("BC_LOTECTL", M->H6_LOTECTL, n_Size)
-
-				// Salta para o próximo registro de resina
-				// ESPEC->(DBSkip())
-			// End
-
-		// 	// Salta para o próximo registro da MASTER
-			// MASTER->(DBSkip())
-		// End
-
-		// Fecha o alias do produto moido
-		// If (Select("ESPEC") > 0)
-		// DBSelectArea("ESPEC")
-		// DBCloseArea()
-		// EndIf
-
-		// Fecha o alias da MASTER
-		// If (Select("MASTER") > 0)
-		// 	DBSelectArea("MASTER")
-		// 	DBCloseArea()
-		// EndIf
-	ElseIf cFilAnt == '010101' //Para filial Bomix continua carregando a quantidade da perda
+If cFilAnt == '010101' //Para filial Bomix continua carregando a quantidade da perda
 
 		DbSelectArea("SB1")
 		DbSetOrder(1)
@@ -111,7 +48,98 @@ User Function MTDGPERD
 		// aCols[Len(aCols)][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_LOCORIG'})] := c_Local
 		// aCols[Len(aCols)][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})]   := n_Qtd
 		EndIf	
+
+ElseIf cFilAnt == '020101'
+
+
+			cMensagem := "O Apontamento de perda será para Borra ou Material Reprovado?"
+
+			DEFINE MSDIALOG oDlg TITLE OemToAnsi("Atenção!") FROM 000,000 TO 180,650 PIXEL
+			oSayTela	:= TSay():New(10,10,{||AllTrim(cMensagem)},oDlg,,,,,,.T.,,,100,400,,,,,,)
+			oBtnBorra	:= TButton():New(060,070+xLinha,"Apontar Borra"					,oDlg,{||cRet := "Borra",oDlg:End()},50,20,,,,.T.,,"",,,,.F.) //P
+			oBtnMater	:= TButton():New(060,130+xLinha,"Apontar Mat. Reprovado"		,oDlg,{||cRet := "Material",oDlg:End()},80,20,,,,.T.,,"",,,,.F.) //L
+			oBtnCancel	:= TButton():New(060,250+xLinha,"Voltar",oDlg,{||oDlg:End()},50,20,,,,.T.,,"",,,,.F.)
+			ACTIVATE MSDIALOG oDlg CENTERED
+
+
+		// Carrega as informações de perda da MASTER
+		fMasRes(c_OP)
+
+		// Carrega as informações de perda da resina
+		fSerCor(MASTER->ResinaSerie, MASTER->MasterCor)
+
+		// Percorre os itens da MASTER
+		// While (!MASTER->(EOF()))
+			// Incrementa o contador
+			// n_Count++
+
+			// Adiciona nova linha no aCols
+			// If (n_Count > 1)
+			// 	AddNewLine()
+			// EndIf
+			// Preenche os campos da primeira linha
+			If Len(aCols) > 1
+				n_Size := 1
+			Else 
+				n_Size := Len(aCols)
+			EndIf
+	If cRet == "Borra"
+		
+			GDFieldPut("BC_PRODUTO", c_Prod, n_Size)
+			GDFieldPut("BC_CODDEST", ESPEC->B1_FSPRODC, n_Size)
+			GDFieldPut("BC_DTVALID", dDatabase, n_Size)
+			GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+ESPEC->B1_FSPRODC, "B1_DESC"), n_Size)
+			GDFieldPut("BC_LOCAL", POSICIONE("SB1", 1, XFILIAL("SB1")+ESPEC->B1_FSPRODC, "B1_LOCPAD"), n_Size)
+			GDFieldPut("BC_QUANT", n_Qtd, n_Size)
+			GDFieldPut("BC_LOTECTL", M->H6_LOTECTL, n_Size)
+			GDFieldPut("BC_QTSEGUM", n_Qtd, n_Size)
+			GDFieldPut("BC_QTDDEST", n_Qtd, n_Size)
+			GDFieldPut("BC_QTDDES2", n_Qtd, n_Size)
+
+			// Percorre os itens da resina
+			// While (!ESPEC->(EOF()))
+			// If len(acols) == 1
+			// 	// Adiciona uma nova linha no aCols
+			// 	AddNewLine()
+			// EndIf
+	ElseIf cRet == "Material"
+			n_Size := Len(aCols)
+			// Preenche os campos da primeira linha
+			GDFieldPut("BC_PRODUTO", c_Prod, n_Size)
+			GDFieldPut("BC_CODDEST", ESPEC->B1_COD, n_Size)
+			GDFieldPut("BC_DTVALID", dDatabase, n_Size)
+			GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+ESPEC->B1_COD, "B1_DESC"), n_Size)
+			GDFieldPut("BC_LOCAL", ESPEC->B1_LOCPAD,n_Size)
+			n_Qtd := n_Qtd * (MASTER->Peso)
+			GDFieldPut("BC_QUANT", n_Qtd, n_Size)
+			n_QtdSegUm := n_Qtd * (MASTER->Peso)
+			GDFieldPut("BC_QTSEGUM", n_QtdSegUm, n_Size)
+			GDFieldPut("BC_QTDDEST", n_Qtd, n_Size)
+			GDFieldPut("BC_QTDDES2", n_QtdSegUm, n_Size)
+			GDFieldPut("BC_LOTECTL", M->H6_LOTECTL, n_Size)
 	EndIf
+
+				// Salta para o próximo registro de resina
+				// ESPEC->(DBSkip())
+			// End
+
+		// 	// Salta para o próximo registro da MASTER
+			// MASTER->(DBSkip())
+		// End
+
+		// Fecha o alias do produto moido
+		If (Select("ESPEC") > 0)
+		DBSelectArea("ESPEC")
+		DBCloseArea()
+		EndIf
+
+		// Fecha o alias da MASTER
+		If (Select("MASTER") > 0)
+			DBSelectArea("MASTER")
+			DBCloseArea()
+		EndIf
+
+EndIf
 
 	// Restaura a área de trabalho anterior
 	FwRestArea(a_Area)

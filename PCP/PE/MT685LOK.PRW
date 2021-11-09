@@ -10,10 +10,12 @@
 /*/
 USER FUNCTION MT685LOk()
 
-    LOCAL lret  := .T.
+    Local lret  := .T.
 
-    IF  n > 2
-        lret := .F.
-    ENDIF
+    If cFilAnt == '020101'
+        If n+1 > 1
+            lret := .F.
+        EndIf
+    EndIf
 
-RETURN lret
+Return lret

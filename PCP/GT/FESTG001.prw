@@ -58,13 +58,19 @@ User Function FESTG001
 	
 		If aCols[n][Len(aHeader) + 1] == .F.
 			c_Prod	:= aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_PRODUTO'})]
-			If n==1
-				n_QtdPer := aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})]
-				aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QTSEGUM'})] := n_QtdPer
-				n_QtdDest := n_QtdPer
-				aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QTDDES2'})] := n_QtdPer
-				aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QTDDEST'})] := n_QtdDest
-			Else
+			If "BORRA" $ aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_PRDEST'})]
+				// n_QtdPer := aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})]
+				// aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QTSEGUM'})] := n_QtdPer
+				// n_QtdDest := n_QtdPer
+				// aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QTDDES2'})] := n_QtdPer
+				// aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QTDDEST'})] := n_QtdDest1
+
+				aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QTSEGUM'})] := M->H6_QTDPERD
+				aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})]	  := M->H6_QTDPERD
+				aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QTDDES2'})] := M->H6_QTDPERD
+				aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QTDDEST'})] := M->H6_QTDPERD
+				n_QtdDest := M->H6_QTDPERD
+			ElseIf "MATERIAL" $ aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_PRDEST'})]
 				c_Dest	:= aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_CODDEST'})]
 				n_QtdPer := M->H6_QTDPERD
 				If aCols[n][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})] <> M->H6_QTDPERD

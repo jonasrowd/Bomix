@@ -8,7 +8,7 @@
 	@since 30/07/2021
 	@return variant, Logical
 /*/
-User Function MT680VAL
+User Function MT680VAL()
 	Local a_Area    := GetArea()
 	Local l_Ret     := .T.
 	Local n_Op		:= M->H6_OP
@@ -100,6 +100,49 @@ User Function MT680VAL
 			M->H6_FSCAVI  := SG2->G2_FSCAVI //Preenche a cavidade
 			M->H6_FSSETOR := SG2->G2_DESCRI //Preenche a descrição do setor
 			M->H6_CICLOPD := SG2->G2_FSCICLO //Preenche o ciclo padrão
+		EndIf
+	EndIf
+
+	If M->H6_PT == "T"
+		M->H6_PT := "P"
+	EndIf
+
+	If M->H6_PT == "P"
+		If (Select("MIAUD4") > 0)
+			DBSelectArea("MIAUD4")
+			DBCloseArea()
+		EndIf
+
+		BEGINSQL ALIAS "MIAUD4"
+			SELECT 
+				D4_COD AS PROD, 
+				D4_QUANT AS ORI,
+				D4_OP AS OP,
+				D4_FSTP AS TIPO
+			FROM  %TABLE:SD4%
+			WHERE D4_FILIAL = %XFILIAL:SD4%
+				AND %NOTDEL%
+				AND D4_OP = %EXP:M->H6_OP%
+		ENDSQL
+
+		While (!EOF())
+			DbSelectArea("SD4")
+			DbSetOrder(1)
+			DbSeek(FwXFilial("SD4") + MIAUD4->PROD + MIAUD4->OP)
+			If SD4->D4_QUANT < SD4->D4_FSQTDES
+				RecLock("SD4", .F.)
+					SD4->D4_QUANT := SD4->D4_FSQTDES
+				MsUnlock()
+			EndIf
+			MIAUD4->(DbSkip())
+		End
+
+		SD4->(DBCloseArea())
+	EndIf
+
+	If M->H6_QTDPERD > 0
+		If "BORRA" $ UPPER(APERDA[1][4])
+			M->H6_QTDPERD := (APERDA[1][2] / M->H6_FSPESOI)
 		EndIf
 	EndIf
 
