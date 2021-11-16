@@ -3,8 +3,8 @@
 #Include "TryException.CH"
 
 /*/{Protheus.doc} MT650OPPV
-	Ponto de entrada geração de Ordens de Produção a partir de pedidos selecionados, logo após o término da geração de OPs
-	por Venda (fora da transação). SIGAEST - Estoque/Custos, SIGAPCP - Planej. Contr. Prod. Este ponto de entrada está sendo utilizado para alterar
+	Ponto de entrada geração de Ordens de Produção a partir de pedidos selecionados, logo após o término da geração de OPs.
+	por Venda (fora da transação). SIGAEST - Estoque/Custos, SIGAPCP - Planej. Contr. Prod. Este ponto de entrada está sendo utilizado para alterar.
 	o tipo das Ordens de Produção geradas associadas a um Pedido de Venda quando o produto possui arte e a situação da arte no item do PV é nova ou alterada.
 	@type Function
 	@version 12.1.25

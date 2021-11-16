@@ -21,11 +21,7 @@ User Function MA650EMP()
     Local nMasori := 0   //Quantidade origem da Master
     Local nTotal  := 0   //Total Master+Resina
     Local nPerc   := 0   //Percentual de Master e Resina
-	Private l_Email		:= .T.
     Private lMsErroAuto := .F.
-	Private c_Email		:= 'ti@bomix.com.br'
-	Private c_Titulo	:= "OP: " + SD4->D4_OP + " Notificação de erro na exclusão automática do MATA650."
-	Private c_Corpo		:= c_Titulo + CRLF + "Acionamento Key User para verificar com o usuário " + UsrRetName(__CUSERID) +" o ocorrido."
 
     For i:=1 To Len(aCols)
         // Fecha a tabela de pedidos em aberto caso o alias esteja em uso
@@ -83,30 +79,28 @@ User Function MA650EMP()
         EndIf
     Next
 
-    IF (INCLUI)//Se for alteração ou inclusão, realiza o cálculo
-        For j:=1 to Len(Acols)
-            If "RESINA" $ AllTrim(Acols[j][14])
-                nResori := nResori + Acols[j][2] //Soma se tiver mais de uma resina no Acols
-            EndIf
-            If "MASTER" $ Alltrim(Acols[j][14])
-                nMasori := nMasori + Acols[j][2] //Soma caso algum dia tenha mais de uma master
-            EndIf
-        Next j
+	For j:=1 to Len(Acols)
+		If "RESINA" $ AllTrim(Acols[j][14])
+			nResori := nResori + Acols[j][2] //Soma se tiver mais de uma resina no Acols
+		EndIf
+		If "MASTER" $ Alltrim(Acols[j][14])
+			nMasori := nMasori + Acols[j][2] //Soma caso algum dia tenha mais de uma master
+		EndIf
+	Next j
 
-        nTotal := nResori + nMasori
+	nTotal := nResori + nMasori
 
-        For k:=1 to Len(Acols)
-            If ("MASTER" $ Alltrim(Acols[k][14]) .Or. "RESINA" $ Alltrim(Acols[k][14]))
-                nPerc := ((Acols[k][2]) / nTotal) * 100 //Calcula o percentual de cada Master / resina
-                DbSelectArea("SD4")
-                DbSetOrder(1)
-                DbSeek(FwXFilial("SD4") + Acols[k][1] + cOp)
-                RecLock("SD4", .F.)
-                    SD4->D4_FSPM_R := Round(nPerc,2) //Grava no campo específico a proporção de cada item
-                MsUnlock()
-            EndIf
-        Next k
-    ENDIF
+	For k:=1 to Len(Acols)
+		If ("MASTER" $ Alltrim(Acols[k][14]) .Or. "RESINA" $ Alltrim(Acols[k][14]))
+			nPerc := ((Acols[k][2]) / nTotal) * 100 //Calcula o percentual de cada Master / resina
+			DbSelectArea("SD4")
+			DbSetOrder(1)
+			DbSeek(FwXFilial("SD4") + Acols[k][1] + cOp)
+			RecLock("SD4", .F.)
+				SD4->D4_FSPM_R := Round(nPerc,2) //Grava no campo específico a proporção de cada item
+			MsUnlock()
+		EndIf
+	Next k
 
 	// Gera um novo alias para a tabela temporária
 	c_AliasAux := GetNextAlias()
@@ -168,8 +162,7 @@ User Function MA650EMP()
 
 	//Se Erro, apresenta mensagem para que o usuário possa nos informar
     If lMsErroAuto
-		//jEnvMail()
-		Help(NIL, NIL, 'ERR_OP', NIL, 'Erro no ajuste de Empenho e Op.',;
+		Help(NIL, NIL, 'ERR_OP', NIL, 'Erro na inclusão do Empenho e Op.',;
 			1, 0, NIL, NIL, NIL, NIL, NIL, {'Encaminhe esta Op ao time de TI para acompanhar o processo.'})
         MostraErro()
     EndIf
@@ -178,48 +171,3 @@ User Function MA650EMP()
 	End
 
 Return (Nil)
-
-/*/{Protheus.doc} jEnvMail
-	Envia email se erro
-	@type function
-	@version 12.1.25
-	@author Jonas Machado
-	@since 08/10/2021
-	@return logical, .T.
-/*/
-Static Function jEnvMail()
-	Local _cServer   	:= Alltrim(GETMV("MV_RELSERV"))	//Servidor smtp
-	Local _cAccount  	:= Alltrim(GETMV("BM_BOLMAIL"))	//Conta de e-mail
-	Local _cPassword	:= Alltrim(GETMV("BM_BOLSNH"))	//Senha da conta de e-mail
-	Local _cEnvia    	:= Alltrim(GETMV("BM_BOLMAIL"))	//Endereco de e-mail
-	Local _cTo			:= "jonas.machado@bomix.com.br"// _Par1+";"+ALLTRIM(UsrRetMail(__cUserID))			//Destinatario
-	Local _cMsg			:= "Erro na geração das op x pedidos de venda."			//Corpo da Mensagem
-	Local _cSubj		:= OemToAnsi('BOMIX - Geração de Op ') //Assunto
-
-	//Conecta ao servidor de SMTP
-	CONNECT SMTP SERVER _cServer ACCOUNT _cAccount PASSWORD _cPassword Result lConectou
-	//Caso o servidor SMTP do cliente necessite de autenticacao
-	//sera necessario habilitar o parametro MV_RELAUTH.
-	If GETMV("MV_RELAUTH")
-		If !MailAuth( _cAccount, _cPassword )
-			DISCONNECT SMTP SERVER RESULT lDisConectou
-			Return (.F.)
-		EndIf
-	EndIf
-	//Verifica se houve conexao com o servidor SMTP
-	If !lConectou
-		Return (.F.)
-	EndIf
-	//Envia o e-mail
-	SEND MAIL FROM _cEnvia TO Alltrim(_cTo) SUBJECT _cSubj BODY _cMsg RESULT lEnviado
-	//Verifica possiveis erros durante o envio do e-mail
-	If lEnviado
-		Return (.T.)
-	Else
-		_cMsg := ""
-		GET MAIL ERROR _cMsg
-		Return (.F.)
-	EndIf
-	//Desconecta o servidor de SMTP
-	DISCONNECT SMTP SERVER Result lDisConectou
-Return (.T.)

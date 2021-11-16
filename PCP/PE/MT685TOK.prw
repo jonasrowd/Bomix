@@ -124,9 +124,5 @@ User Function MT685TOK()
 		Next
 	Endif
 
-	If lInc .And. cFilAnt == "020101"
-		
-	EndIf
-
 	RestArea(aArea)
 Return l_Ret

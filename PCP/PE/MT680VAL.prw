@@ -14,6 +14,7 @@ User Function MT680VAL()
 	Local n_Op		:= M->H6_OP
 	Local d_DtValid := 	CTOD("  /  /    ")
 	Local nCount	:= 0
+	Local n_Quant	:= 0
 
 	If l_Ret .And. l681
 		DbSelectArea("SZ7") //Seleciona a área da tabela customizada que controla as movimentações de estoque para o wms
@@ -34,6 +35,14 @@ User Function MT680VAL()
 				Help(NIL, NIL, "ERROR_PERD", NIL, "Apontamento de perda preenchido incorretamente.",;
 					1, 0, NIL, NIL, NIL, NIL, NIL, {"Verifique os dados do apontamento e lembre-se que não pode encerrar a Op com Perda."})
 			EndIf
+			dbSelectArea("SB1")
+			SB1->(dbSetOrder(1))
+			SB1->(dbSeek(xFilial("SB1") + M->H6_PRODUTO))
+			If M->H6_QTDPROD > SB1->B1_QB
+				lRet := .F.
+				Help(NIL, NIL, "ERROR_PROD", NIL, "Apontamento de produção preenchido incorretamente.",;
+				1, 0, NIL, NIL, NIL, NIL, NIL, {"Não é possível apontar produção maior que a quantidade base."})
+			EndIf
 		EndIf
 
 		DBSELECTAREA('SB1')
@@ -42,13 +51,13 @@ User Function MT680VAL()
 		If SB1->B1_RASTRO == 'L' .AND. !EMPTY(SB1->B1_PRVALID)
 			nCount := SB1->B1_PRVALID
 		EndIf
-		
+
 		If Select("SH6TEMP") > 0 //Verifica se o Alias já possui registro
 			SH6TEMP->(DbCloseArea()) //Fecha a tabela se já estiver aberta
 		EndIf
 
 		//SELECIONA OS REGISTROS DA OP
-		BEGINSQL ALIAS "SH6TEMP" 
+		BEGINSQL ALIAS "SH6TEMP"
 			COLUMN H6_DTVALID AS DATE
 
 			SELECT
@@ -84,11 +93,11 @@ User Function MT680VAL()
 				If  Empty(SC2->C2_FSDTVLD)
 					RecLock('SC2',.F.)
 						SC2->C2_FSDTVLD := M->H6_DTVALID
-						If Empty(SC2->C2_FSLOTOP) 
+						If Empty(SC2->C2_FSLOTOP)
 							SC2->C2_FSLOTOP:= M->H6_LOTECTL
 						EndIf
 					SC2->(MsUnlock())
-				Else 
+				Else
 					M->H6_DTVALID := SC2->C2_FSDTVLD
 				EndIf
 			EndIf
@@ -103,46 +112,111 @@ User Function MT680VAL()
 		EndIf
 	EndIf
 
-	If M->H6_PT == "T"
-		M->H6_PT := "P"
-	EndIf
+	If cFilAnt == "020101"
+		If M->H6_PT == "T"
+			If MsgYesNo('Confirma a Totalização da OP?', 'Totalização da OP')
+				dbSelectArea("SC2")
+				dbSetOrder(1)
+				If dbSeek(xFilial("SC2") + SH6->H6_OP)
+					dbSelectArea("SB1")
+					SB1->(dbSetOrder(1))
+					SB1->(dbSeek(xFilial("SB1") + SC2->C2_PRODUTO))
+					
+					If SB1->B1_QB == M->H6_QTDPROD
 
-	If M->H6_PT == "P"
-		If (Select("MIAUD4") > 0)
-			DBSelectArea("MIAUD4")
-			DBCloseArea()
+						If (Select("MIAUD4") > 0)
+							DBSelectArea("MIAUD4")
+							DBCloseArea()
+						EndIf
+
+						BEGINSQL ALIAS "MIAUD4"
+							SELECT
+								D4_COD AS PROD,
+								D4_QUANT AS ORI,
+								D4_OP AS OP,
+								D4_FSTP AS TIPO
+							FROM  %TABLE:SD4%
+							WHERE D4_FILIAL = %XFILIAL:SD4%
+								AND %NOTDEL%
+								AND D4_OP = %EXP:M->H6_OP%
+						ENDSQL
+
+						While (!EOF())
+							DbSelectArea("SD4")
+							DbSetOrder(1)
+							DbSeek(FwXFilial("SD4") + MIAUD4->PROD + MIAUD4->OP)
+							If SD4->D4_QUANT < SD4->D4_FSQTDES
+								RecLock("SD4", .F.)
+									SD4->D4_QUANT := SD4->D4_FSQTDES
+								MsUnlock()
+							EndIf
+							MIAUD4->(DbSkip())
+						End
+						SD4->(DBCloseArea())
+
+					ElseIf SB1->B1_QB > M->H6_QTDPROD
+						dbSelectArea("SB1")
+						SB1->(dbSetOrder(1))
+						SB1->(dbSeek(xFilial("SB1") + SC2->C2_PRODUTO))
+						n_Perc := M->H6_QTDPROD/SB1->B1_QB
+						dbSelectArea("SG1")
+						SG1->(dbSetOrder(1))
+						SG1->(dbSeek(xFilial("SG1") + SC2->C2_PRODUTO))
+						While SG1->(!EoF()) .And. SG1->G1_COD == SC2->C2_PRODUTO
+							dbSelectArea("SD4")
+							SD4->(dbSetOrder(2))
+							SD4->(dbSeek(xFilial("SD4") + SH6->H6_OP + SG1->G1_COMP))
+							If Found()
+								n_Quant   := SG1->G1_QUANT * n_Perc
+								RecLock("SD4", .F.)
+									SD4->D4_QUANT := n_Quant
+								MsUnlock()
+							EndIf
+							SG1->(dbSkip())
+						End
+						SD4->(DBCloseArea())
+					EndIf
+				Endif
+			Else
+				M->H6_PT := "P"
+			Endif
 		EndIf
 
-		BEGINSQL ALIAS "MIAUD4"
-			SELECT 
-				D4_COD AS PROD, 
-				D4_QUANT AS ORI,
-				D4_OP AS OP,
-				D4_FSTP AS TIPO
-			FROM  %TABLE:SD4%
-			WHERE D4_FILIAL = %XFILIAL:SD4%
-				AND %NOTDEL%
-				AND D4_OP = %EXP:M->H6_OP%
-		ENDSQL
-
-		While (!EOF())
-			DbSelectArea("SD4")
-			DbSetOrder(1)
-			DbSeek(FwXFilial("SD4") + MIAUD4->PROD + MIAUD4->OP)
-			If SD4->D4_QUANT < SD4->D4_FSQTDES
-				RecLock("SD4", .F.)
-					SD4->D4_QUANT := SD4->D4_FSQTDES
-				MsUnlock()
+		If M->H6_PT == "P"
+			If (Select("MIAUD4") > 0)
+				DBSelectArea("MIAUD4")
+				DBCloseArea()
 			EndIf
-			MIAUD4->(DbSkip())
-		End
 
-		SD4->(DBCloseArea())
-	EndIf
+			BEGINSQL ALIAS "MIAUD4"
+				SELECT
+					D4_COD AS PROD,
+					D4_QUANT AS ORI,
+					D4_OP AS OP,
+					D4_FSTP AS TIPO
+				FROM  %TABLE:SD4%
+				WHERE D4_FILIAL = %XFILIAL:SD4%
+					AND %NOTDEL%
+					AND D4_OP = %EXP:M->H6_OP%
+			ENDSQL
 
-	If M->H6_QTDPERD > 0
-		If "BORRA" $ UPPER(APERDA[1][4])
-			M->H6_QTDPERD := (APERDA[1][2] / M->H6_FSPESOI)
+			While (!EOF())
+				DbSelectArea("SD4")
+				DbSetOrder(1)
+				DbSeek(FwXFilial("SD4") + MIAUD4->PROD + MIAUD4->OP)
+				If SD4->D4_QUANT < SD4->D4_FSQTDES
+					RecLock("SD4", .F.)
+						SD4->D4_QUANT := SD4->D4_FSQTDES
+					MsUnlock()
+				EndIf
+				MIAUD4->(DbSkip())
+			End
+			SD4->(DBCloseArea())
+		EndIf
+		If M->H6_QTDPERD > 0
+			If "BORRA" $ UPPER(APERDA[1][4])
+				M->H6_QTDPERD := (APERDA[1][2] / M->H6_FSPESOI)
+			EndIf
 		EndIf
 	EndIf
 

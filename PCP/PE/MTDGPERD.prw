@@ -21,125 +21,125 @@ User Function MTDGPERD
 	Local cMensagem	:= ""
 	Public oDlg
 
-If cFilAnt == '010101' //Para filial Bomix continua carregando a quantidade da perda
+	If cFilAnt == '010101' //Para filial Bomix continua carregando a quantidade da perda
 
-		DbSelectArea("SB1")
-		DbSetOrder(1)
-		DbSeek(FwXFilial("SB1")+c_Prod)
-		If Found()
-			n_Peso := SB1->B1_PESO
-			n_Size := Len(aCols)
-			If Len(aCols) > 0
-				GDFieldPut('BC_PRODUTO', c_Prod, n_Size)
-				GDFieldPut("BC_CODDEST", SB1->B1_FSPRODC, n_Size)
-				GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1") + SB1->B1_FSPRODC, "B1_DESC"), n_Size)
-				GDFieldPut('BC_QUANT', n_Qtd, n_Size)
+			DbSelectArea("SB1")
+			DbSetOrder(1)
+			DbSeek(FwXFilial("SB1")+c_Prod)
+			If Found()
+				n_Peso := SB1->B1_PESO
+				n_Size := Len(aCols)
+				If Len(aCols) > 0
+					GDFieldPut('BC_PRODUTO', c_Prod, n_Size)
+					GDFieldPut("BC_CODDEST", SB1->B1_FSPRODC, n_Size)
+					GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1") + SB1->B1_FSPRODC, "B1_DESC"), n_Size)
+					GDFieldPut('BC_QUANT', n_Qtd, n_Size)
+					GDFieldPut("BC_QTDDEST", n_Qtd, n_Size)
+					n_QtdSegUm := n_Qtd * n_Peso
+					GDFieldPut("BC_QTSEGUM", n_QtdSegUm, n_Size)
+					GDFieldPut("BC_QTDDES2", n_QtdSegUm, n_Size)
+					GDFieldPut("BC_LOTECTL", M->H6_LOTECTL, n_Size)
+					GDFieldPut("BC_DTVALID", dDatabase, n_Size)
+				EndIf
+			EndIf
+
+			If 	Len(aCols) > 0
+			// aCols[Len(aCols)][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_PRODUTO'})] := c_Prod
+			// aCols[Len(aCols)][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_LOCORIG'})] := c_Local
+			// aCols[Len(aCols)][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})]   := n_Qtd
+			EndIf	
+
+	ElseIf cFilAnt == '020101'
+
+
+				cMensagem := "O Apontamento de perda será para Borra ou Material Reprovado?"
+
+				DEFINE MSDIALOG oDlg TITLE OemToAnsi("Atenção!") FROM 000,000 TO 180,650 PIXEL
+				oSayTela	:= TSay():New(10,10,{||AllTrim(cMensagem)},oDlg,,,,,,.T.,,,100,400,,,,,,)
+				oBtnBorra	:= TButton():New(060,070+xLinha,"Apontar Borra"					,oDlg,{||cRet := "Borra",oDlg:End()},50,20,,,,.T.,,"",,,,.F.) //P
+				oBtnMater	:= TButton():New(060,130+xLinha,"Apontar Mat. Reprovado"		,oDlg,{||cRet := "Material",oDlg:End()},80,20,,,,.T.,,"",,,,.F.) //L
+				oBtnCancel	:= TButton():New(060,250+xLinha,"Voltar",oDlg,{||oDlg:End()},50,20,,,,.T.,,"",,,,.F.)
+				ACTIVATE MSDIALOG oDlg CENTERED
+
+
+			// Carrega as informações de perda da MASTER
+			fMasRes(c_OP)
+
+			// Carrega as informações de perda da resina
+			fSerCor(MASTER->ResinaSerie, MASTER->MasterCor)
+
+			// Percorre os itens da MASTER
+			// While (!MASTER->(EOF()))
+				// Incrementa o contador
+				// n_Count++
+
+				// Adiciona nova linha no aCols
+				// If (n_Count > 1)
+				// 	AddNewLine()
+				// EndIf
+				// Preenche os campos da primeira linha
+				If Len(aCols) > 1
+					n_Size := 1
+				Else 
+					n_Size := Len(aCols)
+				EndIf
+		If cRet == "Borra"
+			
+				GDFieldPut("BC_PRODUTO", c_Prod, n_Size)
+				GDFieldPut("BC_CODDEST", ESPEC->B1_FSPRODC, n_Size)
+				GDFieldPut("BC_DTVALID", dDatabase, n_Size)
+				GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+ESPEC->B1_FSPRODC, "B1_DESC"), n_Size)
+				GDFieldPut("BC_LOCAL", POSICIONE("SB1", 1, XFILIAL("SB1")+ESPEC->B1_FSPRODC, "B1_LOCPAD"), n_Size)
+				GDFieldPut("BC_QUANT", n_Qtd, n_Size)
+				GDFieldPut("BC_LOTECTL", M->H6_LOTECTL, n_Size)
+				GDFieldPut("BC_QTSEGUM", n_Qtd, n_Size)
 				GDFieldPut("BC_QTDDEST", n_Qtd, n_Size)
-				n_QtdSegUm := n_Qtd * n_Peso
+				GDFieldPut("BC_QTDDES2", n_Qtd, n_Size)
+
+				// Percorre os itens da resina
+				// While (!ESPEC->(EOF()))
+				// If len(acols) == 1
+				// 	// Adiciona uma nova linha no aCols
+				// 	AddNewLine()
+				// EndIf
+		ElseIf cRet == "Material"
+				n_Size := Len(aCols)
+				// Preenche os campos da primeira linha
+				GDFieldPut("BC_PRODUTO", c_Prod, n_Size)
+				GDFieldPut("BC_CODDEST", ESPEC->B1_COD, n_Size)
+				GDFieldPut("BC_DTVALID", dDatabase, n_Size)
+				GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+ESPEC->B1_COD, "B1_DESC"), n_Size)
+				GDFieldPut("BC_LOCAL", ESPEC->B1_LOCPAD,n_Size)
+				n_Qtd := n_Qtd * (MASTER->Peso)
+				GDFieldPut("BC_QUANT", n_Qtd, n_Size)
+				n_QtdSegUm := n_Qtd * (MASTER->Peso)
 				GDFieldPut("BC_QTSEGUM", n_QtdSegUm, n_Size)
+				GDFieldPut("BC_QTDDEST", n_Qtd, n_Size)
 				GDFieldPut("BC_QTDDES2", n_QtdSegUm, n_Size)
 				GDFieldPut("BC_LOTECTL", M->H6_LOTECTL, n_Size)
-				GDFieldPut("BC_DTVALID", dDatabase, n_Size)
-			EndIf
 		EndIf
 
-		If 	Len(aCols) > 0
-		// aCols[Len(aCols)][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_PRODUTO'})] := c_Prod
-		// aCols[Len(aCols)][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_LOCORIG'})] := c_Local
-		// aCols[Len(aCols)][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})]   := n_Qtd
-		EndIf	
+					// Salta para o próximo registro de resina
+					// ESPEC->(DBSkip())
+				// End
 
-ElseIf cFilAnt == '020101'
-
-
-			cMensagem := "O Apontamento de perda será para Borra ou Material Reprovado?"
-
-			DEFINE MSDIALOG oDlg TITLE OemToAnsi("Atenção!") FROM 000,000 TO 180,650 PIXEL
-			oSayTela	:= TSay():New(10,10,{||AllTrim(cMensagem)},oDlg,,,,,,.T.,,,100,400,,,,,,)
-			oBtnBorra	:= TButton():New(060,070+xLinha,"Apontar Borra"					,oDlg,{||cRet := "Borra",oDlg:End()},50,20,,,,.T.,,"",,,,.F.) //P
-			oBtnMater	:= TButton():New(060,130+xLinha,"Apontar Mat. Reprovado"		,oDlg,{||cRet := "Material",oDlg:End()},80,20,,,,.T.,,"",,,,.F.) //L
-			oBtnCancel	:= TButton():New(060,250+xLinha,"Voltar",oDlg,{||oDlg:End()},50,20,,,,.T.,,"",,,,.F.)
-			ACTIVATE MSDIALOG oDlg CENTERED
-
-
-		// Carrega as informações de perda da MASTER
-		fMasRes(c_OP)
-
-		// Carrega as informações de perda da resina
-		fSerCor(MASTER->ResinaSerie, MASTER->MasterCor)
-
-		// Percorre os itens da MASTER
-		// While (!MASTER->(EOF()))
-			// Incrementa o contador
-			// n_Count++
-
-			// Adiciona nova linha no aCols
-			// If (n_Count > 1)
-			// 	AddNewLine()
-			// EndIf
-			// Preenche os campos da primeira linha
-			If Len(aCols) > 1
-				n_Size := 1
-			Else 
-				n_Size := Len(aCols)
-			EndIf
-	If cRet == "Borra"
-		
-			GDFieldPut("BC_PRODUTO", c_Prod, n_Size)
-			GDFieldPut("BC_CODDEST", ESPEC->B1_FSPRODC, n_Size)
-			GDFieldPut("BC_DTVALID", dDatabase, n_Size)
-			GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+ESPEC->B1_FSPRODC, "B1_DESC"), n_Size)
-			GDFieldPut("BC_LOCAL", POSICIONE("SB1", 1, XFILIAL("SB1")+ESPEC->B1_FSPRODC, "B1_LOCPAD"), n_Size)
-			GDFieldPut("BC_QUANT", n_Qtd, n_Size)
-			GDFieldPut("BC_LOTECTL", M->H6_LOTECTL, n_Size)
-			GDFieldPut("BC_QTSEGUM", n_Qtd, n_Size)
-			GDFieldPut("BC_QTDDEST", n_Qtd, n_Size)
-			GDFieldPut("BC_QTDDES2", n_Qtd, n_Size)
-
-			// Percorre os itens da resina
-			// While (!ESPEC->(EOF()))
-			// If len(acols) == 1
-			// 	// Adiciona uma nova linha no aCols
-			// 	AddNewLine()
-			// EndIf
-	ElseIf cRet == "Material"
-			n_Size := Len(aCols)
-			// Preenche os campos da primeira linha
-			GDFieldPut("BC_PRODUTO", c_Prod, n_Size)
-			GDFieldPut("BC_CODDEST", ESPEC->B1_COD, n_Size)
-			GDFieldPut("BC_DTVALID", dDatabase, n_Size)
-			GDFieldPut("BC_PRDEST", POSICIONE("SB1", 1, XFILIAL("SB1")+ESPEC->B1_COD, "B1_DESC"), n_Size)
-			GDFieldPut("BC_LOCAL", ESPEC->B1_LOCPAD,n_Size)
-			n_Qtd := n_Qtd * (MASTER->Peso)
-			GDFieldPut("BC_QUANT", n_Qtd, n_Size)
-			n_QtdSegUm := n_Qtd * (MASTER->Peso)
-			GDFieldPut("BC_QTSEGUM", n_QtdSegUm, n_Size)
-			GDFieldPut("BC_QTDDEST", n_Qtd, n_Size)
-			GDFieldPut("BC_QTDDES2", n_QtdSegUm, n_Size)
-			GDFieldPut("BC_LOTECTL", M->H6_LOTECTL, n_Size)
-	EndIf
-
-				// Salta para o próximo registro de resina
-				// ESPEC->(DBSkip())
+			// 	// Salta para o próximo registro da MASTER
+				// MASTER->(DBSkip())
 			// End
 
-		// 	// Salta para o próximo registro da MASTER
-			// MASTER->(DBSkip())
-		// End
-
-		// Fecha o alias do produto moido
-		If (Select("ESPEC") > 0)
-		DBSelectArea("ESPEC")
-		DBCloseArea()
-		EndIf
-
-		// Fecha o alias da MASTER
-		If (Select("MASTER") > 0)
-			DBSelectArea("MASTER")
+			// Fecha o alias do produto moido
+			If (Select("ESPEC") > 0)
+			DBSelectArea("ESPEC")
 			DBCloseArea()
-		EndIf
+			EndIf
 
-EndIf
+			// Fecha o alias da MASTER
+			If (Select("MASTER") > 0)
+				DBSelectArea("MASTER")
+				DBCloseArea()
+			EndIf
+
+	EndIf
 
 	// Restaura a área de trabalho anterior
 	FwRestArea(a_Area)
@@ -176,7 +176,7 @@ Static Function fMasRes(c_OP)
 			B1.B1_SERIE as ResinaSerie,
 			D4_MASTER.D4_COD as Master_ID, 
 			D4_MASTER.D4_FSDSC as Master, 
-			ISNULL(B1_MASTER.B1_BRCORG,'NATURAL') as MasterCor
+			ISNULL(B1_MASTER.B1_SERIE,'NATURAL') as MasterCor
 		FROM
 			%TABLE:SC2% C2 (NOLOCK)
 			INNER JOIN
@@ -293,39 +293,6 @@ Static Function AddNewLine()
 	AAdd(aCols[nSize], .F.)
 Return (NIL)
 
-/*/{Protheus.doc} FPCPV002
-	Gatilho para verificar se a quantidade de perda digitada é maior que a quantidade apontada.
-	@type function
-	@version 12.1.25
-	@author Jonas Machado
-	@since 22/09/2021
-	@return logical, Se verdadeiro, deixa seguir a rotina
-/*/
-User Function FPCPV002
-	Local n_QtdPer := 0
-	Local n_QtdApt := M->BC_QUANT
-	Local a_Area   := GetArea()
-	Local l_Ret    := .T.
-	Local j
-
-	If Type("M->H6_QTDPERD") <> "U" .And. Upper(AllTrim(FunName())) == "MATA681"
-		n_QtdPer := M->H6_QTDPERD
-
-		For j:=1 To Len(aCols)
-			If aCols[j][Len(aHeader) + 1] == .F. .And. (j <> n)
-				n_QtdApt += aCols[j][AScan(aHeader,{ |x| Alltrim(x[2]) == 'BC_QUANT'})]
-			Endif
-		Next
-
-		If n_QtdApt > n_QtdPer
-			ShowHelpDlg(SM0->M0_NOME, {"O somatório do valor do campo Qtd Perda da Classificação da Perda está superior ao valor informado no campo Qtd. Perda da Produção PCP Mod2"}, 5, {"Verifique se o valor do campo Qtd Perda da Classificação da Perda foi digitado corretamente"},5)
-			l_Ret := .F.
-		Endif
-	Endif
-
-	RestArea(a_Area)
-Return l_Ret
-
 /*/{Protheus.doc} DIGPEROK
 	Ponto de entrada para validar as informações da classificação da Perda na Produção PCP Mod2
 	@type Function
@@ -368,17 +335,11 @@ User Function DIGPEROK
 		// 		c_UmDest  := ""
 
 		// 		If Empty(cCodProd) .Or. Empty(c_LocOrig) .Or. Empty(cCodDest) .Or. Empty(c_Local)
-		// 			ShowHelpDlg(SM0->M0_NOME,;
-		// 			{"Um ou alguns campos obrigatórios do item " + StrZero(i, 2) + " não foram preenchidos"},5,;
-		// 			{"Preencha os campos Produto, Armazem Orig, Prd. Destino e Armazem Dest antes de prosseguir"},5)
 		// 			l_Ret := .F.
 		// 			Exit
 		// 		Endif
 
 		// 		If cCodProd <> c_ProdSH6
-		// 			ShowHelpDlg(SM0->M0_NOME,;
-		// 			{"O campo Produto do item " + StrZero(i, 2) + " da Classificação da Perda está divergente do valor informado no campo Produto da Produção PCP Mod2"},5,;
-		// 			{"Verifique se o valor do campo Produto da Classificação da Perda foi digitado corretamente"},5)
 		// 			l_Ret := .F.
 		// 			Exit
 		// 		Endif
@@ -386,16 +347,10 @@ User Function DIGPEROK
 		// 		dbSetOrder(1)
 		// 		If dbSeek(xFilial("SZ7") + __CUSERID + c_Local)
 		// 			If Z7_TPMOV == 'S'
-		// 				ShowHelpDlg(SM0->M0_NOME,;
-		// 				{"O seu usuário não possui permissão para efetuar entradas no armazém " + c_Local + "."},5,;
-		// 				{"Contacte o administrador do sistema."},5)
 		// 				l_Ret := .F.
 		// 				Exit
 		// 			Endif
 		// 		Else
-		// 			ShowHelpDlg(SM0->M0_NOME,;
-		// 			{"O seu usuário não possui permissão para efetuar entradas no armazém " + c_Local + "."},5,;
-		// 			{"Contacte o administrador do sistema."},5)
 		// 			l_Ret := .F.
 		// 			Exit
 		// 		Endif
@@ -410,9 +365,6 @@ User Function DIGPEROK
 		// 			If cCodDest == SB1->B1_FSPRODC
 		// 				l_Ret := .T.
 		// 			Else
-		// 				ShowHelpDlg(SM0->M0_NOME, {"O campo Prd. Destino do item " + StrZero(i, 2) + " está preenchido incorretamente"},5,;
-		// 				{"Preencha o campo Prd. Destino com o Código do Produto Classe C do Produto " + AllTrim(cCodProd)},5)
-		// 				//                                 			  {"Preencha o campo Prd. Destino com o Código do Produto Classe C ou Classe D do Produto " + AllTrim(cCodProd)},5)
 		// 				l_Ret := .F.
 		// 				Exit
 		// 			Endif
@@ -449,8 +401,6 @@ User Function DIGPEROK
 		// 		Endif
 
 		// 		If n_QtdDest <> n_QtdVal
-		// 			ShowHelpDlg(SM0->M0_NOME, {"O campo Qtd Destino do item " + StrZero(i, 2) + " está preenchido incorretamente"},5,;
-		// 			{"Verifique se o cálculo para preencher o campo Qtd Destino foi realizado corretamente"},5)
 		// 			l_Ret := .F.
 		// 			Exit
 		// 		Endif
@@ -458,7 +408,6 @@ User Function DIGPEROK
 		// Next
 
 		// If (n_QtdApt <> n_QtdSH6) .And. l_Ret
-		// 	ShowHelpDlg(SM0->M0_NOME, {"O somatório do valor do campo Qtd Perda da Classificação da Perda está divergente em relação ao valor informado no campo Qtd. Perda da Produção PCP Mod2"}, 5, {"Verifique se o valor do campo Qtd Perda da Classificação da Perda foi digitado corretamente"},5)
 		// 	l_Ret := .F.
 		// Endif
 	EndIf

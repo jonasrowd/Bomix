@@ -13,7 +13,7 @@ USER FUNCTION MT685LOk()
     Local lret  := .T.
 
     If cFilAnt == '020101'
-        If n+1 > 1
+        If n > 1
             lret := .F.
         EndIf
     EndIf
