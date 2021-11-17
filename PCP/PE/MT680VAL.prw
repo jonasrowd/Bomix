@@ -112,7 +112,7 @@ User Function MT680VAL()
 		EndIf
 	EndIf
 
-	If cFilAnt == "020101"
+	If !("TOTVSMES" $ M->H6_OBSERVA)
 		If M->H6_PT == "T"
 			If MsgYesNo('Confirma a Totalização da OP?', 'Totalização da OP')
 				dbSelectArea("SC2")
@@ -213,9 +213,12 @@ User Function MT680VAL()
 			End
 			SD4->(DBCloseArea())
 		EndIf
-		If M->H6_QTDPERD > 0
-			If "BORRA" $ UPPER(APERDA[1][4])
-				M->H6_QTDPERD := (APERDA[1][2] / M->H6_FSPESOI)
+		
+		If cFilAnt == '020101'
+			If M->H6_QTDPERD > 0
+				If "BORRA" $ UPPER(APERDA[1][4])
+					M->H6_QTDPERD := (APERDA[1][2] / M->H6_FSPESOI)
+				EndIf
 			EndIf
 		EndIf
 	EndIf

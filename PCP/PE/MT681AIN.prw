@@ -4,7 +4,7 @@
 	Ponto de entrada desenvolvido para alterar os empenhos da ordem de produção em caso de produção a maior ou produção com perda durante o processo.
 	@type Function
 	@version 12.1.25
-	@author Jonas Machado
+	@author Christian
 	@since 30/09/2021
 /*/
 User Function MT681AIN
@@ -60,7 +60,7 @@ Return Nil
 	ou com perda durante o processo.
 	@type Function
 	@version 12.1.25
-	@author Jonas Machado
+	@author Christian
 	@since 30/09/2021
 /*/
 User Function MT680GREST
