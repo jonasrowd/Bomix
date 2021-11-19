@@ -25,7 +25,6 @@ User Function A250ARD4()
         Next
     EndIf
 
-    // If cFilAnt == "020101"
     If SH6->H6_QTDPROD > 0
         For nX := 1 to Len(aSd4[1])
             DbSelectArea("SB1")
@@ -36,7 +35,6 @@ User Function A250ARD4()
             EndIf
         Next
     EndIf
-    // EndIf
 
 Return aSD4
 

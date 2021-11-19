@@ -11,7 +11,6 @@
 USER FUNCTION MT380ALT()
 
     Local c_Op      := SD4->D4_OP  //Op posicionada
-    //Local c_Prod    := SD4->D4_COD //Produto posicionado
     Local nPerc     := 0           //Percentual do produto calculado
     Local n_Total   := 0           //Total Master + Resina
 
@@ -29,7 +28,6 @@ USER FUNCTION MT380ALT()
             WHERE D4_FILIAL = %XFILIAL:SD4%
                 AND %NOTDEL%
                 AND D4_OP = %EXP:c_Op%
-                //AND D4_COD = %EXP:c_Prod%
                 AND (D4_FSTP LIKE "%MASTER%" OR D4_FSTP LIKE "%RESINA%")
         ENDSQL
 

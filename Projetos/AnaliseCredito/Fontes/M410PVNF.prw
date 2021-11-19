@@ -5,7 +5,7 @@
 	Ponto de entrada para validar restrições financeiras
 	@type Function
 	@version 12.1.25 
-	@author Rômulo Ferreira
+	@author Jonas Machado
 	@since 04/08/2021
 	@return Logical, lOK Variável de Controle
 	@see https://tdn.totvs.com/pages/releaseview.action?pageId=6784152

@@ -10,45 +10,45 @@
 User Function MT681AIN
 	Local a_Area := GetArea()
 
-	// dbSelectArea("SC2")
-	// dbSetOrder(1)
-	// If dbSeek(xFilial("SC2") + SH6->H6_OP)
-	// 	If SH6->H6_QTDPERD > 0
-	// 		dbSelectArea("SB1")
-	// 		SB1->(dbSetOrder(1))
-	// 		SB1->(dbSeek(xFilial("SB1") + SC2->C2_PRODUTO))
-	// 		n_Perc := SH6->H6_QTDPERD/SB1->B1_QB
-	// 		Begin Transaction
-	// 			dbSelectArea("SG1")
-	// 			SG1->(dbSetOrder(1))
-	// 			SG1->(dbSeek(xFilial("SG1") + SC2->C2_PRODUTO))
-	// 			While SG1->(!EoF()) .And. SG1->G1_COD == SC2->C2_PRODUTO
-	// 				a_Vetor := {}
-	// 				dbSelectArea("SD4")
-	// 				SD4->(dbSetOrder(2))
-	// 				SD4->(dbSeek(xFilial("SD4") + SH6->H6_OP + SG1->G1_COMP))
-	// 				If (Found() .AND. D4_FSTP $ "MASTER|RESINA")
-	// 					c_Produto := SD4->D4_COD
-	// 					c_Local   := SD4->D4_LOCAL
-	// 					c_Op      := SD4->D4_OP
-	// 					d_Data    := SD4->D4_DATA
-	// 					n_QtdOri  := SD4->D4_QTDEORI + (SG1->G1_QUANT * n_Perc)
-	// 					n_Quant   := SD4->D4_QUANT + (SG1->G1_QUANT * n_Perc)
-	// 					c_Trt     := SD4->D4_TRT
-	// 					a_Vetor:={  {"D4_COD"     ,c_Produto		,Nil},; //COM O TAMANHO EXATO DO CAMPO
-	// 								{"D4_LOCAL"   ,c_Local          ,Nil},;
-	// 								{"D4_OP"      ,c_Op  			,Nil},;
-	// 								{"D4_DATA"    ,d_Data	        ,Nil},;
-	// 								{"D4_QTDEORI" ,n_QtdOri         ,Nil},;
-	// 								{"D4_QUANT"   ,n_Quant          ,Nil},;
-	// 								{"D4_TRT"     ,c_Trt            ,Nil}}
-	// 					f_Mata380(a_Vetor)
-	// 				Endif
-	// 				SG1->(dbSkip())
-	// 			End
-	// 		End Transaction
-	// 	Endif
-	// Endif
+	dbSelectArea("SC2")
+	dbSetOrder(1)
+	If dbSeek(xFilial("SC2") + SH6->H6_OP)
+		If SH6->H6_QTDPERD > 0
+			dbSelectArea("SB1")
+			SB1->(dbSetOrder(1))
+			SB1->(dbSeek(xFilial("SB1") + SC2->C2_PRODUTO))
+			n_Perc := SH6->H6_QTDPERD/SB1->B1_QB
+			Begin Transaction
+				dbSelectArea("SG1")
+				SG1->(dbSetOrder(1))
+				SG1->(dbSeek(xFilial("SG1") + SC2->C2_PRODUTO))
+				While SG1->(!EoF()) .And. SG1->G1_COD == SC2->C2_PRODUTO
+					a_Vetor := {}
+					dbSelectArea("SD4")
+					SD4->(dbSetOrder(2))
+					SD4->(dbSeek(xFilial("SD4") + SH6->H6_OP + SG1->G1_COMP))
+					If (Found() .AND. D4_FSTP $ "MASTER|RESINA")
+						c_Produto := SD4->D4_COD
+						c_Local   := SD4->D4_LOCAL
+						c_Op      := SD4->D4_OP
+						d_Data    := SD4->D4_DATA
+						n_QtdOri  := SD4->D4_QTDEORI + (SG1->G1_QUANT * n_Perc)
+						n_Quant   := SD4->D4_QUANT + (SG1->G1_QUANT * n_Perc)
+						c_Trt     := SD4->D4_TRT
+						a_Vetor:={  {"D4_COD"     ,c_Produto		,Nil},; //COM O TAMANHO EXATO DO CAMPO
+									{"D4_LOCAL"   ,c_Local          ,Nil},;
+									{"D4_OP"      ,c_Op  			,Nil},;
+									{"D4_DATA"    ,d_Data	        ,Nil},;
+									{"D4_QTDEORI" ,n_QtdOri         ,Nil},;
+									{"D4_QUANT"   ,n_Quant          ,Nil},;
+									{"D4_TRT"     ,c_Trt            ,Nil}}
+						f_Mata380(a_Vetor)
+					Endif
+					SG1->(dbSkip())
+				End
+			End Transaction
+		Endif
+	Endif
 
 	RestArea(a_Area)
 Return Nil
@@ -66,45 +66,46 @@ Return Nil
 User Function MT680GREST
 	Local a_Area  := GetArea()
 
-	// dbSelectArea("SC2")
-	// dbSetOrder(1)
-	// If dbSeek(xFilial("SC2") + SH6->H6_OP)
-	// 	If SH6->H6_QTDPERD > 0
-	// 		dbSelectArea("SB1")
-	// 		SB1->(dbSetOrder(1))
-	// 		SB1->(dbSeek(xFilial("SB1") + SC2->C2_PRODUTO))
-	// 		n_Perc := SH6->H6_QTDPERD/SB1->B1_QB
-	// 		Begin Transaction
-	// 			dbSelectArea("SG1")
-	// 			SG1->(dbSetOrder(1))
-	// 			SG1->(dbSeek(xFilial("SG1") + SC2->C2_PRODUTO))
-	// 			While SG1->(!EoF()) .And. SG1->G1_COD == SC2->C2_PRODUTO
-	// 				a_Vetor := {}
-	// 				dbSelectArea("SD4")
-	// 				SD4->(dbSetOrder(2))
-	// 				SD4->(dbSeek(xFilial("SD4") + SH6->H6_OP + SG1->G1_COMP))
-	// 				If Found()
-	// 					c_Produto := SD4->D4_COD
-	// 					c_Local   := SD4->D4_LOCAL
-	// 					c_Op      := SD4->D4_OP
-	// 					d_Data    := SD4->D4_DATA
-	// 					n_QtdOri  := SD4->D4_QTDEORI - (SG1->G1_QUANT * n_Perc)
-	// 					n_Quant   := SD4->D4_QUANT - (SG1->G1_QUANT * n_Perc)
-	// 					c_Trt     := SD4->D4_TRT
+	dbSelectArea("SC2")
+	dbSetOrder(1)
+	If dbSeek(xFilial("SC2") + SH6->H6_OP)
+		If SH6->H6_QTDPERD > 0
+			dbSelectArea("SB1")
+			SB1->(dbSetOrder(1))
+			SB1->(dbSeek(xFilial("SB1") + SC2->C2_PRODUTO))
+			n_Perc := SH6->H6_QTDPERD/SB1->B1_QB
+			Begin Transaction
+				dbSelectArea("SG1")
+				SG1->(dbSetOrder(1))
+				SG1->(dbSeek(xFilial("SG1") + SC2->C2_PRODUTO))
+				While SG1->(!EoF()) .And. SG1->G1_COD == SC2->C2_PRODUTO
+					a_Vetor := {}
+					dbSelectArea("SD4")
+					SD4->(dbSetOrder(2))
+					SD4->(dbSeek(xFilial("SD4") + SH6->H6_OP + SG1->G1_COMP))
+					If Found()
+						c_Produto := SD4->D4_COD
+						c_Local   := SD4->D4_LOCAL
+						c_Op      := SD4->D4_OP
+						d_Data    := SD4->D4_DATA
+						n_QtdOri  := SD4->D4_QTDEORI - (SG1->G1_QUANT * n_Perc)
+						n_Quant   := SD4->D4_QUANT - (SG1->G1_QUANT * n_Perc)
+						c_Trt     := SD4->D4_TRT
 
-	// 					a_Vetor:={  {"D4_COD"     ,c_Produto		,Nil},; //COM O TAMANHO EXATO DO CAMPO
-	// 								{"D4_LOCAL"   ,c_Local          ,Nil},;
-	// 								{"D4_OP"      ,c_Op  			,Nil},;
-	// 								{"D4_QUANT"   ,n_Quant          ,Nil},;
-	// 								{"D4_QTDEORI" ,n_QtdOri         ,Nil}}
-	// 					f_Mata380(a_Vetor)
-	// 				Endif
-	// 				SG1->(dbSkip())
-	// 			End
-	// 		End Transaction
-	// 	Endif
-	// Endif
+						a_Vetor:={  {"D4_COD"     ,c_Produto		,Nil},; //COM O TAMANHO EXATO DO CAMPO
+									{"D4_LOCAL"   ,c_Local          ,Nil},;
+									{"D4_OP"      ,c_Op  			,Nil},;
+									{"D4_QUANT"   ,n_Quant          ,Nil},;
+									{"D4_QTDEORI" ,n_QtdOri         ,Nil}}
+						f_Mata380(a_Vetor)
+					Endif
+					SG1->(dbSkip())
+				End
+			End Transaction
+		Endif
+	Endif
 
+	//Adicionado para calcular o saldo no campo personalizado de brito no estorno.
 	DbSelectArea("SC2")
 	DbSetOrder(1)
 	If DbSeek(FwXFilial("SC2") + SubStr(M->H6_OP,1,6) + SubStr(M->H6_OP,7,2) + SubStr(M->H6_OP,9,3))

@@ -20,9 +20,10 @@ User Function MTA650E()
 		dbSetOrder(1)
 		If dbSeek(xFilial("SC6") + SC2->C2_PEDIDO + SC2->C2_ITEMPV)
 			RecLock("SC6", .F.)
-				SC6->C6_OP     :="02"
-				SC6->C6_NUMOP  := ""
-				SC6->C6_ITEMOP := ""
+				SC6->C6_OP     	:= ""
+				SC6->C6_NUMOP  	:= ""
+				SC6->C6_ITEMOP 	:= ""
+				SC6->C6_PVCOMOP := ""
 			MsUnlock()
 		Endif
 		RestArea(a_AreaSC6)
