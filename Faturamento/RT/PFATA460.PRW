@@ -27,15 +27,15 @@ User Function PFATA460()
 	Local c_Marc1		:= GetMark()
 
 	//Chamar funcao para validacao de CNPJ
-	Private o_vldTemp  	 :=clsVldTemplate():new()
+	// Private o_vldTemp  	 :=clsVldTemplate():new()
 	
-	If	!o_vldTemp:mtdAceleradores()
+	// If	!o_vldTemp:mtdAceleradores()
 		
-		Alert("Empresa não autorizada, por favor contacte a TOTVS BAHIA, informe seu CNPJ e Solicite seu acesso.")
+	// 	Alert("Empresa não autorizada, por favor contacte a TOTVS BAHIA, informe seu CNPJ e Solicite seu acesso.")
 	
-		Return()
+	// 	Return()
 	
-	Endif 
+	// Endif 
 
 	Private c_Perg	:=	"PFATA460"
 
@@ -408,8 +408,9 @@ Static Function f_CarrTRB(l_VldoDl2, c_Marc2, c_Caminho)
 						c_Tes		:= 	""				//TES
 					Endif	
 					
+					MsgAlert("Teste!!!!!","Aviso")
+
 				ELSE
-					
 					MsgAlert("XML (Ct-e): "+TRC->TC_ARQUIVO+" não possui a TAG _CFOP. Este Xml será¡ ignorado na rotina!","Aviso")
 					DBSELECTAREA("TRC")
 					TRC->(DBSKIP())
