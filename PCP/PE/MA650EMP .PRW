@@ -101,72 +101,75 @@ User Function MA650EMP()
 		EndIf
 	Next k
 
-	// Gera um novo alias para a tabela temporária
-	c_AliasAux := GetNextAlias()
+	//Se for Op de alça que contenha A no número não exclui
+	If !('A' $ cOp)
+		// Gera um novo alias para a tabela temporária
+		c_AliasAux := GetNextAlias()
 
-	// Pesquisa pelos produtos que não devem
-	// gerar Ordem de Produção
-	BEGINSQL ALIAS c_AliasAux
-		SELECT
-			C2.C2_FILIAL   CFILAUX  ,
-			C2.C2_NUM      CNUMAUX  ,
-			C2.C2_ITEM     CITEMAUX ,
-			C2.C2_SEQUEN   CSEQAUX  ,
-			C2.C2_PRODUTO  CPRODAUX ,
-			B1.B1_BRTPPR   CBRITOAUX,
-			C2.C2_LOCAL	   CLOCALAUX,
-			C2.C2_QUANT	   CQUANTAUX,
-			Z05.Z05_GERAOP CCARROAUX
-		FROM
-			%TABLE:SC2% C2 (NOLOCK)
-			INNER JOIN
-				%TABLE:SB1% B1
-				ON B1.B1_FILIAL = %XFILIAL:SB1%
-				AND B1.B1_COD   = C2.C2_PRODUTO
-				AND B1.%NOTDEL%
-			INNER JOIN 
-				%TABLE:Z05% Z05 (NOLOCK)
-				ON Z05.Z05_FILIAL = %XFILIAL:Z05%
-				AND Z05.Z05_NOME  = B1.B1_BRTPPR
-				AND Z05.%NOTDEL%
-		WHERE
-			C2.C2_NUM + C2.C2_ITEM + C2.C2_SEQUEN = %EXP:AllTrim(cOp)%
-			AND Z05.Z05_GERAOP = 'N'
-			AND C2.%NOTDEL%
-			AND C2.C2_FILIAL= %XFILIAL:SC2%
-	ENDSQL
+		// Pesquisa pelos produtos que não devem
+		// gerar Ordem de Produção
+		BEGINSQL ALIAS c_AliasAux
+			SELECT
+				C2.C2_FILIAL   CFILAUX  ,
+				C2.C2_NUM      CNUMAUX  ,
+				C2.C2_ITEM     CITEMAUX ,
+				C2.C2_SEQUEN   CSEQAUX  ,
+				C2.C2_PRODUTO  CPRODAUX ,
+				B1.B1_BRTPPR   CBRITOAUX,
+				C2.C2_LOCAL	   CLOCALAUX,
+				C2.C2_QUANT	   CQUANTAUX,
+				Z05.Z05_GERAOP CCARROAUX
+			FROM
+				%TABLE:SC2% C2 (NOLOCK)
+				INNER JOIN
+					%TABLE:SB1% B1
+					ON B1.B1_FILIAL = %XFILIAL:SB1%
+					AND B1.B1_COD   = C2.C2_PRODUTO
+					AND B1.%NOTDEL%
+				INNER JOIN 
+					%TABLE:Z05% Z05 (NOLOCK)
+					ON Z05.Z05_FILIAL = %XFILIAL:Z05%
+					AND Z05.Z05_NOME  = B1.B1_BRTPPR
+					AND Z05.%NOTDEL%
+			WHERE
+				C2.C2_NUM + C2.C2_ITEM + C2.C2_SEQUEN = %EXP:AllTrim(cOp)%
+				AND Z05.Z05_GERAOP = 'N'
+				AND C2.%NOTDEL%
+				AND C2.C2_FILIAL= %XFILIAL:SC2%
+		ENDSQL
 
-	//Execauto para excluir as op's e empenhos 
-	While (!EOF())
-			aMATA650 := {;
-                {'C2_FILIAL'    , CFILAUX   ,NIL},;
-                {'C2_NUM'       , CNUMAUX   ,NIL},; 
-                {'C2_ITEM'      , CITEMAUX  ,NIL},; 
-                {'C2_SEQUEN'    , CSEQAUX   ,NIL},;
-                {'C2_PRODUTO'   , CPRODAUX  ,NIL},;
-                {'C2_LOCAL'     , CLOCALAUX ,NIL},;
-                {'C2_QUANT'     , CQUANTAUX ,NIL},;
-                {'C2_DATPRI'    , DDATABASE ,NIL},;
-                {'C2_DATPRF'    , DDATABASE ,NIL},;
-                {'AUTEXPLODE'   , "S"       ,NIL};
-                }
+		//Execauto para excluir as op's e empenhos 
+		While (!EOF())
+				aMATA650 := {;
+					{'C2_FILIAL'    , CFILAUX   ,NIL},;
+					{'C2_NUM'       , CNUMAUX   ,NIL},; 
+					{'C2_ITEM'      , CITEMAUX  ,NIL},; 
+					{'C2_SEQUEN'    , CSEQAUX   ,NIL},;
+					{'C2_PRODUTO'   , CPRODAUX  ,NIL},;
+					{'C2_LOCAL'     , CLOCALAUX ,NIL},;
+					{'C2_QUANT'     , CQUANTAUX ,NIL},;
+					{'C2_DATPRI'    , DDATABASE ,NIL},;
+					{'C2_DATPRF'    , DDATABASE ,NIL},;
+					{'AUTEXPLODE'   , "S"       ,NIL};
+					}
 
-    // Se alteracao ou exclusao, deve-se posicionar no registro da SC2 antes de executar a rotina automática
-    If nOpc == 4 .Or. nOpc == 5
-        SC2->(DbSetOrder(1))//FILIAL + NUM + ITEM + SEQUEN + ITEMGRD
-        SC2->(DbSeek(xFilial("SC2")+aMATA650[2][2]+aMATA650[3][2]+aMATA650[4][2]))
-    EndIf
+		// Se alteracao ou exclusao, deve-se posicionar no registro da SC2 antes de executar a rotina automática
+		If nOpc == 4 .Or. nOpc == 5
+			SC2->(DbSetOrder(1))//FILIAL + NUM + ITEM + SEQUEN + ITEMGRD
+			SC2->(DbSeek(xFilial("SC2")+aMATA650[2][2]+aMATA650[3][2]+aMATA650[4][2]))
+		EndIf
 
-    msExecAuto({|x,Y| Mata650(x,Y)},aMata650,nOpc)
+		msExecAuto({|x,Y| Mata650(x,Y)},aMata650,nOpc)
 
-	//Se Erro, apresenta mensagem para que o usuário possa nos informar
-    If lMsErroAuto
-		Help(NIL, NIL, 'ERR_OP', NIL, 'Erro na inclusão do Empenho e Op.',;
-			1, 0, NIL, NIL, NIL, NIL, NIL, {'Encaminhe esta Op ao time de TI para acompanhar o processo.'})
-        MostraErro()
-    EndIf
+		//Se Erro, apresenta mensagem para que o usuário possa nos informar
+		If lMsErroAuto
+			Help(NIL, NIL, 'ERR_OP', NIL, 'Erro na inclusão do Empenho e Op.',;
+				1, 0, NIL, NIL, NIL, NIL, NIL, {'Encaminhe esta Op ao time de TI para acompanhar o processo.'})
+			MostraErro()
+		EndIf
 
-	DBSkip()
-	End
+		DBSkip()
+		End
+	EndIf
 
 Return (Nil)

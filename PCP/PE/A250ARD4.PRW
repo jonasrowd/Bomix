@@ -2,12 +2,12 @@
 #Include "Topconn.ch"
 
 /*/{Protheus.doc} A250ARD4
-    Não grava perda de itens específicos com base na tabela Z05 campo Z05_NOME = B1_BRTPPR
+    Ponto de entrada para verificar as perdas e consumo.
     @type function
     @version 12.1.25
     @author Jonas Machado
     @since 19/07/2021
-    @return variant, Retorna os produtos que possuem perda.
+    @return array, Retorna o array de itens
 /*/
 User Function A250ARD4()
     Local nX := 0

@@ -19,7 +19,7 @@ User Function MT680VAL()
 	If l_Ret .And. l681
 		DbSelectArea("SZ7") //Seleciona a área da tabela customizada que controla as movimentações de estoque para o wms
 		DbSetOrder(1)
-		DbSeek(FwXFilial("SZ7") + __CUSERID + M->H6_LOCAL)	//Busca a informação do usuário na tabela da rotina customizada
+		DbSeek(xFilial("SZ7") + __CUSERID + M->H6_LOCAL)	//Busca a informação do usuário na tabela da rotina customizada
 		If !("TOTVSMES" $ M->H6_OBSERVA)
 			If !(Z7_TPMOV $ "E|A")	//Se NÃO vier do WebService MES ou o usuário não tenha permissão de entrada no estoque do wms. (E=Entrada, A=Ambos)
 				lRet := .F.	//Não permite o apontamento e exibe o Help do bloqueio.
@@ -35,8 +35,8 @@ User Function MT680VAL()
 				Help(NIL, NIL, "ERROR_PERD", NIL, "Apontamento de perda preenchido incorretamente.",;
 					1, 0, NIL, NIL, NIL, NIL, NIL, {"Verifique os dados do apontamento e lembre-se que não pode encerrar a Op com Perda."})
 			EndIf
-			dbSelectArea("SB1")
-			SB1->(dbSetOrder(1))
+			DbSelectArea("SB1")
+			SB1->(DbSetOrder(1))
 			SB1->(dbSeek(xFilial("SB1") + M->H6_PRODUTO))
 			If M->H6_QTDPROD > SB1->B1_QB
 				lRet := .F.
@@ -45,9 +45,9 @@ User Function MT680VAL()
 			EndIf
 		EndIf
 
-		DBSELECTAREA('SB1')
-		DBSETORDER(1)
-		DBSEEK(XFILIAL('SB1') + M->H6_PRODUTO)
+		DbSelectArea('SB1')
+		DbSetOrder(1)
+		dbSeek(xFilial('SB1') + M->H6_PRODUTO)
 		If SB1->B1_RASTRO == 'L' .AND. !EMPTY(SB1->B1_PRVALID)
 			nCount := SB1->B1_PRVALID
 		EndIf
@@ -66,7 +66,7 @@ User Function MT680VAL()
 			FROM
 				%TABLE:SH6% H6
 			WHERE
-				H6.H6_FILIAL = %XFILIAL:SH6% AND
+				H6.H6_FILIAL = %xFilial:SH6% AND
 				H6.H6_OP = %EXP:n_Op% AND
 				H6.%NOTDEL%
 			ORDER BY H6.H6_DTVALID DESC
@@ -83,7 +83,7 @@ User Function MT680VAL()
 
 		SH6TEMP->(DbCloseArea())
 
-		DBSelectArea('SC2')
+		DbSelectArea('SC2')
 		DbSetOrder(1)
 		If DbSeek(xFilial("SC2")+ SUBSTR(M->H6_OP,1,6) + SUBSTR(M->H6_OP,7,2) + SUBSTR(M->H6_OP,9,3))
 			If (Found())
@@ -104,7 +104,7 @@ User Function MT680VAL()
 		EndIf
 		DbSelectArea("SG2") //Seleciona a área da SG2 para preencher o apontamento com informações da estrutura do produto
 		DbSetOrder(3)
-		If (DbSeek(FwXFilial("SG2")+ M->H6_PRODUTO + M->H6_OPERAC))
+		If (DbSeek(xFilial("SG2")+ M->H6_PRODUTO + M->H6_OPERAC))
 			M->H6_FERRAM  := SG2->G2_FERRAM //Preenche a ferramenta
 			M->H6_FSCAVI  := SG2->G2_FSCAVI //Preenche a cavidade
 			M->H6_FSSETOR := SG2->G2_DESCRI //Preenche a descrição do setor
@@ -115,17 +115,17 @@ User Function MT680VAL()
 	If !("TOTVSMES" $ M->H6_OBSERVA)
 		If M->H6_PT == "T"
 			If MsgYesNo('Confirma a Totalização da OP?', 'Totalização da OP')
-				dbSelectArea("SC2")
-				dbSetOrder(1)
+				DbSelectArea("SC2")
+				DbSetOrder(1)
 				If dbSeek(xFilial("SC2") + SH6->H6_OP)
-					dbSelectArea("SB1")
-					SB1->(dbSetOrder(1))
+					DbSelectArea("SB1")
+					SB1->(DbSetOrder(1))
 					SB1->(dbSeek(xFilial("SB1") + SC2->C2_PRODUTO))
 					
 					If SB1->B1_QB == M->H6_QTDPROD
 
 						If (Select("MIAUD4") > 0)
-							DBSelectArea("MIAUD4")
+							DbSelectArea("MIAUD4")
 							DBCloseArea()
 						EndIf
 
@@ -136,7 +136,7 @@ User Function MT680VAL()
 								D4_OP AS OP,
 								D4_FSTP AS TIPO
 							FROM  %TABLE:SD4%
-							WHERE D4_FILIAL = %XFILIAL:SD4%
+							WHERE D4_FILIAL = %xFilial:SD4%
 								AND %NOTDEL%
 								AND D4_OP = %EXP:M->H6_OP%
 						ENDSQL
@@ -144,7 +144,7 @@ User Function MT680VAL()
 						While (!EOF())
 							DbSelectArea("SD4")
 							DbSetOrder(1)
-							DbSeek(FwXFilial("SD4") + MIAUD4->PROD + MIAUD4->OP)
+							DbSeek(xFilial("SD4") + MIAUD4->PROD + MIAUD4->OP)
 							If SD4->D4_QUANT < SD4->D4_FSQTDES
 								RecLock("SD4", .F.)
 									SD4->D4_QUANT := SD4->D4_FSQTDES
@@ -155,16 +155,18 @@ User Function MT680VAL()
 						SD4->(DBCloseArea())
 
 					ElseIf SB1->B1_QB > M->H6_QTDPROD
-						dbSelectArea("SB1")
-						SB1->(dbSetOrder(1))
+						DbSelectArea("SB1")
+						SB1->(DbSetOrder(1))
 						SB1->(dbSeek(xFilial("SB1") + SC2->C2_PRODUTO))
+						
 						n_Perc := M->H6_QTDPROD/SB1->B1_QB
-						dbSelectArea("SG1")
-						SG1->(dbSetOrder(1))
+
+						DbSelectArea("SG1")
+						SG1->(DbSetOrder(1))
 						SG1->(dbSeek(xFilial("SG1") + SC2->C2_PRODUTO))
 						While SG1->(!EoF()) .And. SG1->G1_COD == SC2->C2_PRODUTO
-							dbSelectArea("SD4")
-							SD4->(dbSetOrder(2))
+							DbSelectArea("SD4")
+							SD4->(DbSetOrder(2))
 							SD4->(dbSeek(xFilial("SD4") + SH6->H6_OP + SG1->G1_COMP))
 							If Found()
 								n_Quant   := SG1->G1_QUANT * n_Perc
@@ -184,7 +186,7 @@ User Function MT680VAL()
 
 		If M->H6_PT == "P"
 			If (Select("MIAUD4") > 0)
-				DBSelectArea("MIAUD4")
+				DbSelectArea("MIAUD4")
 				DBCloseArea()
 			EndIf
 
@@ -195,7 +197,7 @@ User Function MT680VAL()
 					D4_OP AS OP,
 					D4_FSTP AS TIPO
 				FROM  %TABLE:SD4%
-				WHERE D4_FILIAL = %XFILIAL:SD4%
+				WHERE D4_FILIAL = %xFilial:SD4%
 					AND %NOTDEL%
 					AND D4_OP = %EXP:M->H6_OP%
 			ENDSQL
@@ -203,7 +205,7 @@ User Function MT680VAL()
 			While (!EOF())
 				DbSelectArea("SD4")
 				DbSetOrder(1)
-				DbSeek(FwXFilial("SD4") + MIAUD4->PROD + MIAUD4->OP)
+				DbSeek(xFilial("SD4") + MIAUD4->PROD + MIAUD4->OP)
 				If SD4->D4_QUANT < SD4->D4_FSQTDES
 					RecLock("SD4", .F.)
 						SD4->D4_QUANT := SD4->D4_FSQTDES
@@ -213,7 +215,7 @@ User Function MT680VAL()
 			End
 			SD4->(DBCloseArea())
 		EndIf
-		
+
 		If cFilAnt == '020101'
 			If M->H6_QTDPERD > 0
 				If "BORRA" $ UPPER(APERDA[1][4])
