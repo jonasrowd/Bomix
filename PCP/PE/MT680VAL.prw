@@ -22,7 +22,7 @@ User Function MT680VAL()
 		DbSeek(xFilial("SZ7") + __CUSERID + M->H6_LOCAL)	//Busca a informação do usuário na tabela da rotina customizada
 		If !("TOTVSMES" $ M->H6_OBSERVA)
 			If !(Z7_TPMOV $ "E|A")	//Se NÃO vier do WebService MES ou o usuário não tenha permissão de entrada no estoque do wms. (E=Entrada, A=Ambos)
-				lRet := .F.	//Não permite o apontamento e exibe o Help do bloqueio.
+				l_Ret := .F.	//Não permite o apontamento e exibe o Help do bloqueio.
 				Help(NIL, NIL, "MOV_ARM", NIL, "O seu usuário não possui permissão para efetuar este tipo de movimentação no armazém " + M->H6_LOCAL + ".",;
 					1, 0, NIL, NIL, NIL, NIL, NIL, {"Contacte o administrador do sistema."})
 			ElseIf (M->H6_QTDPERD > 0 .And. lSavePerda == .F. .And. M->H6_PT == "T")
@@ -30,7 +30,7 @@ User Function MT680VAL()
 				//lSavePerda é variável privada da rotina de apontamento de perda que verifica se foi preenchida corretamente.
 				//Verifica também que o apontamento de perda não pode ser Total, ou seja, não pode encerrar OP com Perda.
 				//Caso não, bloqueia a gravação do apontamento de perda e exibe o Help do bloqueio.
-				lRet := .F.
+				l_Ret := .F.
 				M->H6_PT := "P"
 				Help(NIL, NIL, "ERROR_PERD", NIL, "Apontamento de perda preenchido incorretamente.",;
 					1, 0, NIL, NIL, NIL, NIL, NIL, {"Verifique os dados do apontamento e lembre-se que não pode encerrar a Op com Perda."})
@@ -39,7 +39,7 @@ User Function MT680VAL()
 			SB1->(DbSetOrder(1))
 			SB1->(dbSeek(xFilial("SB1") + M->H6_PRODUTO))
 			If M->H6_QTDPROD > SB1->B1_QB
-				lRet := .F.
+				l_Ret := .F.
 				Help(NIL, NIL, "ERROR_PROD", NIL, "Apontamento de produção preenchido incorretamente.",;
 				1, 0, NIL, NIL, NIL, NIL, NIL, {"Não é possível apontar produção maior que a quantidade base."})
 			EndIf
