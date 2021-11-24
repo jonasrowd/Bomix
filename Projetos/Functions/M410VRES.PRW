@@ -12,6 +12,6 @@ User Function M410VRES()
 
     Local lConfirma := .T.
 
-    MsgAlert("cText", "cTitle")
+    //Desenvolver solução para alterar status BXSTATU
 
 Return (lConfirma)

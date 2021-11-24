@@ -1,47 +1,75 @@
-#Include "Totvs.ch"
-#Include "Topconn.ch"
+#INCLUDE "TOPCONN.CH"
 
-/*/{Protheus.doc} EMP650
-	Alteração do Armazém de destino. Este ponto de entrada é executado na rotina de inclusão da OP, antes da apresentação da tela de empenhos.
-	@type Function
-	@version 12.1.25
-	@author Jonas Machado
-	@since 30/09/2021
 /*/
-User Function EMP650
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  ³EMP650       º Autor ³ AP6 IDE            º Data ³  28/09/12º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDescricao ³ Alteração do Armazém de Empenho                            º±±
+±±º          ³ Este ponto de entrada é executado na rotina de inclusão de º±±
+±±º          ³ OP, antes da apresentação da tela de empenhos. 			  º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³ AP6 IDE                                                    º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+/*/
 
-	Local i		   := 0
-	Local n_RecTot := 0
+User Function EMP650
+	/*
+	Não recebe parâmetros, porém neste momento o array aCols que é apresentado na alteração de empenhos quando se abre uma Ordem de Produção está
+	disponível para alterações.	O aCols apresenta neste momento as linhas e colunas preenchidas, de acordo com o empenho padrão a ser efetuado no 
+	Sistema. Basta alterar ou incluir o conteúdo deste array para alterar as informações dos empenhos. A estrutura básica do array aCols é 
+	apresentada da seguinte forma na versão 2.07/5.08:
+	 
+	aCols[n,x] - Onde o n e o  número da linha  e x pode ser:
+	[1]  Código do Produto a ser empenhado
+	[2]  Quantidade do empenho
+	[3]  Almoxarifado do empenho
+	[4]  Sequência do componente na estrutura (Campo G1_TRT)
+	[5]  Sub-Lote utilizado no empenho (Somente deve ser preenchido se o produto utilizar rastreabilidade do tipo "S")
+	[6]  Lote utilizado no empenho (Somente deve ser preenchido se o produto utilizar rastreabilidade)
+	[7]  Data de validade do Lote (Somente deve ser preenchido se o  produto utilizar rastreabilidade)
+	[8]  Localização utilizada no empenho (Somente deve ser preenchido se o produto utilizar controle de localização física) 
+	[9]  Número de Série (Somente deve ser preenchido se o produto utilizar controle de localização física)
+	[10] 1a. Unidade de Medida do Produto
+	[11] Quantidade do Empenho na 2a. Unidade de Medida
+	[12] 2a. Unidade de Medida do Produto
+	[13] Coluna com valor lógico que indica se a linha está deletada (.T.) ou não (.F.)
+	*/
+	
 	Local c_Local  := ''
+	Local n_RecTot := 0
 	Local a_Area   := GetArea()
 
 	c_Qry := " SELECT H1_FSLOCAL FROM " + RetSqlName("SC2") + " SC2 " + chr(13) + chr(10)
 	c_Qry += " INNER JOIN " + RetSqlName("SG2") + " SG2 " + chr(13) + chr(10)
-	c_Qry += " 		ON  G2_FILIAL = '" + xFilial("SG2") + "' " + chr(13) + chr(10)
-	c_Qry += "		AND G2_PRODUTO = C2_PRODUTO " + chr(13) + chr(10)
-	c_Qry += "      AND G2_CODIGO = C2_ROTEIRO " + chr(13) + chr(10)
-	c_Qry += " 		AND SG2.D_E_L_E_T_ <> '*' " + chr(13) + chr(10)
+	c_Qry += " 		ON  G2_FILIAL = '" + xFilial("SG2") + "' " + chr(13) + chr(10)	
+	c_Qry += "		AND G2_PRODUTO = C2_PRODUTO " + chr(13) + chr(10)              
+	c_Qry += "      AND G2_CODIGO = C2_ROTEIRO " + chr(13) + chr(10)               
+	c_Qry += " 		AND SG2.D_E_L_E_T_ <> '*' " + chr(13) + chr(10)		
 	c_Qry += " INNER JOIN " + RetSqlName("SH1") + " SH1 " + chr(13) + chr(10)
-	c_Qry += " 		ON  H1_FILIAL = '" + xFilial("SH1") + "' " + chr(13) + chr(10)
-	c_Qry += " 		AND H1_CODIGO = G2_RECURSO " + chr(13) + chr(10)
-	c_Qry += " 		AND SH1.D_E_L_E_T_ <> '*' " + chr(13) + chr(10)
-	c_Qry += " WHERE SC2.D_E_L_E_T_ <> '*' AND C2_NUM = '" + SC2->C2_NUM + "' " + chr(13) + chr(10)
+	c_Qry += " 		ON  H1_FILIAL = '" + xFilial("SH1") + "' " + chr(13) + chr(10)	
+	c_Qry += " 		AND H1_CODIGO = G2_RECURSO " + chr(13) + chr(10)	
+	c_Qry += " 		AND SH1.D_E_L_E_T_ <> '*' " + chr(13) + chr(10)	
+	c_Qry += " WHERE SC2.D_E_L_E_T_ <> '*' AND C2_NUM = '" + SC2->C2_NUM + "' " + chr(13) + chr(10)	
 	c_Qry += " 		AND C2_FILIAL = '" + xFilial("SC2") + "' " + chr(13) + chr(10)
 	c_Qry += " 		AND C2_PRODUTO = '" + SC2->C2_PRODUTO + "' " + chr(13) + chr(10)
 	c_Qry += " 		AND C2_ITEM = '" + SC2->C2_ITEM + "' " + chr(13) + chr(10)
 	c_Qry += " 		AND C2_SEQUEN = '" + SC2->C2_SEQUEN + "' "
-
+	
 	TCQUERY c_Qry NEW ALIAS "QRY"
 
 	dbSelectArea("QRY")
 	Count To n_RecTot
 	QRY->(dbGoTop())
-
+	
 	If n_RecTot > 0
 		c_Local := QRY->H1_FSLOCAL
-	EndIf
+	Endif
 
-	QRY->(dbCloseArea())
+	QRY->(dbCloseArea())   
 
 	If !Empty(c_Local)
 		For i:=1 To Len(aCols)
@@ -50,16 +78,17 @@ User Function EMP650
 			If dbSeek(xFilial("SB2") + aCols[i][1] + c_Local)
 				aCols[i][3] := c_Local
 			Else
-				RecLock("SB2", .T.)
-					SB2->B2_FILIAL := XFILIAL("SB2")
-					SB2->B2_COD    := aCols[i][1]
-					SB2->B2_LOCAL  := c_Local
-				MsUnlock()
-				aCols[i][3] := c_Local
-			EndIf
-		Next
-	EndIf
+            	RecLock("SB2", .T.)
+            	SB2->B2_FILIAL := XFILIAL("SB2")
+            	SB2->B2_COD    := aCols[i][1]
+            	SB2->B2_LOCAL  := c_Local
+            	MsUnlock()
 
+				aCols[i][3] := c_Local            	
+			Endif
+		Next
+	Endif
+	
 	RestArea(a_Area)
 Return
 
@@ -88,32 +117,32 @@ User Function A650LEMP
 
 	c_Qry := " SELECT H1_FSLOCAL FROM " + RetSqlName("SC2") + " SC2 " + chr(13) + chr(10)
 	c_Qry += " INNER JOIN " + RetSqlName("SG2") + " SG2 " + chr(13) + chr(10)
-	c_Qry += " 		ON  G2_FILIAL = '" + xFilial("SG2") + "' " + chr(13) + chr(10)
-	c_Qry += "		AND G2_PRODUTO = C2_PRODUTO " + chr(13) + chr(10)
-	c_Qry += "      AND G2_CODIGO = C2_ROTEIRO " + chr(13) + chr(10)
-	c_Qry += " 		AND SG2.D_E_L_E_T_ <> '*' " + chr(13) + chr(10)
+	c_Qry += " 		ON  G2_FILIAL = '" + xFilial("SG2") + "' " + chr(13) + chr(10)	
+	c_Qry += "		AND G2_PRODUTO = C2_PRODUTO " + chr(13) + chr(10)              
+	c_Qry += "      AND G2_CODIGO = C2_ROTEIRO " + chr(13) + chr(10)               
+	c_Qry += " 		AND SG2.D_E_L_E_T_ <> '*' " + chr(13) + chr(10)		
 	c_Qry += " INNER JOIN " + RetSqlName("SH1") + " SH1 " + chr(13) + chr(10)
-	c_Qry += " 		ON  H1_FILIAL = '" + xFilial("SH1") + "' " + chr(13) + chr(10)
-	c_Qry += " 		AND H1_CODIGO = G2_RECURSO " + chr(13) + chr(10)
-	c_Qry += " 		AND SH1.D_E_L_E_T_ <> '*' " + chr(13) + chr(10)
-	c_Qry += " WHERE SC2.D_E_L_E_T_ <> '*' AND C2_NUM = '" + SC2->C2_NUM + "' " + chr(13) + chr(10)
+	c_Qry += " 		ON  H1_FILIAL = '" + xFilial("SH1") + "' " + chr(13) + chr(10)	
+	c_Qry += " 		AND H1_CODIGO = G2_RECURSO " + chr(13) + chr(10)	
+	c_Qry += " 		AND SH1.D_E_L_E_T_ <> '*' " + chr(13) + chr(10)	
+	c_Qry += " WHERE SC2.D_E_L_E_T_ <> '*' AND C2_NUM = '" + SC2->C2_NUM + "' " + chr(13) + chr(10)	
 	c_Qry += " 		AND C2_PRODUTO = '" + SC2->C2_PRODUTO + "' " + chr(13) + chr(10)
 	c_Qry += " 		AND C2_ITEM = '" + SC2->C2_ITEM + "' " + chr(13) + chr(10)
 	c_Qry += " 		AND C2_SEQUEN = '" + SC2->C2_SEQUEN + "' "
-
+	
 	TCQUERY c_Qry NEW ALIAS "QRY"
 
 	dbSelectArea("QRY")
 	Count To n_RecTot
 	QRY->(dbGoTop())
-
+	
 	If n_RecTot > 0
 		If !Empty(QRY->H1_FSLOCAL)
 			c_Local := QRY->H1_FSLOCAL
-		EndIf
-	EndIf
+		Endif
+	Endif
 
-	QRY->(dbCloseArea())
+	QRY->(dbCloseArea())   
 
 Return c_Local
 */
