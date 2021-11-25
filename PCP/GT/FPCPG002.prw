@@ -1,21 +1,30 @@
-#INCLUDE "Totvs.ch"
+#INCLUDE "PROTHEUS.CH"
+#INCLUDE "RWMAKE.CH"
 
-/*/{Protheus.doc} FPCPG002
-	Gatilho SH6 para Sopro
-	@type function
-	@version 12.1.25
-	@author Jonas Machado
-	@since 07/10/2021
-	@return numeric, n_Ciclo
 /*/
-User Function FPCPG002
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  FPCG002	       Autor TBA001 -XXX     º Data ³  21/01/16   º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDescricao ³Gatilho de preenchimento do Campo H6_CICLOPD				  º±±
+±±º          ³                                                            º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³SIGAPCP - Scheduler                                         º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+/*/                    
 
-	Local n_Ciclo := 0.0
 
-	DbSelectArea("SG2")
-	DbSetOrder(3)
-	If (DbSeek(xFilial("SG2")+ M->H6_PRODUTO+m->H6_OPERAC))
-		n_Ciclo := SG2->G2_FSCICLO
-	EndIf
+User Function FPCPG002     
 
+Local n_Ciclo := 0.0
+
+DbSelectArea("SG2")
+DbSetOrder(3)
+If (DbSeek(xFilial("SG2")+ M->H6_PRODUTO+m->H6_OPERAC))                                                           
+  	n_Ciclo := SG2->G2_FSCICLO
+//	n_Ciclo := Round(  ((60/ SG2->G2_LOTEPAD)  * 60 )* SG2->G2_FSCAVI,2) 
+EndIf                                          
 Return n_Ciclo

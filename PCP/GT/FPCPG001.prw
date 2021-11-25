@@ -40,17 +40,6 @@ User Function FPCPG001()
 		EndIf
 	EndIf
 	
-	//Inclui a descrição do produto da OP
-	M->H6_FSPRODU := SB1->B1_DESC
-	M->H6_FSPESOI := Round((SB1->B1_PESO - SB1->B1_BRPEAL),2)
-	M->H6_FSPESO  := CValToChar(Round((M->H6_QTDPROD + M->H6_QTDPERD) * (SB1->B1_PESO - SB1->B1_BRPEAL),4))
-	
-	// If !("TOTVSMES" $ M->H6_OBSERVA)
-
-	// 	M->H6_OPERADO := CUSERNAME
-
-	// EndIf
-
 	DbSelectArea(_cAlias)
 	DbSetOrder(_cOrd)
 	DbGoTo(_nReg)

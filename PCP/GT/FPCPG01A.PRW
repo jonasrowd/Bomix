@@ -1,28 +1,39 @@
-#Include 'Totvs.ch'
+#INCLUDE "PROTHEUS.CH"
+#INCLUDE "RWMAKE.CH"
 
-/*/{Protheus.doc} FPCPG01A
-	Retorna a ferramenta
-	@type Function
-	@version 12.1.25
-	@author Jonas Machado
-	@since 26/08/2021
-	@return Variant, Ferramenta.
 /*/
-User Function FPCPG01A()
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  FPCG002	       Autor TBA001 -XXX     º Data ³  21/01/16   º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDescricao ³Gatilho de preenchimento do Campo H6_CICLOPD				  º±±
+±±º          ³                                                            º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³SIGAPCP - Scheduler                                         º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+/*/                    
 
-	Local FERRAM := M->H6_FERRAM
 
-	DbSelectArea("SC2")
-	DbSetOrder(6)
-	If (DbSeek(xFilial("SC2")+ SUBSTR(M->H6_OP,1,6) + SUBSTR(M->H6_OP,7,2) + SUBSTR(M->H6_OP,9,3)))
-		MROT  = SC2->C2_ROTEIRO
-		MPROD = SC2->C2_PRODUTO
+User Function FPCPG01A     
 
-		DbSelectArea("SG2")
-		DbSetOrder(1)
-		If (DbSeek(xFilial("SG2")+ MPROD + MROT))
-			FERRAM = SG2->G2_FERRAM
-		EndIf
-	EndIf
+Local MOPE := M->H6_OPERAC
+Local MREC := M->H6_RECURSO
+Local FERRAM := M->H6_FERRAM
 
+DbSelectArea("SC2")
+DbSetOrder(6)
+If (DbSeek(xFilial("SC2")+ SUBSTR(M->H6_OP,1,6) + SUBSTR(M->H6_OP,7,2) + SUBSTR(M->H6_OP,9,3)))                                                         
+  	MROT  = SC2->C2_ROTEIRO 
+  	MPROD = SC2->C2_PRODUTO     
+  	DbSelectArea("SG2")
+    DbSetOrder(1)
+  	If (DbSeek(xFilial("SG2")+ MPROD + MROT))
+  	    FERRAM = SG2->G2_FERRAM
+   	ENDIF    
+  	
+EndIf    
+                                      
 Return FERRAM

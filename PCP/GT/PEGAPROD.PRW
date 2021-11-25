@@ -4,7 +4,7 @@
 ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
 ±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
 ±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
-±±ºPrograma  PEGAPROD     º Autor ³ AP6 IDE            º Data ³  28/09/12º±±
+±±ºPrograma  ³TESTM001     º Autor ³ AP6 IDE            º Data ³  28/09/12º±±
 ±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
 ±±ºDescricao ³ Gatilho para gerar o código do produto                     º±±
 ±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
@@ -18,14 +18,14 @@ User Function PEGAPROD
 	a_Area   := GetArea()
 	c_Codigo := M->H6_PRODUTO
 	dbSelectArea("SB1")
-	DBGOTOP()
+	DBGOTOP() 
 	dbSetOrder(1)
 	If dbSeek(xFilial("SB1")+c_CODIGO)
        c_desc := SB1->B1_DESC
     ELSE
        c_desc := "  "
-    ENDIF
-
-	RestArea(a_Area)
-
+    ENDIF    	
+		
+	RestArea(a_Area)       
+	
 Return c_desc
