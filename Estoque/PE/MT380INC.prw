@@ -1,19 +1,14 @@
-/*/
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
-±±ºPrograma  ³MT380INC     º Autor ³ AP6 IDE            º Data ³  28/09/12º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºDescricao ³ Validação de Ajuste de Empenho                             º±±
-±±º          ³ Ponto de Entrada, localizado na validação de Ajuste Empenhoº±±
-±±º          ³ ,utilizado para confirmar ou não a gravação.               º±±
-±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
-±±ºUso       ³ AP6 IDE                                                    º±±
-±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
-±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
-ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
-/*/
+#INCLUDE "TOTVS.CH"
 
+/*/{Protheus.doc} MT380INC
+	Validação de Ajuste de Empenho Ponto de Entrada, localizado na validação de Ajuste Empenho, 
+	utilizado para confirmar ou não a gravação.
+	@type function
+	@version 12.1.25
+	@author Jonas Machado
+	@since 28/10/2021
+	@return logical, l_Ret
+/*/
 User Function MT380INC()
 	Local c_Local := ''
 	Local l_Ret   := .T.
@@ -40,4 +35,8 @@ User Function MT380INC()
 		{"O seu usuário não possui permissão para efetuar saídas no armazém " + c_Local + "."},5,;
 		{"Contacte o administrador do sistema."},5)
 	Endif
+
+	D4_FSDSC := SB1->B1_DESC
+	D4_FSTP  := SB1->B1_BRTPPR
+
 Return l_Ret

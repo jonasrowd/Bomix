@@ -1,27 +1,20 @@
+/*/{Protheus.doc} A261TOK
+	Valida็ใo da Transfer๊ncia Mod 2 O ponto sera disparado no inicio da chamada da funcao de validacao geral dos itens digitados. 
+	Serve para validar se o movimento pode ser efetuado ou nao.
+	@type function
+	@version  12.1.25
+	@author jonas.machado
+	@since 21/07/2021
+	@return variant, .T.
 /*/
-ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-ฑฑษออออออออออัออออออออออหอออออออัออออออออออออออออออออหออออออัอออออออออออออปฑฑ
-ฑฑบPrograma  ณA261TOK      บ Autor ณ AP6 IDE            บ Data ณ  28/09/12บฑฑ
-ฑฑฬออออออออออุออออออออออสอออออออฯออออออออออออออออออออสออออออฯอออออออออออออนฑฑ
-ฑฑบDescricao ณ Valida็ใo da Transfer๊ncia Mod 2                           บฑฑ
-ฑฑบ          ณ O ponto sera disparado no inicio da chamada da funcao de   บฑฑ
-ฑฑบ          ณ validacao geral dos itens digitados. Serve para validar se บฑฑ
-ฑฑบ          ณ o movimento pode ser efetuado ou nao.					  บฑฑ
-ฑฑฬออออออออออุออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
-ฑฑบUso       ณ AP6 IDE                                                    บฑฑ
-ฑฑศออออออออออฯออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผฑฑ
-ฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑฑ
-฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿
-/*/
-
-User Function A261TOK( )
+User Function A261TOK()
 	Local l_Ret    := .T.
 	Local c_Orig   := ''									//Armazem de Origem
 	Local c_Dest   := ''    								//Armazem de Destino
 	Local c_Menu   := Upper(NoAcento(AllTrim(FunDesc())))   //Nome do menu executado
 	Local a_Area   := GetArea()
-	Local c_Users := Getmv("FS_TRANSFE")
+	Local c_Users  := Getmv("FS_TRANSFE")
+	Local i		   := ''
 	
     If INCLUI .And. c_Menu == 'TRANSF. (MOD.2)'
 		For i:=1 To Len(aCols)
@@ -91,13 +84,12 @@ User Function A261TOK( )
 						Exit    
 					Endif
 				Endif
-					If (c_UMOrig <> c_UMDest) 
+				If (c_UMOrig <> c_UMDest) 
 						ShowHelpDlg(AllTrim(SM0->M0_NOME),;
 							{"UNIDADE DE MEDIDA Origem deve ser igual a UNIDADE DE MEDIDA Destino."},5)
 						l_Ret := .F.
 						Exit    
-					 Endif	       
-			
+				Endif	       
                 If !(__CUSERID $ c_Users) // VERIFICA NO PARยMETRO "FS_TRANSFE" SE O USUมRIO TEM PERMISSรO PARA TRANSFERIR ENTRE LOTES DIFERENTES
                 
 					If 	c_LoteOrig <> c_LoteDest .And. RTRIM(c_LoteDest)<>''
@@ -105,20 +97,19 @@ User Function A261TOK( )
 							{"LOTE Origem deve ser igual ao LOTE Destino."},5)
 						l_Ret := .F.
 						Exit    
-					 Endif	
-          //        Endif
+					Endif	
 					If (c_DTOrig <> c_DTDest) 
 						ShowHelpDlg(AllTrim(SM0->M0_NOME),;
 							{"DATA VALIDADE DO LOTE Origem deve ser igual a DATA VALIDADE DO LOTE Destino."},5)
 						l_Ret := .F.
 						Exit    
-					 Endif
+					Endif
 					If (c_ProdOrig <> c_ProdDest) 
 						ShowHelpDlg(AllTrim(SM0->M0_NOME),;
 							{"Produto Origem deve ser igual ao Produto Destino."},5)
 						l_Ret := .F.
 						Exit    
-					 Endif	
+					Endif	
 			    Endif	 	
 			Endif
 		Next
